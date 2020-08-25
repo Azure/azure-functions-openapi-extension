@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+  </ItemGroup>
+
+</Project>

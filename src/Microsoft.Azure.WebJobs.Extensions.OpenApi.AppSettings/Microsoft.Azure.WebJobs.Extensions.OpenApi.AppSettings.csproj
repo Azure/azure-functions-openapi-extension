@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings</PackageId>
+    <Owners>Microsoft</Owners>
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft</Company>
+    <Version>1.0.0</Version>
+    <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings</Title>
+    <Product>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings</Product>
+    <Summary>This package provides a base app settings capability deserialising environment variables into IConfiguration object.</Summary>
+    <Description>This package provides a base app settings capability deserialising environment variables into IConfiguration object.</Description>
+    <PackageTags>Azure-Functions, Configuration, AppSettings</PackageTags>
+    <Copyright>Microsoft</Copyright>
+    <PackageLicenseUrl>https://github.com/Azure/azure-functions-openapi-extension/blob/main/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+{
+  "info": {
+    "version": "3.0.0",
+    "title": "Open API Sample on Azure Functions (IoC)",
+    "description": "A sample API that runs on Azure Functions (IoC) 2.x using Open API specification - from **openapisettings.json**.",
+    "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
+    "contact": {
+      "name": "Aliencube Community",
+      "email": "no-reply@aliencube.org",
+      "url": "https://github.com/aliencube/AzureFunctions.Extensions/issues"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  }
+}

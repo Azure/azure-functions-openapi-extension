@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi</PackageId>
+    <Owners>Microsoft</Owners>
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft</Company>
+    <Version>1.0.0</Version>
+    <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi</Title>
+    <Product>Microsoft.Azure.WebJobs.Extensions.OpenApi</Product>
+    <Summary>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Summary>
+    <Description>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Description>
+    <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
+    <Copyright>Microsoft</Copyright>
+    <PackageLicenseUrl>https://github.com/Azure/azure-functions-openapi-extension/blob/main/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Lists\**" />
+    <EmbeddedResource Remove="Lists\**" />
+    <None Remove="Lists\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+  </ItemGroup>
+
+</Project>
