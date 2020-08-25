@@ -1,16 +1,8 @@
-#if NET461
-using System.Net.Http;
-#endif
-
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-#if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
-#endif
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
@@ -36,15 +28,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument AddMetadata(OpenApiInfo info);
 
-#if NET461
-        /// <summary>
-        /// Adds server details.
-        /// </summary>
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-        /// <param name="routePrefix">Route prefix value.</param>
-        /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument AddServer(HttpRequestMessage req, string routePrefix);
-#elif NETSTANDARD2_0
         /// <summary>
         /// Adds server details.
         /// </summary>
@@ -52,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="routePrefix">Route prefix value.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument AddServer(HttpRequest req, string routePrefix);
-#endif
+
         /// <summary>
         /// Adds the naming strategy.
         /// </summary>

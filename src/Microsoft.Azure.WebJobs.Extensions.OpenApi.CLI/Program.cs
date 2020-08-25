@@ -1,27 +1,17 @@
 using System;
 using System.IO;
-using System.Linq;
-
-#if NET461
-using System.Net.Http;
-#endif
-
 using System.Text;
 
+using Cocona;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 
-using Cocona;
-
-#if !NET461
-using Microsoft.AspNetCore.Http;
-
 using Moq;
-#endif
 
 using Newtonsoft.Json.Serialization;
 
@@ -70,17 +60,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             {
                 return;
             }
-#if NET461
-            var requestUri = new Uri("http://localhost:7071");
-            var req = new HttpRequestMessage()
-            {
-                RequestUri = requestUri,
-            };
-#else
+
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns("http");
             req.SetupGet(p => p.Host).Returns(new HostString("localhost", 7071));
-#endif
+
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
             var namingStrategy = new CamelCaseNamingStrategy();
@@ -93,11 +77,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             {
                 swagger = document.InitialiseDocument()
                                   .AddMetadata(pi.OpenApiInfo)
-#if NET461
-                                  .AddServer(req, pi.HostJsonHttpSettings.RoutePrefix)
-#else
                                   .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix)
-#endif
                                   .AddNamingStrategy(namingStrategy)
                                   .AddVisitors(collection)
                                   .Build(pi.CompiledDllPath)
@@ -108,26 +88,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-#if NET461
-                req.Dispose();
-#endif
             }
-#if NET461
-            req.Dispose();
-#endif
+
             if (console)
             {
                 Console.WriteLine(swagger);
             }
 
-            var outputpath =
-#if NET461
-                Path.IsPathRooted(output)
-#else
-                Path.IsPathFullyQualified(output)
-#endif
-                ? output
-                : $"{pi.CompiledPath}{directorySeparator}{output}";
+            var outputpath = Path.IsPathFullyQualified(output)
+                                 ? output
+                                 : $"{pi.CompiledPath}{directorySeparator}{output}";
 
             if (!Directory.Exists(outputpath))
             {

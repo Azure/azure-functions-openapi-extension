@@ -1,13 +1,6 @@
-#if NET461
-using System.Net.Http;
-#endif
-
 using System.Threading.Tasks;
 
-#if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
-#endif
-
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
@@ -24,15 +17,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <returns><see cref="IDocument"/> instance.</returns>
         ISwaggerUI AddMetadata(OpenApiInfo info);
 
-#if NET461
-        /// <summary>
-        /// Adds server details.
-        /// </summary>
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-        /// <param name="routePrefix">Route prefix value.</param>
-        /// <returns><see cref="IDocument"/> instance.</returns>
-        ISwaggerUI AddServer(HttpRequestMessage req, string routePrefix);
-#elif NETSTANDARD2_0
         /// <summary>
         /// Adds server details.
         /// </summary>
@@ -40,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="routePrefix">Route prefix value.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         ISwaggerUI AddServer(HttpRequest req, string routePrefix);
-#endif
+
         /// <summary>
         /// Builds Open API document.
         /// </summary>

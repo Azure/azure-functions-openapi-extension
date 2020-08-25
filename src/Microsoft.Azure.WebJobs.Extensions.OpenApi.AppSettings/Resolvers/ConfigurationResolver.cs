@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,13 +61,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.R
             {
                 basePath = $"/{basePath}";
             }
-#if NET461
-            var scriptRootPath = environmentVariables.GetValue<string>("AzureWebJobsScriptRoot");
-            if (!string.IsNullOrWhiteSpace(scriptRootPath))
-            {
-                basePath = scriptRootPath;
-            }
-#endif
             return basePath;
         }
 

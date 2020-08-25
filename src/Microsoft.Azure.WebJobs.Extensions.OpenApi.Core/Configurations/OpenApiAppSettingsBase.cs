@@ -1,4 +1,3 @@
-
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 

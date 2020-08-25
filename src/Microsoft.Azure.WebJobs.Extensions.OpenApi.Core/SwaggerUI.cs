@@ -1,19 +1,10 @@
 using System.IO;
-
-#if NET461
-using System.Net.Http;
-#endif
-
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
-#if NETSTANDARD2_0
-using Microsoft.AspNetCore.Http;
-#endif
-
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
@@ -48,17 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             return this;
         }
-#if NET461
-        /// <inheritdoc />
-        public ISwaggerUI AddServer(HttpRequestMessage req, string routePrefix)
-        {
-            var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}{prefix}";
-            this._baseUrl = baseUrl;
 
-            return this;
-        }
-#elif NETSTANDARD2_0
         /// <inheritdoc />
         public ISwaggerUI AddServer(HttpRequest req, string routePrefix)
         {
@@ -68,7 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             return this;
         }
-#endif
+
         /// <inheritdoc />
         public async Task<ISwaggerUI> BuildAsync()
         {
