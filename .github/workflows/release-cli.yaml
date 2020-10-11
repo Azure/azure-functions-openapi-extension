@@ -70,13 +70,13 @@ jobs:
       if: steps.release.outputs.module == 'cli'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.1.810'
+        dotnet-version: '2.1.x'
 
     - name: Setup .NET SDK 3.1 LTS
       if: steps.release.outputs.module == 'cli'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.402'
+        dotnet-version: '3.1.x'
 
     # - name: Add MSBuild to PATH
     #   if: steps.release.outputs.module == 'cli'

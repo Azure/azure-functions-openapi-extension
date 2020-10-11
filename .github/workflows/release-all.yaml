@@ -58,12 +58,12 @@ jobs:
     - name: Setup .NET SDK 2.1 LTS
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.1.810'
+        dotnet-version: '2.1.x'
 
     - name: Setup .NET SDK 3.1 LTS
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.402'
+        dotnet-version: '3.1.x'
 
     # - name: Add MSBuild to PATH
     #   uses: microsoft/setup-msbuild@v1.0.0
