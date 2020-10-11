@@ -10,7 +10,7 @@ jobs:
     name: Build, test and package
     strategy:
       matrix:
-        os: [ 'ubuntu-latest' ]
+        os: [ 'windows-latest' ]
         node: [ 10 ]
         dotnet: [ '3.1.402' ]
         targetFramework: [ 'netcoreapp3.1' ]
