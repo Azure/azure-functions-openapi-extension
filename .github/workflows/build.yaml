@@ -12,8 +12,8 @@ jobs:
     name: Build and test
     strategy:
       matrix:
-        os: [ 'windows-latest' ]
-        dotnet: [ '3.1.401' ]
+        os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
+        dotnet: [ '3.1.402' ]
 
     runs-on: ${{ matrix.os }}
 
@@ -21,13 +21,18 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
-    - name: Setup .NET SDK
+    - name: Setup .NET SDK 2.1 LTS
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet }}
+        dotnet-version: '2.1.x'
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.0
+    - name: Setup .NET SDK 3.1 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.0
 
     - name: Restore NuGet packages
       shell: pwsh

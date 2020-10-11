@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 
@@ -204,12 +203,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
                 this._filename = csproj.Name;
             }
 
-            var fqpath =
-#if NET461
-                System.IO.Path.IsPathRooted(path)
-#else
-                System.IO.Path.IsPathFullyQualified(path)
-#endif
+            var fqpath = System.IO.Path.IsPathFullyQualified(path)
                 ? path
                 : $"{Environment.CurrentDirectory.TrimEnd(directorySeparator)}{directorySeparator}{path}";
 

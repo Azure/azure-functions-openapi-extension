@@ -1,14 +1,7 @@
-#if NET461
-using System.Net;
-using System.Net.Http;
-#endif
 using System.Threading.Tasks;
 
-#if !NET461
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-#endif
-using Microsoft.Azure.WebJobs;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
 {
@@ -17,20 +10,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
     /// </summary>
     public class FakeHttpTrigger
     {
-#if NET461
-        /// <summary>
-        /// Gets something.
-        /// </summary>
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-        /// <returns>Returns <see cref="HttpResponseMessage"/> instance.</returns>
-        [FunctionName("FakeFunction")]
-        public async Task<HttpResponseMessage> DoSomething(
-            [HttpTrigger] HttpRequestMessage req
-        )
-        {
-            return await Task.FromResult(req.CreateResponse(HttpStatusCode.OK)).ConfigureAwait(false);
-        }
-#else
         /// <summary>
         /// Gets something
         /// </summary>
@@ -43,6 +22,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         {
             return await Task.FromResult(new OkResult()).ConfigureAwait(false);
         }
-#endif
     }
 }

@@ -12,7 +12,7 @@ jobs:
       matrix:
         os: [ 'windows-latest' ]
         node: [ 10 ]
-        dotnet: [ '3.1.401' ]
+        dotnet: [ '3.1.402' ]
         targetFramework: [ 'netcoreapp3.1' ]
         runtime: [ 'win-x64', 'linux-x64', 'osx-x64' ]
 
@@ -60,15 +60,27 @@ jobs:
     #   with:
     #     node-version: ${{ matrix.node }}
 
-    - name: Setup .NET SDK
+    # - name: Setup .NET SDK
+    #   if: steps.release.outputs.module == 'cli'
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: ${{ matrix.dotnet }}
+
+    - name: Setup .NET SDK 2.1 LTS
       if: steps.release.outputs.module == 'cli'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet }}
+        dotnet-version: '2.1.x'
 
-    - name: Add MSBuild to PATH
+    - name: Setup .NET SDK 3.1 LTS
       if: steps.release.outputs.module == 'cli'
-      uses: microsoft/setup-msbuild@v1.0.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    # - name: Add MSBuild to PATH
+    #   if: steps.release.outputs.module == 'cli'
+    #   uses: microsoft/setup-msbuild@v1.0.0
 
     - name: Restore NuGet packages
       if: steps.release.outputs.module == 'cli'
@@ -136,7 +148,7 @@ jobs:
       matrix:
         os: [ 'ubuntu-latest' ]
         node: [ 10 ]
-        dotnet: [ '3.1.401' ]
+        dotnet: [ '3.1.402' ]
         # targetFramework: [ 'net461', 'netcoreapp3.1' ]
         # runtime: [ 'win-x64', 'linux-x64', 'osx-x64' ]
 
