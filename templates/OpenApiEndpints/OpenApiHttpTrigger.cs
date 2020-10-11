@@ -1,13 +1,10 @@
-#if !NET461
 using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
@@ -35,7 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderSwaggerDocument(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger.{extension}")] HttpRequest req,
             string extension,
             ILogger log)
         {
@@ -72,7 +69,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderOpenApiDocument(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
             string version,
             string extension,
             ILogger log)
@@ -108,7 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");
@@ -131,4 +128,3 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
     }
 }
-#endif
