@@ -12,8 +12,8 @@ jobs:
     name: Build, test, package and release
     strategy:
       matrix:
-        os: [ 'windows-latest' ]
-        dotnet: [ '3.1.401' ]
+        os: [ 'ubuntu-latest' ]
+        dotnet: [ '3.1.402' ]
 
     runs-on: ${{ matrix.os }}
 
