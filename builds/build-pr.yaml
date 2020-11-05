@@ -19,7 +19,7 @@ stages:
 
   jobs:
   - job: BuildTest
-    displayName: 'PR: Build and Test on Cross-Platform'
+    displayName: 'PR: Build and Test on'
 
     strategy:
       matrix:
