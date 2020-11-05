@@ -32,8 +32,8 @@ stages:
         configuration: 'Release'
     - template: 'template-steps-publish.yaml'
 
-- stage: Release
-  displayName: 'Release: To NuGet'
+# - stage: Release
+#   displayName: 'Release: To NuGet'
 
-  jobs:
-  - template: 'template-job-release.yaml'
+#   jobs:
+#   - template: 'template-job-release.yaml'
