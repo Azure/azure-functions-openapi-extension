@@ -1,0 +1,45 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: '.NET Pack'
+  inputs:
+    command: pack
+    packagesToPack: '$(System.DefaultWorkingDirectory)/src/**/*.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
+    includesymbols: true
+    versioningScheme: byEnvVar
+    versionEnvVar: Version
+    verbosityPack: Quiet
+
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP CodeSigning: Nupkg'
+  condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
+  inputs:
+    ConnectedServiceName: 'ESRP Service'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
+    Pattern: '*.nupkg'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+         {
+           "KeyCode": "CP-401405",
+           "OperationCode": "NuGetSign",
+           "Parameters": {},
+           "ToolName": "sign",
+           "ToolVersion": "1.0"
+         },
+         {
+           "KeyCode": "CP-401405",
+           "OperationCode": "NuGetVerify",
+           "Parameters": {},
+           "ToolName": "sign",
+           "ToolVersion": "1.0"
+         }
+     ]
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop
+    publishLocation: Container

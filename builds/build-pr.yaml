@@ -1,0 +1,40 @@
+name: $(Version).$(rev:r)
+
+trigger: none
+
+pr:
+  branches:
+    include:
+    - main
+    - release/*
+
+variables:
+- group: Common
+- name: TestRunStatus
+  value: ''
+
+stages:
+- stage: Build
+  displayName: 'PR: Build Stage'
+
+  jobs:
+  - job: BuildTest
+    displayName: 'PR: Build and Test on Cross-Platform'
+
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macos-latest'
+        windows:
+          imageName: 'windows-latest'
+
+    pool:
+      vmImage: '$(imageName)'
+
+    workspace:
+      clean: all
+
+    steps:
+    - template: 'template-steps-build-test.yaml'
