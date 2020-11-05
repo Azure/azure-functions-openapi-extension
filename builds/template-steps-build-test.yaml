@@ -1,0 +1,56 @@
+parameters:
+  configuration: ''
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK 2.1.x LTS'
+  inputs:
+    version: '2.1.x'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK 3.1.x LTS'
+  inputs:
+    version: '3.1.x'
+
+- task: DotNetCoreCLI@2
+  displayName: '.NET Restore'
+  inputs:
+    command: restore
+    projects: '$(System.DefaultWorkingDirectory)/*.sln'
+    verbosityRestore: Quiet
+
+- task: DotNetCoreCLI@2
+  displayName: '.NET Build'
+  inputs:
+    projects: '$(System.DefaultWorkingDirectory)/*.sln'
+    arguments: '-c ${{ parameters.configuration }}'
+
+- task: DotNetCoreCLI@2
+  displayName: '.NET Test'
+  inputs:
+    command: test
+    projects: '$(System.DefaultWorkingDirectory)/test/**/*.csproj'
+    arguments: '-c ${{ parameters.configuration }} /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(System.DefaultWorkingDirectory)\TestResults\coverage'
+    publishTestResult: true
+
+- task: PowerShell@2
+  displayName: 'Save Test Run Status'
+  inputs:
+    targetType: Inline
+    script: 'Write-Host "##vso[task.setvariable variable=TestRunStatus]$(Agent.JobStatus)"'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Results'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)\TestResults\*.xml'
+    failIfCoverageEmpty: false
+
+- task: PowerShell@2
+  displayName: 'Cancel Pipeline on Test Run Failure'
+  condition: and(succeeded(), or(eq(variables['TestRunStatus'], 'Failed'), eq(variables['TestRunStatus'], 'SucceededWithIssues')))
+  inputs:
+    targetType: Inline
+    script: |
+      Write-Host "##vso[task.setvariable variable=Agent.JobStatus]Failed"
+      Write-Host "##vso[task.complete result=Failed]DONE"

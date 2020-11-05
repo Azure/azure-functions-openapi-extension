@@ -1,26 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\builds\common.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi</PackageId>
-    <Owners>Microsoft</Owners>
-    <Authors>Microsoft</Authors>
-    <Company>Microsoft</Company>
     <Version>1.0.0</Version>
+    <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi</PackageId>
     <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi</Title>
-    <Product>Microsoft.Azure.WebJobs.Extensions.OpenApi</Product>
     <Summary>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Summary>
     <Description>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Description>
     <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
-    <Copyright>Microsoft</Copyright>
-    <PackageLicenseUrl>https://github.com/Azure/azure-functions-openapi-extension/blob/main/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -31,17 +25,13 @@
     <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="3.1.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Lists\**" />
     <EmbeddedResource Remove="Lists\**" />
     <None Remove="Lists\**" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
 
