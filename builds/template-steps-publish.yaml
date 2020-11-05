@@ -1,4 +1,11 @@
 steps:
+- task: PowerShell@2
+  displayName: 'Copy all NuGet packages'
+  inputs:
+    targetType: Inline
+    script: |
+      Get-ChildItem -Path ./src -Include *.nupkg -Recurse
+
 - task: DotNetCoreCLI@2
   displayName: '.NET Pack'
   inputs:
