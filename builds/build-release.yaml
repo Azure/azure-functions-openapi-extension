@@ -1,0 +1,37 @@
+name: $(Version).$(rev:r)
+
+trigger:
+  branches:
+    include:
+    - release/*
+
+pr: none
+
+variables:
+- group: Common
+- name: TestRunStatus
+  value: ''
+
+stages:
+- stage: BuildPublish
+  displayName: 'Release: Build and Publish'
+
+  jobs:
+  - job: BuildTestPublish
+    displayName: 'Release: Build, Test and Publish on Windows'
+
+    pool:
+      vmImage: 'windows-latest'
+
+    workspace:
+      clean: all
+
+    steps:
+    - template: 'template-steps-build-test.yaml'
+    - template: 'template-steps-publish.yaml'
+
+- stage: Release
+  displayName: 'Release: To NuGet'
+
+  jobs:
+  - template: 'template-job-release.yaml'

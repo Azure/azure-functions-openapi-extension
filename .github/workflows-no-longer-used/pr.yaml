@@ -1,11 +1,9 @@
-name: Build and Test
+name: Pull Request
 
 on:
-  push:
+  pull_request:
     branches:
     - main
-    - dev
-    - feature/*
 
 jobs:
   build_and_test:
@@ -13,7 +11,6 @@ jobs:
     strategy:
       matrix:
         os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
-        dotnet: [ '3.1.402' ]
 
     runs-on: ${{ matrix.os }}
 
