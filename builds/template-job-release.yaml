@@ -1,0 +1,25 @@
+jobs:
+- deployment: WindowsLatest
+  displayName: 'Hosted Windows Latest'
+
+  pool:
+    vmImage: 'windows-latest'
+
+  environment: 'NuGet'
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: NuGetToolInstaller@1
+          displayName: 'Use NuGet '
+          inputs:
+            checkLatest: true
+        - task: NuGetCommand@2
+          displayName: 'Push NuGet Packages'
+          inputs:
+            command: push
+            packagesToPush: '$(Pipeline.Workspace)/drop/*.nupkg;!$(Pipeline.Workspace)/drop/*.symbols.nupkg'
+            nuGetFeedType: external
+            publishFeedCredentials: 'nuget.org'
+            verbosityPush: Quiet
