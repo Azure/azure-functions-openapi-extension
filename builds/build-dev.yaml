@@ -21,7 +21,7 @@ stages:
 
   jobs:
   - job: BuildTest
-    displayName: 'WIP: Build and Test on Cross-Platform'
+    displayName: 'WIP: Build and Test on'
 
     strategy:
       matrix:
