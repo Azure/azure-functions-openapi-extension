@@ -28,6 +28,8 @@ stages:
 
     steps:
     - template: 'template-steps-build-test.yaml'
+      parameters:
+        configuration: 'Release'
     - template: 'template-steps-publish.yaml'
 
 - stage: Release
