@@ -9,7 +9,7 @@ pr:
     - release/*
 
 variables:
-- group: Common
+- group: open-api-extension-variable-group
 - name: TestRunStatus
   value: ''
 
