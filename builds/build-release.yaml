@@ -31,6 +31,8 @@ stages:
       parameters:
         configuration: 'Release'
     - template: 'template-steps-publish.yaml'
+      parameters:
+        configuration: 'Release'
 
 # - stage: Release
 #   displayName: 'Release: To NuGet'
