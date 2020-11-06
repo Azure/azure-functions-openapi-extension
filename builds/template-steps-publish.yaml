@@ -50,7 +50,7 @@ steps:
   displayName: 'Delete CodeSignSummary Files'
   condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
   inputs:
-    contents: '$(Build.ArtifactStagingDirectory)\**\CodeSignSummary-*.md'
+    contents: '$(Build.ArtifactStagingDirectory)/CodeSignSummary-*.md'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
