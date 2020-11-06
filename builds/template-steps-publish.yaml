@@ -40,17 +40,17 @@ steps:
      ]
 
 - task: PowerShell@2
-  displayName: 'Check files'
+  displayName: 'Check Files'
   inputs:
     targetType: Inline
     script: |
-      Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include *.md -Recurse
+      Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include *.* -Recurse
 
 - task: DeleteFiles@1
-  displayName: 'Delete CodeSignSummary files'
+  displayName: 'Delete CodeSignSummary Files'
   condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
   inputs:
-    contents: '$(Build.ArtifactStagingDirectory)/**/CodeSignSummary-*.md'
+    contents: '$(Build.ArtifactStagingDirectory)\**\CodeSignSummary-*.md'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
