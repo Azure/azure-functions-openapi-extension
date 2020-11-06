@@ -52,6 +52,13 @@ steps:
   inputs:
     contents: '$(Build.ArtifactStagingDirectory)/CodeSignSummary-*.md'
 
+- task: PowerShell@2
+  displayName: 'Check Files'
+  inputs:
+    targetType: Inline
+    script: |
+      Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include *.* -Recurse
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   inputs:
