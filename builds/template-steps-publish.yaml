@@ -39,11 +39,13 @@ steps:
          }
      ]
 
-- task: DeleteFiles@1
-  displayName: 'Delete CodeSignSummary files'
+- task: PowerShell@2
+  displayName: 'Delete CodeSignSummary Files'
   condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
   inputs:
-    contents: '**/CodeSignSummary-*.md'
+    targetType: Inline
+    script: |
+      Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include CodeSignSummary-*.md -Recurse | Remove-Item -Force
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
