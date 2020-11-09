@@ -103,7 +103,7 @@ http://localhost:7071/api/swagger/ui
 
 Copy the link in the search bar at the top of the page and open it on another web browser window, and you will be able to see the Open API 2.0 document generated on-the-fly.
 
-![swagger.json][image-04]
+![swagger.json on local machine][image-04]
 
 
 ## Sign-in to Azure ##
@@ -196,6 +196,7 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 You have got an Azure Functions app with Open API metadata enabled. In the next articles, you will be able to integrate this Open API-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
+* [Support Azure Functions v1 with Open API Extension][docs v1 suppport]
 * [Integrating Open API-enabled Azure Functions to Azure API Management][docs apim]
 * [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform]
 
@@ -211,26 +212,27 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 [image-09]: images/image-09.png
 [image-10]: images/image-10.png
 
+[docs v1 support]: azure-functions-v1-support.md
 [docs apim]: integrate-with-apim.md
 [docs powerplatform]: integrate-with-powerplatform.md
 
-[dotnet core sdk]: https://dotnet.microsoft.com/download/dotnet-core/3.1?WT.mc_id=azfuncopenapi-github-juyoo
+[dotnet core sdk]: https://dotnet.microsoft.com/download/dotnet-core/3.1?WT.mc_id=dotnet-0000-juyoo
 
-[az account free]: https://azure.microsoft.com/free/?WT.mc_id=azfuncopenapi-github-juyoo
-[az account free students]: https://azure.microsoft.com/free/students/?WT.mc_id=azfuncopenapi-github-juyoo
+[az account free]: https://azure.microsoft.com/free/?WT.mc_id=dotnet-0000-juyoo
+[az account free students]: https://azure.microsoft.com/free/students/?WT.mc_id=dotnet-0000-juyoo
 
-[az func core tools]: https://docs.microsoft.com/azure/azure-functions/functions-run-local?WT.mc_id=azfuncopenapi-github-juyoo
+[az func core tools]: https://docs.microsoft.com/azure/azure-functions/functions-run-local?WT.mc_id=dotnet-0000-juyoo
 [az func openapi extension]: https://nuget.org/to-be-added
-[az func openapi v1 preview]: https://docs.microsoft.com/azure/azure-functions/functions-api-definition?WT.mc_id=azfuncopenapi-github-juyoo
+[az func openapi v1 preview]: https://docs.microsoft.com/azure/azure-functions/functions-api-definition?WT.mc_id=dotnet-0000-juyoo
 [az func openapi community]: https://github.com/aliencube/AzureFunctions.Extensions
-[az func create]: https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-cli?tabs=bash%2Cbrowser&pivots=programming-language-csharp&WT.mc_id=azfuncopenapi-github-juyoo
-[az func costs]: https://docs.microsoft.com/azure/azure-functions/functions-consumption-costs?WT.mc_id=azfuncopenapi-github-juyoo
+[az func create]: https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-cli?tabs=bash%2Cbrowser&pivots=programming-language-csharp&WT.mc_id=dotnet-0000-juyoo
+[az func costs]: https://docs.microsoft.com/azure/azure-functions/functions-consumption-costs?WT.mc_id=dotnet-0000-juyoo
 
-[az apim]: https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=azfuncopenapi-github-juyoo
-[az logapp]: https://docs.microsoft.com/azure/logic-apps/logic-apps-overview?WT.mc_id=azfuncopenapi-github-juyoo
-[az region]: https://azure.microsoft.com/regions/?WT.mc_id=azfuncopenapi-github-juyoo
+[az apim]: https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet-0000-juyoo
+[az logapp]: https://docs.microsoft.com/azure/logic-apps/logic-apps-overview?WT.mc_id=dotnet-0000-juyoo
+[az region]: https://azure.microsoft.com/regions/?WT.mc_id=dotnet-0000-juyoo
 
-[power platform]: https://powerplatform.microsoft.com/?WT.mc_id=azfuncopenapi-github-juyoo
+[power platform]: https://powerplatform.microsoft.com/?WT.mc_id=dotnet-0000-juyoo
 
 [openapi]: https://www.openapis.org/
 [postman]: https://www.postman.com/
