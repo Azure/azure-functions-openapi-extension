@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
