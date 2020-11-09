@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC</RootNamespace>
   </PropertyGroup>
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
