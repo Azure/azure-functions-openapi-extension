@@ -1,4 +1,4 @@
-# Enable Open API Endpoints on Azure Functions #
+# Enable Open API Endpoints on Azure Functions (Preview) #
 
 [Open API metadata][openapi] supports in Azure Functions is now available with this extension, [Azure Functions Open API Extension][az func openapi extension]. With this extension, you can directly let your API endpoints be discoverable.
 
@@ -68,6 +68,9 @@ To enable Open API metadata, you will need to install a NuGet package, [Microsof
 ```bash
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
 ```
+
+> This extension is currently in preview.
+
 
 With [Visual Studio Code][vs code], open your HTTP trigger, `MyHttpTrigger`, to enable the Open API metadata, and add attribute classes on top of the `FunctionName(...)` decorator.
 
@@ -174,18 +177,18 @@ Once logged into Azure, create a function app and related resources in your Azur
 
 ## Clean-up Resources ##
 
-When you continue to the next step, [Integrating Open API-enabled Azure Functions with Azure API Management](integrate-with-apim.md), you'll need to keep all your resources in place to build on what you've already done.
+When you continue to the next step, [Integrating Open API-enabled Azure Functions with Azure API Management][docs apim], you'll need to keep all your resources in place to build on what you've already done.
 
 Otherwise, you can use the following steps to delete the function app and its related resources to avoid incurring any further costs.
 
 1. In Visual Studio Code, press <kbd>F1</kbd> to open the command palette. In the command palette, search for and select `Azure Functions: Open in portal`.
-1. Choose your function app, and press <kbd>Enter</kbd>. The function app page opens in the Azure portal.
-1. In the **Overview** tab, select the named link next to **Resource group**.
+2. Choose your function app, and press <kbd>Enter</kbd>. The function app page opens in the Azure portal.
+3. In the **Overview** tab, select the named link next to **Resource group**.
 
     ![Select the resource group to delete from the function app page][image-10]
 
-1. In the **Resource group** page, review the list of included resources, and verify that they are the ones you want to delete.
-1. Select **Delete resource group**, and follow the instructions.
+4. In the **Resource group** page, review the list of included resources, and verify that they are the ones you want to delete.
+5. Select **Delete resource group**, and follow the instructions.
 
    Deletion may take a couple of minutes. When it's done, a notification appears for a few seconds. You can also select the bell icon at the top of the page to view the notification.
 
@@ -198,7 +201,7 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 
 * [Support Azure Functions v1 with Open API Extension][docs v1 suppport]
 * [Integrating Open API-enabled Azure Functions to Azure API Management][docs apim]
-* [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform]
+<!-- * [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform] -->
 
 
 [image-01]: images/image-01.png
@@ -222,7 +225,7 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 [az account free students]: https://azure.microsoft.com/free/students/?WT.mc_id=dotnet-0000-juyoo
 
 [az func core tools]: https://docs.microsoft.com/azure/azure-functions/functions-run-local?WT.mc_id=dotnet-0000-juyoo
-[az func openapi extension]: https://nuget.org/to-be-added
+[az func openapi extension]: https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi
 [az func openapi v1 preview]: https://docs.microsoft.com/azure/azure-functions/functions-api-definition?WT.mc_id=dotnet-0000-juyoo
 [az func openapi community]: https://github.com/aliencube/AzureFunctions.Extensions
 [az func create]: https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-cli?tabs=bash%2Cbrowser&pivots=programming-language-csharp&WT.mc_id=dotnet-0000-juyoo
@@ -231,10 +234,9 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 [az apim]: https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet-0000-juyoo
 [az logapp]: https://docs.microsoft.com/azure/logic-apps/logic-apps-overview?WT.mc_id=dotnet-0000-juyoo
 [az region]: https://azure.microsoft.com/regions/?WT.mc_id=dotnet-0000-juyoo
-
 [power platform]: https://powerplatform.microsoft.com/?WT.mc_id=dotnet-0000-juyoo
-
 [openapi]: https://www.openapis.org/
 [postman]: https://www.postman.com/
+
 [vs code]: https://code.visualstudio.com/
 [vs code azure tools]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack

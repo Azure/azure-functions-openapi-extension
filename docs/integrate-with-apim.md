@@ -72,7 +72,7 @@ Confirm the test has been successfully performed.
 
 ## Clean-up Resources ##
 
-When you continue to the another step, [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform], you'll need to keep all your resources in place to build on what you've already done.
+When you continue to the another step, [Support Azure Functions v1 with Open API Extension][docs v1 suppport], you'll need to keep all your resources in place to build on what you've already done.
 
 Otherwise, you can use the following steps to delete the function app and its related resources to avoid incurring any further costs.
 
@@ -92,10 +92,10 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 ## Next Steps ##
 
-You have got an Azure Functions app with Open API metadata enabled. In the next articles, you will be able to integrate this Open API-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
+You have got an Azure API Management integrated with Azure Functions that implements the Open API extension. In the next articles, you will be able to support Azure Functions v1 runtime or integrate this Open API-enabled Azure Functions app with either [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
-* [Support Azure Functions v1 with Open API Extension][docs v1 suppport]
-* [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform]
+* [Support Azure Functions v1 with Open API Extension][docs v1 support]
+<!-- * [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform] -->
 
 
 [image-10]: images/image-10.png
@@ -115,9 +115,6 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 
 [az func costs]: https://docs.microsoft.com/azure/azure-functions/functions-consumption-costs?WT.mc_id=dotnet-0000-juyoo
 
-[az logapp]: https://docs.microsoft.com/azure/logic-apps/logic-apps-overview?WT.mc_id=dotnet-0000-juyoo
-[power platform]: https://powerplatform.microsoft.com/?WT.mc_id=dotnet-0000-juyoo
-
 [az apim]: https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet-0000-juyoo
 [az apim azfunc import]: https://docs.microsoft.com/azure/azure-functions/functions-openapi-definition?WT.mc_id=dotnet-0000-juyoo
 [az apim costs]: https://docs.microsoft.com/azure/api-management/api-management-features?WT.mc_id=dotnet-0000-juyoo
@@ -126,3 +123,6 @@ You have got an Azure Functions app with Open API metadata enabled. In the next 
 [az cli apim]: https://docs.microsoft.com/azure/api-management/get-started-create-service-instance-cli?WT.mc_id=dotnet-0000-juyoo
 
 [gh sample v3ioc]: https://github.com/Azure/azure-functions-openapi-extension/tree/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC
+
+[az logapp]: https://docs.microsoft.com/azure/logic-apps/logic-apps-overview?WT.mc_id=dotnet-0000-juyoo
+[power platform]: https://powerplatform.microsoft.com/?WT.mc_id=dotnet-0000-juyoo

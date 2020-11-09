@@ -7,14 +7,10 @@
 
 ## Getting Started ##
 
-* [Enable Open API documents to your Azure Functions HTTP Trigger](docs/enable-open-api-endpoints.md)
-  * This document shows how to enable Open API extension on your Azure Functions applications and render Swagger UI, and Open API v2 and v3 documents on-the-fly.
-* [Azure Functions v1 Support](docs/azure-functions-v1-support.md)
-  * This document shows how to support Azure Functions v1 runtime with this Open API extension.
-* [Integrating Open API-enabled Azure Functions to Azure API Management](docs/integrate-with-apim.md)
-  * This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this Open API extension.
-* [Integrating Open API-enabled Azure Functions to Power Platform](docs/integrate-with-powerplatform.md)
-  * This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this Open API extension.
+* [**Enable Open API documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints.md): This document shows how to enable Open API extension on your Azure Functions applications and render Swagger UI, and Open API v2 and v3 documents on-the-fly. It's currently in preview.
+* [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this Open API extension.
+* [**Integrating Open API-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this Open API extension.
+<!-- * [**Integrating Open API-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this Open API extension. -->
 
 
 ## Sample Azure Function Apps with Open API Metadata Enabled ##
