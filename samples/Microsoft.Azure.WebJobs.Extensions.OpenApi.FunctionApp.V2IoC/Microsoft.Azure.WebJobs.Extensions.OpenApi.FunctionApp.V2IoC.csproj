@@ -3,23 +3,32 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC</RootNamespace>
   </PropertyGroup>
 
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.1.0-preview" />
+  </ItemGroup> -->
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+
   <ItemGroup>
-    <!--<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="3.0.0" />-->
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.28" />
   </ItemGroup>
 
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj" />
+  </ItemGroup>
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="openapisettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -29,10 +38,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+  <ItemGroup>
     <Compile Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs" />
   </ItemGroup>
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
 </Project>
