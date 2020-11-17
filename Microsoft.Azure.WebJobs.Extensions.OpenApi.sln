@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Ext
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj", "{B18937F6-B39F-46BB-BB3C-86C0693993EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.csproj", "{7AD094AA-01D6-4644-B9B6-E555A029D6D7}"
 EndProject
@@ -27,6 +27,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj", "{6ABA1666-BC42-487F-B156-3DC79347BD6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.csproj", "{98223494-E0A8-4C07-A38F-84CA2060031D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static.csproj", "{848EDB8F-9C45-462B-A544-EA237774F3BA}"
 EndProject
@@ -46,7 +48,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Ext
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.csproj", "{968CD847-80D0-4740-92D5-F5553461EC04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.csproj", "{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}"
 EndProject
@@ -90,6 +92,10 @@ Global
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98223494-E0A8-4C07-A38F-84CA2060031D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98223494-E0A8-4C07-A38F-84CA2060031D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98223494-E0A8-4C07-A38F-84CA2060031D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98223494-E0A8-4C07-A38F-84CA2060031D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -142,6 +148,7 @@ Global
 		{66D8DEA8-B477-497F-95BB-E8F9A5BAC352} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{6ABA1666-BC42-487F-B156-3DC79347BD6B} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
+		{98223494-E0A8-4C07-A38F-84CA2060031D} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{848EDB8F-9C45-462B-A544-EA237774F3BA} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{D6C3806E-2685-4E8D-9F4F-7A93E5270891} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{C2996131-C3CA-4D3D-8357-C533849792E1} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}

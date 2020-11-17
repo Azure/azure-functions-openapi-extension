@@ -20,12 +20,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionAppV2Static
         [FunctionName(nameof(DummyHttpTrigger.GetDummies))]
         [OpenApiOperation(operationId: "getDummies", tags: new[] { "dummy" }, Summary = "Gets the list of dummies", Description = "This gets the list of dummies.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "Dummy name", Description = "Dummy name", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiParameter(name: "switch", In = ParameterLocation.Path, Required = true, Type = typeof(StringEnum), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter(name: "onoff", In = ParameterLocation.Path, Required = true, Type = typeof(StringEnum), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyResponseModel>), Summary = "List of the dummy responses", Description = "This returns the list of dummy responses")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Name not found", Description = "Name parameter is not found")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid switch", Description = "Switch parameter is not valid")]
         public static async Task<IActionResult> GetDummies(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "dummies")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "dummies/{onoff}")] HttpRequest req,
+            string onoff,
             ILogger log)
         {
             var content = new List<DummyResponseModel>()
