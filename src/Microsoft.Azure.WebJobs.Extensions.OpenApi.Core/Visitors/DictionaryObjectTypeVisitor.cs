@@ -47,7 +47,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Gets the schema for the underlying type.
-            var underlyingType = type.Value.GetGenericArguments()[1];
+            var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
                 { underlyingType.GetOpenApiTypeName(namingStrategy), underlyingType }
@@ -124,17 +124,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.PayloadVisit(dataType: "object", dataFormat: null);
 
             // Gets the schema for the underlying type.
-            var underlyingType = type.GetGenericArguments()[1];
+            var underlyingType = type.GetUnderlyingType();
             var properties = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             // Adds the reference to the schema for the underlying type.
-            var reference = new OpenApiReference()
+            if (underlyingType.IsReferentialType())
             {
-                Type = ReferenceType.Schema,
-                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-            };
+                var reference = new OpenApiReference()
+                {
+                    Type = ReferenceType.Schema,
+                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                };
 
-            properties.Reference = reference;
+                properties.Reference = reference;
+            }
 
             schema.AdditionalProperties = properties;
 

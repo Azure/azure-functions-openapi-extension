@@ -52,8 +52,8 @@
         // "${workspaceFolder}/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj",
         // "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC.csproj",
         // "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static.csproj",
-        "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.csproj",
-        // "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.csproj",
+        // "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.csproj",
+        "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.csproj",
 				"--configuration",
 				"Release",
 				"/property:GenerateFullPaths=true",
@@ -82,8 +82,8 @@
 			"options": {
 				// "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC/bin/Debug/netcoreapp2.1"
 				// "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static/bin/Debug/netcoreapp2.1"
-				"cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Debug/netcoreapp3.1"
-				// "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Debug/netcoreapp3.1"
+				// "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Debug/netcoreapp3.1"
+				"cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Debug/netcoreapp3.1"
 			},
 			"command": "host start",
 			"isBackground": true,

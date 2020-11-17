@@ -36,9 +36,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         public FakeSubModel SubProperty { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="FakeSubModel"/> instance.
+        /// </summary>
+        public FakeSubModel SubProperty2 { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="FakeStringEnum"/> value.
         /// </summary>
         public FakeStringEnum EnumProperty { get; set; }
 
+        public FakeGenericModel<FakeClassModel> FakeGenericModelFakeClass { get; set; }
     }
 }

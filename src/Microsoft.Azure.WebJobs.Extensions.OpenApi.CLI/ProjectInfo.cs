@@ -201,6 +201,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
 
                 var csproj = new FileInfo(filepath);
                 this._filename = csproj.Name;
+
+                return;
             }
 
             var fqpath = System.IO.Path.IsPathFullyQualified(path)
@@ -213,6 +215,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
 
                 this._projectPath = csproj.DirectoryName.TrimEnd(directorySeparator);
                 this._filename = csproj.Name;
+
+                return;
             }
 
             var di = new DirectoryInfo(fqpath);

@@ -42,8 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Gets the schema for the underlying type.
-            type.Value.IsOpenApiNullable(out var underlyingType);
-
+            var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
                 { type.Key, underlyingType }
@@ -89,7 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            type.IsOpenApiNullable(out var underlyingType);
+            var underlyingType = type.GetUnderlyingType();
             var schema = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;
@@ -108,7 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            type.IsOpenApiNullable(out var underlyingType);
+            var underlyingType = type.GetUnderlyingType();
             var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;
