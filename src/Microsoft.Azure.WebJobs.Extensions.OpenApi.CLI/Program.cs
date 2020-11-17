@@ -56,8 +56,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             {
                 pi = new ProjectInfo(project, configuration, target);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+
                 return;
             }
 

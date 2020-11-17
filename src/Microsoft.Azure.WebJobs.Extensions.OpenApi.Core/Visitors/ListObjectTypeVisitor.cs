@@ -47,7 +47,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Gets the schema for the underlying type.
-            var underlyingType = type.Value.GetElementType() ?? type.Value.GetGenericArguments()[0];
+            var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
                 { underlyingType.GetOpenApiTypeName(namingStrategy), underlyingType }
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             var schema = this.ParameterVisit(dataType: "array", dataFormat: null);
 
-            var underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+            var underlyingType = type.GetUnderlyingType();
             var items = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
 
             schema.Items = items;
@@ -139,17 +139,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.PayloadVisit(dataType: "array", dataFormat: null);
 
             // Gets the schema for the underlying type.
-            var underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+            var underlyingType = type.GetUnderlyingType();
             var items = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             // Adds the reference to the schema for the underlying type.
-            var reference = new OpenApiReference()
+            if (underlyingType.IsReferentialType())
             {
-                Type = ReferenceType.Schema,
-                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-            };
+                var reference = new OpenApiReference()
+                {
+                    Type = ReferenceType.Schema,
+                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                };
 
-            items.Reference = reference;
+                items.Reference = reference;
+            }
 
             schema.Items = items;
 

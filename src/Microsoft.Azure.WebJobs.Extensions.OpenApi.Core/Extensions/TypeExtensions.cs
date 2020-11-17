@@ -68,6 +68,45 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
         }
 
+
+        /// <summary>
+        /// Checks whether the type can be referenced or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
+        public static bool IsReferentialType(this Type type)
+        {
+            var @enum = Type.GetTypeCode(type);
+            var isReferential = @enum == TypeCode.Object;
+
+            if (type == typeof(Guid))
+            {
+                isReferential = false;
+            }
+            if (type == typeof(DateTime))
+            {
+                isReferential = false;
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                isReferential = false;
+            }
+            if (type.IsOpenApiNullable())
+            {
+                isReferential = false;
+            }
+            if (type.IsUnflaggedEnumType())
+            {
+                isReferential = false;
+            }
+            if (type.IsJObjectType())
+            {
+                isReferential = false;
+            }
+
+            return isReferential;
+        }
+
         /// <summary>
         /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
         /// </summary>
@@ -322,6 +361,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
+            if (type.IsGenericType)
+            {
+                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + "_" +
+                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+            }
+
             return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
         }
 
@@ -349,6 +394,43 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         public static bool IsGenericTypeOf(this Type t1, Type t2)
         {
             return t1.IsGenericType && t1.GetGenericTypeDefinition() == t2;
+        }
+
+        /// <summary>
+        /// Gets the underlying type of the given generic type.
+        /// </summary>
+        /// <param name="type">Type to check to get its underlying type.</param>
+        /// <returns>Returns the underlying type.</returns>
+        public static Type GetUnderlyingType(this Type type)
+        {
+            var underlyingType = default(Type);
+            if (type.IsOpenApiNullable(out var nullableUnderlyingType))
+            {
+                underlyingType = nullableUnderlyingType;
+            }
+
+            if (type.IsOpenApiArray())
+            {
+                underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+            }
+
+            if (type.IsOpenApiDictionary())
+            {
+                underlyingType = type.GetGenericArguments()[1];
+            }
+
+            if (underlyingType.IsNullOrDefault())
+            {
+                return underlyingType;
+            }
+
+            if (underlyingType.IsGenericType)
+            {
+                var underlyingTypeOfUnderlyingType = underlyingType.GetUnderlyingType();
+                underlyingType = underlyingTypeOfUnderlyingType;
+            }
+
+            return underlyingType;
         }
 
         /// <summary>

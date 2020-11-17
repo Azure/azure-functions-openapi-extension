@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Linq;
@@ -55,6 +57,85 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var result = TypeExtensions.GetOpenApiTypeName(type, strategy);
 
             result.Should().Be("int32");
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(int))]
+        [DataRow(typeof(string))]
+        [DataRow(typeof(FakeModel))]
+        public void Given_NonGenericType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Null(Type type)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().BeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(int?), typeof(int))]
+        [DataRow(typeof(bool?), typeof(bool))]
+        [DataRow(typeof(DateTime?), typeof(DateTime))]
+        public void Given_NullableType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<int>), typeof(int))]
+        [DataRow(typeof(List<bool>), typeof(bool))]
+        [DataRow(typeof(List<FakeModel>), typeof(FakeModel))]
+        public void Given_ListType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<int?>), typeof(int))]
+        [DataRow(typeof(List<bool?>), typeof(bool))]
+        [DataRow(typeof(List<DateTime?>), typeof(DateTime))]
+        public void Given_NullableListType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, int>), typeof(int))]
+        [DataRow(typeof(Dictionary<string, bool>), typeof(bool))]
+        [DataRow(typeof(Dictionary<string, FakeModel>), typeof(FakeModel))]
+        public void Given_DictionaryType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, int?>), typeof(int))]
+        [DataRow(typeof(Dictionary<string, bool?>), typeof(bool))]
+        [DataRow(typeof(Dictionary<string, DateTime?>), typeof(DateTime))]
+        public void Given_NullableDictionaryType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
+        {
+            var result = TypeExtensions.GetUnderlyingType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(int), false)]
+        [DataRow(typeof(int?), false)]
+        [DataRow(typeof(List<int>), true)]
+        [DataRow(typeof(FakeModel), true)]
+        [DataRow(typeof(JObject), false)]
+        public void Given_Type_When_IsReferentialType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.IsReferentialType(type);
+
+            result.Should().Be(expected);
         }
     }
 }
