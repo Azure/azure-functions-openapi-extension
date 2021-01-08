@@ -146,15 +146,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(Dictionary<string, string>), "object", null, "string", "string")]
-        [DataRow(typeof(IDictionary<string, string>), "object", null, "string", "string")]
-        [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", "string")]
-        [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", "string")]
-        [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
-        [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
-        [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
-        [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", "fakeModel")]
-        public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, string referenceId)
+        [DataRow(typeof(Dictionary<string, string>), "object", null, "string", false, null)]
+        [DataRow(typeof(IDictionary<string, string>), "object", null, "string", false, null)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", false, null)]
+        [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", false, null)]
+        [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel")]
+        [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", true, "fakeModel")]
+        public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, bool reference, string referenceId)
         {
             var result = this._visitor.PayloadVisit(dictionaryType, this._strategy);
 
@@ -164,8 +164,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             result.AdditionalProperties.Should().NotBeNull();
             result.AdditionalProperties.Type.Should().Be(additionalPropertyType);
 
-            result.AdditionalProperties.Reference.Type.Should().Be(ReferenceType.Schema);
-            result.AdditionalProperties.Reference.Id.Should().Be(referenceId);
+            if (reference)
+            {
+                result.AdditionalProperties.Reference.Type.Should().Be(ReferenceType.Schema);
+                result.AdditionalProperties.Reference.Id.Should().Be(referenceId);
+            }
+            else
+            {
+                result.AdditionalProperties.Reference.Should().BeNull();
+            }
         }
     }
 }

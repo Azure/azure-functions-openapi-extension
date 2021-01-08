@@ -171,19 +171,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(List<string>), "array", null, "string", "string")]
-        [DataRow(typeof(IList<string>), "array", null, "string", "string")]
-        [DataRow(typeof(ICollection<string>), "array", null, "string", "string")]
-        [DataRow(typeof(IEnumerable<string>), "array", null, "string", "string")]
-        [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", "string")]
-        [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", "string")]
-        [DataRow(typeof(List<FakeModel>), "array", null, "object", "fakeModel")]
-        [DataRow(typeof(IList<FakeModel>), "array", null, "object", "fakeModel")]
-        [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", "fakeModel")]
-        [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", "fakeModel")]
-        [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", "fakeModel")]
-        [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", "fakeModel")]
-        public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, string referenceId)
+        [DataRow(typeof(List<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(IList<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(ICollection<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(IEnumerable<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(List<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IList<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true, "fakeModel")]
+        public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool reference, string referenceId)
         {
             var result = this._visitor.PayloadVisit(listType, this._strategy);
 
@@ -193,8 +193,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             result.Items.Should().NotBeNull();
             result.Items.Type.Should().Be(itemType);
 
-            result.Items.Reference.Type.Should().Be(ReferenceType.Schema);
-            result.Items.Reference.Id.Should().Be(referenceId);
+            if (reference)
+            {
+                result.Items.Reference.Type.Should().Be(ReferenceType.Schema);
+                result.Items.Reference.Id.Should().Be(referenceId);
+            }
+            else
+            {
+                result.Items.Reference.Should().BeNull();
+            }
         }
     }
 }

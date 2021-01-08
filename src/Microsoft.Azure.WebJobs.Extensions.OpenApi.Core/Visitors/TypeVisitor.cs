@@ -105,33 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
         protected bool IsReferential(Type type)
         {
-            var @enum = Type.GetTypeCode(type);
-            var isReferential = @enum == TypeCode.Object;
-
-            if (type == typeof(Guid))
-            {
-                isReferential = false;
-            }
-            if (type == typeof(DateTime))
-            {
-                isReferential = false;
-            }
-            if (type == typeof(DateTimeOffset))
-            {
-                isReferential = false;
-            }
-            if (type.IsOpenApiNullable())
-            {
-                isReferential = false;
-            }
-            if (type.IsUnflaggedEnumType())
-            {
-                isReferential = false;
-            }
-            if (type.IsJObjectType())
-            {
-                isReferential = false;
-            }
+            var isReferential = type.IsReferentialType();
 
             return isReferential;
         }

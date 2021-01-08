@@ -32,14 +32,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_That_When_InitialiseDocument_Invoked_Then_It_Should_Return_Result()
         {
-            var field = typeof(Document).GetField("_document", BindingFlags.Instance | BindingFlags.NonPublic);
             var helper = new Mock<IDocumentHelper>();
             var doc = new Document(helper.Object);
 
             var result = doc.InitialiseDocument();
 
-            field.GetValue(result).Should().NotBeNull();
-            field.GetValue(result).Should().BeOfType<OpenApiDocument>();
+            result.Should().NotBeNull();
+            doc.OpenApiDocument.Should().NotBeNull();
         }
 
         [TestMethod]

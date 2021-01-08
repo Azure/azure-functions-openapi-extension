@@ -40,7 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var schema = collection.PayloadVisit(type, namingStrategy);
 
             // For array and dictionary object, the reference has already been added by the visitor.
-            if (!type.IsOpenApiArray() && !type.IsOpenApiDictionary())
+            if (type.IsReferentialType() && !type.IsOpenApiNullable() && !type.IsOpenApiArray() && !type.IsOpenApiDictionary())
             {
                 var reference = new OpenApiReference()
                 {
