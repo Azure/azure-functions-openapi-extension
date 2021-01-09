@@ -1,9 +1,11 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Comparers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
@@ -130,6 +132,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     continue;
                 }
 
+                operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
                 operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection);
                 operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection);
@@ -142,7 +145,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             this.OpenApiDocument.Paths = paths;
             this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
-            this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
+            this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes(methods, this._strategy);
+            this.OpenApiDocument.SecurityRequirements = this.OpenApiDocument
+                                                            .Paths
+                                                            .SelectMany(p => p.Value.Operations.SelectMany(q => q.Value.Security))
+                                                            .Where(p => !p.IsNullOrDefault())
+                                                            .Distinct(new OpenApiSecurityRequirementComparer())
+                                                            .ToList();
 
             return this;
         }

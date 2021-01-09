@@ -11,5 +11,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// Gets or sets the <see cref="OpenApiInfo"/> instance.
         /// </summary>
         public virtual OpenApiInfo Info { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="OpenApiComponents"/> instance.
+        /// </summary>
+        public virtual OpenApiComponents Components { get; set; }
+
+        // public virtual OpenApiSecurityRequirement Security { get; set; }
     }
 }
