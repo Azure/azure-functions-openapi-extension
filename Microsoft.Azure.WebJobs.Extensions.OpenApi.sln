@@ -56,10 +56,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenApiEndpoints", "OpenApiEndpoints", "{41695443-A292-4909-89A6-2D9846753164}"
 	ProjectSection(SolutionItems) = preProject
-		templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs = templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs
-		templates\OpenApiEndpints\OpenApiHttpTrigger.cs = templates\OpenApiEndpints\OpenApiHttpTrigger.cs
-		templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs = templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs
-		templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs = templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs
+		templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs = templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs
+		templates\OpenApiEndpoints\OpenApiHttpTrigger.cs = templates\OpenApiEndpoints\OpenApiHttpTrigger.cs
+		templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs = templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs
+		templates\OpenApiEndpoints\OpenApiHttpTriggerV1.cs = templates\OpenApiEndpoints\OpenApiHttpTriggerV1.cs
 	EndProjectSection
 EndProject
 Global

@@ -36,17 +36,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
+    <Content Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs">
       <Pack>true</Pack>
       <BuildAction>Compile</BuildAction>
       <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs">
+    <Content Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs">
       <Pack>true</Pack>
       <BuildAction>Compile</BuildAction>
       <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs">
+    <Content Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs">
       <Pack>true</Pack>
       <BuildAction>Compile</BuildAction>
       <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
