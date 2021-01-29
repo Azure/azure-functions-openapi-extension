@@ -140,13 +140,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 Format = dataFormat
             };
 
-            // Adds the visibility property.
+            // Adds the extra properties.
             if (attributes.Any())
             {
-                var visibilityAttribute = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
-                if (!visibilityAttribute.IsNullOrDefault())
+                Attribute attr = attributes.OfType<OpenApiPropertyDescriptionAttribute>().SingleOrDefault();
+                if (!attr.IsNullOrDefault())
                 {
-                    var extension = new OpenApiString(visibilityAttribute.Visibility.ToDisplayName());
+                    schema.Description = (attr as OpenApiPropertyDescriptionAttribute).Description;
+                }
+
+                attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
+                if (!attr.IsNullOrDefault())
+                {
+                    var extension = new OpenApiString((attr as OpenApiSchemaVisibilityAttribute).Visibility.ToDisplayName());
 
                     schema.Extensions.Add("x-ms-visibility", extension);
                 }
