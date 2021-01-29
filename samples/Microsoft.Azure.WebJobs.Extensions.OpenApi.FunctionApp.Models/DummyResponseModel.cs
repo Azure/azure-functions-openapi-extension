@@ -20,6 +20,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 
         public Dictionary<string, DummyDictionaryResponseModel> DictionaryObjectValue { get; set; }
 
+        [OpenApiPropertyDescription("List of string values")]
         public IList<string> ListStringValue { get; set; }
 
         public List<int> ListIntValue { get; set; }
@@ -47,6 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         [OpenApiSchemaVisibility(OpenApiVisibilityType.Advanced)]
         public string OpenApiSchemaVisibilityValue { get; set; }
 
+        [OpenApiPropertyDescription("This is dummy sub response model")]
         public DummySubResponseModel SubResponse1 { get; set; }
 
         public DummySubResponseModel SubResponse2 { get; set; }
