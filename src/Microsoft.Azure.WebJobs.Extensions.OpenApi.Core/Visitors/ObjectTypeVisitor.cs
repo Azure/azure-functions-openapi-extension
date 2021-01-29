@@ -116,24 +116,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             };
 
             instance.Schemas[name].Reference = reference;
-
-            // Adds the extra properties.
-            if (attributes.Any())
-            {
-                Attribute attr = attributes.OfType<OpenApiPropertyDescriptionAttribute>().SingleOrDefault();
-                if (!attr.IsNullOrDefault())
-                {
-                    instance.Schemas[name].Description = (attr as OpenApiPropertyDescriptionAttribute).Description;
-                }
-
-                attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
-                if (!attr.IsNullOrDefault())
-                {
-                    var extension = new OpenApiString((attr as OpenApiSchemaVisibilityAttribute).Visibility.ToDisplayName());
-
-                    instance.Schemas[name].Extensions.Add("x-ms-visibility", extension);
-                }
-            }
         }
 
         /// <inheritdoc />
