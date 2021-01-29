@@ -1,4 +1,5 @@
 using System.Net;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -13,6 +14,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// <summary>
     /// This represents the HTTP trigger entity for Open API documents.
     /// </summary>
+    [SuppressMessage("Design", "CA1823", Justification = "")]
+    [SuppressMessage("Design", "MEN002", Justification = "")]
+    [SuppressMessage("Design", "SA1206", Justification = "")]
+    [SuppressMessage("Layout Rules", "SA1311", Justification = "")]
+    [SuppressMessage("Layout Rules", "SA1500", Justification = "")]
+    [SuppressMessage("Readability Rules", "SX1101", Justification = "")]
     public static class OpenApiHttpTrigger
     {
         private const string V2 = "v2";
