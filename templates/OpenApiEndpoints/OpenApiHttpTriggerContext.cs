@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
@@ -19,6 +20,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// <summary>
     /// This represents the context entity for <see cref="OpenApiHttpTrigger"/>.
     /// </summary>
+    [SuppressMessage("Design", "CA1823", Justification = "")]
+    [SuppressMessage("Design", "MEN002", Justification = "")]
+    [SuppressMessage("Design", "SA1206", Justification = "")]
+    [SuppressMessage("Layout Rules", "SA1311", Justification = "")]
+    [SuppressMessage("Layout Rules", "SA1500", Justification = "")]
+    [SuppressMessage("Readability Rules", "SX1101", Justification = "")]
     public class OpenApiHttpTriggerContext : IOpenApiHttpTriggerContext
     {
         /// <summary>
