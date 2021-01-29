@@ -70,6 +70,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         OpenApiOperation GetOpenApiOperation(MethodInfo element, FunctionNameAttribute function, OperationType verb);
 
         /// <summary>
+        /// Gets the collection of <see cref="OpenApiSecurityRequirement"/> instances.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <returns>Collection of <see cref="OpenApiSecurityRequirement"/> instance.</returns>
+        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null);
+
+        /// <summary>
         /// Gets the list of <see cref="OpenApiParameter"/> instances.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
@@ -119,6 +127,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
         /// </summary>
         /// <returns>Collection of <see cref="OpenApiSecurityScheme"/> instance.</returns>
+        [Obsolete("This method is obsolete from 3.2.0. Use GetOpenApiSecuritySchemes(List<MethodInfo> elements, NamingStrategy namingStrategy = null) instead", error: true)]
         Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes();
+
+        /// <summary>
+        /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
+        /// </summary>
+        /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <returns>Collection of <see cref="OpenApiSecurityScheme"/> instance.</returns>
+        Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes(List<MethodInfo> elements, NamingStrategy namingStrategy = null);
     }
 }
