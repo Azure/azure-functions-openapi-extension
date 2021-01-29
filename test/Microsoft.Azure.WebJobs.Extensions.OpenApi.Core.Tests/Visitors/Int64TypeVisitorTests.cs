@@ -86,12 +86,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(OpenApiVisibilityType.Advanced)]
-        [DataRow(OpenApiVisibilityType.Important)]
-        [DataRow(OpenApiVisibilityType.Internal)]
-        public void Given_Attribute_When_Visit_Invoked_Then_It_Should_Return_Result(OpenApiVisibilityType visibility)
+        [DataRow("hello", "lorem ipsum")]
+        public void Given_OpenApiPropertyDescriptionAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
         {
-            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(long));
+            var attribute = new OpenApiPropertyDescriptionAttribute(description);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas[name].Description.Should().Be(description);
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", OpenApiVisibilityType.Advanced)]
+        [DataRow("hello", OpenApiVisibilityType.Important)]
+        [DataRow("hello", OpenApiVisibilityType.Internal)]
+        public void Given_OpenApiSchemaVisibilityAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, OpenApiVisibilityType visibility)
+        {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(long));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);

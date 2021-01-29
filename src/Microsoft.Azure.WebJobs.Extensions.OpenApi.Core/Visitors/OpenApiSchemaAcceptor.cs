@@ -57,7 +57,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 foreach (var property in this.Properties)
                 {
-                    var visibilityAttribute = property.Value.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
+                    var attributes = new Attribute[]
+                    {
+                        property.Value.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false),
+                        property.Value.GetCustomAttribute<OpenApiPropertyDescriptionAttribute>(inherit: false),
+                    };
 
                     foreach (var visitor in collection.Visitors)
                     {
@@ -67,7 +71,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         }
 
                         var type = new KeyValuePair<string, Type>(property.Key, property.Value.PropertyType);
-                        visitor.Visit(this, type, namingStrategy, visibilityAttribute);
+                        visitor.Visit(this, type, namingStrategy, attributes);
                     }
                 }
 
