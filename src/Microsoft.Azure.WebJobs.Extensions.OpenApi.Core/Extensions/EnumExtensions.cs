@@ -1,10 +1,7 @@
 using System;
 using System.Linq;
-using System.Reflection;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-
 using Microsoft.OpenApi;
 
 using Newtonsoft.Json.Serialization;
@@ -31,10 +28,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             var type = @enum.GetType();
             var member = type.GetMember(@enum.ToString()).First();
-            var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
-            var name = attribute == null ? @enum.ToString() : attribute.Name;
 
-            return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+            return member.ToDisplayName(namingStrategy);
         }
 
         /// <summary>
