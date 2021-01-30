@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
@@ -10,13 +14,32 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
     public enum StringEnum
     {
         /// <summary>
-        /// Identifies "off".
+        /// Identifies "zero".
         /// </summary>
-        Off = 0,
+        Zero = 0,
 
         /// <summary>
-        /// Identifies "on".
+        /// Identifies "one".
         /// </summary>
-        On = 1
+        One = 1,
+
+        /// <summary>
+        /// Identifies "yi".
+        /// </summary>
+        [EnumMember(Value = "dul")]
+        Two = 2,
+
+        /// <summary>
+        /// Identifies "yi".
+        /// </summary>
+        [Display("sam")]
+        Three = 3,
+
+        /// <summary>
+        /// Identifies "yi".
+        /// </summary>
+        [Display("sa")]
+        [EnumMember(Value = "net")]
+        Four = 4,
     }
 }

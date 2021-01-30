@@ -167,9 +167,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return null;
             }
 
-            var names = Enum.GetNames(type);
+            var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
+            var names = members.Select(p => p.ToDisplayName(namingStrategy));
 
-            return names.Select(p => (IOpenApiAny)new OpenApiString(namingStrategy.GetPropertyName(p, false)))
+            return names.Select(p => (IOpenApiAny)new OpenApiString(p))
                         .ToList();
         }
 

@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 using Newtonsoft.Json;
@@ -14,7 +16,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         [Display("lorem")]
         StringValue1,
 
-        [Display("ipsum")]
-        StringValue2
+        [EnumMember(Value = "ipsum")]
+        StringValue2,
+
+        [EnumMember(Value = "dolor")]
+        [Display("sit")]
+        StringValue3,
     }
 }
