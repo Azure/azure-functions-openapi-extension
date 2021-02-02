@@ -30,41 +30,8 @@ dotnet add <PROJECT> package Microsoft.Azure.WebJobs.Extensions.OpenApi
 
 ### Change Authorization Level ###
 
-As a default, all endpoints to render Swagger UI and Open API documents have the authorisation level of `AuthorizationLevel.Function`, which requires the API key to render them.
+As a default, all endpoints to render Swagger UI and Open API documents have the authorisation level of `AuthorizationLevel.Anonymous`.
 
-```csharp
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.{extension}")] HttpRequest req,
-    string extension,
-    ILogger log)
-{
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderOpenApiDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
-    string version,
-    string extension,
-    ILogger log)
-{
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerUI(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-However, if you don't want to use the API key for them, change their authorisation level to `AuthorizationLevel.Anonymous`.
 
 ```csharp
 [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
@@ -92,6 +59,45 @@ public static async Task<IActionResult> RenderOpenApiDocument(
 [OpenApiIgnore]
 public static async Task<IActionResult> RenderSwaggerUI(
     [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter.
+
+> **NOTE**: To change this authorisation level, you MUST install the `Microsoft.Azure.WebJobs.Extensions.OpenApi.Core` package, instead of `Microsoft.Azure.WebJobs.Extensions.OpenApi`, and copy those three files from the source codes to your application:
+> * `templates/OpenApiEndpoints/IOpenApiHttpTriggerContext.cs`
+> * `templates/OpenApiEndpoints/OpenApiHttpTrigger.cs`
+> * `templates/OpenApiEndpoints/OpenApiHttpTriggerContext.cs`
+
+```csharp
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerDocument(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.{extension}")] HttpRequest req,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderOpenApiDocument(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
+    string version,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerUI(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequest req,
     ILogger log)
 {
     ...
@@ -191,5 +197,3 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__Contact__Url`: Contact URL. eg. https://github.com/aliencube/AzureFunctions.Extensions/issues
 * `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
-
-> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot?WT.mc_id=azfuncextension-github-juyoo).
