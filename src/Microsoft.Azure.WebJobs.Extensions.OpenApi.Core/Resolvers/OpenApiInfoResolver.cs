@@ -34,27 +34,48 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
                 return info;
             }
 
-            if (openapi.IsNullOrDefault())
+            info = new OpenApiInfo()
             {
-                openapi = OpenApiSettingsJsonResolver.Resolve();
-            }
+                Version = "1.0.0",
+                Title = "Azure Functions Open API"
+            };
 
-            info = openapi.Get<OpenApiInfo>("info");
-            if (info.IsValid())
-            {
-                return info;
-            }
+  //     "version": "3.0.0",
+  //     "title": "Open API Sample on Azure Functions (STATIC)",
+  //     "description": "A sample API that runs on Azure Functions (STATIC) 3.x using Open API specification.",
+  //     "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
+  //     "contact": {
+  //       "name": "Contoso",
+  //       "email": "azfunc-openapi@contoso.com",
+  //       "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
+  //     },
+  //     "license": {
+  //       "name": "MIT",
+  //       "url": "http://opensource.org/licenses/MIT"
+  //     }
 
-            if (appsettings.IsNullOrDefault())
-            {
-                appsettings = ConfigurationResolver.Resolve();
-            }
 
-            info = appsettings.Get<OpenApiInfo>("OpenApi:Info");
-            if (info.IsValid())
-            {
-                return info;
-            }
+            // if (openapi.IsNullOrDefault())
+            // {
+            //     openapi = OpenApiSettingsJsonResolver.Resolve();
+            // }
+
+            // info = openapi.Get<OpenApiInfo>("info");
+            // if (info.IsValid())
+            // {
+            //     return info;
+            // }
+
+            // if (appsettings.IsNullOrDefault())
+            // {
+            //     appsettings = ConfigurationResolver.Resolve();
+            // }
+
+            // info = appsettings.Get<OpenApiInfo>("OpenApi:Info");
+            // if (info.IsValid())
+            // {
+            //     return info;
+            // }
 
             throw new InvalidOperationException("Open API metadata not found");
         }
