@@ -139,8 +139,6 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 
-> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot?WT.mc_id=azfuncextension-github-juyoo).
-
 
 ## Decorators ##
 
@@ -234,7 +232,6 @@ public static async Task<IActionResult> PostSample(
 
 * `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
 * `BodyType`: defines the type of the request payload.
-* `Summary`: is the summary of the request payload.
 * `Description`: is the description of the request payload.
 * `Required`: indicates whether the request payload is mandatory or not.
 
@@ -281,6 +278,173 @@ public static async Task<IActionResult> PostSample(
 * `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
+
+
+### `OpenApiSecurityAttribute` ###
+
+This decorator implements both [Security Requirement Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securityRequirementObject) and [Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject) spec.
+
+```csharp
+// API Key Auth
+public static class DummyHttpTrigger
+{
+    [FunctionName(nameof(DummyHttpTrigger.Update))]
+    [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header)]
+    public static async Task<IActionResult> Update(
+        [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
+}
+
+// Basic HTTP Auth
+public static class DummyHttpTrigger
+{
+    [FunctionName(nameof(DummyHttpTrigger.Update))]
+    [OpenApiSecurity("basic_auth", SecuritySchemeType.Http, Scheme = OpenApiSecuritySchemeType.Basic)]
+    public static async Task<IActionResult> Update(
+        [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
+}
+
+// OAuth Auth
+public class PetStoreAuth : OpenApiOAuthSecurityFlows
+{
+    public PetStoreAuth()
+    {
+        this.Implicit = new OpenApiOAuthFlow()
+        {
+            AuthorizationUrl = new Uri("http://petstore.swagger.io/oauth/dialog"),
+            Scopes = { { "write:pets", "modify pets in your account" }, { "read:pets", "read your pets" } }
+        };
+    }
+}
+
+public static class DummyHttpTrigger
+{
+    [FunctionName(nameof(DummyHttpTrigger.Update))]
+    [OpenApiSecurity("petstore_auth", SecuritySchemeType.OAuth2, Flows = typeof(PetStoreAuth))]
+    public static async Task<IActionResult> Update(
+        [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
+}
+```
+
+* `SchemeName`: defines the name of the security scheme.
+* `SchemeType`: is the type of the security scheme. Valid values are `SecuritySchemeType.ApiKey`, `SecuritySchemeType.Http`, `SecuritySchemeType.OAuth2`, and `SecuritySchemeType.OpenIdConnect`.
+* `Description`: is a short description for security scheme.
+* `Name`: is the name of the header, query or cookie parameter to be used. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.ApiKey`.
+* `In`: is the location of the API key. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.ApiKey`. Valid values are `OpenApiSecurityLocationType.Query`, `OpenApiSecurityLocationType.Header`, and `OpenApiSecurityLocationType.Cookie`.
+* `Scheme`: is the name of the authorisation scheme. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.Http`. Valid values are `OpenApiSecuritySchemeType.Basic` and `OpenApiSecuritySchemeType.Bearer`.
+* `BearerFormat`: is the hint to the client to identify how the bearer token is formatted. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.Http`.
+* `Flows`: defines the configuration information for the flow types supported. This **MUST** be the type inheriting `OpenApiOAuthSecurityFlows`. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OAuth2`.
+* `OpenIdConnectUrl`: is the OpenId Connect URL to discover OAuth2 configuration values. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OpenIdConnect`.
+* `OpenIdConnectScopes`: is the comma delimited list of scopes of OpenId Connect. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OpenIdConnect`.
+
+
+### `OpenApiSchemaVisibilityAttribute` ###
+
+This decorator is a part of extended property for custom connectors of Azure Logic Apps and Power Platform.
+
+```csharp
+public class MyResponse
+{
+    [OpenApiSchemaVisibility(OpenApiVisibilityType.Advanced)]
+    public string MyProperty { get; set; }
+}
+
+// This will result in:
+// {
+//   "myResponse": {
+//     "myProperty": {
+//       "type": "string",
+//       "x-ms-visibility": "advanced"
+//     }
+//   }
+// }
+```
+
+
+### `OpenApiPropertyDescriptionAttribute` ###
+
+This decorator provides model properties with description.
+
+```csharp
+public class MyModel
+{
+    [OpenApiPropertyDescription("The number value")]
+    public int Number { get; set; }
+
+    [OpenApiPropertyDescription("The text value")]
+    public string Text { get; set; }
+}
+
+// This will result in:
+// {
+//   "myModel": {
+//     "number": {
+//       "type": "integer",
+//       "format": "int32",
+//       "description": "The number value"
+//     },
+//     "text": {
+//       "type": "string",
+//       "description": "The text value"
+//     }
+//   }
+// }
+```
+
+
+### `DisplayAttribute` ###
+
+Use this decorator, if you want to display string values on your enum decorated with `Newtonsoft.Json.Converters.StringEnumConverter`.
+
+> You can also use the `System.Runtime.Serialization.EnumMemberAttribute` decorator together. Make sure that this decorator takes precedence to the `DisplayAttribute` decorator.
+
+```csharp
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Contoso
+{
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum StringEnum
+    {
+        Zero = 0,
+
+        [Display("hana")]
+        One = 1,
+
+        [EnumMember(Value = "dul")]
+        Two = 2,
+
+        [Display("set")]
+        [EnumMember(Value = "sam")]
+        Three = 3,
+    }
+}
+
+// This will result in
+// "stringEnum": {
+//   "type": "string",
+//   "enum": [
+//     "zero",
+//     "hana",
+//     "dul",
+//     "sam"
+//   ],
+//   "default": "zero"
+// }
+```
 
 
 ## Supported Json.NET Decorators ##
