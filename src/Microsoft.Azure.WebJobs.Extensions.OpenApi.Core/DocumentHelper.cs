@@ -128,7 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var attributes = element.GetCustomAttributes<OpenApiSecurityAttribute>(inherit: false);
             if (!attributes.Any())
             {
-                return null;
+                return new List<OpenApiSecurityRequirement>();
             }
 
             var requirements = new List<OpenApiSecurityRequirement>();
