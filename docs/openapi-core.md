@@ -35,6 +35,7 @@ In order to include HTTP endpoints into the Open API document, use attribute cla
 ```csharp
 [FunctionName(nameof(AddDummy))]
 [OpenApiOperation("addDummy", "dummy")]
+[OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
 [OpenApiRequestBody("application/json", typeof(DummyRequestModel))]
 [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(DummyResponseModel))]
 public static async Task<IActionResult> AddDummy(
@@ -214,72 +215,6 @@ public static async Task<IActionResult> GetSample(
 * `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
 
 
-### `OpenApiRequestBodyAttribute` ###
-
-This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
-* `BodyType`: defines the type of the request payload.
-* `Description`: is the description of the request payload.
-* `Required`: indicates whether the request payload is mandatory or not.
-
-
-### `OpenApiResponseWithBodyAttribute` ###
-
-This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
-* `ContentType`: defines the content type of the response payload. eg) `application/json` or `text/xml`
-* `BodyType`: defines the type of the response payload.
-* `Summary`: is the summary of the response.
-* `Description`: is the description of the response.
-
-
-### `OpenApiResponseWithoutBodyAttribute` ###
-
-This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
-* `Summary`: is the summary of the response.
-* `Description`: is the description of the response.
-
-
 ### `OpenApiSecurityAttribute` ###
 
 This decorator implements both [Security Requirement Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securityRequirementObject) and [Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject) spec.
@@ -347,6 +282,72 @@ public static class DummyHttpTrigger
 * `Flows`: defines the configuration information for the flow types supported. This **MUST** be the type inheriting `OpenApiOAuthSecurityFlows`. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OAuth2`.
 * `OpenIdConnectUrl`: is the OpenId Connect URL to discover OAuth2 configuration values. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OpenIdConnect`.
 * `OpenIdConnectScopes`: is the comma delimited list of scopes of OpenId Connect. This **MUST** be provided when the `SchemeType` is set to `SecuritySchemeType.OpenIdConnect`.
+
+
+### `OpenApiRequestBodyAttribute` ###
+
+This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
+* `BodyType`: defines the type of the request payload.
+* `Description`: is the description of the request payload.
+* `Required`: indicates whether the request payload is mandatory or not.
+
+
+### `OpenApiResponseWithBodyAttribute` ###
+
+This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `ContentType`: defines the content type of the response payload. eg) `application/json` or `text/xml`
+* `BodyType`: defines the type of the response payload.
+* `Summary`: is the summary of the response.
+* `Description`: is the description of the response.
+
+
+### `OpenApiResponseWithoutBodyAttribute` ###
+
+This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `Summary`: is the summary of the response.
+* `Description`: is the description of the response.
 
 
 ### `OpenApiSchemaVisibilityAttribute` ###
