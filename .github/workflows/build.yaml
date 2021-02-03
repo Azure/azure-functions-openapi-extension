@@ -6,6 +6,7 @@ on:
     - main
     - dev
     - feature/*
+    - hotfix/*
 
 jobs:
   build_and_test:
