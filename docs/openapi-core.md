@@ -63,82 +63,31 @@ If the above conditions are met, add the following key to your `local.settings.j
 
 ## Open API Metadata Configuration ##
 
-To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. This information can be declared in **ONE OF THREE** places &ndash; `host.json`, `openapisettings.json` or `local.settings.json`.
+To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide Open API metadata like below:
 
-This library looks for the information in the following order:
-
-1. `host.json`
-2. `openapisettings.json`
-3. `local.settings.json` or App Settings blade on Azure
-
-
-### `host.json` ###
-
-Although it has not been officially accepted to be a part of `host.json`, the Open API metadata still can be stored in it like:
-
-```json
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
-  ...
-  "openApi": {
-    "info": {
-      "version": "1.0.0",
-      "title": "Open API Sample on Azure Functions",
-      "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from **host. json**.",
-      "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
-      "contact": {
-        "name": "Azure Functions Open API",
-        "email": "azfunc-openapi@microsoft.com",
-        "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
-      },
-      "license": {
-        "name": "MIT",
-        "url": "http://opensource.org/licenses/MIT"
-      }
-    }
-  }
-  ...
+    public OpenApiInfo Info { get; set; } = new OpenApiInfo()
+    {
+        Version = "1.0.0",
+        Title = "Open API Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
+        Contact = new OpenApiContact()
+        {
+            Name = "Contoso",
+            Email = "azfunc-openapi@contoso.com",
+            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "MIT",
+            Url = new Uri("http://opensource.org/licenses/MIT"),
+        }
+    };
 }
 ```
-
-
-### `openapisettings.json` ###
-
-The Open API metadata can be defined in a separate file, `openapisettings.json` like:
-
-```json
-{
-  "info": {
-    "version": "1.0.0",
-    "title": "Open API Sample on Azure Functions",
-    "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from  **openapisettings.json**.",
-    "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
-    "contact": {
-      "name": "Azure Functions Open API",
-      "email": "azfunc-openapi@microsoft.com",
-      "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
-    },
-    "license": {
-      "name": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
-    }
-  }
-}
-```
-
-
-### `local.settings.json` or App Settings Blade ###
-
-On either your `local.settings.json` or App Settings on Azure Functions instance, those details can be set up like:
-
-* `OpenApi__Info__Version`: **REQUIRED** Version of Open API document. This is not the version of Open API spec. eg. 1.0.0
-* `OpenApi__Info__Title`: **REQUIRED** Title of Open API document. eg. Open API Sample on Azure Functions
-* `OpenApi__Info__Description`: Description of Open API document. eg. A sample API that runs on Azure Functions either 1.x or 2.x using Open API specification.
-* `OpenApi__Info__TermsOfService`: Terms of service URL. eg. https://github.com/aliencube/AzureFunctions.Extensions
-* `OpenApi__Info__Contact__Name`: Name of contact. eg. Aliencube Community
-* `OpenApi__Info__Contact__Email`: Email address for the contact. eg. no-reply@aliencube.org
-* `OpenApi__Info__Contact__Url`: Contact URL. eg. https://github.com/aliencube/AzureFunctions.Extensions/issues
-* `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
-* `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 
 
 ## Decorators ##

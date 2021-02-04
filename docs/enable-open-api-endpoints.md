@@ -61,45 +61,15 @@ http://localhost:7071/api/MyHttpTrigger?name=OpenApi
 ![Azure Functions run result on a web browser][image-02]
 
 
-## Enable Open API Metadata ##
+## Enable Open API Document ##
 
-To enable Open API metadata, you will need to update `host.json` by adding the `openApi` attribute like below:
-
-> **NOTE**: The `openApi` attribute is NOT officially defined in the `host.json` schema. It **MAY** be removed and implemented in a different way.
-
-```json
-// host.json
-{
-  ...
-  "openApi": {
-    "info": {
-      "version": "1.0.0",
-      "title": "Contoso Open API enabled Azure Functions App",
-      "description": "This is Open API enabled Azure Functions app for Contoso.",
-      "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
-      "contact": {
-        "name": "Contoso",
-        "email": "azfunc-openapi@contoso.com",
-        "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
-      },
-      "license": {
-        "name": "MIT",
-        "url": "http://opensource.org/licenses/MIT"
-      }
-    }
-  }
-  ...
-}
-```
-
-Also, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
+To enable Open API document, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
 
 ```bash
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
 ```
 
 > This extension is currently in preview.
-
 
 With [Visual Studio Code][vs code], open your HTTP trigger, `MyHttpTrigger`, to enable the Open API metadata, and add attribute classes on top of the `FunctionName(...)` decorator.
 
@@ -118,6 +88,32 @@ namespace MyOpenApiFunctionApp
         [FunctionName("MyHttpTrigger")]
         public static async Task<IActionResult> Run(
 ...
+```
+
+To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide Open API metadata like below:
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    public OpenApiInfo Info { get; set; } = new OpenApiInfo()
+    {
+        Version = "1.0.0",
+        Title = "Open API Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
+        Contact = new OpenApiContact()
+        {
+            Name = "Contoso",
+            Email = "azfunc-openapi@contoso.com",
+            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "MIT",
+            Url = new Uri("http://opensource.org/licenses/MIT"),
+        }
+    };
+}
 ```
 
 Run the Function app again on your local by running the command below:
