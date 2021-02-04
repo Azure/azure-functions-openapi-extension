@@ -12,7 +12,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.SecurityFl
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionAppV3Static
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static
 {
     public static class PetStoreHttpTrigger
     {

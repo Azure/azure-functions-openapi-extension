@@ -7,48 +7,5 @@
         "excludedTypes": "Request"
       }
     }
-  },
-  "openApi": {
-    "info": {
-      "version": "3.0.0",
-      "title": "Open API Sample on Azure Functions (STATIC)",
-      "description": "A sample API that runs on Azure Functions (STATIC) 3.x using Open API specification.",
-      "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
-      "contact": {
-        "name": "Contoso",
-        "email": "azfunc-openapi@contoso.com",
-        "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
-      },
-      "license": {
-        "name": "MIT",
-        "url": "http://opensource.org/licenses/MIT"
-      }
-    // },
-    // "components": {
-    //   "securitySchemes": {
-    //     "api_key": {
-    //       "type": "apiKey",
-    //       "in": "header",
-    //       "name": "x-functions-key"
-    //     },
-    //     "api_code": {
-    //       "type": "apiKey",
-    //       "in": "query",
-    //       "name": "code"
-    //     },
-    //     "petstore_auth": {
-    //       "type": "oauth2",
-    //       "flows": {
-    //         "implicit": {
-    //           "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-    //           "scopes": {
-    //             "write:pets": "modify pets in your account",
-    //             "read:pets": "read your pets"
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    }
   }
 }

@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var host = HostJsonResolver.Resolve();
 
-            this.OpenApiInfo = OpenApiInfoResolver.Resolve(host);
+            this.OpenApiInfo = OpenApiInfoResolver.Resolve(this.GetExecutingAssembly());
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();

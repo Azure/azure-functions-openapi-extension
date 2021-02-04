@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.2.0-preview" />
-  </ItemGroup>
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.2.1-preview" />
+  </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
@@ -39,11 +39,11 @@
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-  <!-- <ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs" />
-  </ItemGroup> -->
+  </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
 </Project>

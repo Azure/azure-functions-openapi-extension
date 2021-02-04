@@ -7,22 +7,5 @@
         "isEnabled": true
       }
     }
-  },
-  "openApi": {
-    "info": {
-      "version": "1.0.0",
-      "title": "Open API Sample on Azure Functions Proxy for v1",
-      "description": "A sample API that runs on Azure Functions 1.x using Open API specification.",
-      "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
-      "contact": {
-        "name": "Contoso",
-        "email": "azfunc-openapi@contoso.com",
-        "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
-      },
-      "license": {
-        "name": "MIT",
-        "url": "http://opensource.org/licenses/MIT"
-      }
-    }
   }
 }

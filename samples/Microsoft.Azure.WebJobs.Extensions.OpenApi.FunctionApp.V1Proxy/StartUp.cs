@@ -1,10 +1,7 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services;
-
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionAppV1Proxy.StartUp))]
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionAppV1Proxy
+[assembly: FunctionsStartup(typeof(Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.StartUp))]
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy
 {
     /// <summary>
     /// This represents the entity to be invoked during the runtime startup.
