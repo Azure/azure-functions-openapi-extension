@@ -63,7 +63,36 @@ http://localhost:7071/api/MyHttpTrigger?name=OpenApi
 
 ## Enable Open API Metadata ##
 
-To enable Open API metadata, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
+To enable Open API metadata, you will need to update `host.json` by adding the `openApi` attribute like below:
+
+> **NOTE**: The `openApi` attribute is NOT officially defined in the `host.json` schema. It **MAY** be removed and implemented in a different way.
+
+```json
+// host.json
+{
+  ...
+  "openApi": {
+    "info": {
+      "version": "1.0.0",
+      "title": "Contoso Open API enabled Azure Functions App",
+      "description": "This is Open API enabled Azure Functions app for Contoso.",
+      "termsOfService": "https://github.com/Azure/azure-functions-openapi-extension",
+      "contact": {
+        "name": "Contoso",
+        "email": "azfunc-openapi@contoso.com",
+        "url": "https://github.com/Azure/azure-functions-openapi-extension/issues"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "http://opensource.org/licenses/MIT"
+      }
+    }
+  }
+  ...
+}
+```
+
+Also, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
 
 ```bash
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
@@ -82,6 +111,7 @@ namespace MyOpenApiFunctionApp
         // Add these three attribute classes below
         [OpenApiOperation(operationId: "getName", tags: new[] { "name" }, Summary = "Gets the name", Description = "This gets the name.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name", Description = "The name", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Summary = "The response", Description = "This returns the response")]
         // Add these three attribute classes above
 

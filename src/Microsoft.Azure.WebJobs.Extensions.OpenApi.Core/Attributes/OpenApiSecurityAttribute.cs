@@ -59,12 +59,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         public virtual string BearerFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the configuration information for the flow types supported. This MUST be the type inheriting <see cref="OpenApiOAuthSecurityFlows"/> This MUST be provided when the <see cref="SecuritySchemeType"/> value is <see cref="SecuritySchemeType.OAuth2"/>.
+        /// Gets or sets the configuration information for the flow types supported. This MUST be the type inheriting <see cref="OpenApiOAuthSecurityFlows"/>. This MUST be provided when the <see cref="SecuritySchemeType"/> value is <see cref="SecuritySchemeType.OAuth2"/>.
         /// </summary>
         public virtual Type Flows { get; set;}
 
         /// <summary>
-        /// Gets or sets the OpenId Connect URL to discover OAuth2 configration values. This MUST be provided when the <see cref="SecuritySchemeType"/> value is <see cref="SecuritySchemeType.OpenIdConnect"/>.
+        /// Gets or sets the OpenId Connect URL to discover OAuth2 configuration values. This MUST be provided when the <see cref="SecuritySchemeType"/> value is <see cref="SecuritySchemeType.OpenIdConnect"/>.
         /// </summary>
         public virtual string OpenIdConnectUrl { get; set; }
 

@@ -146,12 +146,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             this.OpenApiDocument.Paths = paths;
             this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
             this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes(methods, this._strategy);
-            this.OpenApiDocument.SecurityRequirements = this.OpenApiDocument
-                                                            .Paths
-                                                            .SelectMany(p => p.Value.Operations.SelectMany(q => q.Value.Security))
-                                                            .Where(p => !p.IsNullOrDefault())
-                                                            .Distinct(new OpenApiSecurityRequirementComparer())
-                                                            .ToList();
+            // this.OpenApiDocument.SecurityRequirements = this.OpenApiDocument
+            //                                                 .Paths
+            //                                                 .SelectMany(p => p.Value.Operations.SelectMany(q => q.Value.Security))
+            //                                                 .Where(p => !p.IsNullOrDefault())
+            //                                                 .Distinct(new OpenApiSecurityRequirementComparer())
+            //                                                 .ToList();
 
             return this;
         }
