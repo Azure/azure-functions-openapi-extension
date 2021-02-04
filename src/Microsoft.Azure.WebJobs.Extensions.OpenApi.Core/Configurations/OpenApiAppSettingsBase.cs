@@ -1,6 +1,7 @@
+using System.Reflection;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 
@@ -19,9 +20,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         {
             var basePath = this.GetBasePath();
             var host = HostJsonResolver.Resolve(this.Config, basePath);
-            var openapi = OpenApiSettingsJsonResolver.Resolve(this.Config, basePath);
 
-            this.OpenApiInfo = OpenApiInfoResolver.Resolve(host, openapi, this.Config);
+            this.OpenApiInfo = OpenApiInfoResolver.Resolve(Assembly.GetExecutingAssembly());
             this.SwaggerAuthKey = this.Config.GetValue<string>("OpenApi:ApiKey");
 
             this.HttpSettings = host.GetHttpSettings();

@@ -1,15 +1,13 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-
-using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
 {
@@ -157,32 +155,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
         public virtual HttpSettings HostJsonHttpSettings { get; private set; }
 
         /// <summary>
-        /// Gets the fully qualified file path of local.settings.json
-        /// </summary>
-        public virtual string LocalSettingsJsonPath
-        {
-            get
-            {
-                this.CompiledPath.ThrowIfNullOrWhiteSpace();
-
-                return $"{this.CompiledPath}{directorySeparator}local.settings.json";
-            }
-        }
-
-        /// <summary>
-        /// Gets the fully qualified file path of openapisettings.json
-        /// </summary>
-        public virtual string OpenApiSettingsJsonPath
-        {
-            get
-            {
-                this.CompiledPath.ThrowIfNullOrWhiteSpace();
-
-                return $"{this.CompiledPath}{directorySeparator}openapisettings.json";
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="OpenApiInfo"/> instance.
         /// </summary>
         public virtual OpenApiInfo OpenApiInfo { get; private set; }
@@ -247,55 +219,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
 
         private void SetOpenApiInfo()
         {
-            this.HostSettings.ThrowIfNullOrDefault();
-            this.OpenApiSettingsJsonPath.ThrowIfNullOrWhiteSpace();
-            this.LocalSettingsJsonPath.ThrowIfNullOrWhiteSpace();
+            var assembly = Assembly.LoadFrom(this.CompiledDllPath);
 
-            var openApiInfo = this.HostSettings.Get<OpenApiInfo>("openApi:info");
-            if (this.IsValidOpenApiInfo(openApiInfo))
+            var type = assembly.GetTypes()
+                               .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false);
+            if (type.IsNullOrDefault())
             {
-                this.OpenApiInfo = openApiInfo;
+                var settings = new OpenApiSettings();
+                this.OpenApiInfo = settings.Info;
 
                 return;
             }
 
-            if (File.Exists(this.OpenApiSettingsJsonPath))
-            {
-                var openapiSettings = File.ReadAllText(this.OpenApiSettingsJsonPath, Encoding.UTF8);
-                openApiInfo = JsonConvert.DeserializeObject<OpenApiSettings>(openapiSettings).Info;
-                if (this.IsValidOpenApiInfo(openApiInfo))
-                {
-                    this.OpenApiInfo = openApiInfo;
+            var options = Activator.CreateInstance(type);
 
-                    return;
-                }
-            }
-
-            var localSettings = new ConfigurationBuilder()
-                                .SetBasePath(this.LocalSettingsJsonPath.Replace("local.settings.json", ""))
-                                .AddJsonFile("local.settings.json")
-                                .Build();
-
-            openApiInfo = new OpenApiInfo()
-            {
-                Version = localSettings.GetValue<string>("Values:OpenApi__Info__Version"),
-                Title = localSettings.GetValue<string>("Values:OpenApi__Info__Title"),
-                Description = localSettings.GetValue<string>("Values:OpenApi__Info__Description"),
-                TermsOfService = new Uri(localSettings.GetValue<string>("Values:OpenApi__Info__TermsOfService")),
-                Contact = new OpenApiContact()
-                {
-                    Name = localSettings.GetValue<string>("Values:OpenApi__Info__Contact__Name"),
-                    Email = localSettings.GetValue<string>("Values:OpenApi__Info__Contact__Email"),
-                    Url = new Uri(localSettings.GetValue<string>("Values:OpenApi__Info__Contact__Url")),
-                },
-                License = new OpenApiLicense()
-                {
-                    Name = localSettings.GetValue<string>("Values:OpenApi__Info__License__Name"),
-                    Url = new Uri(localSettings.GetValue<string>("Values:OpenApi__Info__License__Url")),
-                }
-            };
-
-            this.OpenApiInfo = openApiInfo;
+            this.OpenApiInfo = (options as IOpenApiConfigurationOptions).Info;
         }
 
         private bool IsValidOpenApiInfo(OpenApiInfo openApiInfo)

@@ -5,18 +5,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
     /// <summary>
     /// This represents the settings entity for Open API metadata.
     /// </summary>
-    public class OpenApiSettings
+    public sealed class OpenApiSettings : IOpenApiConfigurationOptions
     {
-        /// <summary>
-        /// Gets or sets the <see cref="OpenApiInfo"/> instance.
-        /// </summary>
-        public virtual OpenApiInfo Info { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="OpenApiComponents"/> instance.
-        /// </summary>
-        public virtual OpenApiComponents Components { get; set; }
-
-        // public virtual OpenApiSecurityRequirement Security { get; set; }
+        /// <inheritdoc />
+        public OpenApiInfo Info { get; set; } = new OpenApiInfo()
+        {
+            Version = "1.0.0",
+            Title = "Azure Functions Open API Extension",
+        };
     }
 }
