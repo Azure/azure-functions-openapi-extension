@@ -37,7 +37,7 @@ stages:
           Write-Host "Branch: $(Build.SourceBranch)"
           Write-Host "BranchName: $(Build.SourceBranchName)"
 
-          $version = "$(Build.SourceBranchName)" -replace "v", ""
+          $version = "$(Build.SourceBranchName)".TrimStart("v")
           Write-Host "Version: $version"
           Write-Host "##vso[task.setvariable variable=Version]$version"
 
