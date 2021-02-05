@@ -27,6 +27,14 @@ stages:
       clean: all
 
     steps:
+    - task: PowerShell@2
+      displayName: 'Get Branch Name'
+      inputs:
+        targetType: Inline
+        script: |
+          Write-Host "Branch: $(Build.SourceBranch)"
+          Write-Host "BranchName: $(Build.SourceBranchName)"
+
     - template: 'template-steps-build-test.yaml'
       parameters:
         configuration: 'Release'
