@@ -39,7 +39,7 @@ stages:
 
           $version = $(Build.SourceBranchName) -replace "v", ""
           Write-Host "Version: $version"
-          Write-Host "##vso[task.setvariable variable=Version]$version
+          Write-Host "##vso[task.setvariable variable=Version]$version"
 
     - template: 'template-steps-build-test.yaml'
       parameters:
