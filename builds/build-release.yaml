@@ -11,6 +11,8 @@ variables:
 - group: open-api-extension-variable-group
 - name: TestRunStatus
   value: ''
+- name: Version
+  value: ''
 
 stages:
 - stage: BuildPublish
@@ -35,13 +37,17 @@ stages:
           Write-Host "Branch: $(Build.SourceBranch)"
           Write-Host "BranchName: $(Build.SourceBranchName)"
 
+          $version = $(Build.SourceBranchName) -replace "v", ""
+          Write-Host "Version: $version"
+          Write-Host "##vso[task.setvariable variable=Version]$version
+
     - template: 'template-steps-build-test.yaml'
       parameters:
         configuration: 'Release'
     - template: 'template-steps-publish.yaml'
       parameters:
         configuration: 'Release'
-        version: '$(Build.SourceBranchName)'
+        version: '$(Version)'
 
 # - stage: Release
 #   displayName: 'Release: To NuGet'
