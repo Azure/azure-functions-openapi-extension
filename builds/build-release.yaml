@@ -1,4 +1,4 @@
-name: $(Version).$(rev:r)
+name: $(SourceBranchName)-$(Date:yyyyMMdd).$(rev:r)
 
 trigger:
   branches:
@@ -41,6 +41,7 @@ stages:
     - template: 'template-steps-publish.yaml'
       parameters:
         configuration: 'Release'
+        version: '$(Build.SourceBranchName)'
 
 # - stage: Release
 #   displayName: 'Release: To NuGet'
