@@ -9,7 +9,7 @@
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.3.2-preview" />
+    <!-- <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.3.2-preview" /> -->
   </ItemGroup>
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-  <!-- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj" />
-  </ItemGroup> -->
+  </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="proxies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -38,11 +41,11 @@
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-  <!-- <ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs" />
-  </ItemGroup> -->
+  </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
 </Project>

@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "swaggerUI": {
+      "matchCondition": {
+        "methods": [ "GET" ],
+        "route": "/swagger/ui"
+      },
+      "backendUri": "%OpenApi__BackendProxyUrl%/api/swagger/ui"
+    },
+    "swaggerDoc": {
+      "matchCondition": {
+        "methods": [ "GET" ],
+        "route": "/swagger.{extension}"
+      },
+      "backendUri": "%OpenApi__BackendProxyUrl%/api/swagger.{extension}"
+    }
+  }
+}
