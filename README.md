@@ -13,14 +13,17 @@
 * [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this Open API extension.
 * [**Integrating Open API-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this Open API extension.
 <!-- * [**Integrating Open API-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this Open API extension. -->
+* [**Shortening Swagger UI Page URL with `proxies.json`**](docs/shortening-swagger-ui-page-url.md): This document shows how to shorten both Swagger UI page URL and `swagger.json` document URL, using `proxies.json`.
 
 
 ## Sample Azure Function Apps with Open API Metadata Enabled ##
 
+* [Function App v1 proxy](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy)
 * [Function App v2 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static)
 * [Function App v2 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC)
 * [Function App v3 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static)
 * [Function App v3 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC)
+<!-- * [Function App v3 .NET 5](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5) -->
 
 
 ## Azure Functions V1 Support ##
