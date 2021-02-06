@@ -4,6 +4,9 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-    "OpenApi__ApiKey": ""
+    "AZURE_FUNCTION_PROXY_DISABLE_LOCAL_CALL": "true",
+
+    "OpenApi__ApiKey": "",
+    "OpenApi__BackendProxyUrl": "http://localhost:7071"
   }
 }
