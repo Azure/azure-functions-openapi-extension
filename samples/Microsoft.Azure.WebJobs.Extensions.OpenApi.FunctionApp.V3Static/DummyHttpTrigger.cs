@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static
     public static class DummyHttpTrigger
     {
         [FunctionName(nameof(DummyHttpTrigger.GetDummies))]
-        [OpenApiOperation(operationId: "getDummies", tags: new[] { "dummy" }, Summary = "Gets the list of dummies", Description = "This gets the list of dummies.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiOperation(operationId: "getDummies", tags: new[] { "dummy" }, Summary = "Gets the list of dummies", Description = "This gets the list of dummies.", Visibility = OpenApiVisibilityType.Important, Deprecated = true)]
         [OpenApiSecurity("basic_auth", SecuritySchemeType.Http, Scheme = OpenApiSecuritySchemeType.Basic)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "Dummy name", Description = "Dummy name", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter(name: "onoff", In = ParameterLocation.Path, Required = true, Type = typeof(StringEnum), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important)]
