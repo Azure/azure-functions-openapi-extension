@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FluentAssertions;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
-
-using FluentAssertions;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -36,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(string),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Path
+                In = ParameterLocation.Path,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
@@ -55,7 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(string),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Path
+                In = ParameterLocation.Path,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
@@ -72,7 +71,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(int),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Path
+                In = ParameterLocation.Path,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
@@ -89,7 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(long),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Path
+                In = ParameterLocation.Path,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
@@ -108,7 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(FakeStringEnum),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Query
+                In = ParameterLocation.Query,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute, strategy);
@@ -133,7 +132,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Type = typeof(List<FakeStringEnum>),
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Query
+                In = ParameterLocation.Query,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute, strategy);
@@ -157,7 +156,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Summary = "lorem ipsum",
                 Description = "hello world",
                 Required = true,
-                In = ParameterLocation.Path
+                In = ParameterLocation.Path,
             };
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
@@ -167,8 +166,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             (result.Extensions["x-ms-summary"] as OpenApiString).Value.Should().Be(attribute.Summary);
         }
 
-        [TestMethod]
-        public void Given_Value_With_Visibility_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
+        [DataTestMethod]
+        [DataRow(OpenApiVisibilityType.Advanced)]
+        [DataRow(OpenApiVisibilityType.Important)]
+        [DataRow(OpenApiVisibilityType.Internal)]
+        [DataRow(null)]
+        public void Given_Value_With_Visibility_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result(OpenApiVisibilityType? visibility)
         {
             var attribute = new OpenApiParameterAttribute("hello")
             {
@@ -177,14 +180,50 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 Description = "hello world",
                 Required = true,
                 In = ParameterLocation.Path,
-                Visibility = OpenApiVisibilityType.Important
             };
+
+            if (visibility.HasValue)
+            {
+                attribute.Visibility = visibility.Value;
+            }
 
             var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
 
-            result.Extensions.Keys.Should().Contain("x-ms-visibility");
-            result.Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
-            (result.Extensions["x-ms-visibility"] as OpenApiString).Value.Should().Be(attribute.Visibility.ToDisplayName());
+            if (visibility.HasValue)
+            {
+                result.Extensions.Keys.Should().Contain("x-ms-visibility");
+                result.Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
+                (result.Extensions["x-ms-visibility"] as OpenApiString).Value.Should().Be(attribute.Visibility.ToDisplayName());
+            }
+            else
+            {
+                result.Extensions.Keys.Should().NotContain("x-ms-visibility");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        [DataRow(null)]
+        public void Given_Value_With_Deprecated_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result(bool? deprecated)
+        {
+            var attribute = new OpenApiParameterAttribute("hello")
+            {
+                Type = typeof(long),
+                Summary = "lorem ipsum",
+                Description = "hello world",
+                Required = true,
+                In = ParameterLocation.Path,
+            };
+
+            if (deprecated.HasValue)
+            {
+                attribute.Deprecated = deprecated.Value;
+            }
+
+            var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute);
+
+            result.Deprecated.Should().Be(deprecated.GetValueOrDefault());
         }
     }
 }

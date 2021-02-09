@@ -22,5 +22,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the value indicating whether the request body is required or not.
         /// </summary>
         public virtual bool Required { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether the request payload is deprecated or not.
+        /// </summary>
+        public virtual bool Deprecated { get; set; }
     }
 }

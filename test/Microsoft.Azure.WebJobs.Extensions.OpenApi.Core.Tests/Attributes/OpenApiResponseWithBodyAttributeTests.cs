@@ -1,10 +1,9 @@
 using System;
 using System.Net;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
@@ -13,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
     public class OpenApiResponseWithBodyAttributeTests
     {
         [TestMethod]
-        public void Given_Null_Constructor_Should_Throw_Exception()
+        public void Given_Null_When_Instantiated_Then_It_Should_Throw_Exception()
         {
             var statusCode = HttpStatusCode.OK;
 
@@ -24,19 +23,35 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
             action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        public void Given_Value_Property_Should_Return_Value()
+        [DataTestMethod]
+        [DataRow(HttpStatusCode.OK, "application/json", typeof(object))]
+        public void Given_Parameters_When_Instantiated_Then_It_Should_Return_Value(HttpStatusCode statusCode, string contentType, Type bodyType)
         {
-            var statusCode = HttpStatusCode.OK;
-            var contentType = "Hello World";
-            var bodyType = typeof(object);
             var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType);
 
             attribute.StatusCode.Should().Be(statusCode);
             attribute.ContentType.Should().BeEquivalentTo(contentType);
             attribute.BodyType.Should().Be(bodyType);
-            attribute.Summary.Should().BeNullOrWhiteSpace();
-            attribute.Description.Should().BeNullOrWhiteSpace();
+        }
+
+        [DataTestMethod]
+        [DataRow("Lorem Ipsum", "Hello World", true)]
+        [DataRow("Lorem Ipsum", "Hello World", false)]
+        public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, bool deprecated)
+        {
+            var statusCode = HttpStatusCode.OK;
+            var contentType = "application/json";
+            var bodyType = typeof(object);
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            {
+                Summary = summary,
+                Description = description,
+                Deprecated = deprecated,
+            };
+
+            attribute.Summary.Should().Be(summary);
+            attribute.Description.Should().Be(description);
+            attribute.Deprecated.Should().Be(deprecated);
         }
     }
 }

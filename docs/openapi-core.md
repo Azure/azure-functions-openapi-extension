@@ -135,6 +135,7 @@ public static async Task<IActionResult> GetSample(
 * `Summary`: is the summary of the operation.
 * `Description`: is the description of the operation.
 * `Visibility`: indicates how the operation is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
+* `Deprecated`: indicates whether the operation is deprecated or not. Default is `false`.
 
 
 ### `OpenApiParameterAttribute` ###
@@ -162,6 +163,7 @@ public static async Task<IActionResult> GetSample(
 * `Explode`: indicates whether a query parameter is used multiple times (eg. `foo=bar1&foo=bar2&foo=bar3`) or not (eg. `foo=bar1,bar2,bar3`). Default value is `false`.
 * `Required`: indicates whether the parameter is required or not. Default value is `false`.
 * `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
+* `Deprecated`: indicates whether the parameter is deprecated or not. Default is `false`. If this is set to `true`, this parameter won't be showing up the UI and Open API document.
 
 
 ### `OpenApiSecurityAttribute` ###
@@ -253,6 +255,7 @@ public static async Task<IActionResult> PostSample(
 * `BodyType`: defines the type of the request payload.
 * `Description`: is the description of the request payload.
 * `Required`: indicates whether the request payload is mandatory or not.
+* `Deprecated`: indicates whether the request body is deprecated or not. Default is `false`. If this is set to `true`, this request body won't be showing up the UI and Open API document.
 
 
 ### `OpenApiResponseWithBodyAttribute` ###
@@ -276,6 +279,7 @@ public static async Task<IActionResult> PostSample(
 * `BodyType`: defines the type of the response payload.
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
+* `Deprecated`: indicates whether the response body is deprecated or not. Default is `false`. If this is set to `true`, this response body won't be showing up the UI and Open API document.
 
 
 ### `OpenApiResponseWithoutBodyAttribute` ###
