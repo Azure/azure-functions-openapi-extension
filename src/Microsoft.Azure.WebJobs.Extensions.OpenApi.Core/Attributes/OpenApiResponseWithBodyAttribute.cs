@@ -31,5 +31,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the summary.
         /// </summary>
         public virtual string Summary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether the response payload is deprecated or not.
+        /// </summary>
+        public virtual bool Deprecated { get; set; }
     }
 }

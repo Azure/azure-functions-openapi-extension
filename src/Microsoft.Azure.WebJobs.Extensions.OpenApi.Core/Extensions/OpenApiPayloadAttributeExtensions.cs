@@ -39,6 +39,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             // Generate schema based on the type.
             var schema = collection.PayloadVisit(type, namingStrategy);
 
+            // Add deprecated attribute.
+            if (attribute is OpenApiRequestBodyAttribute)
+            {
+                schema.Deprecated = (attribute as OpenApiRequestBodyAttribute).Deprecated;
+            }
+            if (attribute is OpenApiResponseWithBodyAttribute)
+            {
+                schema.Deprecated = (attribute as OpenApiResponseWithBodyAttribute).Deprecated;
+            }
+
             // For array and dictionary object, the reference has already been added by the visitor.
             if (type.IsReferentialType() && !type.IsOpenApiNullable() && !type.IsOpenApiArray() && !type.IsOpenApiDictionary())
             {

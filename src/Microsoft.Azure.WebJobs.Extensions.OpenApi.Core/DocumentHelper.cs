@@ -163,6 +163,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
+                                    .Where(p => p.Deprecated == false)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
 
@@ -185,7 +186,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 return null;
             }
 
-            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection));
+            var contents = attributes.Where(p => p.Deprecated == false)
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection));
 
             if (contents.Any())
             {
@@ -216,10 +218,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
-                                    .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+                                           .Where(p => p.Deprecated == false)
+                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
-                                       .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+                                              .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
             var responses = responsesWithBody.Concat(responsesWithoutBody)
                                              .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.Response)

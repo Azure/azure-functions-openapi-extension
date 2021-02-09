@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
+using FluentAssertions;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Serialization;
@@ -41,6 +40,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
 
             result.Schema.Type.Should().Be(expected);
+            result.Schema.Deprecated.Should().BeFalse();
+        }
+
+        [DataTestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Given_OpenApiRequestBodyAttribute_With_Deprecated_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(bool deprecated)
+        {
+            var contentType = "application/json";
+            var bodyType = typeof(object);
+            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType)
+            {
+                Required = true,
+                Description = "Dummy request model",
+                Deprecated = deprecated,
+            };
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
+
+            result.Schema.Deprecated.Should().Be(deprecated);
         }
 
         [DataTestMethod]
@@ -58,6 +78,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
 
             result.Schema.Type.Should().Be(expected);
+            result.Schema.Deprecated.Should().BeFalse();
             if (items)
             {
                 result.Schema.Items.Should().NotBeNull();
@@ -77,6 +98,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             {
                 result.Schema.AdditionalProperties.Should().BeNull();
             }
+        }
+
+        [DataTestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Given_OpenApiResponseWithBodyAttribute_With_Deprecated_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(bool deprecated)
+        {
+            var statusCode = HttpStatusCode.OK;
+            var contentType = "application/json";
+            var bodyType = typeof(object);
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            {
+                Deprecated = deprecated,
+            };
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
+
+            result.Schema.Deprecated.Should().Be(deprecated);
         }
     }
 }
