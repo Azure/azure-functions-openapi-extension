@@ -1,9 +1,11 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
@@ -41,11 +43,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public ISwaggerUI AddServer(HttpRequest req, string routePrefix)
+        public ISwaggerUI AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
-            this._baseUrl = baseUrl;
+
+            if (options.IsNullOrDefault())
+            {
+                this._baseUrl = baseUrl;
+
+                return this;
+            }
+
+            var server = new OpenApiServer { Url = baseUrl };
+            // Filters out the existing base URLs that are the same as the current host URL.
+            var servers = options.Servers
+                                 .Where(p => p.Url.TrimEnd('/') != baseUrl.TrimEnd('/'))
+                                 .ToList();
+            servers.Insert(0, server);
+
+            this._baseUrl = servers.First().Url;
 
             return this;
         }
@@ -97,7 +114,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string Render(string endpoint, string authKey = null)
         {
             var swaggerUiTitle = $"{this._info.Title} - Swagger UI";
-            var swaggerUrl = $"{this._baseUrl}/{endpoint}";
+            var swaggerUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
             if (!string.IsNullOrWhiteSpace(authKey))
             {
                 swaggerUrl += $"?code={authKey}";

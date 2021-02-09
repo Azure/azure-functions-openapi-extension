@@ -9,16 +9,16 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
 {
     /// <summary>
-    /// This represents the resolver entity for <see cref="OpenApiInfo"/> from one of host.json, openapisettings.json and environment variables.
+    /// This represents the resolver entity for <see cref="OpenApiServer"/>.
     /// </summary>
-    public static class OpenApiInfoResolver
+    public static class OpenApiConfigurationResolver
     {
         /// <summary>
-        /// Gets the <see cref="OpenApiInfo"/> instance from one of host.json, openapisettings.json and environment variables.
+        /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance from the given assembly.
         /// </summary>
         /// <param name="assembly">The executing assembly instance.</param>
-        /// <returns>Returns <see cref="OpenApiInfo"/> instance resolved.</returns>
-        public static OpenApiInfo Resolve(Assembly assembly)
+        /// <returns>Returns the <see cref="IOpenApiConfigurationOptions"/> instance resolved.</returns>
+        public static IOpenApiConfigurationOptions Resolve(Assembly assembly)
         {
             var type = assembly.GetTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false);
@@ -26,12 +26,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
             {
                 var settings = new OpenApiSettings();
 
-                return settings.Info;
+                return settings;
             }
 
             var options = Activator.CreateInstance(type);
 
-            return (options as IOpenApiConfigurationOptions).Info;
+            return options as IOpenApiConfigurationOptions;
         }
     }
 }

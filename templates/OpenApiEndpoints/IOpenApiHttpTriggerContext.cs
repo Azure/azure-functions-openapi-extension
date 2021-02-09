@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -18,9 +19,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     public interface IOpenApiHttpTriggerContext
     {
         /// <summary>
-        /// Gets the <see cref="OpenApiInfo"/> instance.
+        /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance.
         /// </summary>
-        OpenApiInfo OpenApiInfo { get; }
+        IOpenApiConfigurationOptions OpenApiConfiguration { get; }
 
         /// <summary>
         /// Gets the <see cref="HttpSettings"/> instance.

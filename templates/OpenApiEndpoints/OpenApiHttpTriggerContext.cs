@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -35,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var host = HostJsonResolver.Resolve();
 
-            this.OpenApiInfo = OpenApiInfoResolver.Resolve(this.GetExecutingAssembly());
+            this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.GetExecutingAssembly());
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
@@ -47,7 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual OpenApiInfo OpenApiInfo { get; }
+        public virtual IOpenApiConfigurationOptions OpenApiConfiguration { get; }
 
         /// <inheritdoc />
         public virtual HttpSettings HttpSettings { get; }
