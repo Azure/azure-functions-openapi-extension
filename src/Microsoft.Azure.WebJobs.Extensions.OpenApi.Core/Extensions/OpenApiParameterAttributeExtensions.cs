@@ -44,6 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 Name = attribute.Name,
                 Description = attribute.Description,
                 Required = attribute.Required,
+                Deprecated = attribute.Deprecated,
                 In = attribute.In,
                 Schema = schema
             };

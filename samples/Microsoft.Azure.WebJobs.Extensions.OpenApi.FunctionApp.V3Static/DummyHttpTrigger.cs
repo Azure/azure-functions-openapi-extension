@@ -16,9 +16,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static
     public static class DummyHttpTrigger
     {
         [FunctionName(nameof(DummyHttpTrigger.GetDummies))]
-        [OpenApiOperation(operationId: "getDummies", tags: new[] { "dummy" }, Summary = "Gets the list of dummies", Description = "This gets the list of dummies.", Visibility = OpenApiVisibilityType.Important, Deprecated = true)]
+        [OpenApiOperation(operationId: "getDummies", tags: new[] { "dummy" }, Summary = "Gets the list of dummies", Description = "This gets the list of dummies.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("basic_auth", SecuritySchemeType.Http, Scheme = OpenApiSecuritySchemeType.Basic)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "Dummy name", Description = "Dummy name", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter(name: "switch", In = ParameterLocation.Query, Required = true, Type = typeof(bool), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important, Deprecated = true)]
         [OpenApiParameter(name: "onoff", In = ParameterLocation.Path, Required = true, Type = typeof(StringEnum), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyResponseModel>), Summary = "List of the dummy responses", Description = "This returns the list of dummy responses")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Name not found", Description = "Name parameter is not found")]
@@ -38,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static
         }
 
         [FunctionName(nameof(DummyHttpTrigger.AddDummy))]
-        [OpenApiOperation(operationId: "addDummy", tags: new[] { "dummy" }, Summary = "Adds a dummy", Description = "This adds a dummy.", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiOperation(operationId: "addDummy", tags: new[] { "dummy" }, Summary = "Adds a dummy", Description = "This adds a dummy.", Visibility = OpenApiVisibilityType.Advanced, Deprecated = true)]
         [OpenApiSecurity("openid_auth", SecuritySchemeType.OpenIdConnect, OpenIdConnectUrl = "https://example.com/.well-known/openid-configuration", OpenIdConnectScopes = "pets_read, pets_write, admin")]
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(DummyRequestModel), Required = true, Description = "Dummy request model")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DummyResponseModel), Summary = "Dummy response", Description = "This returns the dummy response")]

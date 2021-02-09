@@ -66,5 +66,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the <see cref="OpenApiVisibilityType"/> value. Default is <see cref="OpenApiVisibilityType.Undefined"/>.
         /// </summary>
         public virtual OpenApiVisibilityType Visibility { get; set; } = OpenApiVisibilityType.Undefined;
+
+        /// <summary>
+        /// Gets or sets the value indicating whether the parameter is deprecated or not.
+        /// </summary>
+        public virtual bool Deprecated { get; set; }
     }
 }
