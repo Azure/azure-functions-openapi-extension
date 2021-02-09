@@ -48,8 +48,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var result = await context.Document
                                       .InitialiseDocument()
-                                      .AddMetadata(context.OpenApiInfo)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .AddMetadata(context.OpenApiConfiguration.Info)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.GetExecutingAssembly())
@@ -86,8 +86,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var result = await context.Document
                                       .InitialiseDocument()
-                                      .AddMetadata(context.OpenApiInfo)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .AddMetadata(context.OpenApiConfiguration.Info)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.GetExecutingAssembly())
@@ -119,8 +119,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             log.LogInformation($"SwaggerUI page was requested.");
 
             var result = await context.SwaggerUI
-                                      .AddMetadata(context.OpenApiInfo)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .AddMetadata(context.OpenApiConfiguration.Info)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
                                       .BuildAsync()
                                       .RenderAsync("swagger.json", context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);

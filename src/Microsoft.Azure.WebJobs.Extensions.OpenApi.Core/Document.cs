@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -5,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Comparers;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
@@ -34,6 +35,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
+        public Document(OpenApiDocument openApiDocument)
+        {
+            this.OpenApiDocument = openApiDocument;
+
+        }
+
+        /// <inheritdoc />
         public OpenApiDocument OpenApiDocument { get; private set; }
 
         /// <inheritdoc />
@@ -56,12 +64,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public IDocument AddServer(HttpRequest req, string routePrefix)
+        public IDocument AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
 
-            this.OpenApiDocument.Servers.Add(new OpenApiServer { Url = baseUrl });
+            var server = new OpenApiServer { Url = baseUrl };
+
+            if (options.IsNullOrDefault())
+            {
+                this.OpenApiDocument.Servers = new List<OpenApiServer>() { server };
+
+                return this;
+            }
+
+            // Filters out the existing base URLs that are the same as the current host URL.
+            var servers = options.Servers
+                                 .Where(p => p.Url.TrimEnd('/') != baseUrl.TrimEnd('/'))
+                                 .ToList();
+            servers.Insert(0, server);
+
+            this.OpenApiDocument.Servers = servers;
 
             return this;
         }

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -38,8 +39,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="routePrefix">Route prefix value.</param>
+        /// <param name="options"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument AddServer(HttpRequest req, string routePrefix);
+        IDocument AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null);
 
         /// <summary>
         /// Adds the naming strategy.

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
@@ -11,5 +13,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// Gets or sets the <see cref="OpenApiInfo"/> instance.
         /// </summary>
         OpenApiInfo Info { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of <see cref="OpenApiServer"/> instances.
+        /// </summary>
+        List<OpenApiServer> Servers { get; set; }
     }
 }

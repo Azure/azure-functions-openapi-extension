@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.OpenApi.Models;
@@ -25,5 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC.Configura
                 Url = new Uri("http://opensource.org/licenses/MIT"),
             }
         };
+
+        public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
     }
 }

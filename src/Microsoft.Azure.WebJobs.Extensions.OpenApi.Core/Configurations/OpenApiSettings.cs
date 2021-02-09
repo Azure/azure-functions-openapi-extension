@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
@@ -13,5 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             Version = "1.0.0",
             Title = "Azure Functions Open API Extension",
         };
+
+        /// <inheritdoc />
+        public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
     }
 }
