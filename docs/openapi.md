@@ -68,6 +68,7 @@ public static async Task<IActionResult> RenderSwaggerUI(
 However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter.
 
 > **NOTE**: To change this authorisation level, you MUST install the `Microsoft.Azure.WebJobs.Extensions.OpenApi.Core` package, instead of `Microsoft.Azure.WebJobs.Extensions.OpenApi`, and copy those three files from the source codes to your application:
+> 
 > * `templates/OpenApiEndpoints/IOpenApiHttpTriggerContext.cs`
 > * `templates/OpenApiEndpoints/OpenApiHttpTrigger.cs`
 > * `templates/OpenApiEndpoints/OpenApiHttpTriggerContext.cs`
