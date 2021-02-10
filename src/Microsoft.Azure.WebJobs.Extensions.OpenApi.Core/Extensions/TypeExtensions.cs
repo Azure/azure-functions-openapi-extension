@@ -602,6 +602,46 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return hasRecursiveType;
         }
 
+        /// <summary>
+        /// Checks whether the given type implements the given interface type.
+        /// </summary>
+        /// <typeparam name="T">Type of interface.</typeparam>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the given type implements the given interface type; otherwise returns <c>False</c>.</returns>
+        public static bool HasInterface<T>(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            var name = typeof(T).Name;
+
+            return HasInterface(type, name);
+        }
+
+        /// <summary>
+        /// Checks whether the given type implements the given interface type.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="interfaceName">Name of the interface.</param>
+        /// <returns>Returns <c>True</c>, if the given type implements the given interface; otherwise returns <c>False</c>.</returns>
+        public static bool HasInterface(this Type type, string interfaceName)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            var @interface = type.GetInterface(interfaceName, ignoreCase: true);
+            if (@interface.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool IsArrayType(this Type type)
         {
             if (type.BaseType == typeof(Array))

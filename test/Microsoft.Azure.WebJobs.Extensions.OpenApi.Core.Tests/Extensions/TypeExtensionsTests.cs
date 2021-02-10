@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -134,6 +135,42 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         public void Given_Type_When_IsReferentialType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = TypeExtensions.IsReferentialType(type);
+
+            result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void Given_Null_When_HasInterface_Invoked_Then_It_Should_Return_False()
+        {
+            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(null);
+            result.Should().BeFalse();
+
+            result = TypeExtensions.HasInterface(null, "IOpenApiResponseHeaderType");
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Given_Invalid_TypeReference_When_HasInterface_Invoked_Then_It_Should_Return_Result()
+        {
+            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(typeof(FakeModel));
+
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Given_Valid_TypeReference_When_HasInterface_Invoked_Then_It_Should_Return_Result()
+        {
+            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(typeof(FakeResponseHeaderType));
+
+            result.Should().BeTrue();
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(FakeModel), false)]
+        [DataRow(typeof(FakeResponseHeaderType), true)]
+        public void Given_Type_When_HasInterface_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.HasInterface(type, "IOpenApiResponseHeaderType");
 
             result.Should().Be(expected);
         }

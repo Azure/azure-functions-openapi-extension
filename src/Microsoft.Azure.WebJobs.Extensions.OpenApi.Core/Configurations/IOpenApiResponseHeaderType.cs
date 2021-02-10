@@ -5,13 +5,13 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
-    /// This represents the collection of response headers embedded in the Open API response object.
+    /// This provides interfaces to classes implementing Open API response object.
     /// </summary>
-    public abstract class OpenApiResponseHeaders
+    public interface IOpenApiResponseHeaderType
     {
         /// <summary>
         /// Gets or sets the collection of the <see cref="OpenApiHeader"/> instances.
         /// </summary>
-        public abstract Dictionary<string, OpenApiHeader> Headers { get; set; }
+        Dictionary<string, OpenApiHeader> Headers { get; set; }
     }
 }
