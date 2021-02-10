@@ -40,7 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 
             result.Description.Should().Be(description);
             result.Content.Should().ContainKey(contentType);
-            result.Content[contentType].Schema.Type.Should().BeEquivalentTo(bodyType.Name);
+            result.Content[contentType].Schema.Type.Should().Be(bodyType.Name.ToLowerInvariant());
             result.Extensions.Should().ContainKey("x-ms-summary");
             (result.Extensions["x-ms-summary"] as OpenApiString).Value.Should().Be(summary);
             result.Headers.Should().ContainKey("x-fake-header");
