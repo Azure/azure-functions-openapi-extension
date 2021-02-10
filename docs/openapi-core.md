@@ -86,9 +86,32 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
             Url = new Uri("http://opensource.org/licenses/MIT"),
         }
     };
+
+    ...
 }
 ```
 
+It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), add `OpenApiServer` details to the class implementing the `IOpenApiConfigurationOptions` interface like:
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    ...
+
+    public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>()
+    {
+        new OpenApiServer() { Url = "https://contoso.com/api/" },
+        new OpenApiServer() { Url = "https://fabrikam.com/api/" },
+    };
+}
+```
+
+> **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the Open API v3 document shows all server URLs in the document, including the automatically generated one.
+
+
+## Open API Response Header Customisation ##
+
+Often, custom response headers need to be added. For those custom responses
 
 ## Decorators ##
 
@@ -263,18 +286,31 @@ public static async Task<IActionResult> PostSample(
 This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
 
 ```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
+// Response header type
+public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 {
+    public Dictionary<string, OpenApiHeader> Headers { get; set; } = new Dictionary<string, OpenApiHeader>()
+    {
+        { "x-sample-header", new OpenApiHeader() { Description = "Sample header", Schema = new OpenApiSchema() { Type = "string" } } }
+    };
+}
+
+public static class DummyHttpTrigger
+{
+    [FunctionName(nameof(PostSample))]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), HeaderType = typeof(SampleResponseHeaderType))]
     ...
+    public static async Task<IActionResult> PostSample(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
 }
 ```
 
 * `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `HeaderType`: defines the collection of custom response headers. eg) `x-custom-header`
 * `ContentType`: defines the content type of the response payload. eg) `application/json` or `text/xml`
 * `BodyType`: defines the type of the response payload.
 * `Summary`: is the summary of the response.
@@ -287,18 +323,31 @@ public static async Task<IActionResult> PostSample(
 This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
 
 ```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
+// Response header type
+public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 {
+    public Dictionary<string, OpenApiHeader> Headers { get; set; } = new Dictionary<string, OpenApiHeader>()
+    {
+        { "x-sample-header", new OpenApiHeader() { Description = "Sample header", Schema = new OpenApiSchema() { Type = "string" } } }
+    };
+}
+
+public static class DummyHttpTrigger
+{
+    [FunctionName(nameof(PostSample))]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, HeaderType = typeof(SampleResponseHeaderType))]
     ...
+    public static async Task<IActionResult> PostSample(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
 }
 ```
 
 * `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `HeaderType`: defines the collection of custom response headers. eg) `x-custom-header`
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
 
