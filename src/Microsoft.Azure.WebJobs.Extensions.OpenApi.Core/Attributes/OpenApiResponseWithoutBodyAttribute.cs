@@ -24,6 +24,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         public virtual HttpStatusCode StatusCode { get; }
 
         /// <summary>
+        /// Gets or sets the type containing the collection of the additional response headers.
+        /// </summary>
+        public virtual Type HeaderType { get; set; }
+
+        /// <summary>
         /// Gets or sets the summary.
         /// </summary>
         public virtual string Summary { get; set; }

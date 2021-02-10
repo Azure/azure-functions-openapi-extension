@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -37,8 +38,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var response = new OpenApiResponse()
             {
                 Description = description,
-                Content = content
+                Content = content,
             };
+
+            if (attribute.HeaderType.HasInterface<IOpenApiResponseHeaderType>())
+            {
+                var header = Activator.CreateInstance(attribute.HeaderType) as IOpenApiResponseHeaderType;
+
+                response.Headers = header.Headers;
+            }
 
             if (!string.IsNullOrWhiteSpace(attribute.Summary))
             {

@@ -1,9 +1,10 @@
+using System;
 using System.Net;
-
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
@@ -12,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
     public class OpenApiResponseWithoutBodyAttributeTests
     {
         [TestMethod]
-        public void Given_Value_Property_Should_Return_Value()
+        public void Given_Parameters_When_Instantiated_Then_It_Should_Return_Value()
         {
             var statusCode = HttpStatusCode.OK;
             var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode);
@@ -20,6 +21,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
             attribute.StatusCode.Should().Be(statusCode);
             attribute.Summary.Should().BeNullOrWhiteSpace();
             attribute.Description.Should().BeNullOrWhiteSpace();
+        }
+
+        [DataTestMethod]
+        [DataRow("Hello World", "Lorem Ipsum", typeof(FakeResponseHeaderType))]
+        public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, Type headerType)
+        {
+            var statusCode = HttpStatusCode.OK;
+            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode)
+            {
+                Summary = summary,
+                Description = description,
+                HeaderType = headerType,
+            };
+
+            attribute.Summary.Should().Be(summary);
+            attribute.Description.Should().Be(description);
+            attribute.HeaderType.Should().Be(headerType);
         }
     }
 }
