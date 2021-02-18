@@ -118,7 +118,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var value = Environment.GetEnvironmentVariable(key);
 
-            return value;
+            return value ?? string.Empty;
         }
     }
 }
