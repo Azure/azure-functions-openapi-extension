@@ -87,7 +87,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
         }
     };
 
-    ...
+    public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
 }
 ```
 
