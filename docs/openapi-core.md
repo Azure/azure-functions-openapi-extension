@@ -87,7 +87,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
         }
     };
 
-    ...
+    public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
 }
 ```
 
@@ -108,6 +108,31 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 
 > **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the Open API v3 document shows all server URLs in the document, including the automatically generated one.
 
+Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As both `Info` and `Servers` properties have the modifier of `virtual`, you can freely override both or leave them as default.
+
+```csharp
+public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
+{
+    public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
+    {
+        Version = "1.0.0",
+        Title = "Open API Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
+        Contact = new OpenApiContact()
+        {
+            Name = "Contoso",
+            Email = "azfunc-openapi@contoso.com",
+            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "MIT",
+            Url = new Uri("http://opensource.org/licenses/MIT"),
+        }
+    };
+}
+```
 
 ## Open API Response Header Customisation ##
 
