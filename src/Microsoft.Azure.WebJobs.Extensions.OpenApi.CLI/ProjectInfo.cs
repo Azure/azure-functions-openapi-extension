@@ -225,7 +225,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false);
             if (type.IsNullOrDefault())
             {
-                var settings = new OpenApiSettings();
+                var settings = new DefaultOpenApiConfigurationOptions();
                 this.OpenApiInfo = settings.Info;
 
                 return;

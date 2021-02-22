@@ -24,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false);
             if (type.IsNullOrDefault())
             {
-                var settings = new OpenApiSettings();
+                var settings = new DefaultOpenApiConfigurationOptions();
 
                 return settings;
             }

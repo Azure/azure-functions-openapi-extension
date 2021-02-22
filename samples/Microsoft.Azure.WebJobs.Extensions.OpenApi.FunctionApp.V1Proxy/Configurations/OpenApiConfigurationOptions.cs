@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.Configurations
 {
-    public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+    public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     {
-        public OpenApiInfo Info { get; set; } = new OpenApiInfo()
+        public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = "1.0.0",
             Title = "Open API Sample on Azure Functions Proxy for v1",
@@ -26,7 +25,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.Configu
                 Url = new Uri("http://opensource.org/licenses/MIT"),
             }
         };
-
-        public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
     }
 }
