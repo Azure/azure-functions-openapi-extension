@@ -23,6 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
 
         private readonly string indexHtml = $"{typeof(SwaggerUI).Namespace}.dist.index.html";
+        private readonly string oauth2RedirectHtml = $"{typeof(SwaggerUI).Namespace}.dist.oauth2-redirect.html";
         private readonly string swaggerUiCss = $"{typeof(SwaggerUI).Namespace}.dist.swagger-ui.css";
         private readonly string swaggerUiBundleJs = $"{typeof(SwaggerUI).Namespace}.dist.swagger-ui-bundle.js";
         private readonly string swaggerUiStandalonePresetJs = $"{typeof(SwaggerUI).Namespace}.dist.swagger-ui-standalone-preset.js";
@@ -33,6 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string _swaggerUiBundleJs;
         private string _swaggerUiStandalonePresetJs;
         private string _indexHtml;
+        private string _oauth2RedirectHtml;
 
         /// <inheritdoc />
         public ISwaggerUI AddMetadata(OpenApiInfo info)
@@ -100,12 +102,36 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
+        public async Task<ISwaggerUI> BuildOAuth2RedirectAsync()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            using (var stream = assembly.GetManifestResourceStream(oauth2RedirectHtml))
+            using (var reader = new StreamReader(stream))
+            {
+                this._oauth2RedirectHtml = await reader.ReadToEndAsync().ConfigureAwait(false);
+            }
+
+            return this;
+        }
+
+        /// <inheritdoc />
         public async Task<string> RenderAsync(string endpoint, string authKey = null)
         {
             endpoint.ThrowIfNullOrWhiteSpace();
 
             var html = await Task.Factory
                                  .StartNew(() => this.Render(endpoint, authKey))
+                                 .ConfigureAwait(false);
+
+            return html;
+        }
+
+        /// <inheritdoc />
+        public async Task<string> RenderOAuth2RedirectAsync(string endpoint, string authKey = null)
+        {
+            var html = await Task.Factory
+                                 .StartNew(() => this.RenderOAuth2Redirect(endpoint, authKey))
                                  .ConfigureAwait(false);
 
             return html;
@@ -125,6 +151,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                                       .Replace(SwaggerUIBundleJsPlaceholder, this._swaggerUiBundleJs)
                                       .Replace(SwaggerUIStandalonePresetJsPlaceholder, this._swaggerUiStandalonePresetJs)
                                       .Replace(SwaggerUrlPlaceholder, swaggerUrl);
+
+            return html;
+        }
+
+        /// <inheritdoc />
+        private string RenderOAuth2Redirect(string endpoint, string authKey = null)
+        {
+            var pageUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
+            if (!string.IsNullOrWhiteSpace(authKey))
+            {
+                pageUrl += $"?code={authKey}";
+            }
+
+            var html = this._oauth2RedirectHtml;
 
             return html;
         }

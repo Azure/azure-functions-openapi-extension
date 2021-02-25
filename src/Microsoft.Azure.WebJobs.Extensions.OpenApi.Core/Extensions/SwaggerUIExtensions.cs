@@ -23,5 +23,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             return await instance.RenderAsync(endpoint, authKey).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Renders the OAuth2 Redirect page in HTML.
+        /// </summary>
+        /// <param name="ui"><see cref="ISwaggerUI"/> instance.</param>
+        /// <param name="endpoint">The endpoint of the OAuth2 Redirect page.</param>
+        /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
+        /// <returns>The OAuth2 Redirect page in HTML.</returns>
+        public static async Task<string> RenderOAuth2RedirectAsync(this Task<ISwaggerUI> ui, string endpoint, string authKey = null)
+        {
+            var instance = await ui.ThrowIfNullOrDefault().ConfigureAwait(false);
+            endpoint.ThrowIfNullOrWhiteSpace();
+
+            return await instance.RenderOAuth2RedirectAsync(endpoint, authKey).ConfigureAwait(false);
+        }
     }
 }

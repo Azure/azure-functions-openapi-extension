@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
     public class SwaggerUIExtensionsTests
     {
         [TestMethod]
-        public void Given_Null_Method_Should_Throw_Exception()
+        public void Given_Null_When_RenderAsync_Invoked_Then_It_Should_Throw_Exception()
         {
             Func<Task> func = async () => await SwaggerUIExtensions.RenderAsync(null, null).ConfigureAwait(false);
             func.Should().Throw<ArgumentNullException>();
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [TestMethod]
-        public async Task Given_Value_Method_Should_Return_Value()
+        public async Task Given_Value_When_RenderAsync_Invoked_Then_It_Should_Return_Value()
         {
             var endpoint = "swagger/ui";
             var rendered = "hello world";
@@ -40,6 +40,35 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var task = Task.FromResult(ui.Object);
 
             var result = await SwaggerUIExtensions.RenderAsync(task, endpoint).ConfigureAwait(false);
+
+            result.Should().BeEquivalentTo(rendered);
+        }
+
+        [TestMethod]
+        public void Given_Null_When_RenderOAuth2RedirectAsync_Invoked_Then_It_Should_Throw_Exception()
+        {
+            Func<Task> func = async () => await SwaggerUIExtensions.RenderOAuth2RedirectAsync(null, null).ConfigureAwait(false);
+            func.Should().Throw<ArgumentNullException>();
+
+            var ui = new Mock<ISwaggerUI>();
+            var task = Task.FromResult(ui.Object);
+
+            func = async () => await SwaggerUIExtensions.RenderOAuth2RedirectAsync(task, null).ConfigureAwait(false);
+            func.Should().Throw<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public async Task Given_Value_When_RenderOAuth2RedirectAsync_Invoked_Then_It_Should_Return_Value()
+        {
+            var endpoint = "oauth2-redirect.html";
+            var rendered = "hello world";
+
+            var ui = new Mock<ISwaggerUI>();
+            ui.Setup(p => p.RenderOAuth2RedirectAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(rendered);
+
+            var task = Task.FromResult(ui.Object);
+
+            var result = await SwaggerUIExtensions.RenderOAuth2RedirectAsync(task, endpoint).ConfigureAwait(false);
 
             result.Should().BeEquivalentTo(rendered);
         }
