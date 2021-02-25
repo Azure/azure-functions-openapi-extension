@@ -1,4 +1,4 @@
-﻿<!-- HTML for static distribution bundle build -->
+<!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,6 +7,8 @@
     <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
     <style>
+      [[SWAGGER_UI_CSS]]
+
       html
       {
         box-sizing: border-box;
@@ -26,8 +28,6 @@
         margin:0;
         background: #fafafa;
       }
-
-      [[SWAGGER_UI_CSS]]
     </style>
   </head>
 
@@ -51,11 +51,11 @@
           SwaggerUIBundle.plugins.DownloadUrl
         ],
         layout: "StandaloneLayout"
-      })
+      });
       // End Swagger UI call region
 
-      window.ui = ui
-    }
+      window.ui = ui;
+    };
   </script>
   </body>
 </html>
