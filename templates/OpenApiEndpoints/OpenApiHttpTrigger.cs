@@ -134,5 +134,35 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             return content;
         }
+
+        /// <summary>
+        /// Invokes the HTTP trigger endpoint to render oauth2-redirect.html.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns>oauth2-redirect.html.</returns>
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderOAuth2Redirect))]
+        [OpenApiIgnore]
+        public static async Task<IActionResult> RenderOAuth2Redirect(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "oauth2-redirect.html")] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation($"The oauth2-redirect.html page was requested.");
+
+            var result = await context.SwaggerUI
+                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
+                                      .BuildOAuth2RedirectAsync()
+                                      .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetSwaggerAuthKey())
+                                      .ConfigureAwait(false);
+
+            var content = new ContentResult()
+            {
+                Content = result,
+                ContentType = "text/html",
+                StatusCode = (int)HttpStatusCode.OK
+            };
+
+            return content;
+        }
     }
 }

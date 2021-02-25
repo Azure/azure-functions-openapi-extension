@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Adds metadata to build Open API document.
         /// </summary>
         /// <param name="info"><see cref="OpenApiInfo"/> instance.</param>
-        /// <returns><see cref="IDocument"/> instance.</returns>
+        /// <returns><see cref="ISwaggerUI"/> instance.</returns>
         ISwaggerUI AddMetadata(OpenApiInfo info);
 
         /// <summary>
@@ -24,14 +24,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="routePrefix">Route prefix value.</param>
         /// <param name="options"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
-        /// <returns><see cref="IDocument"/> instance.</returns>
+        /// <returns><see cref="ISwaggerUI"/> instance.</returns>
         ISwaggerUI AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null);
 
         /// <summary>
-        /// Builds Open API document.
+        /// Builds Swagger UI document.
         /// </summary>
-        /// <returns><see cref="IDocument"/> instance.</returns>
+        /// <returns><see cref="ISwaggerUI"/> instance.</returns>
         Task<ISwaggerUI> BuildAsync();
+
+        /// <summary>
+        /// Builds OAuth2 Redirect document.
+        /// </summary>
+        /// <returns><see cref="ISwaggerUI"/> instance.</returns>
+        Task<ISwaggerUI> BuildOAuth2RedirectAsync();
 
         /// <summary>
         /// Renders Open API UI in HTML.
@@ -40,5 +46,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
         /// <returns>Open API UI in HTML.</returns>
         Task<string> RenderAsync(string endpoint, string authKey = null);
+
+        /// <summary>
+        /// Renders OAuth Redirect in HTML.
+        /// </summary>
+        /// <param name="endpoint">The endpoint of the OAuth2 Redirect page.</param>
+        /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
+        /// <returns>OAuth Redirect in HTML.</returns>
+        Task<string> RenderOAuth2RedirectAsync(string endpoint, string authKey = null);
     }
 }

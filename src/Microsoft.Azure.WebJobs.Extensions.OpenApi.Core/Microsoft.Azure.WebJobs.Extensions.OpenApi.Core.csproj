@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="dist/index.html" />
+    <EmbeddedResource Include="dist/oauth2-redirect.html" />
     <EmbeddedResource Include="dist/swagger-ui.css" />
     <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
     <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
