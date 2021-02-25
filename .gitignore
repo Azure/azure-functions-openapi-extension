@@ -290,3 +290,5 @@ __pycache__/
 *.bak
 *.org
 outputs/
+
+.DS_Store
