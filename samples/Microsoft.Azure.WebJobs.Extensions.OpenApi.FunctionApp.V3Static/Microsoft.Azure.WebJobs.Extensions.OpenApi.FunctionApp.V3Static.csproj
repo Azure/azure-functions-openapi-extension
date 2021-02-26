@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
-  <ItemGroup>
-    <!-- <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.3.2-preview" /> -->
-  </ItemGroup>
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.5.0-preview" />
+  </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
