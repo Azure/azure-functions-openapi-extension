@@ -20,6 +20,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private const string SwaggerUICssPlaceholder = "[[SWAGGER_UI_CSS]]";
         private const string SwaggerUIBundleJsPlaceholder = "[[SWAGGER_UI_BUNDLE_JS]]";
         private const string SwaggerUIStandalonePresetJsPlaceholder = "[[SWAGGER_UI_STANDALONE_PRESET_JS]]";
+        private const string SwaggerUIApiPrefix = "[[SWAGGER_UI_API_PREFIX]]";
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
 
         private readonly string indexHtml = $"{typeof(SwaggerUI).Namespace}.dist.index.html";
@@ -33,6 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string _swaggerUiCss;
         private string _swaggerUiBundleJs;
         private string _swaggerUiStandalonePresetJs;
+        private string _swaggerUiApiPrefix;
         private string _indexHtml;
         private string _oauth2RedirectHtml;
 
@@ -65,6 +67,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             servers.Insert(0, server);
 
             this._baseUrl = servers.First().Url;
+            this._swaggerUiApiPrefix = prefix;
 
             return this;
         }
@@ -83,7 +86,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             using (var stream = assembly.GetManifestResourceStream(swaggerUiBundleJs))
             using (var reader = new StreamReader(stream))
             {
-                this._swaggerUiBundleJs = await reader.ReadToEndAsync().ConfigureAwait(false);
+                var bundleJs = await reader.ReadToEndAsync().ConfigureAwait(false);
+                this._swaggerUiBundleJs = bundleJs.Replace(SwaggerUIApiPrefix, this._swaggerUiApiPrefix);
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiStandalonePresetJs))
