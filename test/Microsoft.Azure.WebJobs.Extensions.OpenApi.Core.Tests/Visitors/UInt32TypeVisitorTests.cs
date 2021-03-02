@@ -1,14 +1,18 @@
-using FluentAssertions;
+using System;
+using System.Collections.Generic;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
+
+using FluentAssertions;
+
 using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 {
