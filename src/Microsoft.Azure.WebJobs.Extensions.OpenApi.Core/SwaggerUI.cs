@@ -86,8 +86,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             using (var stream = assembly.GetManifestResourceStream(swaggerUiBundleJs))
             using (var reader = new StreamReader(stream))
             {
-                var js = await reader.ReadToEndAsync().ConfigureAwait(false);
-                this._swaggerUiBundleJs = js.Replace(SwaggerUIApiPrefix, this._swaggerUiApiPrefix);
+                var bundleJs = await reader.ReadToEndAsync().ConfigureAwait(false);
+                this._swaggerUiBundleJs = bundleJs.Replace(SwaggerUIApiPrefix, this._swaggerUiApiPrefix);
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiStandalonePresetJs))
