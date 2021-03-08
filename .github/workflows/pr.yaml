@@ -10,8 +10,8 @@ jobs:
     name: Build and test
     strategy:
       matrix:
-        # os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
-        os: [ 'macos-latest', 'ubuntu-latest' ]
+        os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
+        # os: [ 'macos-latest', 'ubuntu-latest' ]
 
     runs-on: ${{ matrix.os }}
 
@@ -31,6 +31,12 @@ jobs:
 
     # - name: Add MSBuild to PATH
     #   uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Clear NuGet local cache
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        dotnet nuget locals all --clear
 
     - name: Restore NuGet packages
       shell: pwsh
