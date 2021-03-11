@@ -116,7 +116,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation($"SwaggerUI page was requested.");
+            log.LogInformation("SwaggerUI page was requested.");
 
             var result = await context.SwaggerUI
                                       .AddMetadata(context.OpenApiConfiguration.Info)
@@ -147,7 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "oauth2-redirect.html")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation($"The oauth2-redirect.html page was requested.");
+            log.LogInformation("The oauth2-redirect.html page was requested.");
 
             var result = await context.SwaggerUI
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
