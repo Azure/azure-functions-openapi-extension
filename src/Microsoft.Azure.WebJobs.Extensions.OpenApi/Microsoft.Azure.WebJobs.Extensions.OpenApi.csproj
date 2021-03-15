@@ -32,10 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+  </ItemGroup>
+
+  <!-- <ItemGroup>
     <Content Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs">
       <Pack>true</Pack>
       <BuildAction>Compile</BuildAction>
@@ -51,6 +55,6 @@
       <BuildAction>Compile</BuildAction>
       <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>
