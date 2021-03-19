@@ -77,7 +77,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync(IUiCustomizationProvider uiCustomizationProvider)
+        public async Task<ISwaggerUI> BuildAsync(IUiCustomizationProvider uiCustomizationProvider = null)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
