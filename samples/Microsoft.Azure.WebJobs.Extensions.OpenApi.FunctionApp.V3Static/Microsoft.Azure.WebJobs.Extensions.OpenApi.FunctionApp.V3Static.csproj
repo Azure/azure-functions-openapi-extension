@@ -7,6 +7,10 @@
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="dist\custom.css" />
+  </ItemGroup>
+
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.5.1-preview" />
@@ -45,6 +49,9 @@
     <Compile Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs" />
     <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="dist\custom.css" />
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
