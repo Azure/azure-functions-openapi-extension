@@ -24,9 +24,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         IOpenApiConfigurationOptions OpenApiConfiguration { get; }
 
         /// <summary>
-        /// Gets the <see cref="IUiCustomizationProvider"/> instance.
+        /// Gets the <see cref="IOpenApiCustomUIOptions"/> instance.
         /// </summary>
-        IUiCustomizationProvider UiCustomizationProvider { get; }
+        IOpenApiCustomUIOptions UiCustomizationProvider { get; }
 
         /// <summary>
         /// Gets the <see cref="HttpSettings"/> instance.

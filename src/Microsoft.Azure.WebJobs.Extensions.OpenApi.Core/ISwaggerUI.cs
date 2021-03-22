@@ -32,7 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="uiCustomizationProvider">UI customization provider</param>
         /// <returns><see cref="ISwaggerUI"/> instance.</returns>
-        Task<ISwaggerUI> BuildAsync(IUiCustomizationProvider uiCustomizationProvider = null);
+        Task<ISwaggerUI> BuildAsync(IOpenApiCustomUIOptions uiCustomizationProvider = null);
 
         /// <summary>
         /// Builds OAuth2 Redirect document.
