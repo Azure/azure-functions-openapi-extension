@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
     /// Default implementation of <see cref="IOpenApiCustomUIOptions"/>, providing

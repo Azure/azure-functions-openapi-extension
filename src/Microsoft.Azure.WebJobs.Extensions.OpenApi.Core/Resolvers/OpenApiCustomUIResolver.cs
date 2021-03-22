@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
