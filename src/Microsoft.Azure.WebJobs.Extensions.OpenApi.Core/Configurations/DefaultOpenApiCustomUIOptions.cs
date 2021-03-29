@@ -25,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <inheritdoc/>
-        public virtual Task<string> GetJavascriptAsync(string filepath = "dist.custom.js")
+        public virtual async Task<string> GetJavascriptAsync(string filepath = "dist.custom.js")
         {
             using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
             {
@@ -33,18 +33,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        return reader.ReadToEndAsync();
+                        return await reader.ReadToEndAsync();
                     }
                 }
-                else
-                {
-                    return Task.FromResult(string.Empty);
-                }
-            }                
+            }
+
+            return string.Empty;
         }
 
         /// <inheritdoc/>
-        public virtual Task<string> GetStylesheetAsync(string filepath = "dist.custom.css")
+        public virtual async Task<string> GetStylesheetAsync(string filepath = "dist.custom.css")
         {
             using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
             {
@@ -52,14 +50,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        return reader.ReadToEndAsync();
+                        return await reader.ReadToEndAsync();
                     }
                 }
-                else
-                {
-                    return Task.FromResult(string.Empty);
-                }
             }
+
+            return string.Empty;
         }
     }
 }
