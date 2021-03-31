@@ -40,7 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
             using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
             {
-                if (stream == null)
+                if (stream.IsNullOrDefault())
                 {
                     return string.Empty;
                 }
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
             using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
             {
-                if (stream == null)
+                if (stream.IsNullOrDefault())
                 {
                     return string.Empty;
                 }
