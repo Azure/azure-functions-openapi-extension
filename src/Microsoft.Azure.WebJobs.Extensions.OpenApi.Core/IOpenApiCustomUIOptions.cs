@@ -9,15 +9,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
     public interface IOpenApiCustomUIOptions
     {
         /// <summary>
-        /// Gets the stylesheet to be rendered on the page
+        /// Gets or sets the filepath for stylesheet for custom UI.
         /// </summary>
-        /// <returns></returns>
-        Task<string> GetStylesheetAsync(string filepath = "dist.custom.css");
+        string CustomStylesheetPath { get; set; }
 
         /// <summary>
-        /// Gets the javascript to be rendered on the page
+        /// Gets or sets the filepath for JavaScript for custom UI.
         /// </summary>
-        /// <returns></returns>
-        Task<string> GetJavascriptAsync(string filepath = "dist.custom.js");
+        string CustomJavaScriptPath { get; set; }
+
+        /// <summary>
+        /// Gets the stylesheet to be rendered on the page.
+        /// </summary>
+        /// <returns>The stylesheet string for custom UI.</returns>
+        Task<string> GetStylesheetAsync(string filepath = null);
+
+        /// <summary>
+        /// Gets the javascript to be rendered on the page.
+        /// </summary>
+        /// <returns>The JavaScript string for custom UI.</returns>
+        Task<string> GetJavaScriptAsync(string filepath = null);
     }
 }

@@ -21,13 +21,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         public static IOpenApiCustomUIOptions Resolve(Assembly assembly)
         {
             var type = assembly.GetTypes()
-                               .SingleOrDefault(p => p.GetInterface("IUiCustomizationProvider", ignoreCase: true).IsNullOrDefault() == false);
+                               .SingleOrDefault(p => p.GetInterface("IOpenApiCustomUIOptions", ignoreCase: true).IsNullOrDefault() == false);
             if (type.IsNullOrDefault())
             {
                 return new DefaultOpenApiCustomUIOptions(assembly);
             }
 
-            var options = Activator.CreateInstance(type);
+            var options = Activator.CreateInstance(type, assembly);
 
             return options as IOpenApiCustomUIOptions;
         }

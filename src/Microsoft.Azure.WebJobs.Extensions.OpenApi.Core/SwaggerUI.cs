@@ -77,14 +77,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync(IOpenApiCustomUIOptions uiCustomizationProvider = null)
+        public async Task<ISwaggerUI> BuildAsync(IOpenApiCustomUIOptions options = null)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            if (uiCustomizationProvider != null)
+            if (!options.IsNullOrDefault())
             {
-                this._swaggerUiCustomCss = await uiCustomizationProvider.GetStylesheetAsync();
-                this._swaggerUiCustomJs = await uiCustomizationProvider.GetJavascriptAsync();
+                this._swaggerUiCustomCss = await options.GetStylesheetAsync();
+                this._swaggerUiCustomJs = await options.GetJavaScriptAsync();
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
