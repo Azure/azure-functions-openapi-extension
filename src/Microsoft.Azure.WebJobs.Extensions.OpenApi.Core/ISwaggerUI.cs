@@ -30,8 +30,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Builds Swagger UI document.
         /// </summary>
+        /// <param name="options"><see cref="IOpenApiCustomUIOptions"/> instance.</param>
         /// <returns><see cref="ISwaggerUI"/> instance.</returns>
-        Task<ISwaggerUI> BuildAsync();
+        Task<ISwaggerUI> BuildAsync(IOpenApiCustomUIOptions options = null);
 
         /// <summary>
         /// Builds OAuth2 Redirect document.

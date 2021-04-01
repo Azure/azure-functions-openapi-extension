@@ -121,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var result = await context.SwaggerUI
                                       .AddMetadata(context.OpenApiConfiguration.Info)
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
-                                      .BuildAsync()
+                                      .BuildAsync(context.OpenApiCustomUIOptions)
                                       .RenderAsync("swagger.json", context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
