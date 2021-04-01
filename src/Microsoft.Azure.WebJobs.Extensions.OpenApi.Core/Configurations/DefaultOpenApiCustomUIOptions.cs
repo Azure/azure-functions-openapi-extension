@@ -16,46 +16,52 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private readonly Assembly _assembly;
 
         /// <summary>
-        /// Creates a new 
+        /// Initializes a new instance of the <see cref="DefaultOpenApiCustomUIOptions"/> class.
         /// </summary>
-        /// <param name="assembly"></param>
+        /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         public DefaultOpenApiCustomUIOptions(Assembly assembly)
         {
             this._assembly = assembly.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> GetJavascriptAsync(string filepath = "dist.custom.js")
+        public virtual string CustomStylesheetPath { get; } = "dist.custom.css";
+
+        /// <inheritdoc/>
+        public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
+
+        /// <inheritdoc/>
+        public virtual async Task<string> GetStylesheetAsync()
         {
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomStylesheetPath}"))
             {
-                if (stream != null)
+                if (stream.IsNullOrDefault())
                 {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        return await reader.ReadToEndAsync();
-                    }
+                    return string.Empty;
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return await reader.ReadToEndAsync();
                 }
             }
-
-            return string.Empty;
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> GetStylesheetAsync(string filepath = "dist.custom.css")
+        public virtual async Task<string> GetJavaScriptAsync()
         {
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomJavaScriptPath}"))
             {
-                if (stream != null)
+                if (stream.IsNullOrDefault())
                 {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        return await reader.ReadToEndAsync();
-                    }
+                    return string.Empty;
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return await reader.ReadToEndAsync();
                 }
             }
-
-            return string.Empty;
         }
     }
 }

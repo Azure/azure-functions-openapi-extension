@@ -37,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var host = HostJsonResolver.Resolve();
 
             this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.GetExecutingAssembly());
-            this.UiCustomizationProvider = OpenApiCustomUIResolver.Resolve(this.GetExecutingAssembly());
+            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.GetExecutingAssembly());
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual IOpenApiConfigurationOptions OpenApiConfiguration { get; }
 
         /// <inheritdoc />
-        public virtual IOpenApiCustomUIOptions UiCustomizationProvider { get; }
+        public virtual IOpenApiCustomUIOptions OpenApiCustomUIOptions { get; }
 
         /// <inheritdoc />
         public virtual HttpSettings HttpSettings { get; }
