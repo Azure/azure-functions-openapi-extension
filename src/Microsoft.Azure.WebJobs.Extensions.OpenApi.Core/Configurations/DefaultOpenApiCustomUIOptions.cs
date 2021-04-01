@@ -25,20 +25,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <inheritdoc/>
-        public virtual string CustomStylesheetPath { get; set; } = "dist.custom.css";
+        public virtual string CustomStylesheetPath { get; } = "dist.custom.css";
 
         /// <inheritdoc/>
-        public virtual string CustomJavaScriptPath { get; set; } = "dist.custom.js";
+        public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
 
         /// <inheritdoc/>
-        public virtual async Task<string> GetStylesheetAsync(string filepath = "dist.custom.css")
+        public virtual async Task<string> GetStylesheetAsync()
         {
-            if (filepath.IsNullOrWhiteSpace())
-            {
-                filepath = this.CustomStylesheetPath;
-            }
-
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomStylesheetPath}"))
             {
                 if (stream.IsNullOrDefault())
                 {
@@ -53,14 +48,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <inheritdoc/>
-        public virtual async Task<string> GetJavaScriptAsync(string filepath = "dist.custom.js")
+        public virtual async Task<string> GetJavaScriptAsync()
         {
-            if (filepath.IsNullOrWhiteSpace())
-            {
-                filepath = this.CustomJavaScriptPath;
-            }
-
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{filepath}"))
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomJavaScriptPath}"))
             {
                 if (stream.IsNullOrDefault())
                 {
