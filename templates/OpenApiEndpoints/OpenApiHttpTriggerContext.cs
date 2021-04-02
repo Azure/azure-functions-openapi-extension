@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -10,9 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
@@ -36,8 +33,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var host = HostJsonResolver.Resolve();
 
-            this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.GetExecutingAssembly());
-            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.GetExecutingAssembly());
+            this.ApplicationAssembly = this.GetAssembly(this);
+            this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
+
+            this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
+            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
+
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
@@ -67,9 +68,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
+        public virtual Assembly ApplicationAssembly { get; }
+
+        /// <inheritdoc />
+        public virtual Assembly PackageAssembly { get; }
+
+        /// <inheritdoc />
+        [Obsolete("This method is obsolete. Use GetAssembly<T>() or GetAssembly(object) instead", error: true)]
         public virtual Assembly GetExecutingAssembly()
         {
-            return Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
+
+            return assembly;
         }
 
         /// <inheritdoc />
@@ -123,6 +133,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var value = Environment.GetEnvironmentVariable(key);
 
             return value ?? string.Empty;
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly(object instance)
+        {
+            return this.GetAssembly(instance.GetType());
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly<T>()
+        {
+            return this.GetAssembly(typeof(T));
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly(Type type)
+        {
+            var assembly = type.Assembly;
+
+            return assembly;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.GetExecutingAssembly())
+                                      .Build(context.ApplicationAssembly)
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.GetExecutingAssembly())
+                                      .Build(context.ApplicationAssembly)
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var result = await context.SwaggerUI
                                       .AddMetadata(context.OpenApiConfiguration.Info)
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
-                                      .BuildAsync(context.OpenApiCustomUIOptions)
+                                      .BuildAsync(context.PackageAssembly, context.OpenApiCustomUIOptions)
                                       .RenderAsync("swagger.json", context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var result = await context.SwaggerUI
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfiguration)
-                                      .BuildOAuth2RedirectAsync()
+                                      .BuildOAuth2RedirectAsync(context.PackageAssembly)
                                       .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 

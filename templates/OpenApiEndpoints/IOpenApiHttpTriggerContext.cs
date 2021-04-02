@@ -1,13 +1,11 @@
-using System.Collections.Generic;
+using System;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
@@ -49,9 +47,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         NamingStrategy NamingStrategy { get; }
 
         /// <summary>
+        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions app.
+        /// </summary>
+        Assembly ApplicationAssembly { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions OpenAPI Extension package.
+        /// </summary>
+        Assembly PackageAssembly { get; }
+
+        /// <summary>
         /// Gets the executing assembly.
         /// </summary>
         /// <returns>Returns the executing assembly.</returns>
+        [Obsolete("This method is obsolete.", error: true)]
         Assembly GetExecutingAssembly();
 
         /// <summary>
