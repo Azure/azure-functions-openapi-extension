@@ -10,7 +10,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
     public class DefaultOpenApiConfigurationOptionsTests
     {
         [TestMethod]
-        public void Given_Value_Property_Should_Return_Value()
+        public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
         {
             var settings = new DefaultOpenApiConfigurationOptions();
 

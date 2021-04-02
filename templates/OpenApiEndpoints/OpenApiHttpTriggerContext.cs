@@ -31,14 +31,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// </summary>
         public OpenApiHttpTriggerContext()
         {
-            var host = HostJsonResolver.Resolve();
-
             this.ApplicationAssembly = this.GetAssembly(this);
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
-            this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
+            this.OpenApiConfigurationOptions = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
             this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
 
+            var host = HostJsonResolver.Resolve();
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
@@ -50,7 +49,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual IOpenApiConfigurationOptions OpenApiConfiguration { get; }
+        public virtual Assembly ApplicationAssembly { get; }
+
+        /// <inheritdoc />
+        public virtual Assembly PackageAssembly { get; }
+
+        /// <inheritdoc />
+        public virtual IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; }
 
         /// <inheritdoc />
         public virtual IOpenApiCustomUIOptions OpenApiCustomUIOptions { get; }
@@ -66,12 +71,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         /// <inheritdoc />
         public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
-
-        /// <inheritdoc />
-        public virtual Assembly ApplicationAssembly { get; }
-
-        /// <inheritdoc />
-        public virtual Assembly PackageAssembly { get; }
 
         /// <inheritdoc />
         [Obsolete("This method is obsolete. Use GetAssembly<T>() or GetAssembly(object) instead", error: true)]

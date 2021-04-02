@@ -17,9 +17,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     public interface IOpenApiHttpTriggerContext
     {
         /// <summary>
+        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions app.
+        /// </summary>
+        Assembly ApplicationAssembly { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions OpenAPI Extension package.
+        /// </summary>
+        Assembly PackageAssembly { get; }
+
+        /// <summary>
         /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance.
         /// </summary>
-        IOpenApiConfigurationOptions OpenApiConfiguration { get; }
+        IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; }
 
         /// <summary>
         /// Gets the <see cref="IOpenApiCustomUIOptions"/> instance.
@@ -45,16 +55,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// Gets the <see cref="NamingStrategy"/> instance.
         /// </summary>
         NamingStrategy NamingStrategy { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions app.
-        /// </summary>
-        Assembly ApplicationAssembly { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Assembly"/> instance representing the Azure Functions OpenAPI Extension package.
-        /// </summary>
-        Assembly PackageAssembly { get; }
 
         /// <summary>
         /// Gets the executing assembly.
