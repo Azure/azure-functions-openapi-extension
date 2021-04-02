@@ -1,6 +1,6 @@
-# Integrating Open API-enabled Azure Functions with Azure API Management #
+# Integrating OpenAPI-enabled Azure Functions with Azure API Management #
 
-[Azure API Management][az apim] provides HTTP API consumers with a consistent way of using API gateway features for back-end API services. You can integrate your Azure Function app with Azure API Management by [directly importing the Function app][az apim azfunc import]. But you can also make use of this Open API extension so that everything will be set up at one go.
+[Azure API Management][az apim] provides HTTP API consumers with a consistent way of using API gateway features for back-end API services. You can integrate your Azure Function app with Azure API Management by [directly importing the Function app][az apim azfunc import]. But you can also make use of this OpenAPI extension so that everything will be set up at one go.
 
 
 ## Prerequisites ##
@@ -31,7 +31,7 @@ az apim create \
 
 ## Create Azure Function App ##
 
-Please refer to [the Azure Function app with the Open API extension enabled](docs/enable-open-api-endpoints.md). Once the Function app is deployed to Azure, make sure you can generate `swagger.json` document on-the-fly.
+Please refer to [the Azure Function app with the OpenAPI extension enabled](docs/enable-open-api-endpoints.md). Once the Function app is deployed to Azure, make sure you can generate `swagger.json` document on-the-fly.
 
 ![swagger.json on Azure][image-11]
 
@@ -57,7 +57,7 @@ Azure Functions API is now successfully imported.
 
 ## Test API Endpoint through Azure API Management ##
 
-To test the imported API endpoint, go to the newly imported API by clicking the `APIs` blade, clicking the `Open API Sample on Azure...` tab and choosing one of API endpoints, and selecting the `Test` tab.
+To test the imported API endpoint, go to the newly imported API by clicking the `APIs` blade, clicking the `OpenAPI Sample on Azure...` tab and choosing one of API endpoints, and selecting the `Test` tab.
 
 ![Testing imported API endpoint][image-15]
 
@@ -72,7 +72,7 @@ Confirm the test has been successfully performed.
 
 ## Clean-up Resources ##
 
-When you continue to the another step, [Support Azure Functions v1 with Open API Extension][docs v1 suppport], you'll need to keep all your resources in place to build on what you've already done.
+When you continue to the another step, [Support Azure Functions v1 with OpenAPI Extension][docs v1 suppport], you'll need to keep all your resources in place to build on what you've already done.
 
 Otherwise, you can use the following steps to delete the function app and its related resources to avoid incurring any further costs.
 
@@ -92,10 +92,10 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 ## Next Steps ##
 
-You have got an Azure API Management integrated with Azure Functions that implements the Open API extension. In the next articles, you will be able to support Azure Functions v1 runtime or integrate this Open API-enabled Azure Functions app with either [Azure Logic Apps][az logapp] or [Power Platform][power platform].
+You have got an Azure API Management integrated with Azure Functions that implements the OpenAPI extension. In the next articles, you will be able to support Azure Functions v1 runtime or integrate this OpenAPI-enabled Azure Functions app with either [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
-* [Support Azure Functions v1 with Open API Extension][docs v1 support]
-<!-- * [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform] -->
+* [Support Azure Functions v1 with OpenAPI Extension][docs v1 support]
+<!-- * [Integrating OpenAPI-enabled Azure Functions to Power Platform][docs powerplatform] -->
 
 
 [image-10]: images/image-10.png

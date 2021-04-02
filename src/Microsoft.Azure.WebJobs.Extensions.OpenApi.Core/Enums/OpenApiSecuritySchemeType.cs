@@ -3,7 +3,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
 {
     /// <summary>
-    /// This specifices the Open API security scheme value.
+    /// This specifices the OpenAPI security scheme value.
     /// </summary>
     public enum OpenApiSecuritySchemeType
     {

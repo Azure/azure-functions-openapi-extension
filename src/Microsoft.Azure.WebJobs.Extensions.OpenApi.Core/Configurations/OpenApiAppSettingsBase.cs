@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
-    /// This represents the base settings entity from the configurations for Open API.
+    /// This represents the base settings entity from the configurations for OpenAPI.
     /// </summary>
     public abstract class OpenApiAppSettingsBase : AppSettingsBase
     {
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual OpenApiInfo OpenApiInfo { get; }
 
         /// <summary>
-        /// Gets the Function API key for Open API document.
+        /// Gets the Function API key for OpenAPI document.
         /// </summary>
         public virtual string SwaggerAuthKey { get; }
 

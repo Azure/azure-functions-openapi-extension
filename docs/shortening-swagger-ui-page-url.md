@@ -1,6 +1,6 @@
 # Shortening Swagger UI Page URL and `swagger.json` URL with `proxies.json` #
 
-With default implementation, Azure Functions Open API extension has the following endpoint URLs:
+With default implementation, Azure Functions OpenAPI extension has the following endpoint URLs:
 
 * `https://<your_function_name>.azurewebsites.net/api/swagger/ui`
 * `https://<your_function_name>.azurewebsites.net/api/swagger.json`

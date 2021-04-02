@@ -3,7 +3,7 @@ using System;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
-    /// This represents the attribute entity for Open API model property description.
+    /// This represents the attribute entity for OpenAPI model property description.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false)]
     public class OpenApiPropertyDescriptionAttribute : Attribute

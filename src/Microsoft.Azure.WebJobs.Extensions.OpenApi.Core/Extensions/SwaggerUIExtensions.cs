@@ -10,12 +10,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
     public static class SwaggerUIExtensions
     {
         /// <summary>
-        /// Renders the Open API UI in HTML.
+        /// Renders the OpenAPI UI in HTML.
         /// </summary>
         /// <param name="ui"><see cref="ISwaggerUI"/> instance.</param>
         /// <param name="endpoint">The endpoint of the Swagger document.</param>
-        /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
-        /// <returns>The Open API UI in HTML.</returns>
+        /// <param name="authKey">API key of the HTTP endpoint to render OpenAPI document.</param>
+        /// <returns>The OpenAPI UI in HTML.</returns>
         public static async Task<string> RenderAsync(this Task<ISwaggerUI> ui, string endpoint, string authKey = null)
         {
             var instance = await ui.ThrowIfNullOrDefault().ConfigureAwait(false);
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="ui"><see cref="ISwaggerUI"/> instance.</param>
         /// <param name="endpoint">The endpoint of the OAuth2 Redirect page.</param>
-        /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
+        /// <param name="authKey">API key of the HTTP endpoint to render OpenAPI document.</param>
         /// <returns>The OAuth2 Redirect page in HTML.</returns>
         public static async Task<string> RenderOAuth2RedirectAsync(this Task<ISwaggerUI> ui, string endpoint, string authKey = null)
         {

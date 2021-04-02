@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the entity to render UI for Open API.
+    /// This represents the entity to render UI for OpenAPI.
     /// </summary>
     public class SwaggerUI : ISwaggerUI
     {
@@ -77,10 +76,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync(IOpenApiCustomUIOptions options = null)
+        public async Task<ISwaggerUI> BuildAsync(Assembly assembly, IOpenApiCustomUIOptions options = null)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
             if (!options.IsNullOrDefault())
             {
                 this._swaggerUiCustomCss = await options.GetStylesheetAsync();
@@ -116,10 +113,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildOAuth2RedirectAsync()
+        public async Task<ISwaggerUI> BuildOAuth2RedirectAsync(Assembly assembly)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
             using (var stream = assembly.GetManifestResourceStream(oauth2RedirectHtml))
             using (var reader = new StreamReader(stream))
             {

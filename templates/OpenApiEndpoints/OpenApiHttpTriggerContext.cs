@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -10,9 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
@@ -34,10 +31,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// </summary>
         public OpenApiHttpTriggerContext()
         {
-            var host = HostJsonResolver.Resolve();
+            this.ApplicationAssembly = this.GetAssembly(this);
+            this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
-            this.OpenApiConfiguration = OpenApiConfigurationResolver.Resolve(this.GetExecutingAssembly());
-            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.GetExecutingAssembly());
+            this.OpenApiConfigurationOptions = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
+            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
+
+            var host = HostJsonResolver.Resolve();
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
@@ -49,7 +49,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual IOpenApiConfigurationOptions OpenApiConfiguration { get; }
+        public virtual Assembly ApplicationAssembly { get; }
+
+        /// <inheritdoc />
+        public virtual Assembly PackageAssembly { get; }
+
+        /// <inheritdoc />
+        public virtual IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; }
 
         /// <inheritdoc />
         public virtual IOpenApiCustomUIOptions OpenApiCustomUIOptions { get; }
@@ -67,9 +73,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
+        [Obsolete("This method is obsolete. Use GetAssembly<T>() or GetAssembly(object) instead", error: true)]
         public virtual Assembly GetExecutingAssembly()
         {
-            return Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
+
+            return assembly;
         }
 
         /// <inheritdoc />
@@ -85,7 +94,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var parsed = Enum.TryParse(version, true, out OpenApiVersionType output)
                              ? output
-                             : throw new InvalidOperationException("Invalid Open API version");
+                             : throw new InvalidOperationException("Invalid OpenAPI version");
 
             return this.GetOpenApiSpecVersion(parsed);
         }
@@ -106,7 +115,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var parsed = Enum.TryParse(format, true, out OpenApiFormatType output)
                              ? output
-                             : throw new InvalidOperationException("Invalid Open API format");
+                             : throw new InvalidOperationException("Invalid OpenAPI format");
 
             return this.GetOpenApiFormat(parsed);
         }
@@ -123,6 +132,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var value = Environment.GetEnvironmentVariable(key);
 
             return value ?? string.Empty;
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly(object instance)
+        {
+            return this.GetAssembly(instance.GetType());
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly<T>()
+        {
+            return this.GetAssembly(typeof(T));
+        }
+
+        /// <inheritdoc />
+        private Assembly GetAssembly(Type type)
+        {
+            var assembly = type.Assembly;
+
+            return assembly;
         }
     }
 }

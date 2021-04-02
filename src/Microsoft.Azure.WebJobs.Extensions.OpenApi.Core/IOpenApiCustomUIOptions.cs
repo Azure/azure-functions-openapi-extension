@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// Interface for a custom UI provider that can provide custom javascript
-    /// and CSS to be populated on a page
+    /// This provides interfaces classes implementing for the custom UI.
     /// </summary>
     public interface IOpenApiCustomUIOptions
     {

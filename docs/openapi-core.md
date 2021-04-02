@@ -2,9 +2,9 @@
 
 ![Build and Test](https://github.com/Azure/azure-functions-openapi-extension/workflows/Build%20and%20Test/badge.svg) [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/)
 
-This enables Azure Functions to render Open API document and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/2019/02/02/introducing-swagger-ui-on-azure-functions/).
+This enables Azure Functions to render OpenAPI document and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/2019/02/02/introducing-swagger-ui-on-azure-functions/).
 
-> **NOTE**: This extension supports both [Open API 2.0 (aka Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) and [Open API 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) spec.
+> **NOTE**: This extension supports both [OpenAPI 2.0 (aka Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) and [OpenAPI 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) spec.
 
 
 ## Acknowledgement ##
@@ -21,16 +21,16 @@ While using this library, if you find any issue, please raise a ticket on the [I
 
 ### Install NuGet Package ###
 
-In order for your Azure Functions app to enable Open API capability, download the following NuGet package into your Azure Functions project.
+In order for your Azure Functions app to enable OpenAPI capability, download the following NuGet package into your Azure Functions project.
 
 ```bash
 dotnet add <PROJECT> package Microsoft.Azure.WebJobs.Extensions.OpenApi.OpenApi.Core
 ```
 
 
-### Expose Endpoints to Open API Document ###
+### Expose Endpoints to OpenAPI Document ###
 
-In order to include HTTP endpoints into the Open API document, use attribute classes (decorators) like:
+In order to include HTTP endpoints into the OpenAPI document, use attribute classes (decorators) like:
 
 ```csharp
 [FunctionName(nameof(AddDummy))]
@@ -52,18 +52,18 @@ public static async Task<IActionResult> AddDummy(
 This key is only required if:
 
 * The Function app is deployed to Azure, and
-* The Open API related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
+* The OpenAPI related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
 
 If the above conditions are met, add the following key to your `local.settings.json` or App Settings blade on Azure.
 
 * `OpenApi__ApiKey`: either the host key value or the master key value.
 
-> **NOTE**: It is NOT required if your Open API related endpoints are set to the authorisation level of `Anonymous`.
+> **NOTE**: It is NOT required if your OpenAPI related endpoints are set to the authorisation level of `Anonymous`.
 
 
-## Open API Metadata Configuration ##
+## OpenAPI Metadata Configuration ##
 
-To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide Open API metadata like below:
+To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
 
 ```csharp
 public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
@@ -71,8 +71,8 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     public OpenApiInfo Info { get; set; } = new OpenApiInfo()
     {
         Version = "1.0.0",
-        Title = "Open API Document on Azure Functions",
-        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        Title = "OpenAPI Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using OpenAPI specification.",
         TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
         Contact = new OpenApiContact()
         {
@@ -106,7 +106,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 }
 ```
 
-> **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the Open API v3 document shows all server URLs in the document, including the automatically generated one.
+> **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the OpenAPI v3 document shows all server URLs in the document, including the automatically generated one.
 
 Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As both `Info` and `Servers` properties have the modifier of `virtual`, you can freely override both or leave them as default.
 
@@ -116,8 +116,8 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
     {
         Version = "1.0.0",
-        Title = "Open API Document on Azure Functions",
-        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        Title = "OpenAPI Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using OpenAPI specification.",
         TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
         Contact = new OpenApiContact()
         {
@@ -134,24 +134,24 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
 }
 ```
 
-## Open API Response Header Customisation ##
+## OpenAPI Response Header Customisation ##
 
 Often, custom response headers need to be added. For those custom responses
 
 ## Decorators ##
 
-In order to render Open API document, this uses attribute classes (decorators).
+In order to render OpenAPI document, this uses attribute classes (decorators).
 
-> **NOTE**: Not all Open API specs have been implemented.
+> **NOTE**: Not all OpenAPI specs have been implemented.
 
 
 ### `OpenApiIgnoreAttribute` ###
 
-If there is any HTTP trigger that you want to exclude from the Open API document, use this decorator. Typically this is used for the endpoints that render Open API document and Swagger UI.
+If there is any HTTP trigger that you want to exclude from the OpenAPI document, use this decorator. Typically this is used for the endpoints that render OpenAPI document and Swagger UI.
 
 ```csharp
 [FunctionName(nameof(RenderSwaggerDocument))]
-[OpenApiIgnore] // This HTTP endpoint is excluded from the Open API document.
+[OpenApiIgnore] // This HTTP endpoint is excluded from the OpenAPI document.
 public static async Task<IActionResult> RenderSwaggerDocument(
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.{extension}")] HttpRequest req,
     string extension,
@@ -211,7 +211,7 @@ public static async Task<IActionResult> GetSample(
 * `Explode`: indicates whether a query parameter is used multiple times (eg. `foo=bar1&foo=bar2&foo=bar3`) or not (eg. `foo=bar1,bar2,bar3`). Default value is `false`.
 * `Required`: indicates whether the parameter is required or not. Default value is `false`.
 * `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
-* `Deprecated`: indicates whether the parameter is deprecated or not. Default is `false`. If this is set to `true`, this parameter won't be showing up the UI and Open API document.
+* `Deprecated`: indicates whether the parameter is deprecated or not. Default is `false`. If this is set to `true`, this parameter won't be showing up the UI and OpenAPI document.
 
 
 ### `OpenApiSecurityAttribute` ###
@@ -303,7 +303,7 @@ public static async Task<IActionResult> PostSample(
 * `BodyType`: defines the type of the request payload.
 * `Description`: is the description of the request payload.
 * `Required`: indicates whether the request payload is mandatory or not.
-* `Deprecated`: indicates whether the request body is deprecated or not. Default is `false`. If this is set to `true`, this request body won't be showing up the UI and Open API document.
+* `Deprecated`: indicates whether the request body is deprecated or not. Default is `false`. If this is set to `true`, this request body won't be showing up the UI and OpenAPI document.
 
 
 ### `OpenApiResponseWithBodyAttribute` ###
@@ -340,7 +340,7 @@ public static class DummyHttpTrigger
 * `BodyType`: defines the type of the response payload.
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
-* `Deprecated`: indicates whether the response body is deprecated or not. Default is `false`. If this is set to `true`, this response body won't be showing up the UI and Open API document.
+* `Deprecated`: indicates whether the response body is deprecated or not. Default is `false`. If this is set to `true`, this response body won't be showing up the UI and OpenAPI document.
 
 
 ### `OpenApiResponseWithoutBodyAttribute` ###

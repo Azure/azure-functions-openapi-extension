@@ -1,1 +1,1 @@
-console.log("Custom UI: Open API Sample on Azure Functions (STATIC)");
+console.log("Custom UI: OpenAPI Sample on Azure Functions (STATIC)");

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 using Microsoft.OpenApi.Models;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This provides interfaces classes implementing.
+    /// This provides interfaces classes implementing for OpenAPI metadata..
     /// </summary>
     public interface IOpenApiConfigurationOptions
     {

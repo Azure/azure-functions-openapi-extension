@@ -1,7 +1,7 @@
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
 {
     /// <summary>
-    /// This specifies the Open API security key location.
+    /// This specifies the OpenAPI security key location.
     /// </summary>
     public enum OpenApiSecurityLocationType
     {

@@ -17,7 +17,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the document entity handling Open API document.
+    /// This represents the document entity handling OpenAPI document.
     /// </summary>
     public class Document : IDocument
     {
