@@ -63,7 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Gets the <see cref="OpenApiSpecVersion"/> value.
         /// </summary>
-        /// <param name="version">Open API spec version. It can be either <c>v2</c> or <c>v3</c>.</param>
+        /// <param name="version">OpenAPI spec version. It can be either <c>v2</c> or <c>v3</c>.</param>
         /// <returns>Returns the <see cref="OpenApiSpecVersion"/> value.</returns>
         OpenApiSpecVersion GetOpenApiSpecVersion(string version = "v2");
 
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Gets the <see cref="OpenApiFormat"/> value.
         /// </summary>
-        /// <param name="format">Open API document format. It can be either <c>json</c> or <c>yaml</c>.</param>
+        /// <param name="format">OpenAPI document format. It can be either <c>json</c> or <c>yaml</c>.</param>
         /// <returns>Returns the <see cref="OpenApiFormat"/> value.</returns>
         OpenApiFormat GetOpenApiFormat(string format = "json");
 

@@ -2,9 +2,9 @@
 
 ![Build and Test](https://github.com/Azure/azure-functions-openapi-extension/workflows/Build%20and%20Test/badge.svg) [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/)
 
-This enables Azure Functions to render Open API document and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/2019/02/02/introducing-swagger-ui-on-azure-functions/).
+This enables Azure Functions to render OpenAPI document and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/2019/02/02/introducing-swagger-ui-on-azure-functions/).
 
-> **NOTE**: This extension supports both [Open API 2.0 (aka Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) and [Open API 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) spec.
+> **NOTE**: This extension supports both [OpenAPI 2.0 (aka Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) and [OpenAPI 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) spec.
 
 
 ## Acknowledgement ##
@@ -21,7 +21,7 @@ While using this library, if you find any issue, please raise a ticket on the [I
 
 ### Install NuGet Package ###
 
-In order for your Azure Functions app to enable Open API capability, download the following NuGet package into your Azure Functions project.
+In order for your Azure Functions app to enable OpenAPI capability, download the following NuGet package into your Azure Functions project.
 
 ```bash
 dotnet add <PROJECT> package Microsoft.Azure.WebJobs.Extensions.OpenApi
@@ -30,7 +30,7 @@ dotnet add <PROJECT> package Microsoft.Azure.WebJobs.Extensions.OpenApi
 
 ### Change Authorization Level ###
 
-As a default, all endpoints to render Swagger UI and Open API documents have the authorisation level of `AuthorizationLevel.Anonymous`.
+As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`.
 
 
 ```csharp
@@ -111,18 +111,18 @@ public static async Task<IActionResult> RenderSwaggerUI(
 This key is only required if:
 
 * The Function app is deployed to Azure, and
-* The Open API related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
+* The OpenAPI related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
 
 If the above conditions are met, add the following key to your `local.settings.json` or App Settings blade on Azure.
 
 * `OpenApi__ApiKey`: either the host key value or the master key value.
 
-> **NOTE**: It is NOT required if your Open API related endpoints are set to the authorisation level of `Anonymous`.
+> **NOTE**: It is NOT required if your OpenAPI related endpoints are set to the authorisation level of `Anonymous`.
 
 
-## Open API Metadata Configuration ##
+## OpenAPI Metadata Configuration ##
 
-To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide Open API metadata like below:
+To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
 
 ```csharp
 public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
@@ -130,8 +130,8 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     public OpenApiInfo Info { get; set; } = new OpenApiInfo()
     {
         Version = "1.0.0",
-        Title = "Open API Document on Azure Functions",
-        Description = "HTTP APIs that run on Azure Functions using Open API specification.",
+        Title = "OpenAPI Document on Azure Functions",
+        Description = "HTTP APIs that run on Azure Functions using OpenAPI specification.",
         TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
         Contact = new OpenApiContact()
         {

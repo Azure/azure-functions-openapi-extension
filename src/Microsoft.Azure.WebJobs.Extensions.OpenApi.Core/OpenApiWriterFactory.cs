@@ -7,12 +7,12 @@ using Microsoft.OpenApi.Writers;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the factory entity to create a write instance based on the Open API document format.
+    /// This represents the factory entity to create a write instance based on the OpenAPI document format.
     /// </summary>
     public static class OpenApiWriterFactory
     {
         /// <summary>
-        /// Creates a new instance of <see cref="IOpenApiWriter"/> based on the Open API document format.
+        /// Creates a new instance of <see cref="IOpenApiWriter"/> based on the OpenAPI document format.
         /// </summary>
         /// <param name="format"><see cref="OpenApiFormat"/> value.</param>
         /// <param name="writer"><see cref="TextWriter"/> instance.</param>
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     return new OpenApiYamlWriter(writer);
 
                 default:
-                    throw new InvalidOperationException("Invalid Open API format");
+                    throw new InvalidOperationException("Invalid OpenAPI format");
             }
         }
     }

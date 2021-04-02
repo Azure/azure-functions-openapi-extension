@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
-    /// This represents the settings entity for Open API metadata.
+    /// This represents the settings entity for OpenAPI metadata.
     /// </summary>
     [Obsolete("This class is obsolete from 0.5.0-preview. Use OpenApiConfigurationOptions instead", error: true)]
     public sealed class OpenApiSettings : IOpenApiConfigurationOptions
@@ -15,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = "1.0.0",
-            Title = "Azure Functions Open API Extension",
+            Title = "Azure Functions OpenAPI Extension",
         };
 
         /// <inheritdoc />

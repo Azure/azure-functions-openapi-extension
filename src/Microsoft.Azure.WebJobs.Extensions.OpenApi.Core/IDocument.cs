@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         IDocument InitialiseDocument();
 
         /// <summary>
-        /// Adds metadata to build Open API document.
+        /// Adds metadata to build OpenAPI document.
         /// </summary>
         /// <param name="info"><see cref="OpenApiInfo"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
@@ -58,25 +58,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         IDocument AddVisitors(VisitorCollection collection);
 
         /// <summary>
-        /// Builds Open API document.
+        /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assemblyPath">Assembly file path.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument Build(string assemblyPath);
 
         /// <summary>
-        /// Builds Open API document.
+        /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument Build(Assembly assembly);
 
         /// <summary>
-        /// Renders Open API document.
+        /// Renders OpenAPI document.
         /// </summary>
         /// <param name="version"><see cref="OpenApiSpecVersion"/> value.</param>
         /// <param name="format"><see cref="OpenApiFormat"/> value.</param>
-        /// <returns>Serialised Open API document.</returns>
+        /// <returns>Serialised OpenAPI document.</returns>
         Task<string> RenderAsync(OpenApiSpecVersion version, OpenApiFormat format);
     }
 }

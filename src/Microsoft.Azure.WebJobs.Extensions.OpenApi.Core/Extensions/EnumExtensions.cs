@@ -33,10 +33,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Converts the <see cref="TypeCode"/> value into data type specified in Open API spec.
+        /// Converts the <see cref="TypeCode"/> value into data type specified in OpenAPI spec.
         /// </summary>
         /// <param name="type"><see cref="Type"/> value.</param>
-        /// <returns>Data type specified in Open API spec.</returns>
+        /// <returns>Data type specified in OpenAPI spec.</returns>
         public static string ToDataType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
@@ -96,10 +96,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Converts the <see cref="TypeCode"/> value into data format specified in Open API spec.
+        /// Converts the <see cref="TypeCode"/> value into data format specified in OpenAPI spec.
         /// </summary>
         /// <param name="type"><see cref="Type"/> value.</param>
-        /// <returns>Data format specified in Open API spec.</returns>
+        /// <returns>Data format specified in OpenAPI spec.</returns>
         public static string ToDataFormat(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     return "application/yaml";
 
                 default:
-                    throw new InvalidOperationException("Invalid Open API format");
+                    throw new InvalidOperationException("Invalid OpenAPI format");
             }
         }
 

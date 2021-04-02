@@ -12,7 +12,7 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the entity to render UI for Open API.
+    /// This represents the entity to render UI for OpenAPI.
     /// </summary>
     public class SwaggerUI : ISwaggerUI
     {

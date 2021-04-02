@@ -1,6 +1,6 @@
-# Support Azure Functions v1 with Open API Extension #
+# Support Azure Functions v1 with OpenAPI Extension #
 
-Due to the backward compatibility issue, this Open API extension has dropped supporting Azure Functions v1 runtime. However, there are many enterprise scenarios that still need Azure Functions v1 runtime. Although there is no direct support from this Open API extension, you can still take the benefits of using this extension, using the [Azure Functions Proxy][az func proxy] feature.
+Due to the backward compatibility issue, this OpenAPI extension has dropped supporting Azure Functions v1 runtime. However, there are many enterprise scenarios that still need Azure Functions v1 runtime. Although there is no direct support from this OpenAPI extension, you can still take the benefits of using this extension, using the [Azure Functions Proxy][az func proxy] feature.
 
 
 ## Prerequisites ##
@@ -56,9 +56,9 @@ namespace MyV1FunctionAppProxy
 ```
 
 
-## Add Open API Extension ##
+## Add OpenAPI Extension ##
 
-To enable Open API metadata, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
+To enable OpenAPI metadata, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
 
 ```bash
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
@@ -84,7 +84,7 @@ namespace MyV1FunctionAppProxy
 ...
 ```
 
-By doing so, this Function app is now able to generate the Open API definition document on-the-fly. However, it won't work as expected because there is no business logic implemented.
+By doing so, this Function app is now able to generate the OpenAPI definition document on-the-fly. However, it won't work as expected because there is no business logic implemented.
 
 
 ## Add Functions Proxy ##
@@ -132,7 +132,7 @@ Then all your API requests to the proxy function are forwarded to the v1 Functio
 
 ## Clean-up Resources ##
 
-When you continue to the another step, [Integrating Open API-enabled Azure Functions with Azure API Management][docs apim], you'll need to keep all your resources in place to build on what you've already done.
+When you continue to the another step, [Integrating OpenAPI-enabled Azure Functions with Azure API Management][docs apim], you'll need to keep all your resources in place to build on what you've already done.
 
 Otherwise, you can use the following steps to delete the function app and its related resources to avoid incurring any further costs.
 
@@ -152,10 +152,10 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 ## Next Steps ##
 
-You have got an Azure Functions app with Open API metadata enabled. In the next articles, you will be able to integrate this Open API-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
+You have got an Azure Functions app with OpenAPI metadata enabled. In the next articles, you will be able to integrate this OpenAPI-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
-* [Integrating Open API-enabled Azure Functions to Azure API Management][docs apim]
-<!-- * [Integrating Open API-enabled Azure Functions to Power Platform][docs powerplatform] -->
+* [Integrating OpenAPI-enabled Azure Functions to Azure API Management][docs apim]
+<!-- * [Integrating OpenAPI-enabled Azure Functions to Power Platform][docs powerplatform] -->
 
 
 [image-10]: images/image-10.png

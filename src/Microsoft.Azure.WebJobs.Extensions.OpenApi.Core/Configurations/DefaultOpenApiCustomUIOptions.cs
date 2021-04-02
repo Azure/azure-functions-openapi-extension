@@ -8,8 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
-    /// Default implementation of <see cref="IOpenApiCustomUIOptions"/>, providing
-    /// empty replacements for custom javascript and stylesheets
+    /// This represents the options entity for custom UI configuration.
     /// </summary>
     public class DefaultOpenApiCustomUIOptions : IOpenApiCustomUIOptions
     {

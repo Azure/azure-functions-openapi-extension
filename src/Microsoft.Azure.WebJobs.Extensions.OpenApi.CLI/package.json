@@ -1,7 +1,7 @@
 {
   "name": "azure-functions-openapi-tools",
   "version": "0.8.0",
-  "description": "This handles Open API documents from Azure Functions without having to run the function app",
+  "description": "This handles OpenAPI documents from Azure Functions without having to run the function app",
   "author": "Aliencube Community",
   "license": "MIT",
   "preferGlobal": true,

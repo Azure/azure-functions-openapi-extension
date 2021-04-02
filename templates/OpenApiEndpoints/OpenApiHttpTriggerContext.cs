@@ -85,7 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var parsed = Enum.TryParse(version, true, out OpenApiVersionType output)
                              ? output
-                             : throw new InvalidOperationException("Invalid Open API version");
+                             : throw new InvalidOperationException("Invalid OpenAPI version");
 
             return this.GetOpenApiSpecVersion(parsed);
         }
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var parsed = Enum.TryParse(format, true, out OpenApiFormatType output)
                              ? output
-                             : throw new InvalidOperationException("Invalid Open API format");
+                             : throw new InvalidOperationException("Invalid OpenAPI format");
 
             return this.GetOpenApiFormat(parsed);
         }

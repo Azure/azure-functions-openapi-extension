@@ -10,8 +10,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.Configu
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = "1.0.0",
-            Title = "Open API Sample on Azure Functions Proxy for v1",
-            Description = "A sample API that runs on Azure Functions 1.x using Open API specification.",
+            Title = "OpenAPI Sample on Azure Functions Proxy for v1",
+            Description = "A sample API that runs on Azure Functions 1.x using OpenAPI specification.",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {

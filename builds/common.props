@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Product>Azure Functions Open API Extension</Product>
+    <Product>Azure Functions OpenAPI Extension</Product>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>

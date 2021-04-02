@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the HTTP trigger entity for Open API documents.
+    /// This represents the HTTP trigger entity for OpenAPI documents.
     /// </summary>
     [SuppressMessage("Design", "CA1823", Justification = "")]
     [SuppressMessage("Design", "MEN002", Justification = "")]
@@ -31,12 +31,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
-        /// Invokes the HTTP trigger endpoint to get Open API document.
+        /// Invokes the HTTP trigger endpoint to get OpenAPI document.
         /// </summary>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
-        /// <returns>Open API document in a format of either JSON or YAML.</returns>
+        /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderSwaggerDocument(
@@ -67,13 +67,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <summary>
-        /// Invokes the HTTP trigger endpoint to get Open API document.
+        /// Invokes the HTTP trigger endpoint to get OpenAPI document.
         /// </summary>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
-        /// <param name="version">Open API document spec version. This MUST be either "v2" or "v3".</param>
+        /// <param name="version">OpenAPI document spec version. This MUST be either "v2" or "v3".</param>
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
-        /// <returns>Open API document in a format of either JSON or YAML.</returns>
+        /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderOpenApiDocument(

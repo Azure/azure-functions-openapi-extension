@@ -2,8 +2,8 @@
   "openApi": {
     "info": {
       "version": "3.0.0",
-      "title": "Open API Sample on Azure Functions (STATIC)",
-      "description": "A sample API that runs on Azure Functions (STATIC) 3.x using Open API specification - from **host.json**.",
+      "title": "OpenAPI Sample on Azure Functions (STATIC)",
+      "description": "A sample API that runs on Azure Functions (STATIC) 3.x using OpenAPI specification - from **host.json**.",
       "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
       "contact": {
         "name": "Aliencube Community",

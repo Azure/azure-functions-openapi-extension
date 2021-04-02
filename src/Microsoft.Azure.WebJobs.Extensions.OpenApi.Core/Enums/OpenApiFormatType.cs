@@ -3,7 +3,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
 {
     /// <summary>
-    /// This specifies the Open API format.
+    /// This specifies the OpenAPI format.
     /// </summary>
     public enum OpenApiFormatType
     {
