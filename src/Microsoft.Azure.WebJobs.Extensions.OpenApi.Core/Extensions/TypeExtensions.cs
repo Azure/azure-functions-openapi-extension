@@ -357,7 +357,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary || isList)
             {
-                var name = type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
@@ -420,15 +420,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 underlyingType = type.GetGenericArguments()[1];
             }
 
-            if (underlyingType.IsNullOrDefault())
+            if (underlyingType.IsOpenApiNullable(out var nullableUnderlyingTypeOfUnderlyingType))
             {
-                return underlyingType;
-            }
-
-            if (underlyingType.IsGenericType)
-            {
-                var underlyingTypeOfUnderlyingType = underlyingType.GetUnderlyingType();
-                underlyingType = underlyingTypeOfUnderlyingType;
+                underlyingType = nullableUnderlyingTypeOfUnderlyingType;
             }
 
             return underlyingType;

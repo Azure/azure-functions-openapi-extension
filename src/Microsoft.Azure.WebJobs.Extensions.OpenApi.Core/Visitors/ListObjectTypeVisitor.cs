@@ -50,7 +50,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
-                { underlyingType.GetOpenApiTypeName(namingStrategy), underlyingType }
+                { underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy), underlyingType }
             };
             var schemas = new Dictionary<string, OpenApiSchema>();
 
@@ -82,10 +82,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
                                               .Where(p => !instance.Schemas.Keys.Contains(p.Key))
-                                              .Where(p => p.Value.Type == "object" &&
-                                                          p.Value.Format.IsNullOrWhiteSpace() &&
-                                                          p.Value.Items.IsNullOrDefault() &&
-                                                          p.Value.AdditionalProperties.IsNullOrDefault())
+                                              .Where(p => p.Value.IsOpenApiSchemaObject()
+                                                       || p.Value.IsOpenApiSchemaArray()
+                                                       || p.Value.IsOpenApiSchemaDictionary()
+                                                    )
                                               .ToDictionary(p => p.Key, p => p.Value);
 
             if (!schemasToBeAdded.Any())
