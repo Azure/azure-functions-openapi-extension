@@ -198,10 +198,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
                                               .Where(p => !instance.Schemas.Keys.Contains(p.Key))
-                                              .Where(p => p.Value.Type == "object" &&
-                                                          p.Value.Format.IsNullOrWhiteSpace() &&
-                                                          p.Value.Items.IsNullOrDefault() &&
-                                                          p.Value.AdditionalProperties.IsNullOrDefault())
+                                              .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
             foreach (var schema in schemasToBeAdded.Where(p => p.Key != "jObject" && p.Key != "jToken"))
