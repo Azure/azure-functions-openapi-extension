@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using FluentAssertions;
+
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Serialization;
 
