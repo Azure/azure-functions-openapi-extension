@@ -36,10 +36,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs" />
-    <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs" />
-    <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs" />
-  </ItemGroup>
-
 </Project>

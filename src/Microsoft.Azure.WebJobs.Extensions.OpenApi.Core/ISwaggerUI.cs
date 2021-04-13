@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
@@ -46,16 +47,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Renders OpenAPI UI in HTML.
         /// </summary>
         /// <param name="endpoint">The endpoint of the Swagger document.</param>
+        /// <param name="authLevel">The authorisation level of the Swagger document.</param>
         /// <param name="authKey">API key of the HTTP endpoint to render OpenAPI document.</param>
         /// <returns>OpenAPI UI in HTML.</returns>
-        Task<string> RenderAsync(string endpoint, string authKey = null);
+        Task<string> RenderAsync(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null);
 
         /// <summary>
         /// Renders OAuth Redirect in HTML.
         /// </summary>
         /// <param name="endpoint">The endpoint of the OAuth2 Redirect page.</param>
+        /// <param name="authLevel">The authorisation level of the Swagger document.</param>
         /// <param name="authKey">API key of the HTTP endpoint to render OpenAPI document.</param>
         /// <returns>OAuth Redirect in HTML.</returns>
-        Task<string> RenderOAuth2RedirectAsync(string endpoint, string authKey = null);
+        Task<string> RenderOAuth2RedirectAsync(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null);
     }
 }
