@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Configurations
@@ -32,5 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Config
             new OpenApiServer() { Url = "https://contoso.com/api/" },
             new OpenApiServer() { Url = "https://fabrikam.com/api/" },
         };
+
+        public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
     }
 }

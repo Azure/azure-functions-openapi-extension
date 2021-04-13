@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
@@ -19,5 +20,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public virtual List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
+
+        /// <inheritdoc />
+        public virtual OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
     }
 }
