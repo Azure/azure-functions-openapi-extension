@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
@@ -18,5 +19,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the list of <see cref="OpenApiServer"/> instances.
         /// </summary>
         List<OpenApiServer> Servers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the OpenAPI spec version.
+        /// </summary>
+        OpenApiVersionType OpenApiVersion { get; set; }
     }
 }
