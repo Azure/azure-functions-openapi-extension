@@ -134,9 +134,97 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
 }
 ```
 
+## Swagger UI Customisation ##
+
+Suppose you want to customise the look and feels of the Swagger UI page. In this case, there are two options you can choose.
+
+1. Add `custom.css` and `custom.js` under the `dist` directory of your Functions app project. Then, update your `.csproj` file to embed both files like:
+
+    ```xml
+    <ItemGroup>
+      <EmbeddedResource Include="dist\custom.css" />
+      <EmbeddedResource Include="dist\custom.js" />
+    </ItemGroup>
+    ```
+
+1. You can inherit `DefaultOpenApiCustomUIOptions` to put additional control from your end such as changing the custom CSS and JavaScript file names or change behaviours of handing CSS and JavaScript.
+
+    ```csharp
+    public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+    {
+        public OpenApiCustomUIOptions(Assembly assembly)
+            : base(assembly)
+        {
+        }
+
+        // Declare if you want to change the custom CSS file name.
+        public override string CustomStylesheetPath { get; } = "dist.my-custom.css";
+
+        // Declare if you want to change the custom JavaScript file name.
+        public override string CustomJavaScriptPath { get; } = "dist.my-custom.js";
+
+        // Declare if you want to change the behaviours of handling the custom CSS file.
+        public override async Task<string> GetStylesheetAsync()
+        {
+            // DO SOMETHING BEFORE CALLING THE BASE METHOD
+
+            base.GetStylesheetAsync();
+
+            // DO SOMETHING AFTER CALLING THE BASE METHOD
+        }
+
+        // Declare if you want to change the behaviours of handling the custom JavaScript file.
+        public override async Task<string> GetJavaScriptAsync()
+        {
+            // DO SOMETHING BEFORE CALLING THE BASE METHOD
+
+            base.GetJavaScriptAsync();
+
+            // DO SOMETHING AFTER CALLING THE BASE METHOD
+        }
+    }
+    ```
+
+Either way, your customised CSS and JavaScript will be applied to the Swagger UI page.
+
+
 ## OpenAPI Response Header Customisation ##
 
-Often, custom response headers need to be added. For those custom responses
+Often, custom response headers need to be added. You can use `IOpenApiResponseHeaderType` to add the custom response headers.
+
+```csharp
+// Custom response header type
+public class CustomResponseHeaderType : IOpenApiResponseHeaderType
+{
+    public Dictionary<string, OpenApiHeader> Headers { get; set; } =
+        new Dictionary<string, OpenApiHeader>()
+        {
+            {
+                "x-custom-header",
+                new OpenApiHeader()
+                {
+                    Description = "Custom response header",
+                    Schema = new OpenApiSchema() { Type = "string" }
+                }
+            }
+        };
+}
+
+public static class CustomResponseHeaderHttpTrigger
+{
+    [FunctionName(nameof(CustomResponseHeaderHttpTrigger))]
+    ...
+    [OpenApiResponseWithBody(... HeaderType = typeof(CustomResponseHeaderType))]
+    [OpenApiResponseWithoutBody(... HeaderType = typeof(CustomResponseHeaderType))]
+    public static async Task<IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "GET", Route = null)] HttpRequest req,
+        ILogger log)
+    {
+        ...
+    }
+}
+```
+
 
 ## Decorators ##
 

@@ -90,32 +90,6 @@ namespace MyOpenApiFunctionApp
 ...
 ```
 
-To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
-
-```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
-{
-    public OpenApiInfo Info { get; set; } = new OpenApiInfo()
-    {
-        Version = "1.0.0",
-        Title = "OpenAPI Document on Azure Functions",
-        Description = "HTTP APIs that run on Azure Functions using OpenAPI specification.",
-        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
-        Contact = new OpenApiContact()
-        {
-            Name = "Contoso",
-            Email = "azfunc-openapi@contoso.com",
-            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
-        },
-        License = new OpenApiLicense()
-        {
-            Name = "MIT",
-            Url = new Uri("http://opensource.org/licenses/MIT"),
-        }
-    };
-}
-```
-
 Run the Function app again on your local by running the command below:
 
 ```bash
@@ -225,7 +199,8 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 You have got an Azure Functions app with OpenAPI metadata enabled. In the next articles, you will be able to integrate this OpenAPI-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
-* [Support Azure Functions v1 with OpenAPI Extension][docs v1 suppport]
+* [Customising OpenAPI Document and Swagger UI][docs ui customisation]
+* [Support Azure Functions v1 with OpenAPI Extension][docs v1 support]
 * [Integrating OpenAPI-enabled Azure Functions to Azure API Management][docs apim]
 <!-- * [Integrating OpenAPI-enabled Azure Functions to Power Platform][docs powerplatform] -->
 
@@ -241,6 +216,7 @@ You have got an Azure Functions app with OpenAPI metadata enabled. In the next a
 [image-09]: images/image-09.png
 [image-10]: images/image-10.png
 
+[docs ui customisation]: openapi-core.md#OpenAPI-Metadata-Configuration
 [docs v1 support]: azure-functions-v1-support.md
 [docs apim]: integrate-with-apim.md
 [docs powerplatform]: integrate-with-powerplatform.md
