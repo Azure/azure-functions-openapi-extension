@@ -9,9 +9,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -250,7 +247,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiTypeName(namingStrategy), p => p);
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy), p => p);
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 

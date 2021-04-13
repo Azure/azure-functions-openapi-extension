@@ -2,7 +2,7 @@ using System.Reflection;
 
 using FluentAssertions;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

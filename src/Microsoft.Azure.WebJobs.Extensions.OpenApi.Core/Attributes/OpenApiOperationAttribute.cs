@@ -5,7 +5,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
-    /// This represents the attribute entity for HTTP triggers to define Open API operation.
+    /// This represents the attribute entity for HTTP triggers to define OpenAPI operation.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class OpenApiOperationAttribute : Attribute

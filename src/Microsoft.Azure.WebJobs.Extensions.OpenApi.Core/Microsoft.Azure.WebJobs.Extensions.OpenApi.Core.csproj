@@ -10,8 +10,8 @@
     <Version>1.0.0</Version>
     <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</PackageId>
     <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</Title>
-    <Summary>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Summary>
-    <Description>This package helps render Open API document and Swagger UI through Azure Functions endpoints.</Description>
+    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Summary>
+    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Description>
     <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</RootNamespace>

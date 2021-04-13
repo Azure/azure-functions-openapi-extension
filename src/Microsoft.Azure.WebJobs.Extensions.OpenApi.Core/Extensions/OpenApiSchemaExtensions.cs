@@ -17,7 +17,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
     /// <summary>
     /// This represents the extension entity for <see cref="OpenApiSchema"/>.
     /// </summary>
-    [Obsolete("This extension class is now obsolete", error: true)]
     public static class OpenApiSchemaExtensions
     {
         /// <summary>
@@ -45,7 +44,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="returnSingleSchema">Value indicating whether to return single schema or not.</param>
         /// <param name="depth">Recurring depth.</param>
         /// <returns>Returns <see cref="Dictionary{String, OpenApiSchema}"/> instance.</returns>
-        [Obsolete("This method is now obsolete", error: true)]
         public static Dictionary<string, OpenApiSchema> ToOpenApiSchemas(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null, bool returnSingleSchema = false, int depth = 0)
         {
             type.ThrowIfNullOrDefault();
@@ -293,6 +291,96 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             retVal[schemeName] = schema;
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Checks whether the OpenAPI schema is the object type or not.
+        /// </summary>
+        /// <param name="schema"><see cref="OpenApiSchema"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the OpenAPI schema is the object type; otherwise, returns <c>False</c>.</returns>
+        public static bool IsOpenApiSchemaObject(this OpenApiSchema schema)
+        {
+            if (schema.Type != "object")
+            {
+                return false;
+            }
+
+            if (!schema.Format.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            if (!schema.Items.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            if (!schema.AdditionalProperties.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether the OpenAPI schema is the array type or not.
+        /// </summary>
+        /// <param name="schema"><see cref="OpenApiSchema"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the OpenAPI schema is the array type; otherwise, returns <c>False</c>.</returns>
+        public static bool IsOpenApiSchemaArray(this OpenApiSchema schema)
+        {
+            if (schema.Type != "array")
+            {
+                return false;
+            }
+
+            if (!schema.Format.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            if (!schema.Items.IsNullOrDefault())
+            {
+                return true;
+            }
+
+            if (!schema.AdditionalProperties.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the OpenAPI schema is the dictionary type or not.
+        /// </summary>
+        /// <param name="schema"><see cref="OpenApiSchema"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the OpenAPI schema is the dictionary type; otherwise, returns <c>False</c>.</returns>
+        public static bool IsOpenApiSchemaDictionary(this OpenApiSchema schema)
+        {
+            if (schema.Type != "object")
+            {
+                return false;
+            }
+
+            if (!schema.Format.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+
+            if (!schema.Items.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            if (!schema.AdditionalProperties.IsNullOrDefault())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
-    /// This represents the attribute entity for Open API schema visibility.
+    /// This represents the attribute entity for OpenAPI schema visibility.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false)]
     public class OpenApiSchemaVisibilityAttribute : Attribute

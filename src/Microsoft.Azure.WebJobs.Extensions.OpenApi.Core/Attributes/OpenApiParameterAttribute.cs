@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
-    /// This represents the attribute entity for HTTP triggers to define Open API parameter.
+    /// This represents the attribute entity for HTTP triggers to define OpenAPI parameter.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class OpenApiParameterAttribute : Attribute

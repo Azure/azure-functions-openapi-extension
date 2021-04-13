@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
-    /// This represents the attribute entity for HTTP triggers to define Open API operation.
+    /// This represents the attribute entity for HTTP triggers to define OpenAPI operation.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class OpenApiSecurityAttribute : Attribute
@@ -15,8 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiSecurityAttribute"/> class.
         /// </summary>
-        /// <param name="schemeName">Open API security scheme name.</param>
-        /// <param name="schemeType">Open API security scheme type.</param>
+        /// <param name="schemeName">OpenAPI security scheme name.</param>
+        /// <param name="schemeType">OpenAPI security scheme type.</param>
         public OpenApiSecurityAttribute(string schemeName, SecuritySchemeType schemeType)
         {
             this.SchemeName = schemeName ?? throw new ArgumentNullException(nameof(schemeName));
@@ -24,17 +24,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         }
 
         /// <summary>
-        /// Gets the Open API security scheme name.
+        /// Gets the OpenAPI security scheme name.
         /// </summary>
         public virtual string SchemeName { get; }
 
         /// <summary>
-        /// Gets the Open API security scheme type.
+        /// Gets the OpenAPI security scheme type.
         /// </summary>
         public virtual SecuritySchemeType SchemeType { get; }
 
         /// <summary>
-        /// Gets or sets the Open API security scheme description.
+        /// Gets or sets the OpenAPI security scheme description.
         /// </summary>
         public virtual string Description { get; set; }
 

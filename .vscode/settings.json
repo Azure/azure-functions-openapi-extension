@@ -1,4 +1,5 @@
 {
+  // "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Release/netcoreapp3.1/publish",
   "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Release/netcoreapp3.1/publish",
   "azureFunctions.projectLanguage": "C#",
   "azureFunctions.projectRuntime": "~3",

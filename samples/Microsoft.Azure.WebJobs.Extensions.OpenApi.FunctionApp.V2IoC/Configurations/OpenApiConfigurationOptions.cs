@@ -10,8 +10,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC.Configura
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = "2.0.0",
-            Title = "Open API Sample on Azure Functions (IoC)",
-            Description = "A sample API that runs on Azure Functions (IoC) 3.x using Open API specification.",
+            Title = "OpenAPI Sample on Azure Functions (IoC)",
+            Description = "A sample API that runs on Azure Functions (IoC) 3.x using OpenAPI specification.",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {

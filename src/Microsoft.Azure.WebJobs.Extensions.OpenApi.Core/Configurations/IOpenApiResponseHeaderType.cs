@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
-    /// This provides interfaces to classes implementing Open API response object.
+    /// This provides interfaces to classes implementing OpenAPI response object.
     /// </summary>
     public interface IOpenApiResponseHeaderType
     {

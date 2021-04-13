@@ -5,20 +5,21 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the entity to render UI for Open API.
+    /// This represents the entity to render UI for OpenAPI.
     /// </summary>
     public class SwaggerUI : ISwaggerUI
     {
         private const string SwaggerUITitlePlaceholder = "[[SWAGGER_UI_TITLE]]";
         private const string SwaggerUICssPlaceholder = "[[SWAGGER_UI_CSS]]";
+        private const string SwaggerUICustomCssPlaceholder = "[[SWAGGER_UI_CUSTOM_CSS]]";
         private const string SwaggerUIBundleJsPlaceholder = "[[SWAGGER_UI_BUNDLE_JS]]";
+        private const string SwaggerUICustomJsPlaceholder = "[[SWAGGER_UI_CUSTOM_JS]]";
         private const string SwaggerUIStandalonePresetJsPlaceholder = "[[SWAGGER_UI_STANDALONE_PRESET_JS]]";
         private const string SwaggerUIApiPrefix = "[[SWAGGER_UI_API_PREFIX]]";
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
@@ -32,7 +33,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private OpenApiInfo _info;
         private string _baseUrl;
         private string _swaggerUiCss;
+        private string _swaggerUiCustomCss;
         private string _swaggerUiBundleJs;
+        private string _swaggerUiCustomJs;
         private string _swaggerUiStandalonePresetJs;
         private string _swaggerUiApiPrefix;
         private string _indexHtml;
@@ -73,9 +76,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync()
+        public async Task<ISwaggerUI> BuildAsync(Assembly assembly, IOpenApiCustomUIOptions options = null)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            if (!options.IsNullOrDefault())
+            {
+                this._swaggerUiCustomCss = await options.GetStylesheetAsync();
+                this._swaggerUiCustomJs = await options.GetJavaScriptAsync();
+            }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
             using (var reader = new StreamReader(stream))
@@ -106,10 +113,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildOAuth2RedirectAsync()
+        public async Task<ISwaggerUI> BuildOAuth2RedirectAsync(Assembly assembly)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
             using (var stream = assembly.GetManifestResourceStream(oauth2RedirectHtml))
             using (var reader = new StreamReader(stream))
             {
@@ -152,7 +157,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             var html = this._indexHtml.Replace(SwaggerUITitlePlaceholder, swaggerUiTitle)
                                       .Replace(SwaggerUICssPlaceholder, this._swaggerUiCss)
+                                      .Replace(SwaggerUICustomCssPlaceholder, this._swaggerUiCustomCss)
                                       .Replace(SwaggerUIBundleJsPlaceholder, this._swaggerUiBundleJs)
+                                      .Replace(SwaggerUICustomJsPlaceholder, this._swaggerUiCustomJs)
                                       .Replace(SwaggerUIStandalonePresetJsPlaceholder, this._swaggerUiStandalonePresetJs)
                                       .Replace(SwaggerUrlPlaceholder, swaggerUrl);
 

@@ -9,7 +9,7 @@
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.5.0-preview" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.5.1-preview" />
   </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
@@ -39,6 +39,13 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <!-- Uncomment this block if you want to use custom UI -->
+  <!-- <ItemGroup>
+    <EmbeddedResource Include="dist\my-custom.css" />
+    <EmbeddedResource Include="dist\my-custom.js" />
+  </ItemGroup> -->
+  <!-- Uncomment this block if you want to use custom UI -->
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>

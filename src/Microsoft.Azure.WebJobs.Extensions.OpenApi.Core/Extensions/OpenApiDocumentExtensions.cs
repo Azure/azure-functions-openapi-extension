@@ -37,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     return;
 
                 default:
-                    throw new InvalidOperationException("Invalid Open API version");
+                    throw new InvalidOperationException("Invalid OpenAPI version");
             }
         }
     }

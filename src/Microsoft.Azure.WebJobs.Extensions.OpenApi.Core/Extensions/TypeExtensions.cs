@@ -266,7 +266,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether the given type is array or not, from the Open API perspective.
+        /// Checks whether the given type is array or not, from the OpenAPI perspective.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
@@ -281,7 +281,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether the given type is array or not, from the Open API perspective.
+        /// Checks whether the given type is array or not, from the OpenAPI perspective.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
@@ -341,13 +341,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Gets the Open API reference ID.
+        /// Gets the OpenAPI reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        /// <returns>Returns the Open API reference ID.</returns>
+        /// <returns>Returns the OpenAPI reference ID.</returns>
         public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null)
         {
             if (namingStrategy.IsNullOrDefault())
@@ -357,7 +357,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary || isList)
             {
-                var name = type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
@@ -372,10 +372,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Gets the Open API root reference ID.
+        /// Gets the OpenAPI root reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns the Open API root reference ID.</returns>
+        /// <returns>Returns the OpenAPI root reference ID.</returns>
         public static string GetOpenApiRootReferenceId(this Type type)
         {
             if (!type.IsGenericType)
@@ -420,25 +420,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 underlyingType = type.GetGenericArguments()[1];
             }
 
-            if (underlyingType.IsNullOrDefault())
+            if (underlyingType.IsOpenApiNullable(out var nullableUnderlyingTypeOfUnderlyingType))
             {
-                return underlyingType;
-            }
-
-            if (underlyingType.IsGenericType)
-            {
-                var underlyingTypeOfUnderlyingType = underlyingType.GetUnderlyingType();
-                underlyingType = underlyingTypeOfUnderlyingType;
+                underlyingType = nullableUnderlyingTypeOfUnderlyingType;
             }
 
             return underlyingType;
         }
 
         /// <summary>
-        /// Gets the Open API description from the given <see cref="Type"/>.
+        /// Gets the OpenAPI description from the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns the Open API description from the given <see cref="Type"/>.</returns>
+        /// <returns>Returns the OpenAPI description from the given <see cref="Type"/>.</returns>
         public static string GetOpenApiDescription(this Type type)
         {
             if (type.IsOpenApiDictionary())
