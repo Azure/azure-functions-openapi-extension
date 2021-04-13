@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var rendered = "hello world";
 
             var ui = new Mock<ISwaggerUI>();
-            ui.Setup(p => p.RenderAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(rendered);
+            ui.Setup(p => p.RenderAsync(It.IsAny<string>(), It.IsAny<AuthorizationLevel>(), It.IsAny<string>())).ReturnsAsync(rendered);
 
             var task = Task.FromResult(ui.Object);
 
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var rendered = "hello world";
 
             var ui = new Mock<ISwaggerUI>();
-            ui.Setup(p => p.RenderOAuth2RedirectAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(rendered);
+            ui.Setup(p => p.RenderOAuth2RedirectAsync(It.IsAny<string>(), It.IsAny<AuthorizationLevel>(), It.IsAny<string>())).ReturnsAsync(rendered);
 
             var task = Task.FromResult(ui.Object);
 

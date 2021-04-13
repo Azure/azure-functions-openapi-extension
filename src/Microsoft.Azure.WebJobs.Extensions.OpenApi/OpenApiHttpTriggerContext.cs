@@ -1,7 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
@@ -16,7 +19,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the context entity for <see cref="OpenApiHttpTrigger"/>.
+    /// This represents the context entity for <see cref="OpenApiTriggerFunctionProvider"/>.
     /// </summary>
     [SuppressMessage("Design", "CA1823", Justification = "")]
     [SuppressMessage("Design", "MEN002", Justification = "")]
@@ -26,16 +29,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     [SuppressMessage("Readability Rules", "SX1101", Justification = "")]
     public class OpenApiHttpTriggerContext : IOpenApiHttpTriggerContext
     {
+        private string _dllpath;
+        private Assembly _appAssembly;
+        private IOpenApiConfigurationOptions _configOptions;
+        private IOpenApiCustomUIOptions _uiOptions;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiHttpTrigger"/> class.
+        /// Initializes a new instance of the <see cref="OpenApiTriggerFunctionProvider"/> class.
         /// </summary>
         public OpenApiHttpTriggerContext()
         {
-            this.ApplicationAssembly = this.GetAssembly(this);
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
-
-            this.OpenApiConfigurationOptions = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
-            this.OpenApiCustomUIOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
 
             var host = HostJsonResolver.Resolve();
             this.HttpSettings = host.GetHttpSettings();
@@ -49,16 +53,49 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual Assembly ApplicationAssembly { get; }
+        public virtual Assembly ApplicationAssembly
+        {
+            get
+            {
+                if (this._appAssembly.IsNullOrDefault())
+                {
+                    this._appAssembly = this.GetAssembly(this._dllpath);
+                }
+
+                return this._appAssembly;
+            }
+        }
 
         /// <inheritdoc />
         public virtual Assembly PackageAssembly { get; }
 
         /// <inheritdoc />
-        public virtual IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; }
+        public virtual IOpenApiConfigurationOptions OpenApiConfigurationOptions
+        {
+            get
+            {
+                if (this._configOptions.IsNullOrDefault())
+                {
+                    this._configOptions = OpenApiConfigurationResolver.Resolve(this.ApplicationAssembly);
+                }
+
+                return this._configOptions;
+            }
+        }
 
         /// <inheritdoc />
-        public virtual IOpenApiCustomUIOptions OpenApiCustomUIOptions { get; }
+        public virtual IOpenApiCustomUIOptions OpenApiCustomUIOptions
+        {
+            get
+            {
+                if (this._uiOptions.IsNullOrDefault())
+                {
+                    this._uiOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
+                }
+
+                return this._uiOptions;
+            }
+        }
 
         /// <inheritdoc />
         public virtual HttpSettings HttpSettings { get; }
@@ -73,12 +110,44 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
+        public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
+
+        /// <inheritdoc />
         [Obsolete("This method is obsolete. Use GetAssembly<T>() or GetAssembly(object) instead", error: true)]
         public virtual Assembly GetExecutingAssembly()
         {
             var assembly = Assembly.GetExecutingAssembly();
 
             return assembly;
+        }
+
+        /// <inheritdoc />
+        public virtual IOpenApiHttpTriggerContext SetApplicationAssembly(string functionAppDirectory, bool appendBin = true)
+        {
+            if (!this._dllpath.IsNullOrWhiteSpace())
+            {
+                return this;
+            }
+
+            var file = Directory.GetFiles(functionAppDirectory, "*.deps.json", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            if (file.IsNullOrWhiteSpace())
+            {
+                throw new InvalidOperationException("Invalid function app directory");
+            }
+
+            var pattern = functionAppDirectory;
+            var replacement = $"{functionAppDirectory.TrimEnd(Path.DirectorySeparatorChar)}";
+            if (appendBin)
+            {
+                replacement += $"{Path.DirectorySeparatorChar}bin";
+            }
+
+            var dllpath = file.Replace(pattern, replacement)
+                              .Replace("deps.json", "dll");
+
+            this._dllpath = dllpath;
+
+            return this;
         }
 
         /// <inheritdoc />
@@ -127,6 +196,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public virtual AuthorizationLevel GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document")
+        {
+            var value = Environment.GetEnvironmentVariable(key);
+            var parsed = Enum.TryParse<AuthorizationLevel>(value, out var result) ? result : AuthorizationLevel.Anonymous;
+
+            return parsed;
+        }
+
+        /// <inheritdoc />
+        public virtual AuthorizationLevel GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI")
+        {
+            var value = Environment.GetEnvironmentVariable(key);
+            var parsed = Enum.TryParse<AuthorizationLevel>(value, out var result) ? result : AuthorizationLevel.Anonymous;
+
+            return parsed;
+        }
+
+        /// <inheritdoc />
         public virtual string GetSwaggerAuthKey(string key = "OpenApi__ApiKey")
         {
             var value = Environment.GetEnvironmentVariable(key);
@@ -150,6 +237,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         private Assembly GetAssembly(Type type)
         {
             var assembly = type.Assembly;
+
+            return assembly;
+        }
+
+        private Assembly GetAssembly(string dllpath)
+        {
+            var assembly = Assembly.LoadFile(dllpath);
 
             return assembly;
         }

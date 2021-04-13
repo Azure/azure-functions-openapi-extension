@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
@@ -57,11 +58,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         NamingStrategy NamingStrategy { get; }
 
         /// <summary>
+        /// Gets the value indicating whether it's in the development environment or not.
+        /// </summary>
+        bool IsDevelopment { get; }
+
+        /// <summary>
         /// Gets the executing assembly.
         /// </summary>
         /// <returns>Returns the executing assembly.</returns>
         [Obsolete("This method is obsolete.", error: true)]
         Assembly GetExecutingAssembly();
+
+        /// <summary>
+        /// Sets the application assembly from the function app directory.
+        /// </summary>
+        /// <param name="functionAppDirectory">Function app directory.</param>
+        /// <param name="appendBin">Value indicating whether to append the "bin" directory or not.</param>
+        IOpenApiHttpTriggerContext SetApplicationAssembly(string functionAppDirectory, bool appendBin = true);
 
         /// <summary>
         /// Gets the <see cref="VisitorCollection"/> instance.
@@ -96,6 +109,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="format"><see cref="OpenApiFormatType"/> value.</param>
         /// <returns>Returns the <see cref="OpenApiFormat"/> value.</returns>
         OpenApiFormat GetOpenApiFormat(OpenApiFormatType format = OpenApiFormatType.Json);
+
+        /// <summary>
+        /// Gets the auth level of the document rendering page endpoint.
+        /// </summary>
+        /// <param name="key">Environment variables key to look for.</param>
+        /// <returns>Returns the auth level of the document rendering page endpoint.</returns>
+        AuthorizationLevel GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document");
+
+        /// <summary>
+        /// Gets the auth level of the UI rendering page endpoint.
+        /// </summary>
+        /// <param name="key">Environment variables key to look for.</param>
+        /// <returns>Returns the auth level of the UI rendering page endpoint.</returns>
+        AuthorizationLevel GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI");
 
         /// <summary>
         /// Gets the API key for endpoints from environment variables.

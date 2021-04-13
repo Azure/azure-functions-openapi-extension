@@ -47,12 +47,4 @@
   </ItemGroup> -->
   <!-- Uncomment this block if you want to use custom UI -->
 
-  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-  <ItemGroup>
-    <Compile Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs" />
-    <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs" />
-    <Compile Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs" />
-  </ItemGroup>
-  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-
 </Project>
