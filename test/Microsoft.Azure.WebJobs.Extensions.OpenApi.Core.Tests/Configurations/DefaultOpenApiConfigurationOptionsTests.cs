@@ -1,7 +1,7 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
@@ -20,6 +20,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             settings.Servers.Should().NotBeNull();
             settings.Servers.Should().HaveCount(0);
+
+            settings.OpenApiVersion.Should().Be(OpenApiVersionType.V2);
         }
     }
 }
