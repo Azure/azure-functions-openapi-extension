@@ -132,11 +132,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             return functionMetadata;
         }
 
-        private const string V2 = "v2";
-        private const string V3 = "v3";
-        private const string JSON = "json";
-        private const string YAML = "yaml";
-
         private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
@@ -152,7 +147,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation($"swagger.{extension} was requested.");
 
-            var result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+            var result = default(string);
+            var content = default(ContentResult);
+            try
+            {
+                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
@@ -160,15 +159,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly)
-                                      .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(extension))
+                                      .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
-            var content = new ContentResult()
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = context.GetOpenApiFormat(extension).GetContentType(),
+                    StatusCode = (int)HttpStatusCode.OK,
+                };
+            }
+            catch (Exception ex)
             {
-                Content = result,
-                ContentType = context.GetOpenApiFormat(extension).GetContentType(),
-                StatusCode = (int)HttpStatusCode.OK
-            };
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/plain",
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                };
+            }
 
             return content;
         }
@@ -187,7 +204,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation($"{version}.{extension} was requested.");
 
-            var result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+            var result = default(string);
+            var content = default(ContentResult);
+            try
+            {
+                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
@@ -198,12 +219,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
-            var content = new ContentResult()
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = context.GetOpenApiFormat(extension).GetContentType(),
+                    StatusCode = (int)HttpStatusCode.OK,
+                };
+            }
+            catch (Exception ex)
             {
-                Content = result,
-                ContentType = context.GetOpenApiFormat(extension).GetContentType(),
-                StatusCode = (int)HttpStatusCode.OK
-            };
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/plain",
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                };
+            }
 
             return content;
         }
@@ -220,7 +259,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation("SwaggerUI page was requested.");
 
-            var result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+            var result = default(string);
+            var content = default(ContentResult);
+            try
+            {
+                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
                                       .SwaggerUI
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
@@ -228,12 +271,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .RenderAsync("swagger.json", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
-            var content = new ContentResult()
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/html",
+                    StatusCode = (int)HttpStatusCode.OK,
+                };
+            }
+            catch (Exception ex)
             {
-                Content = result,
-                ContentType = "text/html",
-                StatusCode = (int)HttpStatusCode.OK
-            };
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/plain",
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                };
+            }
 
             return content;
         }
@@ -250,19 +311,41 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation("The oauth2-redirect.html page was requested.");
 
-            var result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+            var result = default(string);
+            var content = default(ContentResult);
+            try
+            {
+                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
                                       .SwaggerUI
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildOAuth2RedirectAsync(context.PackageAssembly)
                                       .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
-            var content = new ContentResult()
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/html",
+                    StatusCode = (int)HttpStatusCode.OK,
+                };
+            }
+            catch (Exception ex)
             {
-                Content = result,
-                ContentType = "text/html",
-                StatusCode = (int)HttpStatusCode.OK
-            };
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                content = new ContentResult()
+                {
+                    Content = result,
+                    ContentType = "text/plain",
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                };
+            }
 
             return content;
         }

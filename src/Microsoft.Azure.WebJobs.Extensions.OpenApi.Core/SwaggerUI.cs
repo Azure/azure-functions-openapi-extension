@@ -191,7 +191,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             if (authKey.IsNullOrWhiteSpace())
             {
-                throw new InvalidOperationException("API key is required");
+                throw new InvalidOperationException("API key is required to access OpenAPI document");
             }
 
             return true;

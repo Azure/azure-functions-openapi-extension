@@ -110,6 +110,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
+        public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
+
+        /// <inheritdoc />
         [Obsolete("This method is obsolete. Use GetAssembly<T>() or GetAssembly(object) instead", error: true)]
         public virtual Assembly GetExecutingAssembly()
         {

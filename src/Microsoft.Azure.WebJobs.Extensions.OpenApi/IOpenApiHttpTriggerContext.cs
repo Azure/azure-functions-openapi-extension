@@ -58,6 +58,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         NamingStrategy NamingStrategy { get; }
 
         /// <summary>
+        /// Gets the value indicating whether it's in the development environment or not.
+        /// </summary>
+        bool IsDevelopment { get; }
+
+        /// <summary>
         /// Gets the executing assembly.
         /// </summary>
         /// <returns>Returns the executing assembly.</returns>

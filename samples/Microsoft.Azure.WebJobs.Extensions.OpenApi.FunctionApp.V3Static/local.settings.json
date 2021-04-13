@@ -8,8 +8,8 @@
 
     "OpenApi__HideSwaggerUI": "false",
     "OpenApi__ApiKey": "",
-    "OpenApi__AuthLevel__Document": "Function",
-    "OpenApi__AuthLevel__UI": "Function",
+    "OpenApi__AuthLevel__Document": "Anonymous",
+    "OpenApi__AuthLevel__UI": "Anonymous",
     "OpenApi__BackendProxyUrl": "http://localhost:7071"
   }
 }
