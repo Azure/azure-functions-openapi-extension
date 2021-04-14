@@ -190,11 +190,11 @@ Either way, your customised CSS and JavaScript will be applied to the Swagger UI
 
 ## OpenAPI Response Header Customisation ##
 
-Often, custom response headers need to be added. You can use `IOpenApiResponseHeaderType` to add the custom response headers.
+Often, custom response headers need to be added. You can use `IOpenApiCustomResponseHeader` to add the custom response headers.
 
 ```csharp
 // Custom response header type
-public class CustomResponseHeaderType : IOpenApiResponseHeaderType
+public class CustomResponseHeader : IOpenApiCustomResponseHeader
 {
     public Dictionary<string, OpenApiHeader> Headers { get; set; } =
         new Dictionary<string, OpenApiHeader>()
@@ -214,8 +214,8 @@ public static class CustomResponseHeaderHttpTrigger
 {
     [FunctionName(nameof(CustomResponseHeaderHttpTrigger))]
     ...
-    [OpenApiResponseWithBody(... HeaderType = typeof(CustomResponseHeaderType))]
-    [OpenApiResponseWithoutBody(... HeaderType = typeof(CustomResponseHeaderType))]
+    [OpenApiResponseWithBody(... HeaderType = typeof(CustomResponseHeader))]
+    [OpenApiResponseWithoutBody(... HeaderType = typeof(CustomResponseHeader))]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "GET", Route = null)] HttpRequest req,
         ILogger log)

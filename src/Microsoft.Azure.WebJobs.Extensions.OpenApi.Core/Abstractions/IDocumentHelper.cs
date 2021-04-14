@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;

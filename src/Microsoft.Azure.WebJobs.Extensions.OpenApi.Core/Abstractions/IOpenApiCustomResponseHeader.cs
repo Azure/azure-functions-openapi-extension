@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using Microsoft.OpenApi.Models;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
     /// This provides interfaces to classes implementing OpenAPI response object.
