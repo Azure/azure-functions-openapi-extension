@@ -19,131 +19,36 @@ While using this library, if you find any issue, please raise a ticket on the [I
 
 ## Getting Started ##
 
-### Install NuGet Package ###
-
-In order for your Azure Functions app to enable OpenAPI capability, download the following NuGet package into your Azure Functions project.
-
-```bash
-dotnet add <PROJECT> package Microsoft.Azure.WebJobs.Extensions.OpenApi
-```
+For detailed getting started document, find this [Enable OpenAPI Endpoints on Azure Functions (Preview)](enable-open-api-endpoints.md) page.
 
 
-### Change Authorization Level ###
+### Configure Authorization Level ###
 
-As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`.
+As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`. However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter. This can be done through the environment variables. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
 
-
-```csharp
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerDocument(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger.{extension}")] HttpRequest req,
-    string extension,
-    ILogger log)
+```json
 {
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderOpenApiDocument(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
-    string version,
-    string extension,
-    ILogger log)
-{
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerUI(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequest req,
-    ILogger log)
-{
-    ...
+  "Values": {
+    "OpenApi__ApiKey": "",
+    "OpenApi__AuthLevel__Document": "Anonymous",
+    "OpenApi__AuthLevel__UI": "Anonymous"
+  }
 }
 ```
 
-However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter.
+You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi_AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error. Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
 
-> **NOTE**: To change this authorisation level, you MUST install the `Microsoft.Azure.WebJobs.Extensions.OpenApi.Core` package, instead of `Microsoft.Azure.WebJobs.Extensions.OpenApi`, and copy those three files from the source codes to your application:
-> 
-> * `templates/OpenApiEndpoints/IOpenApiHttpTriggerContext.cs`
-> * `templates/OpenApiEndpoints/OpenApiHttpTrigger.cs`
-> * `templates/OpenApiEndpoints/OpenApiHttpTriggerContext.cs`
 
-```csharp
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.{extension}")] HttpRequest req,
-    string extension,
-    ILogger log)
+### Configure Swagger UI Visibility ###
+
+You may want to only enable the Swagger UI page during the development time, and disable the page when publishing it to Azure. You can configure an environment variable to enable/disable the Swagger UI page. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
 {
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderOpenApiDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
-    string version,
-    string extension,
-    ILogger log)
-{
-    ...
-}
-
-[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerUI(
-    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequest req,
-    ILogger log)
-{
-    ...
+  "Values": {
+    "OpenApi__HideSwaggerUI": "false"
+  }
 }
 ```
 
-
-### Configure App Settings Key ###
-
-This key is only required if:
-
-* The Function app is deployed to Azure, and
-* The OpenAPI related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
-
-If the above conditions are met, add the following key to your `local.settings.json` or App Settings blade on Azure.
-
-* `OpenApi__ApiKey`: either the host key value or the master key value.
-
-> **NOTE**: It is NOT required if your OpenAPI related endpoints are set to the authorisation level of `Anonymous`.
-
-
-## OpenAPI Metadata Configuration ##
-
-To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
-
-```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
-{
-    public OpenApiInfo Info { get; set; } = new OpenApiInfo()
-    {
-        Version = "1.0.0",
-        Title = "OpenAPI Document on Azure Functions",
-        Description = "HTTP APIs that run on Azure Functions using OpenAPI specification.",
-        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
-        Contact = new OpenApiContact()
-        {
-            Name = "Contoso",
-            Email = "azfunc-openapi@contoso.com",
-            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
-        },
-        License = new OpenApiLicense()
-        {
-            Name = "MIT",
-            Url = new Uri("http://opensource.org/licenses/MIT"),
-        }
-    };
-}
-```
+If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won't be showing up, and you will see the 404 error. The default value is `false`.
