@@ -64,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
                 return;
             }
 
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns("http");
             req.SetupGet(p => p.Host).Returns(new HostString("localhost", 7071));
 

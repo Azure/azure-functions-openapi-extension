@@ -4,9 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
@@ -64,7 +62,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public IDocument AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null)
+        public IDocument AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";

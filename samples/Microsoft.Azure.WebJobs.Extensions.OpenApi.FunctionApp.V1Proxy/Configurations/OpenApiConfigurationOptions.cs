@@ -11,7 +11,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.Configu
         {
             Version = "1.0.0",
             Title = "OpenAPI Sample on Azure Functions Proxy for v1",
-            Description = "A sample API that runs on Azure Functions 1.x using OpenAPI specification.",
+            Description = "A sample API that runs on Azure Functions 3.x using OpenAPI specification that proxies Azure Functions v1.",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {

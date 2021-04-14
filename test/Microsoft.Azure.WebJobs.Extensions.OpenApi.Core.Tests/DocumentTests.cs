@@ -7,7 +7,6 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -114,7 +113,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var routePrefix = "api";
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
@@ -140,7 +139,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var host = "localhost";
             var routePrefix = "api";
 
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
@@ -170,7 +169,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             string routePrefix = null;
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
@@ -197,7 +196,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var routePrefix = string.Empty;
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
