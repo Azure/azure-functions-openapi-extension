@@ -11,7 +11,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static.Config
         {
             Version = "2.0.0",
             Title = "OpenAPI Sample on Azure Functions (STATIC)",
-            Description = "A sample API that runs on Azure Functions (STATIC) 3.x using OpenAPI specification.",
+            Description = "A sample API that runs on Azure Functions (STATIC) 2.x using OpenAPI specification.",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {

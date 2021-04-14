@@ -39,22 +39,4 @@
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
 
-  <!-- <ItemGroup>
-    <Content Include="..\..\templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs">
-      <Pack>true</Pack>
-      <BuildAction>Compile</BuildAction>
-      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
-    </Content>
-    <Content Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs">
-      <Pack>true</Pack>
-      <BuildAction>Compile</BuildAction>
-      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
-    </Content>
-    <Content Include="..\..\templates\OpenApiEndpoints\OpenApiHttpTrigger.cs">
-      <Pack>true</Pack>
-      <BuildAction>Compile</BuildAction>
-      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
-    </Content>
-  </ItemGroup> -->
-
 </Project>
