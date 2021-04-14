@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.ResponseHeaders
