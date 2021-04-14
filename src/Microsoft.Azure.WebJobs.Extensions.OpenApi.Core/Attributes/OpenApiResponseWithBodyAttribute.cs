@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// <summary>
         /// Gets or sets the type containing the collection of the additional response headers.
         /// </summary>
-        public virtual Type HeaderType { get; set; }
+        public virtual Type CustomHeaderType { get; set; }
 
         /// <summary>
         /// Gets or sets the summary.

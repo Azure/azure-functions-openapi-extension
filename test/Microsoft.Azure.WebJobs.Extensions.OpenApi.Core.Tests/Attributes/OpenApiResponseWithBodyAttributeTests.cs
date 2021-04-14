@@ -36,8 +36,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         }
 
         [DataTestMethod]
-        [DataRow("Lorem Ipsum", "Hello World", true, typeof(FakeResponseHeaderType))]
-        [DataRow("Lorem Ipsum", "Hello World", false, typeof(FakeResponseHeaderType))]
+        [DataRow("Lorem Ipsum", "Hello World", true, typeof(FakeResponseHeader))]
+        [DataRow("Lorem Ipsum", "Hello World", false, typeof(FakeResponseHeader))]
         public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, bool deprecated, Type headerType)
         {
             var statusCode = HttpStatusCode.OK;
@@ -48,13 +48,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
                 Summary = summary,
                 Description = description,
                 Deprecated = deprecated,
-                HeaderType = headerType,
+                CustomHeaderType = headerType,
             };
 
             attribute.Summary.Should().Be(summary);
             attribute.Description.Should().Be(description);
             attribute.Deprecated.Should().Be(deprecated);
-            attribute.HeaderType.Should().Be(headerType);
+            attribute.CustomHeaderType.Should().Be(headerType);
         }
     }
 }

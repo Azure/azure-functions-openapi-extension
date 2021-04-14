@@ -24,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         }
 
         [DataTestMethod]
-        [DataRow("Hello World", "Lorem Ipsum", typeof(FakeResponseHeaderType))]
+        [DataRow("Hello World", "Lorem Ipsum", typeof(FakeResponseHeader))]
         public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, Type headerType)
         {
             var statusCode = HttpStatusCode.OK;
@@ -32,12 +32,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
             {
                 Summary = summary,
                 Description = description,
-                HeaderType = headerType,
+                CustomHeaderType = headerType,
             };
 
             attribute.Summary.Should().Be(summary);
             attribute.Description.Should().Be(description);
-            attribute.HeaderType.Should().Be(headerType);
+            attribute.CustomHeaderType.Should().Be(headerType);
         }
     }
 }

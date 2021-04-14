@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using FluentAssertions;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -142,17 +141,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Null_When_HasInterface_Invoked_Then_It_Should_Return_False()
         {
-            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(null);
+            var result = TypeExtensions.HasInterface<IOpenApiCustomResponseHeader>(null);
             result.Should().BeFalse();
 
-            result = TypeExtensions.HasInterface(null, "IOpenApiResponseHeaderType");
+            result = TypeExtensions.HasInterface(null, "IOpenApiCustomResponseHeader");
             result.Should().BeFalse();
         }
 
         [TestMethod]
         public void Given_Invalid_TypeReference_When_HasInterface_Invoked_Then_It_Should_Return_Result()
         {
-            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(typeof(FakeModel));
+            var result = TypeExtensions.HasInterface<IOpenApiCustomResponseHeader>(typeof(FakeModel));
 
             result.Should().BeFalse();
         }
@@ -160,17 +159,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Valid_TypeReference_When_HasInterface_Invoked_Then_It_Should_Return_Result()
         {
-            var result = TypeExtensions.HasInterface<IOpenApiResponseHeaderType>(typeof(FakeResponseHeaderType));
+            var result = TypeExtensions.HasInterface<IOpenApiCustomResponseHeader>(typeof(FakeResponseHeader));
 
             result.Should().BeTrue();
         }
 
         [DataTestMethod]
         [DataRow(typeof(FakeModel), false)]
-        [DataRow(typeof(FakeResponseHeaderType), true)]
+        [DataRow(typeof(FakeResponseHeader), true)]
         public void Given_Type_When_HasInterface_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
-            var result = TypeExtensions.HasInterface(type, "IOpenApiResponseHeaderType");
+            var result = TypeExtensions.HasInterface(type, "IOpenApiCustomResponseHeader");
 
             result.Should().Be(expected);
         }

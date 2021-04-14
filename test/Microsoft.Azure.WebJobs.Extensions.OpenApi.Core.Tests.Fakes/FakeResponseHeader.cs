@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
 {
-    public class FakeResponseHeaderType : IOpenApiResponseHeaderType
+    public class FakeResponseHeader : IOpenApiCustomResponseHeader
     {
         /// <inheritdoc/>
         public Dictionary<string, OpenApiHeader> Headers { get; set; } = new Dictionary<string, OpenApiHeader>()
