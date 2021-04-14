@@ -199,6 +199,7 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 You have got an Azure Functions app with OpenAPI metadata enabled. In the next articles, you will be able to integrate this OpenAPI-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
+* [Configuring OpenAPI Document and Swagger UI Permission and Visibility][docs ui configuration]
 * [Customising OpenAPI Document and Swagger UI][docs ui customisation]
 * [Support Azure Functions v1 with OpenAPI Extension][docs v1 support]
 * [Integrating OpenAPI-enabled Azure Functions to Azure API Management][docs apim]
@@ -216,6 +217,7 @@ You have got an Azure Functions app with OpenAPI metadata enabled. In the next a
 [image-09]: images/image-09.png
 [image-10]: images/image-10.png
 
+[docs ui configuration]: openapi.md#Configure-Authorization-Level
 [docs ui customisation]: openapi-core.md#OpenAPI-Metadata-Configuration
 [docs v1 support]: azure-functions-v1-support.md
 [docs apim]: integrate-with-apim.md
