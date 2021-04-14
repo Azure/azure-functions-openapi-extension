@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -39,9 +38,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 response.Extensions.Add("x-ms-summary", summary);
             }
 
-            if (attribute.HeaderType.HasInterface<IOpenApiResponseHeaderType>())
+            if (attribute.CustomHeaderType.HasInterface<IOpenApiCustomResponseHeader>())
             {
-                var header = Activator.CreateInstance(attribute.HeaderType) as IOpenApiResponseHeaderType;
+                var header = Activator.CreateInstance(attribute.CustomHeaderType) as IOpenApiCustomResponseHeader;
 
                 response.Headers = header.Headers;
             }

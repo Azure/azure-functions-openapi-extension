@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [DataTestMethod]
-        [DataRow("Lorem Ipsum", "Hello World", typeof(FakeResponseHeaderType))]
+        [DataRow("Lorem Ipsum", "Hello World", typeof(FakeResponseHeader))]
         public void Given_Properties_When_ToOpenApiResponse_Invoked_Then_It_Should_Return_Value(string summary, string description, Type headerType)
         {
             var statusCode = HttpStatusCode.OK;
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             {
                 Summary = summary,
                 Description = description,
-                HeaderType = headerType,
+                CustomHeaderType = headerType,
             };
 
             var result = OpenApiResponseWithBodyAttributeExtensions.ToOpenApiResponse(attribute);
