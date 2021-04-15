@@ -79,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 
         [DataTestMethod]
         [DataRow(OpenApiFormat.Json, "application/json")]
-        [DataRow(OpenApiFormat.Yaml, "application/yaml")]
+        [DataRow(OpenApiFormat.Yaml, "text/vnd.yaml")]
         public void Given_OpenApiFormat_When_GetContentType_Invoked_Then_It_Should_Return_Result(OpenApiFormat format, string expected)
         {
             var result = EnumExtensions.GetContentType(format);
