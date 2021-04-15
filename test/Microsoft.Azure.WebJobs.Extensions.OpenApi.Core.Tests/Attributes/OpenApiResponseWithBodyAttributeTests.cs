@@ -36,9 +36,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         }
 
         [DataTestMethod]
-        [DataRow("Lorem Ipsum", "Hello World", true, typeof(FakeResponseHeader))]
-        [DataRow("Lorem Ipsum", "Hello World", false, typeof(FakeResponseHeader))]
-        public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, bool deprecated, Type headerType)
+        [DataRow("Lorem Ipsum", "Hello World", true, typeof(FakeResponseHeader), typeof(FakeExample))]
+        [DataRow("Lorem Ipsum", "Hello World", false, typeof(FakeResponseHeader), typeof(FakeExample))]
+        public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, bool deprecated, Type headerType, Type example)
         {
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
@@ -49,12 +49,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
                 Description = description,
                 Deprecated = deprecated,
                 CustomHeaderType = headerType,
+                Example = example,
             };
 
             attribute.Summary.Should().Be(summary);
             attribute.Description.Should().Be(description);
             attribute.Deprecated.Should().Be(deprecated);
             attribute.CustomHeaderType.Should().Be(headerType);
+            attribute.Example.Should().Be(example);
         }
     }
 }

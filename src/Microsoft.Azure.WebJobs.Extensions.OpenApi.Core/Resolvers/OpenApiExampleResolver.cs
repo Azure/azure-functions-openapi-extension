@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
 {
@@ -13,16 +14,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
     /// </summary>
     public static class OpenApiExampleResolver
     {
+        private static JsonSerializerSettings settings = new JsonSerializerSettings();
+
         /// <summary>
         /// Create a new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="name">Name of the example</param>
         /// <param name="instance">Example object.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <typeparam name="T">Type of the example object.</typeparam>
         /// <returns>Returns the new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class. </returns>
-        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, T instance)
+        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, T instance, NamingStrategy namingStrategy = null)
         {
-            return Resolve(name, null, instance);
+            return Resolve(name, null, instance, namingStrategy);
         }
 
         /// <summary>
@@ -31,11 +35,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <param name="name">Name of the example</param>
         /// <param name="summary">Summary of the example</param>
         /// <param name="instance">Example object.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <typeparam name="T">Type of the example object.</typeparam>
         /// <returns>Returns the new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class. </returns>
-        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, T instance)
+        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, T instance, NamingStrategy namingStrategy = null)
         {
-            return Resolve(name, summary, null, instance);
+            return Resolve(name, summary, null, instance, namingStrategy);
         }
 
         /// <summary>
@@ -45,18 +50,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <param name="summary">Summary of the example</param>
         /// <param name="description">Description of the example</param>
         /// <param name="instance">Example object.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <typeparam name="T">Type of the example object.</typeparam>
         /// <returns>Returns the new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class. </returns>
-        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, string description, T instance)
+        public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, string description, T instance, NamingStrategy namingStrategy = null)
         {
             name.ThrowIfNullOrWhiteSpace();
             instance.ThrowIfNullOrDefault();
+
+            var resolver = new DefaultContractResolver() { NamingStrategy = namingStrategy ?? new DefaultNamingStrategy() };
+            settings.ContractResolver = resolver;
 
             var example = new OpenApiExample()
             {
                 Summary = summary,
                 Description = description,
-                Value = new OpenApiString(JsonConvert.SerializeObject(instance)),
+                Value = new OpenApiString(JsonConvert.SerializeObject(instance, settings)),
             };
             var kvp = new KeyValuePair<string, OpenApiExample>(name, example);
 

@@ -1,5 +1,7 @@
 using System;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
 {
     /// <summary>
@@ -32,5 +34,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the description.
         /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the example. It SHOULD be inheriting the <see cref="OpenApiExample{T}"/> class.
+        /// </summary>
+        public virtual Type Example { get; set; }
     }
 }

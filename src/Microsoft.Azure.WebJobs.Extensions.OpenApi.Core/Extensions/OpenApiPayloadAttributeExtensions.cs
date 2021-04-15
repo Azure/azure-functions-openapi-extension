@@ -1,6 +1,7 @@
+using System;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -62,6 +63,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             var mediaType = new OpenApiMediaType() { Schema = schema };
+
+            if (attribute.Example.IsNullOrDefault())
+            {
+                return mediaType;
+            }
+
+            if (!attribute.Example.HasInterface("IOpenApiExample`1"))
+            {
+                return mediaType;
+            }
+
+            var example = (dynamic)Activator.CreateInstance(attribute.Example);
+            var examples = example.Build().Examples;
+
+            mediaType.Examples = examples;
 
             return mediaType;
         }

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
@@ -18,7 +20,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Builds the example.
         /// </summary>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <returns>Returns <see cref="IOpenApiExample{T}"/> instance.</returns>
-        IOpenApiExample<T> Build();
+        IOpenApiExample<T> Build(NamingStrategy namingStrategy = null);
     }
 }

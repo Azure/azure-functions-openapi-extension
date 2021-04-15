@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Examples;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.ResponseHeaders;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -58,9 +59,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static
         [FunctionName(nameof(DummyHttpTrigger.UpdateDummies))]
         [OpenApiOperation(operationId: "updateDummies", tags: new[] { "dummy" }, Summary = "Updates a list of dummies", Description = "This updates a list of dummies.", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(DummyListModel), Required = true, Description = "Dummy list model")]
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(DummyListModel), Example = typeof(DummyListModelExample), Required = true, Description = "Dummy list model")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DummyArrayResponseModel), Summary = "Dummy response", Description = "This returns the dummy response", Deprecated = true, CustomHeaderType = typeof(DummyResponseHeader))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyStringModel>), Summary = "Dummy response", Description = "This returns the dummy response", CustomHeaderType = typeof(DummyResponseHeader))]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DummyStringModel), Summary = "Dummy response", Description = "This returns the dummy response", Deprecated = true, CustomHeaderType = typeof(DummyResponseHeader))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DummyStringModel), Example = typeof(DummyStringModelExample), Summary = "Dummy response", Description = "This returns the dummy response", CustomHeaderType = typeof(DummyResponseHeader))]
         public static async Task<IActionResult> UpdateDummies(
             [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequest req,
             ILogger log)
