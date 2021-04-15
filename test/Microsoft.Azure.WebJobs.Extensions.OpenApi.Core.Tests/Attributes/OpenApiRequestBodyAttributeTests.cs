@@ -3,6 +3,7 @@ using System;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
@@ -31,11 +32,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         }
 
         [DataTestMethod]
-        [DataRow("Lorem Ipsum", true, true)]
-        [DataRow("Lorem Ipsum", true, false)]
-        [DataRow("Lorem Ipsum", false, true)]
-        [DataRow("Lorem Ipsum", false, false)]
-        public void Given_Properties_When_Instantiated_It_Should_Return_Value(string description, bool required, bool deprecated)
+        [DataRow("Lorem Ipsum", true, true, typeof(FakeExample))]
+        [DataRow("Lorem Ipsum", true, false, typeof(FakeExample))]
+        [DataRow("Lorem Ipsum", false, true, typeof(FakeExample))]
+        [DataRow("Lorem Ipsum", false, false, typeof(FakeExample))]
+        public void Given_Properties_When_Instantiated_It_Should_Return_Value(string description, bool required, bool deprecated, Type example)
         {
             var contentType = "Hello World";
             var bodyType = typeof(object);
@@ -44,11 +45,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
                 Description = description,
                 Required = required,
                 Deprecated = deprecated,
+                Example = example
             };
 
             attribute.Description.Should().Be(description);
             attribute.Required.Should().Be(required);
             attribute.Deprecated.Should().Be(deprecated);
+            attribute.Example.Should().Be(example);
         }
     }
 }

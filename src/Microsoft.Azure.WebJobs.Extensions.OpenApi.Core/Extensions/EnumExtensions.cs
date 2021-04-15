@@ -175,7 +175,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     return "application/json";
 
                 case OpenApiFormat.Yaml:
-                    return "application/yaml";
+                    // https://mailarchive.ietf.org/arch/msg/media-types/e9ZNC0hDXKXeFlAVRWxLCCaG9GI/
+                    // "application/x-yaml", "text/yaml", "text/x-yaml" are deprecated.
+                    return "text/vnd.yaml";
 
                 default:
                     throw new InvalidOperationException("Invalid OpenAPI format");

@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

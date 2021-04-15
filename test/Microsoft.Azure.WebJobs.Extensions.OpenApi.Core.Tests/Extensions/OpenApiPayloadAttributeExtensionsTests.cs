@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 using FluentAssertions;
@@ -7,6 +8,8 @@ using FluentAssertions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Serialization;
@@ -64,6 +67,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [DataTestMethod]
+        [DataRow(null, 0)]
+        [DataRow(typeof(FakeModel), 0)]
+        [DataRow(typeof(FakeExample), 3)]
+        public void Given_OpenApiRequestBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count)
+        {
+            var contentType = "application/json";
+            var bodyType = typeof(object);
+            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType)
+            {
+                Example = example,
+            };
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
+
+            result.Examples.Should().NotBeNull();
+            result.Examples.Should().HaveCount(count);
+        }
+
+        [DataTestMethod]
         [DataRow(typeof(string), "string", false, false, null)]
         [DataRow(typeof(FakeModel), "object", false, false, null)]
         [DataRow(typeof(List<string>), "array", true, false, "string")]
@@ -117,6 +140,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
 
             result.Schema.Deprecated.Should().Be(deprecated);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, 0)]
+        [DataRow(typeof(FakeModel), 0)]
+        [DataRow(typeof(FakeExample), 3)]
+        public void Given_OpenApiResponseWithBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count)
+        {
+            var statusCode = HttpStatusCode.OK;
+            var contentType = "application/json";
+            var bodyType = typeof(object);
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            {
+                Example = example,
+            };
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
+
+            result.Examples.Should().NotBeNull();
+            result.Examples.Should().HaveCount(count);
+
+            if (count == 0)
+            {
+                return;
+            }
+
+            var instance = (dynamic)Activator.CreateInstance(example);
+            var examples = (IDictionary<string, OpenApiExample>)instance.Build(namingStrategy).Examples;
+            var first = examples.First().Value;
+
+            (result.Example as OpenApiString).Value.Should().Be((first.Value as OpenApiString).Value);
         }
     }
 }

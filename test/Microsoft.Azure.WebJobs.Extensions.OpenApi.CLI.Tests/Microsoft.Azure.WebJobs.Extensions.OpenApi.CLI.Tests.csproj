@@ -4,6 +4,9 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
