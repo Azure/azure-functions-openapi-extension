@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
@@ -75,9 +77,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             var example = (dynamic)Activator.CreateInstance(attribute.Example);
-            var examples = example.Build().Examples;
+            var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
 
             mediaType.Examples = examples;
+            mediaType.Example = examples.First().Value.Value;
 
             return mediaType;
         }

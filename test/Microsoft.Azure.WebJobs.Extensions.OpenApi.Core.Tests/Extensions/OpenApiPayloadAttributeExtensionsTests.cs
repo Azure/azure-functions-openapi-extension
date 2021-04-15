@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 using FluentAssertions;
@@ -7,6 +8,8 @@ using FluentAssertions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Serialization;
@@ -158,6 +161,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 
             result.Examples.Should().NotBeNull();
             result.Examples.Should().HaveCount(count);
+
+            if (count == 0)
+            {
+                return;
+            }
+
+            var instance = (dynamic)Activator.CreateInstance(example);
+            var examples = (IDictionary<string, OpenApiExample>)instance.Build(namingStrategy).Examples;
+            var first = examples.First().Value;
+
+            (result.Example as OpenApiString).Value.Should().Be((first.Value as OpenApiString).Value);
         }
     }
 }
