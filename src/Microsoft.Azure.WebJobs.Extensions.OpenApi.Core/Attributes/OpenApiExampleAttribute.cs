@@ -19,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         }
 
         /// <summary>
-        /// Gets the type of the example. It MUST be inheriting the <see cref="OpenApiExample{T}"/> class.
+        /// Gets the type of the example. It SHOULD be inheriting the <see cref="OpenApiExample{T}"/> class.
         /// </summary>
         public virtual Type Example { get; }
     }
