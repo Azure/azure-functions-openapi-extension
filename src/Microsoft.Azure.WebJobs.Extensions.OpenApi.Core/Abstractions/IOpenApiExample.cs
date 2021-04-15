@@ -8,12 +8,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
     /// This provides interfaces to classes to render example data.
     /// </summary>
     /// <typeparam name="T">Type of the example object.</typeparam>
-    public interface IExample<T>
+    public interface IOpenApiExample<T>
     {
         /// <summary>
         /// Gets the collection of the <see cref="OpenApiExample"/> objects.
         /// </summary>
-        /// <returns>Returns thecollection of the <see cref="OpenApiExample"/> objects.</returns>
-        Dictionary<string, OpenApiExample> GetExamples();
+        IDictionary<string, OpenApiExample> Examples { get; }
+
+        /// <summary>
+        /// Builds the example.
+        /// </summary>
+        /// <returns>Returns <see cref="IOpenApiExample{T}"/> instance.</returns>
+        IOpenApiExample<T> Build();
     }
 }

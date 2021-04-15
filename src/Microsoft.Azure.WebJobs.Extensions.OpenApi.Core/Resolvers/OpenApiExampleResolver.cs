@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -21,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <returns>Returns the new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class. </returns>
         public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, T instance)
         {
-            return Resolve(name, null, null, instance);
+            return Resolve(name, null, instance);
         }
 
         /// <summary>
@@ -48,6 +49,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <returns>Returns the new instance of the <see cref="KeyValuePair{TKey, TValue}"/> class. </returns>
         public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, string description, T instance)
         {
+            name.ThrowIfNullOrWhiteSpace();
+            instance.ThrowIfNullOrDefault();
+
             var example = new OpenApiExample()
             {
                 Summary = summary,
