@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.Examples;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Examples;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.ResponseHeaders;
 using Microsoft.Extensions.Logging;

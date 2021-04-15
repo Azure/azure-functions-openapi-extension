@@ -2,11 +2,10 @@ using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Examples
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.Examples
 {
     public class DummyStringModelExample : OpenApiExample<DummyStringModel>
     {
