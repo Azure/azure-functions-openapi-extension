@@ -376,8 +376,24 @@ public static class DummyHttpTrigger
 This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
 
 ```csharp
+// Example
+public class SampleRequestModelExample : OpenApiExample<SampleRequestModel>
+{
+    public override IOpenApiExample<SampleRequestModel> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(
+            OpenApiExampleResolver.Resolve(
+                "sample1",
+                new SampleRequestModel() { Title = "Hello World", Value = 1234 },
+                namingStrategy
+            ));
+
+        return this;
+    }
+}
+
 [FunctionName(nameof(PostSample))]
-[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
+[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel), Example = typeof(SampleRequestModelExample))]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -392,6 +408,7 @@ public static async Task<IActionResult> PostSample(
 * `Description`: is the description of the request payload.
 * `Required`: indicates whether the request payload is mandatory or not.
 * `Deprecated`: indicates whether the request body is deprecated or not. Default is `false`. If this is set to `true`, this request body won't be showing up the UI and OpenAPI document.
+* `Example`: defines the type of the request payload example. It SHOULD inherit `OpenApiExample<T>` or implement `IOpenApiExample<T>`.
 
 
 ### `OpenApiResponseWithBodyAttribute` ###
@@ -399,6 +416,22 @@ public static async Task<IActionResult> PostSample(
 This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
 
 ```csharp
+// Example
+public class SampleResponseModelExample : OpenApiExample<SampleResponseModel>
+{
+    public override IOpenApiExample<SampleResponseModel> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(
+            OpenApiExampleResolver.Resolve(
+                "sample1",
+                new SampleResponseModel() { Title = "Hello World", Value = 1234 },
+                namingStrategy
+            ));
+
+        return this;
+    }
+}
+
 // Response header type
 public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 {
@@ -411,7 +444,7 @@ public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 public static class DummyHttpTrigger
 {
     [FunctionName(nameof(PostSample))]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), HeaderType = typeof(SampleResponseHeaderType))]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Example = typeof(SampleResponseModelExample), HeaderType = typeof(SampleResponseHeaderType))]
     ...
     public static async Task<IActionResult> PostSample(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -429,6 +462,7 @@ public static class DummyHttpTrigger
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
 * `Deprecated`: indicates whether the response body is deprecated or not. Default is `false`. If this is set to `true`, this response body won't be showing up the UI and OpenAPI document.
+* `Example`: defines the type of the response payload example. It SHOULD inherit `OpenApiExample<T>` or implement `IOpenApiExample<T>`.
 
 
 ### `OpenApiResponseWithoutBodyAttribute` ###
