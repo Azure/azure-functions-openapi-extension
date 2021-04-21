@@ -34,7 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .SwaggerUI
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
@@ -198,7 +198,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                result = await context.SetApplicationAssembly(ctx.FunctionAppDirectory)
+                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .SwaggerUI
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildOAuth2RedirectAsync(context.PackageAssembly)

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
@@ -14,6 +15,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
@@ -122,28 +124,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual IOpenApiHttpTriggerContext SetApplicationAssembly(string functionAppDirectory, bool appendBin = true)
+        public virtual async Task<IOpenApiHttpTriggerContext> SetApplicationAssemblyAsync(string functionAppDirectory, bool appendBin = true)
         {
             if (!this._dllpath.IsNullOrWhiteSpace())
             {
                 return this;
             }
 
-            var file = Directory.GetFiles(functionAppDirectory, "*.deps.json", SearchOption.TopDirectoryOnly).FirstOrDefault();
-            if (file.IsNullOrWhiteSpace())
-            {
-                throw new InvalidOperationException("Invalid function app directory");
-            }
-
-            var pattern = functionAppDirectory;
-            var replacement = $"{functionAppDirectory.TrimEnd(Path.DirectorySeparatorChar)}";
-            if (appendBin)
-            {
-                replacement += $"{Path.DirectorySeparatorChar}bin";
-            }
-
-            var dllpath = file.Replace(pattern, replacement)
-                              .Replace("deps.json", "dll");
+            var runtimepath = this.GetRuntimePath(functionAppDirectory, appendBin);
+            var runtimename = await this.GetRuntimeFilenameAsync(functionAppDirectory);
+            var dllpath = $"{runtimepath}{Path.DirectorySeparatorChar}{runtimename}";
 
             this._dllpath = dllpath;
 
@@ -221,19 +211,54 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             return value ?? string.Empty;
         }
 
-        /// <inheritdoc />
+        private string GetRuntimePath(string functionAppDirectory, bool appendBin)
+        {
+            var path = functionAppDirectory;
+            if (appendBin)
+            {
+                path += $"{Path.DirectorySeparatorChar}bin";
+            }
+
+            return path;
+        }
+
+        // **NOTE**:
+        // This method relies on the dependency manifest file to find the function app runtime dll file.
+        // It can be either <your_runtime>.deps.json or function.deps.json. In most cases, at least the
+        // function.deps.json should exist, but in case no manifest exists, it will throw the exception.
+        private async Task<string> GetRuntimeFilenameAsync(string functionAppDirectory)
+        {
+            var files = Directory.GetFiles(functionAppDirectory, "*.deps.json", SearchOption.AllDirectories);
+            var file = files.FirstOrDefault();
+            if (file.IsNullOrWhiteSpace())
+            {
+                throw new InvalidOperationException("Invalid function app directory");
+            }
+
+            var serialised = default(string);
+            using (var reader = File.OpenText(file))
+            {
+                serialised = await reader.ReadToEndAsync();
+            }
+
+            var manifesto = JsonConvert.DeserializeObject<DependencyManifest>(serialised);
+            var runtimeTarget = manifesto.RuntimeTarget.Name;
+            var runtimes = manifesto.Targets[runtimeTarget].Values;
+            var runtime = runtimes.First().Runtime.First().Key;
+
+            return runtime;
+        }
+
         private Assembly GetAssembly(object instance)
         {
             return this.GetAssembly(instance.GetType());
         }
 
-        /// <inheritdoc />
         private Assembly GetAssembly<T>()
         {
             return this.GetAssembly(typeof(T));
         }
 
-        /// <inheritdoc />
         private Assembly GetAssembly(Type type)
         {
             var assembly = type.Assembly;
