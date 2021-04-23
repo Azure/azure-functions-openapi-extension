@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the function provider entity for Open API HTTP triggers.
+    /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
     public partial class OpenApiTriggerFunctionProvider : IFunctionProvider
     {
