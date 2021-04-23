@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 
-    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests.Fakes</AssemblyName>
-    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests.Fakes</RootNamespace>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests.Fakes</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests.Fakes</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

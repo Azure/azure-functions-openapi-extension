@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests.Fakes
+﻿namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests.Fakes
 {
     /// <summary>
     /// This represents the fake product settings entity.

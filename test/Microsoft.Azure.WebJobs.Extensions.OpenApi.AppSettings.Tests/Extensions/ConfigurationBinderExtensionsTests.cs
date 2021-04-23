@@ -1,13 +1,13 @@
 using System.IO;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests.Fakes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests.Fakes;
 
 using FluentAssertions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions.Tests
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions.Tests
 {
     /// <summary>
     /// This represents the test entity for the <see cref="ConfigurationBinderExtensions"/> class.

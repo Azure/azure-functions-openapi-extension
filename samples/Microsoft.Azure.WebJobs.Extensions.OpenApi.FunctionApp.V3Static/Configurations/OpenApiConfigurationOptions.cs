@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
@@ -26,12 +25,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Config
                 Name = "MIT",
                 Url = new Uri("http://opensource.org/licenses/MIT"),
             }
-        };
-
-        public override List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>()
-        {
-            new OpenApiServer() { Url = "https://contoso.com/api/" },
-            new OpenApiServer() { Url = "https://fabrikam.com/api/" },
         };
 
         public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;

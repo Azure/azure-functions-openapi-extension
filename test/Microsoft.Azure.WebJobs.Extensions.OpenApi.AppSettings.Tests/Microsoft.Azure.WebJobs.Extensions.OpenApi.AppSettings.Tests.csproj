@@ -5,8 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests</AssemblyName>
-    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests</RootNamespace>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

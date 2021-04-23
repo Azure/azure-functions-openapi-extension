@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations
         /// <summary>
         /// Gets or sets the API key to access to OpenAPI document.
         /// </summary>
-        public virtual string AuthKey { get; set; }
+        public virtual string ApiKey { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="OpenApiAuthLevelSettings"/> object.
@@ -24,5 +24,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations
         /// Gets or sets the backend URL for Azure Functions Proxy.
         /// </summary>
         public virtual string BackendProxyUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the comma delimited host names.
+        /// </summary>
+        public virtual string HostNames { get; set; }
     }
 }
