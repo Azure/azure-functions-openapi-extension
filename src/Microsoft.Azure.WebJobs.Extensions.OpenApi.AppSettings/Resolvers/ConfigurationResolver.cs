@@ -6,9 +6,9 @@ using System.Reflection;
 
 using Microsoft.Extensions.Configuration;
 
-using OperatingSystem = Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions.OperationSystem;
+using OperatingSystem = Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions.OperationSystem;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Resolvers
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers
 {
     /// <summary>
     /// This represents the resolver entity for configuration.

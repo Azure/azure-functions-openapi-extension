@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
@@ -19,9 +22,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         };
 
         /// <inheritdoc />
-        public virtual List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
+        public virtual List<OpenApiServer> Servers { get; set; } = GetHostNames();
 
         /// <inheritdoc />
         public virtual OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
+
+        /// <inheritdoc />
+        public virtual bool IncludeRequestingHostName { get; set; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
+
+        /// <summary>
+        /// Gets the list of hostnames.
+        /// </summary>
+        /// <returns>Returns the list of hostnames.</returns>
+        protected static List<OpenApiServer> GetHostNames()
+        {
+            var servers = new List<OpenApiServer>();
+            var collection = Environment.GetEnvironmentVariable("OpenApi__HostNames");
+            if (collection.IsNullOrWhiteSpace())
+            {
+                return servers;
+            }
+
+            var hostnames = collection.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                                      .Select(p => new OpenApiServer() { Url = p });
+
+            servers.AddRange(hostnames);
+
+            return servers;
+        }
     }
 }

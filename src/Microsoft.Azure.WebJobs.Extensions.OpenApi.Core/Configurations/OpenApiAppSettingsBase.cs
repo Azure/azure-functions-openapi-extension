@@ -1,6 +1,6 @@
 using System.Reflection;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;

@@ -7,7 +7,7 @@ using FluentAssertions.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests
 {
     [TestClass]
     public class AppSettingsBaseTests
