@@ -8,6 +8,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.Configurations;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -16,6 +18,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC
 {
     public class DefaultHttpTrigger
     {
+        private readonly AppSettings _settings;
+
+        public DefaultHttpTrigger(AppSettings settings)
+        {
+            this._settings = settings.ThrowIfNullOrDefault();
+        }
+
         [FunctionName("DefaultHttpTrigger")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
@@ -26,6 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation($"ApiKey: {this._settings.OpenApi.ApiKey}");
 
             string name = req.Query["name"];
 
