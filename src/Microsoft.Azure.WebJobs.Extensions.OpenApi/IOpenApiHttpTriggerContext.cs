@@ -84,6 +84,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         VisitorCollection GetVisitorCollection();
 
         /// <summary>
+        /// Gets the <see cref="OpenApiVersionType"/> value.
+        /// </summary>
+        /// <param name="version">OpenAPI spec version. It can be either <c>v2</c> or <c>v3</c>.</param>
+        /// <returns>Returns the <see cref="OpenApiVersionType"/> value.</returns>
+        OpenApiVersionType GetOpenApiVersionType(string version = "v2");
+
+        /// <summary>
         /// Gets the <see cref="OpenApiSpecVersion"/> value.
         /// </summary>
         /// <param name="version">OpenAPI spec version. It can be either <c>v2</c> or <c>v3</c>.</param>

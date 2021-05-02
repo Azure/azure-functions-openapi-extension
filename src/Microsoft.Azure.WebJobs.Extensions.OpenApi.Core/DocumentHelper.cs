@@ -175,7 +175,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -184,7 +184,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection));
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version));
 
             if (contents.Any())
             {
@@ -212,11 +212,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                            .Where(p => p.Deprecated == false)
-                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
                                               .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
