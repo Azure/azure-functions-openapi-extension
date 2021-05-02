@@ -6,6 +6,7 @@ using System.Net;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.OpenApi.Any;
@@ -143,10 +144,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [DataTestMethod]
-        [DataRow(null, 0)]
-        [DataRow(typeof(FakeModel), 0)]
-        [DataRow(typeof(FakeExample), 3)]
-        public void Given_OpenApiResponseWithBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count)
+        [DataRow(null, 0, OpenApiVersionType.V2)]
+        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V2)]
+        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V2)]
+        [DataRow(null, 0, OpenApiVersionType.V3)]
+        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V3)]
+        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V3)]
+        public void Given_OpenApiResponseWithBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count, OpenApiVersionType version)
         {
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
@@ -157,7 +161,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             };
             var namingStrategy = new CamelCaseNamingStrategy();
 
-            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
+            var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy, version: version);
 
             result.Examples.Should().NotBeNull();
             result.Examples.Should().HaveCount(count);
@@ -167,10 +171,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
                 return;
             }
 
+            if (version != OpenApiVersionType.V2)
+            {
+                result.Example.Should().BeNull();
+
+                return;
+            }
+
             var instance = (dynamic)Activator.CreateInstance(example);
             var examples = (IDictionary<string, OpenApiExample>)instance.Build(namingStrategy).Examples;
             var first = examples.First().Value;
 
+            result.Example.Should().NotBeNull();
             (result.Example as OpenApiString).Value.Should().Be((first.Value as OpenApiString).Value);
         }
     }

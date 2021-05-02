@@ -149,6 +149,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public virtual OpenApiVersionType GetOpenApiVersionType(string version = "v2")
+        {
+            var parsed = Enum.TryParse(version, true, out OpenApiVersionType output)
+                             ? output
+                             : throw new InvalidOperationException("Invalid OpenAPI version");
+
+            return parsed;
+        }
+
+        /// <inheritdoc />
         public virtual OpenApiSpecVersion GetOpenApiSpecVersion(string version = "v2")
         {
             var parsed = Enum.TryParse(version, true, out OpenApiVersionType output)

@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly)
+                                      .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
                                       .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly)
+                                      .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
