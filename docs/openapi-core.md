@@ -88,10 +88,19 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     };
 
     public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
+
+    public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
 }
 ```
 
-It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), add `OpenApiServer` details to the class implementing the `IOpenApiConfigurationOptions` interface like:
+
+### Overriding Base URLs ###
+
+It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), declare the `OpenApi__HostNames` value with comma delimited base URLs. Then, it will automatically sets up your base URLs.
+
+> Find the [Configuration](openapi.md#configuration) section for the full list of the app settings keys.
+
+Alternatively, add `OpenApiServer` details to the `Servers` property like:
 
 ```csharp
 public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
@@ -103,12 +112,36 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
         new OpenApiServer() { Url = "https://contoso.com/api/" },
         new OpenApiServer() { Url = "https://fabrikam.com/api/" },
     };
+
+    ...
 }
 ```
 
-> **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the OpenAPI v3 document shows all server URLs in the document, including the automatically generated one.
+> **NOTE**:
+> 
+> * If no base URL is declared, the Azure Functions app's URL will be added as a default.
+> * The OpenAPI v2 (Swagger) document only shows the the first server name on both UI and document, while the OpenAPI v3 document shows the first server name on the UI and all server names on the document.
 
-Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As both `Info` and `Servers` properties have the modifier of `virtual`, you can freely override both or leave them as default.
+
+### Overriding OpenAPI Version ###
+
+The default version of OpenAPI document rendered is V2 (AKA Swagger). However, you can override the default rendering behaviour by implementing the `OpenApiVersion` property.
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    ...
+
+    public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
+
+    ...
+}
+```
+
+
+### Inheriting `DefaultOpenApiConfigurationOptions` ###
+
+Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As `Info`, `Servers` and `OpenApiVersion` properties have the modifier of `virtual`, you can freely override them or leave them as default.
 
 ```csharp
 public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
@@ -131,6 +164,14 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
             Url = new Uri("http://opensource.org/licenses/MIT"),
         }
     };
+
+    public override List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>()
+    {
+        new OpenApiServer() { Url = "https://contoso.com/api/" },
+        new OpenApiServer() { Url = "https://fabrikam.com/api/" },
+    };
+
+    public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
 }
 ```
 
@@ -497,6 +538,54 @@ public static class DummyHttpTrigger
 * `HeaderType`: defines the collection of custom response headers. eg) `x-custom-header`
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
+
+
+### `OpenApiExampleAttribute` ###
+
+This decorator implements the example attribute defined in the [`Schema object`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md#schemaObject) section.
+
+```csharp
+// Example
+public class CatExample : OpenApiExample<Cat>
+{
+    public override IOpenApiExample<Cat> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(OpenApiExampleResolver.Resolve("nabi", new Cat() { Id = 123, Name = "Nabi" }, namingStrategy));
+
+        return this;
+    }
+}
+
+// Model
+[OpenApiExample(typeof(CatExample))]
+public class Cat
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+}
+
+// This will result in:
+// {
+//   "components": {
+//     "schemas": {
+//       "cat": {
+//         "type": "object",
+//         "properties": {
+//           "id": {
+//             "type": "integer"
+//             "format": "int32"
+//           },
+//           "name": {
+//             "type": "string"
+//           }
+//         },
+//         "example": "{\"id\":123,\"name\":\"Nabi\"}"
+//       }
+//     }
+//   }
+// }
+```
 
 
 ### `OpenApiSchemaVisibilityAttribute` ###

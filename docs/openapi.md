@@ -22,6 +22,11 @@ While using this library, if you find any issue, please raise a ticket on the [I
 For detailed getting started document, find this [Enable OpenAPI Endpoints on Azure Functions (Preview)](enable-open-api-endpoints.md) page.
 
 
+## Configuration ##
+
+For the extension's advanced configuration, it expects the following config keys.
+
+
 ### Configure Authorization Level ###
 
 As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`. However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter. This can be done through the environment variables. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
@@ -52,3 +57,16 @@ You may want to only enable the Swagger UI page during the development time, and
 ```
 
 If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won't be showing up, and you will see the 404 error. The default value is `false`.
+
+
+### Configure Custom Base URLs ###
+
+There's a chance that you want to expose the UI and OpenAPI document through [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=github-0000-juyoo) or load balancing services like [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/front-door-overview?WT.mc_id=github-0000-juyoo). You can configure an environment variable to add them. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__HostNames": "https://contoso.com/api/,https://fabrikam.com/api/"
+  }
+}
+```
