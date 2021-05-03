@@ -41,7 +41,7 @@ As a default, all endpoints to render Swagger UI and OpenAPI documents have the 
 }
 ```
 
-You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi_AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error. Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
+You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi__AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error. Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
 
 
 ### Configure Swagger UI Visibility ###
