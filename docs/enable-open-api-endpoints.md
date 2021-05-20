@@ -66,7 +66,7 @@ http://localhost:7071/api/MyHttpTrigger?name=OpenApi
 To enable OpenAPI document, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
 
 ```bash
-dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
+dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi --prerelease
 ```
 
 > This extension is currently in preview.
