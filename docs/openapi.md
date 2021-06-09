@@ -29,7 +29,7 @@ For the extension's advanced configuration, it expects the following config keys
 
 ### Configure Authorization Level ###
 
-As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`. However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Functions` and pass the API Key through either request header or querystring parameter. This can be done through the environment variables. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`. However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Function` and pass the API Key through either request header or querystring parameter. This can be done through the environment variables. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
 
 ```json
 {
