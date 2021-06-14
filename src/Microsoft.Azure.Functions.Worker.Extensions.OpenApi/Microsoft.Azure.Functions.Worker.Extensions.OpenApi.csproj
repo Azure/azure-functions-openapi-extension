@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\builds\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Version>1.0.0</Version>
+    <PackageId>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</PackageId>
+    <Title>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</Title>
+    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the out-of-process worker environment.</Summary>
+    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the out-of-process worker environment.</Description>
+    <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\net5.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\net5.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Lists\**" />
+    <EmbeddedResource Remove="Lists\**" />
+    <None Remove="Lists\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
+    <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.0.3" OutputItemType="Analyzer" /> -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -10,7 +10,7 @@ using Microsoft.OpenApi;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
     /// This provides interfaces to <see cref="OpenApiHttpTriggerContext"/>.

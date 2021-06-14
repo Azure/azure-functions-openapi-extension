@@ -12,11 +12,11 @@
       "type": "process",
       "problemMatcher": "$msCompile",
       "options": {
+        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static"
       }
     },
@@ -36,11 +36,11 @@
       },
       "problemMatcher": "$msCompile",
       "options": {
+        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static"
       }
     },
@@ -57,11 +57,11 @@
       "type": "process",
       "problemMatcher": "$msCompile",
       "options": {
+        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static"
       }
     },
@@ -79,11 +79,11 @@
       "dependsOn": "clean release",
       "problemMatcher": "$msCompile",
       "options": {
+        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static"
       }
     },
@@ -104,11 +104,11 @@
       "type": "func",
       "dependsOn": "build",
       "options": {
+        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5/bin/Debug/net5.0"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Proxy/bin/Debug/netcoreapp3.1"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC/bin/Debug/netcoreapp2.1"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static/bin/Debug/netcoreapp2.1"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Debug/netcoreapp3.1"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5/bin/Debug/net5.0"
         // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Debug/netcoreapp3.1"
       },
       "command": "host start",
