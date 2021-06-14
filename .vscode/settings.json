@@ -3,7 +3,16 @@
   // "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC/bin/Release/netcoreapp2.1/publish",
   // "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static/bin/Release/netcoreapp2.1/publish",
   // "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Release/netcoreapp3.1/publish",
-  "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Release/netcoreapp3.1/publish",
+  "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5/bin/Release/net5.0/publish",
+  // "azureFunctions.deploySubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Release/netcoreapp3.1/publish",
+
+  // "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy",
+  // "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC",
+  // "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static",
+  // "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC",
+  "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5",
+  // "azureFunctions.projectSubpath": "samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static",
+
   "azureFunctions.projectLanguage": "C#",
   "azureFunctions.projectRuntime": "~3",
   "debug.internalConsoleOptions": "neverOpen",
