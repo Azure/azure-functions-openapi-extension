@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
     /// This provides interfaces to the classes that wrap HTTP request object.
