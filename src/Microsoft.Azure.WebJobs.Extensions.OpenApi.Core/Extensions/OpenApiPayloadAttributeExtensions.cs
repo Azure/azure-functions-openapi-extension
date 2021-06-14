@@ -1,6 +1,10 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -19,8 +23,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="attribute">OpenApi payload attribute.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -62,6 +67,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             var mediaType = new OpenApiMediaType() { Schema = schema };
+
+            if (attribute.Example.IsNullOrDefault())
+            {
+                return mediaType;
+            }
+
+            if (!attribute.Example.HasInterface("IOpenApiExample`1"))
+            {
+                return mediaType;
+            }
+
+            var example = (dynamic)Activator.CreateInstance(attribute.Example);
+            var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
+
+            mediaType.Examples = examples;
+            if (version == OpenApiVersionType.V2)
+            {
+                mediaType.Example = examples.First().Value.Value;
+            }
 
             return mediaType;
         }

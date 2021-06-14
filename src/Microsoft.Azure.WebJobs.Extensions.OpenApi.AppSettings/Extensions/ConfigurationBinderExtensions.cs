@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions
 {
     /// <summary>
     /// This represents the extension entity for <see cref="ConfigurationBinder"/> class.

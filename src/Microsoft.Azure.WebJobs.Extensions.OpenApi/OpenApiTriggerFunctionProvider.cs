@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the function provider entity for Open API HTTP triggers.
+    /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
     public partial class OpenApiTriggerFunctionProvider : IFunctionProvider
     {
@@ -50,21 +50,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var renderSwaggerDocument = new HttpBindingMetadata()
             {
-                Methods = { HttpMethods.Get },
+                Methods = new List<string>() { HttpMethods.Get },
                 Route = "swagger.{extension}",
                 AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
             };
 
             var renderOpenApiDocument = new HttpBindingMetadata()
             {
-                Methods = { HttpMethods.Get },
+                Methods = new List<string>() { HttpMethods.Get },
                 Route = "openapi/{version}.{extension}",
                 AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
             };
 
             var renderOAuth2Redirect = new HttpBindingMetadata()
             {
-                Methods = { HttpMethods.Get },
+                Methods = new List<string>() { HttpMethods.Get },
                 Route = "oauth2-redirect.html",
                 AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
             };
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             {
                 var renderSwaggerUI = new HttpBindingMetadata()
                 {
-                    Methods = { HttpMethods.Get },
+                    Methods = new List<string>() { HttpMethods.Get },
                     Route = "swagger/ui",
                     AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
                 };

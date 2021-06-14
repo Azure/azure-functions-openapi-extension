@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -74,13 +75,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// </summary>
         /// <param name="functionAppDirectory">Function app directory.</param>
         /// <param name="appendBin">Value indicating whether to append the "bin" directory or not.</param>
-        IOpenApiHttpTriggerContext SetApplicationAssembly(string functionAppDirectory, bool appendBin = true);
+        Task<IOpenApiHttpTriggerContext> SetApplicationAssemblyAsync(string functionAppDirectory, bool appendBin = true);
 
         /// <summary>
         /// Gets the <see cref="VisitorCollection"/> instance.
         /// </summary>
         /// <returns>Returns the <see cref="VisitorCollection"/> instance.</returns>
         VisitorCollection GetVisitorCollection();
+
+        /// <summary>
+        /// Gets the <see cref="OpenApiVersionType"/> value.
+        /// </summary>
+        /// <param name="version">OpenAPI spec version. It can be either <c>v2</c> or <c>v3</c>.</param>
+        /// <returns>Returns the <see cref="OpenApiVersionType"/> value.</returns>
+        OpenApiVersionType GetOpenApiVersionType(string version = "v2");
 
         /// <summary>
         /// Gets the <see cref="OpenApiSpecVersion"/> value.

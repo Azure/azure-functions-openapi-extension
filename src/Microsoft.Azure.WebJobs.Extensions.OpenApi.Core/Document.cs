@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
@@ -80,7 +81,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var servers = options.Servers
                                  .Where(p => p.Url.TrimEnd('/') != baseUrl.TrimEnd('/'))
                                  .ToList();
-            servers.Insert(0, server);
+            if (!servers.Any())
+            {
+                servers.Insert(0, server);
+            }
+
+            if (options.IncludeRequestingHostName
+                && !servers.Any(p => p.Url.TrimEnd('/') == baseUrl.TrimEnd('/')))
+            {
+                servers.Insert(0, server);
+            }
 
             this.OpenApiDocument.Servers = servers;
 
@@ -104,15 +114,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public IDocument Build(string assemblyPath)
+        public IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var assembly = Assembly.LoadFrom(assemblyPath);
 
-            return this.Build(assembly);
+            return this.Build(assembly, version);
         }
 
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly)
+        public IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             if (this._strategy.IsNullOrDefault())
             {
@@ -155,8 +165,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
                 operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
+                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
 
                 operations[verb] = operation;
                 item.Operations = operations;

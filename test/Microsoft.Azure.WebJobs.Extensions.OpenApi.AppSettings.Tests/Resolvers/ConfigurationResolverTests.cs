@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Resolvers;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers;
 
 using FluentAssertions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Tests.Resolvers
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Tests.Resolvers
 {
     [TestClass]
     public class ConfigurationResolverTests

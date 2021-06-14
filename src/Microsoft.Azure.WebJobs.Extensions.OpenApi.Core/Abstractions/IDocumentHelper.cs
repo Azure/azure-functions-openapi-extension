@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -93,8 +92,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
-        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection);
+        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
@@ -111,8 +111,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection);
+        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
@@ -120,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to add types to schema.</param>
-        /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
+        /// /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
         Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;

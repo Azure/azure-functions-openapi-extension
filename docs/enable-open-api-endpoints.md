@@ -66,7 +66,7 @@ http://localhost:7071/api/MyHttpTrigger?name=OpenApi
 To enable OpenAPI document, you will need to install a NuGet package, [Microsoft.Azure.WebJobs.Extensions.OpenApi][az func openapi extension].
 
 ```bash
-dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
+dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi --prerelease
 ```
 
 > This extension is currently in preview.
@@ -78,12 +78,12 @@ namespace MyOpenApiFunctionApp
 {
     public static class MyHttpTrigger
     {
-        // Add these three attribute classes below
+        // Add these four attribute classes below
         [OpenApiOperation(operationId: "getName", tags: new[] { "name" }, Summary = "Gets the name", Description = "This gets the name.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name", Description = "The name", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Summary = "The response", Description = "This returns the response")]
-        // Add these three attribute classes above
+        // Add these four attribute classes above
 
         [FunctionName("MyHttpTrigger")]
         public static async Task<IActionResult> Run(
@@ -199,6 +199,7 @@ To learn more about Functions costs, see [Estimating Consumption plan costs][az 
 
 You have got an Azure Functions app with OpenAPI metadata enabled. In the next articles, you will be able to integrate this OpenAPI-enabled Azure Functions app with either [Azure API Management][az apim], [Azure Logic Apps][az logapp] or [Power Platform][power platform].
 
+* [Configuring OpenAPI Document and Swagger UI Permission and Visibility][docs ui configuration]
 * [Customising OpenAPI Document and Swagger UI][docs ui customisation]
 * [Support Azure Functions v1 with OpenAPI Extension][docs v1 support]
 * [Integrating OpenAPI-enabled Azure Functions to Azure API Management][docs apim]
@@ -216,6 +217,7 @@ You have got an Azure Functions app with OpenAPI metadata enabled. In the next a
 [image-09]: images/image-09.png
 [image-10]: images/image-10.png
 
+[docs ui configuration]: openapi.md#Configure-Authorization-Level
 [docs ui customisation]: openapi-core.md#OpenAPI-Metadata-Configuration
 [docs v1 support]: azure-functions-v1-support.md
 [docs apim]: integrate-with-apim.md

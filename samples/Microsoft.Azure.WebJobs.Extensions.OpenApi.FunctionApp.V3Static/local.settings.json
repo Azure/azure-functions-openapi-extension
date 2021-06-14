@@ -10,6 +10,7 @@
     "OpenApi__ApiKey": "",
     "OpenApi__AuthLevel__Document": "Anonymous",
     "OpenApi__AuthLevel__UI": "Anonymous",
-    "OpenApi__BackendProxyUrl": "http://localhost:7071"
+    "OpenApi__BackendProxyUrl": "http://localhost:7071",
+    "OpenApi__HostNames": "https://contoso.com/api/"
   }
 }

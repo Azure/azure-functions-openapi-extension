@@ -1,7 +1,7 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Azure.WebJobs.Script.Description;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the startup entity for Open API endpoints registration
+    /// This represents the startup entity for OpenAPI endpoints registration
     /// </summary>
     public class OpenApiWebJobsStartup : IWebJobsStartup
     {

@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -61,15 +61,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assemblyPath">Assembly file path.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(string assemblyPath);
+        IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(Assembly assembly);
+        IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Renders OpenAPI document.

@@ -68,7 +68,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var servers = options.Servers
                                  .Where(p => p.Url.TrimEnd('/') != baseUrl.TrimEnd('/'))
                                  .ToList();
-            servers.Insert(0, server);
+            if (!servers.Any())
+            {
+                servers.Insert(0, server);
+            }
+
+            if (options.IncludeRequestingHostName
+                && !servers.Any(p => p.Url.TrimEnd('/') == baseUrl.TrimEnd('/')))
+            {
+                servers.Insert(0, server);
+            }
 
             this._baseUrl = servers.First().Url;
             this._swaggerUiApiPrefix = prefix;

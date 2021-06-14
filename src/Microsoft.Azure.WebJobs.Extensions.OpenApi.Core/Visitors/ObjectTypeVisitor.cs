@@ -116,6 +116,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             };
 
             instance.Schemas[name].Reference = reference;
+
+            instance.Schemas[name].Example = this.GetExample(type.Value, namingStrategy);
         }
 
         /// <inheritdoc />
@@ -223,6 +225,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                    .ToDictionary(p => p.Key, p => p.Value);
 
             instance.Schemas[schemaName].Properties = subSchemas;
+        }
+
+        private IOpenApiAny GetExample(Type type, NamingStrategy namingStrategy = null)
+        {
+            var attr = type.GetCustomAttribute<OpenApiExampleAttribute>(inherit: false);
+            if (attr.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            var instance = (dynamic)Activator.CreateInstance(attr.Example);
+            var examples = (IDictionary<string, OpenApiExample>)instance.Build(namingStrategy).Examples;
+            var example = examples.First().Value;
+
+            return example.Value;
         }
     }
 }

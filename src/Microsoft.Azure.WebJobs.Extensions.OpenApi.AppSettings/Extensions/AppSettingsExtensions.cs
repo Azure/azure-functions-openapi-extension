@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Extensions
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions
 {
     /// <summary>
     /// This represents the entity to determine operating system.

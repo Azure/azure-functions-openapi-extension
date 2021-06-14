@@ -130,13 +130,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
         }
 
-        [TestMethod]
-        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
+        [DataTestMethod]
+        [DataRow(true, "localhost", "localhost")]
+        [DataRow(false, "fabrikam.com", "contoso.com")]
+        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result(bool includeRequestingHostName, string host, string expected)
         {
             var helper = new Mock<IDocumentHelper>();
 
             var scheme = "https";
-            var host = "localhost";
             var routePrefix = "api";
 
             var req = new Mock<IHttpRequestDataObject>();
@@ -144,7 +145,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
             var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>() { new OpenApiServer() { Url = $"https://contoso.com/{routePrefix}" } });
+            options.SetupGet(p => p.IncludeRequestingHostName).Returns(includeRequestingHostName);
+            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>() { new OpenApiServer() { Url = $"{scheme}://contoso.com/{routePrefix}" } });
 
             var doc = new Document(helper.Object);
 
@@ -154,7 +156,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 
             dynamic json = JObject.Parse(result);
 
-            ((string)json?.host).Should().BeEquivalentTo(host);
+            ((string)json?.host).Should().BeEquivalentTo(expected);
             ((string)json?.basePath).Should().BeEquivalentTo($"/{routePrefix}");
             ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
         }

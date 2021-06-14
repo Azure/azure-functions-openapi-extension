@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings.Resolvers;
+﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers;
 
 using Microsoft.Extensions.Configuration;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings
 {
     /// <summary>
     /// This represents the base app settings entity.

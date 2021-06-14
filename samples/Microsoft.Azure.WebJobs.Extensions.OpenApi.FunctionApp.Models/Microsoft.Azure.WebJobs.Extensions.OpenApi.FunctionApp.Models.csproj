@@ -6,8 +6,16 @@
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models</RootNamespace>
   </PropertyGroup>
 
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="0.7.1-preview" />
+  </ItemGroup> -->
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
 </Project>

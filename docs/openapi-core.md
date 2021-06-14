@@ -88,10 +88,19 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     };
 
     public List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>();
+
+    public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
 }
 ```
 
-It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), add `OpenApiServer` details to the class implementing the `IOpenApiConfigurationOptions` interface like:
+
+### Overriding Base URLs ###
+
+It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), declare the `OpenApi__HostNames` value with comma delimited base URLs. Then, it will automatically sets up your base URLs.
+
+> Find the [Configuration](openapi.md#configuration) section for the full list of the app settings keys.
+
+Alternatively, add `OpenApiServer` details to the `Servers` property like:
 
 ```csharp
 public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
@@ -103,12 +112,36 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
         new OpenApiServer() { Url = "https://contoso.com/api/" },
         new OpenApiServer() { Url = "https://fabrikam.com/api/" },
     };
+
+    ...
 }
 ```
 
-> **NOTE**: As this extension automatically generates the server URL, these extra URLs are only appended, not overwriting the one automatically generated. And, the API v2 (Swagger) document won't be impacted by these extra URLs, while the OpenAPI v3 document shows all server URLs in the document, including the automatically generated one.
+> **NOTE**:
+> 
+> * If no base URL is declared, the Azure Functions app's URL will be added as a default.
+> * The OpenAPI v2 (Swagger) document only shows the the first server name on both UI and document, while the OpenAPI v3 document shows the first server name on the UI and all server names on the document.
 
-Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As both `Info` and `Servers` properties have the modifier of `virtual`, you can freely override both or leave them as default.
+
+### Overriding OpenAPI Version ###
+
+The default version of OpenAPI document rendered is V2 (AKA Swagger). However, you can override the default rendering behaviour by implementing the `OpenApiVersion` property.
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    ...
+
+    public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
+
+    ...
+}
+```
+
+
+### Inheriting `DefaultOpenApiConfigurationOptions` ###
+
+Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As `Info`, `Servers` and `OpenApiVersion` properties have the modifier of `virtual`, you can freely override them or leave them as default.
 
 ```csharp
 public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
@@ -131,6 +164,14 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
             Url = new Uri("http://opensource.org/licenses/MIT"),
         }
     };
+
+    public override List<OpenApiServer> Servers { get; set; } = new List<OpenApiServer>()
+    {
+        new OpenApiServer() { Url = "https://contoso.com/api/" },
+        new OpenApiServer() { Url = "https://fabrikam.com/api/" },
+    };
+
+    public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
 }
 ```
 
@@ -190,11 +231,11 @@ Either way, your customised CSS and JavaScript will be applied to the Swagger UI
 
 ## OpenAPI Response Header Customisation ##
 
-Often, custom response headers need to be added. You can use `IOpenApiResponseHeaderType` to add the custom response headers.
+Often, custom response headers need to be added. You can use `IOpenApiCustomResponseHeader` to add the custom response headers.
 
 ```csharp
 // Custom response header type
-public class CustomResponseHeaderType : IOpenApiResponseHeaderType
+public class CustomResponseHeader : IOpenApiCustomResponseHeader
 {
     public Dictionary<string, OpenApiHeader> Headers { get; set; } =
         new Dictionary<string, OpenApiHeader>()
@@ -214,8 +255,8 @@ public static class CustomResponseHeaderHttpTrigger
 {
     [FunctionName(nameof(CustomResponseHeaderHttpTrigger))]
     ...
-    [OpenApiResponseWithBody(... HeaderType = typeof(CustomResponseHeaderType))]
-    [OpenApiResponseWithoutBody(... HeaderType = typeof(CustomResponseHeaderType))]
+    [OpenApiResponseWithBody(... HeaderType = typeof(CustomResponseHeader))]
+    [OpenApiResponseWithoutBody(... HeaderType = typeof(CustomResponseHeader))]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "GET", Route = null)] HttpRequest req,
         ILogger log)
@@ -376,8 +417,24 @@ public static class DummyHttpTrigger
 This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
 
 ```csharp
+// Example
+public class SampleRequestModelExample : OpenApiExample<SampleRequestModel>
+{
+    public override IOpenApiExample<SampleRequestModel> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(
+            OpenApiExampleResolver.Resolve(
+                "sample1",
+                new SampleRequestModel() { Title = "Hello World", Value = 1234 },
+                namingStrategy
+            ));
+
+        return this;
+    }
+}
+
 [FunctionName(nameof(PostSample))]
-[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
+[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel), Example = typeof(SampleRequestModelExample))]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -392,6 +449,7 @@ public static async Task<IActionResult> PostSample(
 * `Description`: is the description of the request payload.
 * `Required`: indicates whether the request payload is mandatory or not.
 * `Deprecated`: indicates whether the request body is deprecated or not. Default is `false`. If this is set to `true`, this request body won't be showing up the UI and OpenAPI document.
+* `Example`: defines the type of the request payload example. It SHOULD inherit `OpenApiExample<T>` or implement `IOpenApiExample<T>`.
 
 
 ### `OpenApiResponseWithBodyAttribute` ###
@@ -399,6 +457,22 @@ public static async Task<IActionResult> PostSample(
 This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
 
 ```csharp
+// Example
+public class SampleResponseModelExample : OpenApiExample<SampleResponseModel>
+{
+    public override IOpenApiExample<SampleResponseModel> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(
+            OpenApiExampleResolver.Resolve(
+                "sample1",
+                new SampleResponseModel() { Title = "Hello World", Value = 1234 },
+                namingStrategy
+            ));
+
+        return this;
+    }
+}
+
 // Response header type
 public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 {
@@ -411,7 +485,7 @@ public class SampleResponseHeaderType : IOpenApiResponseHeaderType
 public static class DummyHttpTrigger
 {
     [FunctionName(nameof(PostSample))]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), HeaderType = typeof(SampleResponseHeaderType))]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Example = typeof(SampleResponseModelExample), HeaderType = typeof(SampleResponseHeaderType))]
     ...
     public static async Task<IActionResult> PostSample(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -429,6 +503,7 @@ public static class DummyHttpTrigger
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
 * `Deprecated`: indicates whether the response body is deprecated or not. Default is `false`. If this is set to `true`, this response body won't be showing up the UI and OpenAPI document.
+* `Example`: defines the type of the response payload example. It SHOULD inherit `OpenApiExample<T>` or implement `IOpenApiExample<T>`.
 
 
 ### `OpenApiResponseWithoutBodyAttribute` ###
@@ -463,6 +538,54 @@ public static class DummyHttpTrigger
 * `HeaderType`: defines the collection of custom response headers. eg) `x-custom-header`
 * `Summary`: is the summary of the response.
 * `Description`: is the description of the response.
+
+
+### `OpenApiExampleAttribute` ###
+
+This decorator implements the example attribute defined in the [`Schema object`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md#schemaObject) section.
+
+```csharp
+// Example
+public class CatExample : OpenApiExample<Cat>
+{
+    public override IOpenApiExample<Cat> Build(NamingStrategy namingStrategy = null)
+    {
+        this.Examples.Add(OpenApiExampleResolver.Resolve("nabi", new Cat() { Id = 123, Name = "Nabi" }, namingStrategy));
+
+        return this;
+    }
+}
+
+// Model
+[OpenApiExample(typeof(CatExample))]
+public class Cat
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+}
+
+// This will result in:
+// {
+//   "components": {
+//     "schemas": {
+//       "cat": {
+//         "type": "object",
+//         "properties": {
+//           "id": {
+//             "type": "integer"
+//             "format": "int32"
+//           },
+//           "name": {
+//             "type": "string"
+//           }
+//         },
+//         "example": "{\"id\":123,\"name\":\"Nabi\"}"
+//       }
+//     }
+//   }
+// }
+```
 
 
 ### `OpenApiSchemaVisibilityAttribute` ###

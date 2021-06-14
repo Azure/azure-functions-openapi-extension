@@ -1,5 +1,6 @@
-﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: FunctionsStartup(typeof(Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.StartUp))]
@@ -13,6 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC
         /// <inheritdoc />
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            builder.Services.AddSingleton<AppSettings>();
             builder.Services.AddTransient<IDummyHttpService, DummyHttpService>();
         }
     }
