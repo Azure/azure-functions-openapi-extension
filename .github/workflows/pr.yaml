@@ -28,6 +28,11 @@ jobs:
       with:
         dotnet-version: '3.1.x'
 
+    - name: Setup .NET SDK 5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
     # - name: Add MSBuild to PATH
     #   uses: microsoft/setup-msbuild@v1.0.0
 
