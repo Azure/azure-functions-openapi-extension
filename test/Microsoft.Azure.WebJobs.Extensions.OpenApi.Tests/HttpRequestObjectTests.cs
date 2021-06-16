@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 using FluentAssertions;
 
@@ -21,15 +22,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow("http", "localhost", 7071)]
         [DataRow("http", "localhost", 80)]
+        [DataRow("http", "localhost", 7071)]
         [DataRow("https", "localhost", 443)]
+        [DataRow("https", "localhost", 47071)]
         public void Given_Parameter_When_Instantiated_Then_It_Should_Return_Result(string scheme, string hostname, int port)
         {
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
 
-            var hoststring = new HostString(hostname, port);
+            var ports = new[] { 80, 443 };
+            var baseHost = $"{hostname}{(ports.Contains(port) ? string.Empty : $":{port}")}";
+            var hoststring = new HostString(baseHost);
             req.SetupGet(p => p.Host).Returns(hoststring);
 
             string host = hoststring.Value;
@@ -37,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             var result = new HttpRequestObject(req.Object);
 
             result.Scheme.Should().Be(scheme);
-            result.Host.Value.Should().Be($"{hostname}:{port}");
+            result.Host.Value.Should().Be(baseHost);
         }
     }
 }

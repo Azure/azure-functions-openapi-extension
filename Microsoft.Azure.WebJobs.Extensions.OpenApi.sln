@@ -16,55 +16,51 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{810145E0-41C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi", "src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj", "{B409837F-3D64-407E-88AE-C0F932F1A4DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.csproj", "{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions", "src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.csproj", "{B9ADD076-3567-4795-910B-3A6993EF7D84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj", "{B18937F6-B39F-46BB-BB3C-86C0693993EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.csproj", "{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj", "{B18937F6-B39F-46BB-BB3C-86C0693993EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.csproj", "{7AD094AA-01D6-4644-B9B6-E555A029D6D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.csproj", "{CDBD5665-D6CC-4C10-9872-A4886AC6275A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI", "src\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.csproj", "{7AD094AA-01D6-4644-B9B6-E555A029D6D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{66D8DEA8-B477-497F-95BB-E8F9A5BAC352}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj", "{6ABA1666-BC42-487F-B156-3DC79347BD6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj", "{6ABA1666-BC42-487F-B156-3DC79347BD6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.csproj", "{98223494-E0A8-4C07-A38F-84CA2060031D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy.csproj", "{98223494-E0A8-4C07-A38F-84CA2060031D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static.csproj", "{848EDB8F-9C45-462B-A544-EA237774F3BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static.csproj", "{848EDB8F-9C45-462B-A544-EA237774F3BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC.csproj", "{D6C3806E-2685-4E8D-9F4F-7A93E5270891}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC.csproj", "{D6C3806E-2685-4E8D-9F4F-7A93E5270891}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.csproj", "{C2996131-C3CA-4D3D-8357-C533849792E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.csproj", "{C2996131-C3CA-4D3D-8357-C533849792E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5", "samples\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.csproj", "{BDE6F761-880E-47C3-B40C-956F470E3D10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5", "samples\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.csproj", "{BDE6F761-880E-47C3-B40C-956F470E3D10}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B62E3FB-9062-4716-803A-1FA51FCE68BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes.csproj", "{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes.csproj", "{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.csproj", "{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.csproj", "{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes.csproj", "{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.csproj", "{6735CCE7-5142-490B-9A06-C7471604E93B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.csproj", "{968CD847-80D0-4740-92D5-F5553461EC04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes.csproj", "{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.csproj", "{968CD847-80D0-4740-92D5-F5553461EC04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.csproj", "{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{56A43630-87E6-4E94-B24A-859258202578}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenApiEndpoints", "OpenApiEndpoints", "{41695443-A292-4909-89A6-2D9846753164}"
-	ProjectSection(SolutionItems) = preProject
-		templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs = templates\OpenApiEndpoints\IOpenApiHttpTriggerContext.cs
-		templates\OpenApiEndpoints\OpenApiHttpTrigger.cs = templates\OpenApiEndpoints\OpenApiHttpTrigger.cs
-		templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs = templates\OpenApiEndpoints\OpenApiHttpTriggerContext.cs
-		templates\OpenApiEndpoints\OpenApiHttpTriggerV1.cs = templates\OpenApiEndpoints\OpenApiHttpTriggerV1.cs
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.csproj", "{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +72,10 @@ Global
 		{B409837F-3D64-407E-88AE-C0F932F1A4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B409837F-3D64-407E-88AE-C0F932F1A4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B409837F-3D64-407E-88AE-C0F932F1A4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9ADD076-3567-4795-910B-3A6993EF7D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9ADD076-3567-4795-910B-3A6993EF7D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9ADD076-3567-4795-910B-3A6993EF7D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9ADD076-3567-4795-910B-3A6993EF7D84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -84,6 +84,10 @@ Global
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDBD5665-D6CC-4C10-9872-A4886AC6275A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBD5665-D6CC-4C10-9872-A4886AC6275A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBD5665-D6CC-4C10-9872-A4886AC6275A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBD5665-D6CC-4C10-9872-A4886AC6275A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D405655F-C8BE-4134-893C-ADB4918B0624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D405655F-C8BE-4134-893C-ADB4918B0624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D405655F-C8BE-4134-893C-ADB4918B0624}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -132,6 +136,10 @@ Global
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6735CCE7-5142-490B-9A06-C7471604E93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6735CCE7-5142-490B-9A06-C7471604E93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6735CCE7-5142-490B-9A06-C7471604E93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6735CCE7-5142-490B-9A06-C7471604E93B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -154,8 +162,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B409837F-3D64-407E-88AE-C0F932F1A4DE} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{B9ADD076-3567-4795-910B-3A6993EF7D84} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{CDBD5665-D6CC-4C10-9872-A4886AC6275A} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{D405655F-C8BE-4134-893C-ADB4918B0624} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{66D8DEA8-B477-497F-95BB-E8F9A5BAC352} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
@@ -169,11 +179,11 @@ Global
 		{BDE6F761-880E-47C3-B40C-956F470E3D10} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{6735CCE7-5142-490B-9A06-C7471604E93B} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{968CD847-80D0-4740-92D5-F5553461EC04} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{D787694D-B87B-4E11-9455-B5BF9306D8FC} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
-		{41695443-A292-4909-89A6-2D9846753164} = {56A43630-87E6-4E94-B24A-859258202578}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}

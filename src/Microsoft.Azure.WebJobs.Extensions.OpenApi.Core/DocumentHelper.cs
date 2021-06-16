@@ -18,7 +18,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
-    /// This represents the helper entity for the <see cref="Document"/> class.
+    /// This represents the helper entity for the classes implementing the <see cref="IDocument"/> interface.
     /// </summary>
     public class DocumentHelper : IDocumentHelper
     {
@@ -36,53 +36,53 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             this._acceptor = acceptor.ThrowIfNullOrDefault();
         }
 
-        /// <inheritdoc />
-        public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
-        {
-            var methods = assembly.GetTypes()
-                                  .SelectMany(p => p.GetMethods())
-                                  .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
-                                  .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
-                                  .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
-                                  .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
-                                  .ToList();
+        // /// <inheritdoc />
+        // public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
+        // {
+        //     var methods = assembly.GetTypes()
+        //                           .SelectMany(p => p.GetMethods())
+        //                           .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
+        //                           .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
+        //                           .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
+        //                           .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
+        //                           .ToList();
 
-            return methods;
-        }
+        //     return methods;
+        // }
 
-        /// <inheritdoc />
-        public HttpTriggerAttribute GetHttpTriggerAttribute(MethodInfo element)
-        {
-            var trigger = element.GetHttpTrigger();
+        // /// <inheritdoc />
+        // public HttpTriggerAttribute GetHttpTriggerAttribute(MethodInfo element)
+        // {
+        //     var trigger = element.GetHttpTrigger();
 
-            return trigger;
-        }
+        //     return trigger;
+        // }
 
-        /// <inheritdoc />
-        public FunctionNameAttribute GetFunctionNameAttribute(MethodInfo element)
-        {
-            var function = element.GetFunctionName();
+        // /// <inheritdoc />
+        // public FunctionNameAttribute GetFunctionNameAttribute(MethodInfo element)
+        // {
+        //     var function = element.GetFunctionName();
 
-            return function;
-        }
+        //     return function;
+        // }
 
-        /// <inheritdoc />
-        public string GetHttpEndpoint(FunctionNameAttribute function, HttpTriggerAttribute trigger)
-        {
-            var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : this.FilterRoute(trigger.Route)).Trim('/')}";
+        // /// <inheritdoc />
+        // public string GetHttpEndpoint(FunctionNameAttribute function, HttpTriggerAttribute trigger)
+        // {
+        //     var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : this.FilterRouteConstraints(trigger.Route)).Trim('/')}";
 
-            return endpoint;
-        }
+        //     return endpoint;
+        // }
 
-        /// <inheritdoc />
-        public OperationType GetHttpVerb(HttpTriggerAttribute trigger)
-        {
-            var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out OperationType ot)
-                           ? ot
-                           : throw new InvalidOperationException();
+        // /// <inheritdoc />
+        // public OperationType GetHttpVerb(HttpTriggerAttribute trigger)
+        // {
+        //     var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out OperationType ot)
+        //                    ? ot
+        //                    : throw new InvalidOperationException();
 
-            return verb;
-        }
+        //     return verb;
+        // }
 
         /// <inheritdoc />
         public OpenApiPathItem GetOpenApiPath(string path, OpenApiPaths paths)
@@ -92,33 +92,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return item;
         }
 
-        /// <inheritdoc />
-        public OpenApiOperation GetOpenApiOperation(MethodInfo element, FunctionNameAttribute function, OperationType verb)
-        {
-            var op = element.GetOpenApiOperation();
-            if (op.IsNullOrDefault())
-            {
-                return null;
-            }
+        // /// <inheritdoc />
+        // public OpenApiOperation GetOpenApiOperation(MethodInfo element, FunctionNameAttribute function, OperationType verb)
+        // {
+        //     var op = element.GetOpenApiOperation();
+        //     if (op.IsNullOrDefault())
+        //     {
+        //         return null;
+        //     }
 
-            var operation = new OpenApiOperation()
-            {
-                OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
-                Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
-                Summary = op.Summary,
-                Description = op.Description,
-                Deprecated = op.Deprecated
-            };
+        //     var operation = new OpenApiOperation()
+        //     {
+        //         OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
+        //         Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
+        //         Summary = op.Summary,
+        //         Description = op.Description,
+        //         Deprecated = op.Deprecated
+        //     };
 
-            if (op.Visibility != OpenApiVisibilityType.Undefined)
-            {
-                var visibility = new OpenApiString(op.Visibility.ToDisplayName());
+        //     if (op.Visibility != OpenApiVisibilityType.Undefined)
+        //     {
+        //         var visibility = new OpenApiString(op.Visibility.ToDisplayName());
 
-                operation.Extensions.Add("x-ms-visibility", visibility);
-            }
+        //         operation.Extensions.Add("x-ms-visibility", visibility);
+        //     }
 
-            return operation;
-        }
+        //     return operation;
+        // }
 
         /// <inheritdoc />
         public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null)
@@ -156,23 +156,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return requirements;
         }
 
-        /// <inheritdoc />
-        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
-        {
-            var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Where(p => p.Deprecated == false)
-                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
-                                    .ToList();
+        // /// <inheritdoc />
+        // public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        // {
+        //     var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
+        //                             .Where(p => p.Deprecated == false)
+        //                             .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
+        //                             .ToList();
 
-            // // TODO: Should this be forcibly provided?
-            // // This needs to be provided separately.
-            // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
-            // {
-            //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
-            // }
+        //     // // TODO: Should this be forcibly provided?
+        //     // // This needs to be provided separately.
+        //     // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
+        //     // {
+        //     //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
+        //     // }
 
-            return parameters;
-        }
+        //     return parameters;
+        // }
 
         /// <inheritdoc />
         public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
@@ -326,7 +326,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return schemes;
         }
 
-        private string FilterRoute(string route)
+        /// <inheritdoc />
+        public string FilterRouteConstraints(string route)
         {
             var segments = route.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(p => this._filter.Filter.Replace(p, this._filter.Replacement));

@@ -10,8 +10,8 @@
     <Version>1.0.0</Version>
     <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi</PackageId>
     <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi</Title>
-    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the in-proc worker environment.</Summary>
-    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the in-proc worker environment.</Description>
+    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the in-proc worker.</Summary>
+    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints through the in-proc worker.</Description>
     <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi</RootNamespace>
@@ -34,17 +34,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Lists\**" />
-    <EmbeddedResource Remove="Lists\**" />
-    <None Remove="Lists\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

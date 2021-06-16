@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Extensions
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 {
     /// <summary>
     /// This represents the extension entity for <see cref="SwaggerUI"/>.

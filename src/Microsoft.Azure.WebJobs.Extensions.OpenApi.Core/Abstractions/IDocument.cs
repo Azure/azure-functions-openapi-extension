@@ -12,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This provides interfaces to the <see cref="Document"/> class.
+    /// This provides interfaces to its implementing class.
     /// </summary>
     public interface IDocument
     {

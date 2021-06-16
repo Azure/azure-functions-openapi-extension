@@ -1,5 +1,3 @@
-using Microsoft.Azure.WebJobs.Extensions.Http;
-
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
