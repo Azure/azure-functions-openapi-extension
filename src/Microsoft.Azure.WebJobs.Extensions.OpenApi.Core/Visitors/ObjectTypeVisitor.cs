@@ -46,6 +46,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            else if (type == typeof(Type))
+            {
+                isVisitable = false;
+            }
             else if (type.IsOpenApiArray())
             {
                 isVisitable = false;
@@ -70,6 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            
 
             return isVisitable;
         }
