@@ -11,8 +11,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5
 {
     public class DefaultIoCHttpTrigger
     {
+        private readonly ISample _sample;
+        public DefaultIoCHttpTrigger(ISample sample)
+        {
+            this._sample = sample;
+        }
+
         [Function(nameof(DefaultIoCHttpTrigger.IoCRunAsync))]
-        [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
+        [OpenApiOperation(operationId: "iocRun", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public async Task<HttpResponseData> IoCRunAsync(
@@ -21,6 +27,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5
         {
             var logger = executionContext.GetLogger(nameof(DefaultIoCHttpTrigger));
             logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            var value = this._sample.GetValue();
 
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");

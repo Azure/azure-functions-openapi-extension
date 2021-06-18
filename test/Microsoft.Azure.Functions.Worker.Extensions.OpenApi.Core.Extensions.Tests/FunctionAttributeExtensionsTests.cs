@@ -2,19 +2,18 @@ using System;
 using System.Reflection;
 
 using FluentAssertions;
-
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests
 {
     [TestClass]
-    public class FunctionNameAttributeExtensionsTests
+    public class FunctionAttributeExtensionsTests
     {
         [TestMethod]
         public void Given_Null_When_GetFunctionName_Invoked_Then_It_Should_Throw_Exception()
         {
-            Action action = () => FunctionNameAttributeExtensions.GetFunctionName(null);
+            Action action = () => FunctionAttributeExtensions.GetFunctionName(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -25,9 +24,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests
         {
             var method = typeof(FakeHttpTrigger).GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
 
-            var result = FunctionNameAttributeExtensions.GetFunctionName(method);
+            var result = FunctionAttributeExtensions.GetFunctionName(method);
 
-            result.Should().BeOfType<FunctionNameAttribute>();
+            result.Should().BeOfType<FunctionAttribute>();
             result.Name.Should().Be(expected);
         }
     }

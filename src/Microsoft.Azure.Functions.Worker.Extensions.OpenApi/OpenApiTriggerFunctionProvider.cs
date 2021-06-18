@@ -1,153 +1,224 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Reflection;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Script.Description;
-
-using Newtonsoft.Json.Linq;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
     /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
-    public partial class OpenApiTriggerFunctionProvider : IFunctionProvider
+    public class OpenApiTriggerFunctionProvider : IOpenApiTriggerFunctionProvider
     {
-        private const string RenderSwaggerDocumentKey = "RenderSwaggerDocument";
-        private const string RenderOpenApiDocumentKey = "RenderOpenApiDocument";
-        private const string RenderSwaggerUIKey = "RenderSwaggerUI";
-        private const string RenderOAuth2RedirectKey = "RenderOAuth2Redirect";
+        private const string ContentTypeText = "text/plain";
+        private const string ContentTypeHtml = "text/html";
+        private const string ContentTypeJson = "application/json";
+        private const string ContentTypeYaml = "text/vnd.yaml";
 
-        private readonly OpenApiSettings _settings;
-        private readonly Dictionary<string, HttpBindingMetadata> _bindings;
+        private readonly IOpenApiHttpTriggerContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiTriggerFunctionProvider"/> class.
+        /// Initializes a new instance of the <see cref="IOpenApiHttpTriggerContext"/> class.
         /// </summary>
-        public OpenApiTriggerFunctionProvider(OpenApiSettings settings)
+        /// <param name="context"><see cref="IOpenApiHttpTriggerContext"/> instance.</param>
+        public OpenApiTriggerFunctionProvider(IOpenApiHttpTriggerContext context)
         {
-            this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            this._bindings = this.SetupOpenApiHttpBindings();
+            this._context = context.ThrowIfNullOrDefault();
         }
 
-        /// <inheritdoc />
-        public ImmutableDictionary<string, ImmutableArray<string>> FunctionErrors  { get; } = new Dictionary<string, ImmutableArray<string>>().ToImmutableDictionary();
-
-        /// <inheritdoc />
-        public async Task<ImmutableArray<FunctionMetadata>> GetFunctionMetadataAsync()
+        /// <inheritdoc/>
+        [OpenApiIgnore]
+        [Function(nameof(OpenApiTriggerFunctionProvider.RenderSwaggerDocument))]
+        public async Task<HttpResponseData> RenderSwaggerDocument(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger.{extension}")] HttpRequestData req,
+            string extension,
+            FunctionContext ctx)
         {
-            var functionMetadataList = this.GetFunctionMetadataList();
+            var log = ctx.GetLogger(nameof(OpenApiTriggerFunctionProvider));
+            log.LogInformation($"swagger.{extension} was requested.");
 
-            return await Task.FromResult(functionMetadataList.ToImmutableArray()).ConfigureAwait(false);
-        }
-
-        private Dictionary<string, HttpBindingMetadata> SetupOpenApiHttpBindings()
-        {
-            var renderSwaggerDocument = new HttpBindingMetadata()
+            var fi = new FileInfo(ctx.FunctionDefinition.PathToAssembly);
+            var result = default(string);
+            var response = default(HttpResponseData);
+            try
             {
-                Name = "req",
-                Type = "HttpTrigger",
-                Methods = new List<string>() { HttpMethods.Get },
-                Route = "swagger.{extension}",
-                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
-                Direction = BindingDirection.In,
-            };
+                result = await (await this._context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false))
+                                          .Document
+                                          .InitialiseDocument()
+                                          .AddMetadata(this._context.OpenApiConfigurationOptions.Info)
+                                          .AddServer(new HttpRequestObject(req), this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
+                                          .AddNamingStrategy(this._context.NamingStrategy)
+                                          .AddVisitors(this._context.GetVisitorCollection())
+                                          .Build(this._context.ApplicationAssembly, this._context.OpenApiConfigurationOptions.OpenApiVersion)
+                                          .RenderAsync(this._context.GetOpenApiSpecVersion(this._context.OpenApiConfigurationOptions.OpenApiVersion), this._context.GetOpenApiFormat(extension))
+                                          .ConfigureAwait(false);
 
-            var renderOpenApiDocument = new HttpBindingMetadata()
+                response = req.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Content-Type", this._context.GetOpenApiFormat(extension).GetContentType());
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
+            catch (Exception ex)
             {
-                Name = "req",
-                Type = "HttpTrigger",
-                Methods = new List<string>() { HttpMethods.Get },
-                Route = "openapi/{version}.{extension}",
-                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
-                Direction = BindingDirection.In,
-            };
+                log.LogError(ex.Message);
 
-            var renderOAuth2Redirect = new HttpBindingMetadata()
-            {
-                Name = "req",
-                Type = "HttpTrigger",
-                Methods = new List<string>() { HttpMethods.Get },
-                Route = "oauth2-redirect.html",
-                AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                Direction = BindingDirection.In,
-            };
-
-            var bindings = new Dictionary<string, HttpBindingMetadata>()
-            {
-                { RenderSwaggerDocumentKey, renderSwaggerDocument },
-                { RenderOpenApiDocumentKey, renderOpenApiDocument },
-                { RenderOAuth2RedirectKey, renderOAuth2Redirect },
-            };
-
-            if (!this._settings.HideSwaggerUI)
-            {
-                var renderSwaggerUI = new HttpBindingMetadata()
+                result = ex.Message;
+                if (this._context.IsDevelopment)
                 {
-                    Name = "req",
-                    Type = "HttpTrigger",
-                    Methods = new List<string>() { HttpMethods.Get },
-                    Route = "swagger/ui",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                    Direction = BindingDirection.In,
-                };
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
 
-                bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);
+                response = req.CreateResponse(HttpStatusCode.InternalServerError);
+                response.Headers.Add("Content-Type", ContentTypeText);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
             }
 
-            var output = new HttpBindingMetadata()
-            {
-                Name = "$return",
-                Type = "http",
-                Direction = BindingDirection.Out,
-            };
+            return response;
+         }
 
-            bindings.Add("Output", output);
-
-            return bindings;
-        }
-
-        private List<FunctionMetadata> GetFunctionMetadataList()
+        /// <inheritdoc/>
+        [OpenApiIgnore]
+        [Function(nameof(OpenApiTriggerFunctionProvider.RenderOpenApiDocument))]
+        public async Task<HttpResponseData> RenderOpenApiDocument(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "openapi/{version}.{extension}")] HttpRequestData req,
+            string version,
+            string extension,
+            FunctionContext ctx)
         {
-            var list = new List<FunctionMetadata>()
-            {
-                this.GetFunctionMetadata(RenderSwaggerDocumentKey),
-                this.GetFunctionMetadata(RenderOpenApiDocumentKey),
-                this.GetFunctionMetadata(RenderOAuth2RedirectKey),
-            };
+            var log = ctx.GetLogger(nameof(OpenApiTriggerFunctionProvider));
+            log.LogInformation($"{version}.{extension} was requested.");
 
-            if (!this._settings.HideSwaggerUI)
+            var fi = new FileInfo(ctx.FunctionDefinition.PathToAssembly);
+            var result = default(string);
+            var response = default(HttpResponseData);
+            try
             {
-                list.Add(this.GetFunctionMetadata(RenderSwaggerUIKey));
+                result = await (await this._context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false))
+                                          .Document
+                                          .InitialiseDocument()
+                                          .AddMetadata(this._context.OpenApiConfigurationOptions.Info)
+                                          .AddServer(new HttpRequestObject(req), this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
+                                          .AddNamingStrategy(this._context.NamingStrategy)
+                                          .AddVisitors(this._context.GetVisitorCollection())
+                                          .Build(this._context.ApplicationAssembly, this._context.GetOpenApiVersionType(version))
+                                          .RenderAsync(this._context.GetOpenApiSpecVersion(version), this._context.GetOpenApiFormat(extension))
+                                          .ConfigureAwait(false);
+
+                response = req.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Content-Type", this._context.GetOpenApiFormat(extension).GetContentType());
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (this._context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                response = req.CreateResponse(HttpStatusCode.InternalServerError);
+                response.Headers.Add("Content-Type", ContentTypeText);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
             }
 
-            return list;
+            return response;
         }
 
-        private FunctionMetadata GetFunctionMetadata(string functionName)
+        /// <inheritdoc/>
+        [OpenApiIgnore]
+        [Function(nameof(OpenApiTriggerFunctionProvider.RenderSwaggerUI))]
+        public async Task<HttpResponseData> RenderSwaggerUI(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequestData req,
+            FunctionContext ctx)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var functionMetadata = new FunctionMetadata()
+            var log = ctx.GetLogger(nameof(OpenApiTriggerFunctionProvider));
+            log.LogInformation("SwaggerUI page was requested.");
+
+            var fi = new FileInfo(ctx.FunctionDefinition.PathToAssembly);
+            var result = default(string);
+            var response = default(HttpResponseData);
+            try
             {
-                Name = functionName,
-                FunctionDirectory = null,
-                ScriptFile = $"assembly:{assembly.FullName}",
-                EntryPoint = $"{assembly.GetName().Name}.{typeof(OpenApiTriggerFunctionProvider).Name}.{functionName}",
-                Language = "DotNetAssembly"
-            };
+                result = await (await this._context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false))
+                                          .SwaggerUI
+                                          .AddMetadata(this._context.OpenApiConfigurationOptions.Info)
+                                          .AddServer(new HttpRequestObject(req), this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
+                                          .BuildAsync(this._context.PackageAssembly, this._context.OpenApiCustomUIOptions)
+                                          .RenderAsync("swagger.json", this._context.GetDocumentAuthLevel(), this._context.GetSwaggerAuthKey())
+                                          .ConfigureAwait(false);
 
-            var input = JObject.FromObject(this._bindings[functionName]);
-            var inputBinding = Microsoft.Azure.WebJobs.Script.Description.BindingMetadata.Create(input);
-            functionMetadata.Bindings.Add(inputBinding);
+                response = req.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Content-Type", ContentTypeHtml);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
 
-            var output = JObject.FromObject(this._bindings["Output"]);
-            var outputBinding = Microsoft.Azure.WebJobs.Script.Description.BindingMetadata.Create(output);
-            functionMetadata.Bindings.Add(outputBinding);
+                result = ex.Message;
+                if (this._context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                response = req.CreateResponse(HttpStatusCode.InternalServerError);
+                response.Headers.Add("Content-Type", ContentTypeText);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
 
-            return functionMetadata;
+            return response;
+        }
+
+        /// <inheritdoc/>
+        [OpenApiIgnore]
+        [Function(nameof(OpenApiTriggerFunctionProvider.RenderOAuth2Redirect))]
+        public async Task<HttpResponseData> RenderOAuth2Redirect(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "oauth2-redirect.html")] HttpRequestData req,
+            FunctionContext ctx)
+        {
+            var log = ctx.GetLogger(nameof(OpenApiTriggerFunctionProvider));
+            log.LogInformation("The oauth2-redirect.html page was requested.");
+
+            var fi = new FileInfo(ctx.FunctionDefinition.PathToAssembly);
+            var result = default(string);
+            var response = default(HttpResponseData);
+            try
+            {
+                result = await (await this._context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false))
+                                          .SwaggerUI
+                                          .AddServer(new HttpRequestObject(req), this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
+                                          .BuildOAuth2RedirectAsync(this._context.PackageAssembly)
+                                          .RenderOAuth2RedirectAsync("oauth2-redirect.html", this._context.GetDocumentAuthLevel(), this._context.GetSwaggerAuthKey())
+                                          .ConfigureAwait(false);
+
+                response = req.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Content-Type", ContentTypeHtml);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+
+                result = ex.Message;
+                if (this._context.IsDevelopment)
+                {
+                    result += "\r\n\r\n";
+                    result += ex.StackTrace;
+                }
+                response = req.CreateResponse(HttpStatusCode.InternalServerError);
+                response.Headers.Add("Content-Type", ContentTypeText);
+                await response.WriteStringAsync(result).ConfigureAwait(false);
+            }
+
+            return response;
         }
     }
 }

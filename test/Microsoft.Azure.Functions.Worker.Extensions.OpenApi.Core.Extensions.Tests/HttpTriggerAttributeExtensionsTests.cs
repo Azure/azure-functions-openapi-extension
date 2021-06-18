@@ -4,7 +4,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests
 {
     [TestClass]
     public class MethodInfoExtensionsTests

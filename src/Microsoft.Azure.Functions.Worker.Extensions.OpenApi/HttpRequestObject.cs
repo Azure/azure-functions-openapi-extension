@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
             this.Scheme = req.Url.Scheme;
             this.Host = new[] { 80, 443 }.Contains(req.Url.Port)
-                        ? new HostString(req.Url.Host)
+                        ? new HostString(req.Url.Authority)
                         : new HostString(req.Url.Host, req.Url.Port);
         }
 

@@ -35,5 +35,4 @@
     <ProjectReference Include="..\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.csproj" />
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
-
 </Project>

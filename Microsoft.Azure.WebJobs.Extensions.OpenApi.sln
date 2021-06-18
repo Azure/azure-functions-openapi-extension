@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B62E3FB-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests", "test\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.csproj", "{B6C398B2-6F74-4E50-A49F-F36B9825F45E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes", "test\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes.csproj", "{56E00DEF-F87C-4893-8902-2844DE1AEB8D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests", "test\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.csproj", "{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes.csproj", "{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}"
@@ -138,6 +140,10 @@ Global
 		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56E00DEF-F87C-4893-8902-2844DE1AEB8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E00DEF-F87C-4893-8902-2844DE1AEB8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E00DEF-F87C-4893-8902-2844DE1AEB8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56E00DEF-F87C-4893-8902-2844DE1AEB8D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -196,6 +202,7 @@ Global
 		{C2996131-C3CA-4D3D-8357-C533849792E1} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{8460A7F9-FED4-4495-A595-8C585FC7F606} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B6C398B2-6F74-4E50-A49F-F36B9825F45E} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{56E00DEF-F87C-4893-8902-2844DE1AEB8D} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}

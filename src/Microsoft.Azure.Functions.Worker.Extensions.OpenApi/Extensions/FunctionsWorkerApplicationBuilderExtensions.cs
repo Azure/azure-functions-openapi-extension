@@ -39,5 +39,4 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
             return builder;
         }
     }
-
 }
