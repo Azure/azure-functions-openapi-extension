@@ -4,7 +4,7 @@ using System.Reflection;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Extensions.Tests

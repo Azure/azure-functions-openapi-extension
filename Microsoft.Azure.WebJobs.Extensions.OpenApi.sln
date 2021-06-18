@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Ext
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{66D8DEA8-B477-497F-95BB-E8F9A5BAC352}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5", "samples\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.csproj", "{BDE6F761-880E-47C3-B40C-956F470E3D10}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj", "{6ABA1666-BC42-487F-B156-3DC79347BD6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
@@ -44,13 +46,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Ext
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC", "samples\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5", "samples\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.csproj", "{BDE6F761-880E-47C3-B40C-956F470E3D10}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B62E3FB-9062-4716-803A-1FA51FCE68BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests", "test\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.csproj", "{B6C398B2-6F74-4E50-A49F-F36B9825F45E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests", "test\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.csproj", "{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.Fakes.csproj", "{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.Tests.csproj", "{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes.csproj", "{134C4854-1A8E-4093-9526-32D308CDC7BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests", "test\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.csproj", "{6735CCE7-5142-490B-9A06-C7471604E93B}"
 EndProject
@@ -96,6 +102,10 @@ Global
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6ABA1666-BC42-487F-B156-3DC79347BD6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6ABA1666-BC42-487F-B156-3DC79347BD6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ABA1666-BC42-487F-B156-3DC79347BD6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -124,10 +134,14 @@ Global
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BDE6F761-880E-47C3-B40C-956F470E3D10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6C398B2-6F74-4E50-A49F-F36B9825F45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -136,6 +150,10 @@ Global
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134C4854-1A8E-4093-9526-32D308CDC7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134C4854-1A8E-4093-9526-32D308CDC7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134C4854-1A8E-4093-9526-32D308CDC7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134C4854-1A8E-4093-9526-32D308CDC7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6735CCE7-5142-490B-9A06-C7471604E93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6735CCE7-5142-490B-9A06-C7471604E93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6735CCE7-5142-490B-9A06-C7471604E93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -169,6 +187,7 @@ Global
 		{D405655F-C8BE-4134-893C-ADB4918B0624} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{66D8DEA8-B477-497F-95BB-E8F9A5BAC352} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{BDE6F761-880E-47C3-B40C-956F470E3D10} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{6ABA1666-BC42-487F-B156-3DC79347BD6B} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{98223494-E0A8-4C07-A38F-84CA2060031D} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
@@ -176,9 +195,11 @@ Global
 		{D6C3806E-2685-4E8D-9F4F-7A93E5270891} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{C2996131-C3CA-4D3D-8357-C533849792E1} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{8460A7F9-FED4-4495-A595-8C585FC7F606} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
-		{BDE6F761-880E-47C3-B40C-956F470E3D10} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
+		{B6C398B2-6F74-4E50-A49F-F36B9825F45E} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{6138EFEB-3C50-4A35-BDFA-7270A5F621BD} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{134C4854-1A8E-4093-9526-32D308CDC7BC} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{6735CCE7-5142-490B-9A06-C7471604E93B} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{1D1A5ED5-A1A1-4082-ACAF-30079AF31AC6} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{968CD847-80D0-4740-92D5-F5553461EC04} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}

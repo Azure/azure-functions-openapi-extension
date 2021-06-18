@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests</AssemblyName>
-    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,13 +26,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.csproj" />
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'!='netcoreapp3.1'">
-    <Reference Include="Microsoft.CSharp" />
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
