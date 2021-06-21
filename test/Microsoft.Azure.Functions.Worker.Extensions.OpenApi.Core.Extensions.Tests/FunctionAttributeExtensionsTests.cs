@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 
 using FluentAssertions;
+
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
