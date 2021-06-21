@@ -121,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(Dictionary<string, string>));
-            var attribute = new OpenApiPropertyDescriptionAttribute(description);
+            var attribute = new OpenApiPropertyAttribute() { Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
 

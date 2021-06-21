@@ -143,10 +143,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds the extra properties.
             if (attributes.Any())
             {
-                Attribute attr = attributes.OfType<OpenApiPropertyDescriptionAttribute>().SingleOrDefault();
+                Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
                 if (!attr.IsNullOrDefault())
                 {
-                    schema.Description = (attr as OpenApiPropertyDescriptionAttribute).Description;
+                    if (dataType != "object")
+                    {
+                        schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
+                        schema.Default = this.GetOpenApiPropertyDefault(attr as OpenApiPropertyAttribute);
+                    }
+                    schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                 }
 
                 attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
@@ -195,6 +200,102 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             };
 
             return schema;
+        }
+
+        /// <summary>
+        /// Gets the value indicating whether the property is nullable or not.
+        /// </summary>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if nullable; otherwise returns <c>False</c>.</returns>
+        protected bool GetOpenApiPropertyNullable(OpenApiPropertyAttribute attr)
+        {
+            return attr.Nullable;
+        }
+
+        /// <summary>
+        /// Gets the default value from the <see cref="OpenApiPropertyAttribute"/> instance.
+        /// </summary>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the default data.</returns>
+        protected IOpenApiAny GetOpenApiPropertyDefault(OpenApiPropertyAttribute attr)
+        {
+            var @default = attr.Default;
+            if (@default.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            if (@default is bool)
+            {
+                return new OpenApiBoolean((bool) @default);
+            }
+
+            if (@default is DateTime)
+            {
+                return new OpenApiDateTime((DateTime) @default);
+            }
+
+            if (@default is DateTimeOffset)
+            {
+                return new OpenApiDateTime((DateTimeOffset) @default);
+            }
+
+            if (@default is float)
+            {
+                return new OpenApiFloat((float) @default);
+            }
+
+            if (@default is double)
+            {
+                return new OpenApiDouble((double) @default);
+            }
+
+            if (@default is decimal)
+            {
+                return new OpenApiDouble((double) @default);
+            }
+
+            if (@default is short)
+            {
+                return new OpenApiInteger((short) @default);
+            }
+
+            if (@default is int)
+            {
+                return new OpenApiInteger((int) @default);
+            }
+
+            if (@default is long)
+            {
+                return new OpenApiLong((long) @default);
+            }
+
+            if (@default is ushort)
+            {
+                return new OpenApiInteger((ushort) @default);
+            }
+
+            if (@default is uint)
+            {
+                return new OpenApiInteger((int) @default);
+            }
+
+            if (@default is ulong)
+            {
+                return new OpenApiLong((long) @default);
+            }
+
+            return new OpenApiString((string) @default);
+        }
+
+        /// <summary>
+        /// Gets the property description.
+        /// </summary>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the property description.</returns>
+        protected string GetOpenApiPropertyDescription(OpenApiPropertyAttribute attr)
+        {
+            return attr.Description;
         }
     }
 }

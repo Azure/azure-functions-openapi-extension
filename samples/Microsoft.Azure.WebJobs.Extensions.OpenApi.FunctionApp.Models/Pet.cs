@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
@@ -39,6 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         /// <summary>
         /// Gets or sets the <see cref="PetStatus"/> value.
         /// </summary>
+        [OpenApiProperty(Description = "pet status in the store")]
         public PetStatus? Status { get; set; }
     }
 }
