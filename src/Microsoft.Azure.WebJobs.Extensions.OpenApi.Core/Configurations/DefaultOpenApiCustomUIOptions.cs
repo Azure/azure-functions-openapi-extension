@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -29,10 +31,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc/>
         public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
 
-        /// <inheritdoc/>
-        public virtual async Task<string> GetStylesheetAsync()
+
+        private async Task<string> ReadFromStream(string path)
         {
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomStylesheetPath}"))
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{path}"))
             {
                 if (stream.IsNullOrDefault())
                 {
@@ -46,21 +48,34 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             }
         }
 
+        private async Task<string> ReadFromUri(Uri uri)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<string> GetStylesheetAsync()
+        {
+            if (Uri.TryCreate(this.CustomStylesheetPath, UriKind.Absolute, out var stylesheetUri))
+            {
+                return await this.ReadFromUri(stylesheetUri);
+            }
+            return await this.ReadFromStream(this.CustomStylesheetPath);
+        }
+
         /// <inheritdoc/>
         public virtual async Task<string> GetJavaScriptAsync()
         {
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{this.CustomJavaScriptPath}"))
+            if (Uri.TryCreate(this.CustomJavaScriptPath, UriKind.Absolute, out var scriptUri))
             {
-                if (stream.IsNullOrDefault())
-                {
-                    return string.Empty;
-                }
-
-                using (var reader = new StreamReader(stream))
-                {
-                    return await reader.ReadToEndAsync();
-                }
+                return await this.ReadFromUri(scriptUri);
             }
+            return await this.ReadFromStream(this.CustomJavaScriptPath);
         }
     }
 }
