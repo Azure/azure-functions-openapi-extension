@@ -60,7 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     var attributes = new Attribute[]
                     {
                         property.Value.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false),
-                        property.Value.GetCustomAttribute<OpenApiPropertyDescriptionAttribute>(inherit: false),
+                        property.Value.GetCustomAttribute<OpenApiPropertyAttribute>(inherit: false),
                     };
 
                     foreach (var visitor in collection.Visitors)
