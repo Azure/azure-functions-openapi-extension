@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
     public class DefaultOpenApiCustomUIOptions : IOpenApiCustomUIOptions
     {
         private readonly Assembly _assembly;
-
+        private static readonly HttpClient HttpClient = new HttpClient();
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOpenApiCustomUIOptions"/> class.
         /// </summary>
@@ -30,33 +30,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc/>
         public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
-
-
-        private async Task<string> ReadFromStream(string path)
-        {
-            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{path}"))
-            {
-                if (stream.IsNullOrDefault())
-                {
-                    return string.Empty;
-                }
-
-                using (var reader = new StreamReader(stream))
-                {
-                    return await reader.ReadToEndAsync();
-                }
-            }
-        }
-
-        private async Task<string> ReadFromUri(Uri uri)
-        {
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
-        }
 
         /// <inheritdoc/>
         public virtual async Task<string> GetStylesheetAsync()
@@ -76,6 +49,32 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                 return await this.ReadFromUri(scriptUri);
             }
             return await this.ReadFromStream(this.CustomJavaScriptPath);
+        }
+
+        private async Task<string> ReadFromStream(string path)
+        {
+            using (var stream = this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{path}"))
+            {
+                if (stream.IsNullOrDefault())
+                {
+                    return string.Empty;
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return await reader.ReadToEndAsync();
+                }
+            }
+        }
+
+        private async Task<string> ReadFromUri(Uri uri)
+        {
+            var response = await HttpClient.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return string.Empty;
         }
     }
 }
