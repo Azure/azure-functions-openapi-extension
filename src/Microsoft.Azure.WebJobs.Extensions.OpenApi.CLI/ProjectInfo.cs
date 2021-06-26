@@ -222,7 +222,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
         {
             var assembly = Assembly.LoadFrom(this.CompiledDllPath);
 
-            var type = assembly.GetTypes()
+            var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false);
             if (type.IsNullOrDefault())
             {

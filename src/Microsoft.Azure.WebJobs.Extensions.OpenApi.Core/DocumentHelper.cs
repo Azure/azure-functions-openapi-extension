@@ -39,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         /// <inheritdoc />
         public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
         {
-            var methods = assembly.GetTypes()
+            var methods = assembly.GetLoadableTypes()
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())

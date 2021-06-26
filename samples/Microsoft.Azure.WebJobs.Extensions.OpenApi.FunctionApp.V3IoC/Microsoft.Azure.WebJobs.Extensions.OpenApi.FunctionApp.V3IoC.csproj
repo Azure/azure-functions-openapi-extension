@@ -25,6 +25,7 @@
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Interfaces\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Interfaces.csproj" />
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services.csproj" />
   </ItemGroup>
 
