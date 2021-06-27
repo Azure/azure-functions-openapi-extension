@@ -20,7 +20,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
-    /// This represents the context entity for <see cref="OpenApiTriggerFunctionProvider"/>.
+    /// This represents the context entity for classes implementing <see cref="IOpenApiTriggerFunction"/>.
     /// </summary>
     [SuppressMessage("Design", "CA1823", Justification = "")]
     [SuppressMessage("Design", "MEN002", Justification = "")]
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         private IOpenApiCustomUIOptions _uiOptions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiTriggerFunctionProvider"/> class.
+        /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
         public OpenApiHttpTriggerContext()
         {

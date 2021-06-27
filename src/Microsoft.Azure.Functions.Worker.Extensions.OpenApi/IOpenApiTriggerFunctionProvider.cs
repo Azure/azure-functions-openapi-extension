@@ -6,9 +6,9 @@ using Microsoft.Azure.Functions.Worker.Http;
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
-    /// This provides interfaces to the <see cref="IOpenApiTriggerFunctionProvider"/> class.
+    /// This provides interfaces to the <see cref="IOpenApiTriggerRenderSwaggerDocumentFunctionProvider"/> class.
     /// </summary>
-    public interface IOpenApiTriggerFunctionProvider
+    public interface IOpenApiTriggerRenderSwaggerDocumentFunctionProvider
     {
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
@@ -18,7 +18,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <param name="ctx"><see cref="FunctionContext"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         Task<HttpResponseData> RenderSwaggerDocument(HttpRequestData req, string extension, FunctionContext ctx);
+    }
 
+    /// <summary>
+    /// This provides interfaces to the <see cref="IOpenApiTriggerRenderOpenApiDocumentFunctionProvider"/> class.
+    /// </summary>
+    public interface IOpenApiTriggerRenderOpenApiDocumentFunctionProvider
+    {
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
         /// </summary>
@@ -28,7 +34,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <param name="ctx"><see cref="FunctionContext"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         Task<HttpResponseData> RenderOpenApiDocument(HttpRequestData req, string version, string extension, FunctionContext ctx);
+    }
 
+    /// <summary>
+    /// This provides interfaces to the <see cref="IOpenApiTriggerRenderSwaggerUIFunctionProvider"/> class.
+    /// </summary>
+    public interface IOpenApiTriggerRenderSwaggerUIFunctionProvider
+    {
         /// <summary>
         /// Invokes the HTTP trigger endpoint to render Swagger UI in HTML.
         /// </summary>
@@ -36,7 +48,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <param name="ctx"><see cref="FunctionContext"/> instance.</param>
         /// <returns>Swagger UI in HTML.</returns>
         Task<HttpResponseData> RenderSwaggerUI(HttpRequestData req, FunctionContext ctx);
+    }
 
+    /// <summary>
+    /// This provides interfaces to the <see cref="IOpenApiTriggerRenderOAuth2RedirectFunctionProvider"/> class.
+    /// </summary>
+    public interface IOpenApiTriggerRenderOAuth2RedirectFunctionProvider
+    {
         /// <summary>
         /// Invokes the HTTP trigger endpoint to render oauth2-redirect.html.
         /// </summary>

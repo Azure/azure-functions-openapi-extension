@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataTestMethod]
         [DataRow(typeof(IOpenApiHttpTriggerContext))]
         [DataRow(typeof(OpenApiHttpTriggerContext))]
-        [DataRow(typeof(OpenApiTriggerFunctionProvider))]
+        [DataRow(typeof(IOpenApiTriggerFunction))]
         [DataRow(typeof(ISwaggerUI))]
         public async Task Given_Type_When_Initiated_Then_It_Should_NotReturn_ApplicationAssemblyWithGivenType(Type type)
         {
