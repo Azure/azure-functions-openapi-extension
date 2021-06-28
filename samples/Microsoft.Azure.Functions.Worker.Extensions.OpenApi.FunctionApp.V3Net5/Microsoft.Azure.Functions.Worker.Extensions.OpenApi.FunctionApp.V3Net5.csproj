@@ -11,8 +11,17 @@
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.Anonymous" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.Anonymous" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.Anonymous" Version="0.8.0-preview" />
   </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+
+  <!-- Uncomment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous" Version="0.8.0-preview" />
+  </ItemGroup> -->
+  <!-- Uncomment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
@@ -29,11 +38,11 @@
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
-  <!-- Comment this block if you want to hide the Swagger UI page on Azure. -->
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
+  <!-- Comment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous.csproj" />
   </ItemGroup>
-  <!-- Comment this block if you want to hide the Swagger UI page on Azure. -->
+  <!-- Comment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj" />

@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Linq;
@@ -36,54 +35,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             this._acceptor = acceptor.ThrowIfNullOrDefault();
         }
 
-        // /// <inheritdoc />
-        // public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
-        // {
-        //     var methods = assembly.GetTypes()
-        //                           .SelectMany(p => p.GetMethods())
-        //                           .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
-        //                           .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
-        //                           .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
-        //                           .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
-        //                           .ToList();
-
-        //     return methods;
-        // }
-
-        // /// <inheritdoc />
-        // public HttpTriggerAttribute GetHttpTriggerAttribute(MethodInfo element)
-        // {
-        //     var trigger = element.GetHttpTrigger();
-
-        //     return trigger;
-        // }
-
-        // /// <inheritdoc />
-        // public FunctionNameAttribute GetFunctionNameAttribute(MethodInfo element)
-        // {
-        //     var function = element.GetFunctionName();
-
-        //     return function;
-        // }
-
-        // /// <inheritdoc />
-        // public string GetHttpEndpoint(FunctionNameAttribute function, HttpTriggerAttribute trigger)
-        // {
-        //     var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : this.FilterRouteConstraints(trigger.Route)).Trim('/')}";
-
-        //     return endpoint;
-        // }
-
-        // /// <inheritdoc />
-        // public OperationType GetHttpVerb(HttpTriggerAttribute trigger)
-        // {
-        //     var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out OperationType ot)
-        //                    ? ot
-        //                    : throw new InvalidOperationException();
-
-        //     return verb;
-        // }
-
         /// <inheritdoc />
         public OpenApiPathItem GetOpenApiPath(string path, OpenApiPaths paths)
         {
@@ -91,34 +42,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             return item;
         }
-
-        // /// <inheritdoc />
-        // public OpenApiOperation GetOpenApiOperation(MethodInfo element, FunctionNameAttribute function, OperationType verb)
-        // {
-        //     var op = element.GetOpenApiOperation();
-        //     if (op.IsNullOrDefault())
-        //     {
-        //         return null;
-        //     }
-
-        //     var operation = new OpenApiOperation()
-        //     {
-        //         OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
-        //         Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
-        //         Summary = op.Summary,
-        //         Description = op.Description,
-        //         Deprecated = op.Deprecated
-        //     };
-
-        //     if (op.Visibility != OpenApiVisibilityType.Undefined)
-        //     {
-        //         var visibility = new OpenApiString(op.Visibility.ToDisplayName());
-
-        //         operation.Extensions.Add("x-ms-visibility", visibility);
-        //     }
-
-        //     return operation;
-        // }
 
         /// <inheritdoc />
         public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null)
@@ -156,24 +79,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return requirements;
         }
 
-        // /// <inheritdoc />
-        // public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
-        // {
-        //     var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-        //                             .Where(p => p.Deprecated == false)
-        //                             .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
-        //                             .ToList();
-
-        //     // // TODO: Should this be forcibly provided?
-        //     // // This needs to be provided separately.
-        //     // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
-        //     // {
-        //     //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
-        //     // }
-
-        //     return parameters;
-        // }
-
         /// <inheritdoc />
         public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
@@ -203,12 +108,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
             return this.GetOpenApiResponses(element, namingStrategy, null);
-
-            //var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-            //                       .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
-            //                       .ToOpenApiResponses();
-
-            //return responses;
         }
 
         /// <inheritdoc />

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionProviders.System.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionProviders.System.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="3.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="3.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="Moq" Version="4.16.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.System\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.System.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.System\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.System.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.System\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.System.csproj" />
+  </ItemGroup>
+
+</Project>
