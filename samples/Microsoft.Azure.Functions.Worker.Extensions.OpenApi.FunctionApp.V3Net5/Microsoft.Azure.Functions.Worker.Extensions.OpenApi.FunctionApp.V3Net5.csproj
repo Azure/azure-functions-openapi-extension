@@ -23,6 +23,10 @@
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.Anonymous\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.Anonymous.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.Anonymous\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.Anonymous.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.Anonymous\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.Anonymous.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous.csproj" />
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 

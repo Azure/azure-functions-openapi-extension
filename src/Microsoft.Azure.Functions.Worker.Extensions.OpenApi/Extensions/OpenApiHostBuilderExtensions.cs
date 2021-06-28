@@ -27,31 +27,31 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
                 services.AddSingleton<IOpenApiHttpTriggerContext, OpenApiHttpTriggerContext>();
                 services.AddSingleton<IOpenApiTriggerFunction, OpenApiTriggerFunction>();
 
-                var function = services.BuildServiceProvider().GetService<IOpenApiTriggerFunction>();
-                var authLevelDoc = Enum.TryParse<OpenApiAuthLevelType>(Environment.GetEnvironmentVariable("OpenApi__AuthLevel__Document"), ignoreCase: true, out var resultDoc)
-                                   ? resultDoc
-                                   : OpenApiAuthLevelType.Anonymous;
-                var authLevelUI =  Enum.TryParse<OpenApiAuthLevelType>(Environment.GetEnvironmentVariable("OpenApi__AuthLevel__UI"), ignoreCase: true, out var resultUI)
-                                   ? resultUI
-                                   : OpenApiAuthLevelType.Anonymous;
+                // var function = services.BuildServiceProvider().GetService<IOpenApiTriggerFunction>();
+                // var authLevelDoc = Enum.TryParse<OpenApiAuthLevelType>(Environment.GetEnvironmentVariable("OpenApi__AuthLevel__Document"), ignoreCase: true, out var resultDoc)
+                //                    ? resultDoc
+                //                    : OpenApiAuthLevelType.Anonymous;
+                // var authLevelUI =  Enum.TryParse<OpenApiAuthLevelType>(Environment.GetEnvironmentVariable("OpenApi__AuthLevel__UI"), ignoreCase: true, out var resultUI)
+                //                    ? resultUI
+                //                    : OpenApiAuthLevelType.Anonymous;
 
-                var types = Assembly.GetAssembly(typeof(OpenApiHostBuilderExtensions)).GetTypes();
+                // var types = Assembly.GetAssembly(typeof(OpenApiHostBuilderExtensions)).GetTypes();
 
-                services.AddSingleton<IOpenApiTriggerRenderSwaggerDocumentFunctionProvider>(
-                    CreateInstance<IOpenApiTriggerRenderSwaggerDocumentFunctionProvider>(types, "OpenApiTriggerRenderSwaggerDocument{0}FunctionProvider", authLevelDoc, function));
-                services.AddSingleton<IOpenApiTriggerRenderOpenApiDocumentFunctionProvider>(
-                    CreateInstance<IOpenApiTriggerRenderOpenApiDocumentFunctionProvider>(types, "OpenApiTriggerRenderOpenApiDocument{0}FunctionProvider", authLevelDoc, function));
-                services.AddSingleton<IOpenApiTriggerRenderOAuth2RedirectFunctionProvider>(
-                    CreateInstance<IOpenApiTriggerRenderOAuth2RedirectFunctionProvider>(types, "OpenApiTriggerRenderOAuth2Redirect{0}FunctionProvider", authLevelUI, function));
+                // services.AddSingleton<IOpenApiTriggerRenderSwaggerDocumentFunctionProvider>(
+                //     CreateInstance<IOpenApiTriggerRenderSwaggerDocumentFunctionProvider>(types, "OpenApiTriggerRenderSwaggerDocument{0}FunctionProvider", authLevelDoc, function));
+                // services.AddSingleton<IOpenApiTriggerRenderOpenApiDocumentFunctionProvider>(
+                //     CreateInstance<IOpenApiTriggerRenderOpenApiDocumentFunctionProvider>(types, "OpenApiTriggerRenderOpenApiDocument{0}FunctionProvider", authLevelDoc, function));
+                // services.AddSingleton<IOpenApiTriggerRenderOAuth2RedirectFunctionProvider>(
+                //     CreateInstance<IOpenApiTriggerRenderOAuth2RedirectFunctionProvider>(types, "OpenApiTriggerRenderOAuth2Redirect{0}FunctionProvider", authLevelUI, function));
 
-                var hideSwaggerUI = bool.TryParse(Environment.GetEnvironmentVariable("OpenApi__HideSwaggerUI"), out var result)
-                                    ? result
-                                    : false;
-                if (!hideSwaggerUI)
-                {
-                    services.AddSingleton<IOpenApiTriggerRenderSwaggerUIFunctionProvider>(
-                        CreateInstance<IOpenApiTriggerRenderSwaggerUIFunctionProvider>(types, "OpenApiTriggerRenderSwaggerUI{0}FunctionProvider", authLevelUI, function));
-                }
+                // var hideSwaggerUI = bool.TryParse(Environment.GetEnvironmentVariable("OpenApi__HideSwaggerUI"), out var result)
+                //                     ? result
+                //                     : false;
+                // if (!hideSwaggerUI)
+                // {
+                //     services.AddSingleton<IOpenApiTriggerRenderSwaggerUIFunctionProvider>(
+                //         CreateInstance<IOpenApiTriggerRenderSwaggerUIFunctionProvider>(types, "OpenApiTriggerRenderSwaggerUI{0}FunctionProvider", authLevelUI, function));
+                // }
             });
 
             return hostBuilder;

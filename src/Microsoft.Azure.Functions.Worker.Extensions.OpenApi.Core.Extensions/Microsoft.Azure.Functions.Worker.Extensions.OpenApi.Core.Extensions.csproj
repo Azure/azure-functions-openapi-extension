@@ -10,9 +10,9 @@
     <Version>1.0.0</Version>
     <PackageId>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</PackageId>
     <Title>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</Title>
-    <Summary>This package extends OpenApi.Core through the out-of-process worker.</Summary>
-    <Description>This package extends OpenApi.Core through the out-of-process worker.</Description>
-    <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
+    <Summary>This package extends Microsoft.Azure.WebJobs.Extensions.OpenApi.Core through the out-of-process worker.</Summary>
+    <Description>This package extends Microsoft.Azure.WebJobs.Extensions.OpenApi.Core through the out-of-process worker.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</AssemblyName>
     <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</RootNamespace>
   </PropertyGroup>
