@@ -6,6 +6,7 @@ using Cocona;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -64,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
                 return;
             }
 
-            var req = new Mock<HttpRequest>();
+            var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns("http");
             req.SetupGet(p => p.Host).Returns(new HostString("localhost", 7071));
 

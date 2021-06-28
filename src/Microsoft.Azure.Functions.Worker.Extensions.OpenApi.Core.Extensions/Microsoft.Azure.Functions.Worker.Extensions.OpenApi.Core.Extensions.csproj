@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\builds\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Version>1.0.0</Version>
+    <PackageId>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</PackageId>
+    <Title>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</Title>
+    <Summary>This package extends Microsoft.Azure.WebJobs.Extensions.OpenApi.Core through the out-of-process worker.</Summary>
+    <Description>This package extends Microsoft.Azure.WebJobs.Extensions.OpenApi.Core through the out-of-process worker.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+  </ItemGroup>
+
+</Project>

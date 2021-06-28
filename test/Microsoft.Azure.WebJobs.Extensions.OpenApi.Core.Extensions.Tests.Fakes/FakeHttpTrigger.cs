@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.Tests.Fakes
 {
     /// <summary>
     /// This represents the fake class entity.

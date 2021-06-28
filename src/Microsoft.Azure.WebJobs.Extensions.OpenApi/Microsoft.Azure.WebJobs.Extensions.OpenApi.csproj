@@ -3,33 +3,35 @@
   <Import Project="..\..\builds\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Version>1.0.0</Version>
     <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi</PackageId>
     <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi</Title>
-    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Summary>
-    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Description>
-    <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
+    <Summary>This package helps render OpenAPI document and Swagger UI of Azure Functions endpoints through the in-proc worker.</Summary>
+    <Description>This package helps render OpenAPI document and Swagger UI of Azure Functions endpoints through the in-proc worker.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|netcoreapp2.1'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|netcoreapp3.1'">
+    <DocumentationFile>bin\Debug\netcoreapp3.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Lists\**" />
-    <EmbeddedResource Remove="Lists\**" />
-    <None Remove="Lists\**" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|netcoreapp2.1'">
+    <DocumentationFile>bin\Release\netcoreapp2.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|netcoreapp3.1'">
+    <DocumentationFile>bin\Release\netcoreapp3.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
@@ -37,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
