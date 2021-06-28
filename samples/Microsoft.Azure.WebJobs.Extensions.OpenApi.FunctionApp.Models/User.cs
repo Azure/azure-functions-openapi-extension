@@ -1,3 +1,5 @@
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
     /// <summary>
@@ -43,6 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         /// <summary>
         /// Gets or sets the user status value.
         /// </summary>
+        [OpenApiProperty(Description = "User Status")]
         public int? UserStatus { get; set; }
     }
 }

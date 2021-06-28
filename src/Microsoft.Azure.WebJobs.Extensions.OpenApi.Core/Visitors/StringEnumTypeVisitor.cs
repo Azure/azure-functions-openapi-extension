@@ -61,10 +61,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds the extra properties.
             if (attributes.Any())
             {
-                Attribute attr = attributes.OfType<OpenApiPropertyDescriptionAttribute>().SingleOrDefault();
+                Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
                 if (!attr.IsNullOrDefault())
                 {
-                    schema.Description = (attr as OpenApiPropertyDescriptionAttribute).Description;
+                    schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
+                    schema.Default = this.GetOpenApiPropertyDefault(attr as OpenApiPropertyAttribute);
+                    schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                 }
 
                 attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
