@@ -15,6 +15,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// </summary>
     public partial class OpenApiTriggerFunctionProvider
     {
+        private const string ContentTypeText = "text/plain";
+        private const string ContentTypeHtml = "text/html";
+        private const string ContentTypeJson = "application/json";
+        private const string ContentTypeYaml = "text/vnd.yaml";
+
         private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
@@ -38,7 +43,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
@@ -65,7 +70,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/plain",
+                    ContentType = ContentTypeText,
                     StatusCode = (int)HttpStatusCode.InternalServerError,
                 };
             }
@@ -95,7 +100,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
@@ -122,7 +127,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/plain",
+                    ContentType = ContentTypeText,
                     StatusCode = (int)HttpStatusCode.InternalServerError,
                 };
             }
@@ -149,7 +154,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .SwaggerUI
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildAsync(context.PackageAssembly, context.OpenApiCustomUIOptions)
                                       .RenderAsync("swagger.json", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
@@ -157,7 +162,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/html",
+                    ContentType = ContentTypeHtml,
                     StatusCode = (int)HttpStatusCode.OK,
                 };
             }
@@ -174,7 +179,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/plain",
+                    ContentType = ContentTypeText,
                     StatusCode = (int)HttpStatusCode.InternalServerError,
                 };
             }
@@ -200,7 +205,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             {
                 result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
                                       .SwaggerUI
-                                      .AddServer(req, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildOAuth2RedirectAsync(context.PackageAssembly)
                                       .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
@@ -208,7 +213,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/html",
+                    ContentType = ContentTypeHtml,
                     StatusCode = (int)HttpStatusCode.OK,
                 };
             }
@@ -225,7 +230,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = "text/plain",
+                    ContentType = ContentTypeText,
                     StatusCode = (int)HttpStatusCode.InternalServerError,
                 };
             }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
     /// <summary>
     /// This represents the document entity handling OpenAPI document.
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public IDocument AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null)
+        public IDocument AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";

@@ -9,7 +9,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Reso
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 {
     [TestClass]

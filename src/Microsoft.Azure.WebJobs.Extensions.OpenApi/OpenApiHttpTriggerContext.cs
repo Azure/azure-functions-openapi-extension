@@ -196,19 +196,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public virtual AuthorizationLevel GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document")
+        public virtual OpenApiAuthLevelType GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document")
         {
             var value = Environment.GetEnvironmentVariable(key);
-            var parsed = Enum.TryParse<AuthorizationLevel>(value, out var result) ? result : AuthorizationLevel.Anonymous;
+            var parsed = Enum.TryParse<OpenApiAuthLevelType>(value, out var result) ? result : OpenApiAuthLevelType.Anonymous;
 
             return parsed;
         }
 
         /// <inheritdoc />
-        public virtual AuthorizationLevel GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI")
+        public virtual OpenApiAuthLevelType GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI")
         {
             var value = Environment.GetEnvironmentVariable(key);
-            var parsed = Enum.TryParse<AuthorizationLevel>(value, out var result) ? result : AuthorizationLevel.Anonymous;
+            var parsed = Enum.TryParse<OpenApiAuthLevelType>(value, out var result) ? result : OpenApiAuthLevelType.Anonymous;
 
             return parsed;
         }

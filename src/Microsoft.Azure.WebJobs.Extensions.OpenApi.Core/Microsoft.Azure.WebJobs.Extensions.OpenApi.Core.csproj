@@ -10,9 +10,9 @@
     <Version>1.0.0</Version>
     <PackageId>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</PackageId>
     <Title>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</Title>
-    <Summary>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Summary>
-    <Description>This package helps render OpenAPI document and Swagger UI through Azure Functions endpoints.</Description>
-    <PackageTags>Azure-Functions, Open-API, Swagger, Swagger-UI</PackageTags>
+    <Summary>This package helps render OpenAPI document and Swagger UI of Azure Functions endpoints through the in-process worker.</Summary>
+    <Description>This package helps render OpenAPI document and Swagger UI of Azure Functions endpoints through the in-process worker.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.Core</RootNamespace>
   </PropertyGroup>
@@ -26,13 +26,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Lists\**" />
-    <EmbeddedResource Remove="Lists\**" />
-    <None Remove="Lists\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />

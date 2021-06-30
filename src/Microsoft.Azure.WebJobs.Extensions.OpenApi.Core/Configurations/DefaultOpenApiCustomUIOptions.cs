@@ -14,8 +14,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
     /// </summary>
     public class DefaultOpenApiCustomUIOptions : IOpenApiCustomUIOptions
     {
+        private static readonly HttpClient http = new HttpClient();
+
         private readonly Assembly _assembly;
-        private static readonly HttpClient HttpClient = new HttpClient();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOpenApiCustomUIOptions"/> class.
         /// </summary>
@@ -36,9 +38,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         {
             if (Uri.TryCreate(this.CustomStylesheetPath, UriKind.Absolute, out var stylesheetUri))
             {
-                return await this.ReadFromUri(stylesheetUri);
+                return await this.ReadFromUri(stylesheetUri).ConfigureAwait(false);
             }
-            return await this.ReadFromStream(this.CustomStylesheetPath);
+
+            return await this.ReadFromStream(this.CustomStylesheetPath).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -46,9 +49,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         {
             if (Uri.TryCreate(this.CustomJavaScriptPath, UriKind.Absolute, out var scriptUri))
             {
-                return await this.ReadFromUri(scriptUri);
+                return await this.ReadFromUri(scriptUri).ConfigureAwait(false);
             }
-            return await this.ReadFromStream(this.CustomJavaScriptPath);
+
+            return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
         }
 
         private async Task<string> ReadFromStream(string path)
@@ -62,18 +66,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
                 using (var reader = new StreamReader(stream))
                 {
-                    return await reader.ReadToEndAsync();
+                    return await reader.ReadToEndAsync().ConfigureAwait(false);
                 }
             }
         }
 
         private async Task<string> ReadFromUri(Uri uri)
         {
-            var response = await HttpClient.GetAsync(uri);
+            var response = await http.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
+
             return string.Empty;
         }
     }
