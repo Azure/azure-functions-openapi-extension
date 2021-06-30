@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -144,6 +145,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             if (attributes.Any())
             {
                 Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
+                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
+
                 if (!attr.IsNullOrDefault())
                 {
                     if (dataType != "object")
@@ -227,65 +230,65 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             if (@default is bool)
             {
-                return new OpenApiBoolean((bool) @default);
+                return new OpenApiBoolean((bool)@default);
             }
 
             if (@default is DateTime)
             {
-                return new OpenApiDateTime((DateTime) @default);
+                return new OpenApiDateTime((DateTime)@default);
             }
 
             if (@default is DateTimeOffset)
             {
-                return new OpenApiDateTime((DateTimeOffset) @default);
+                return new OpenApiDateTime((DateTimeOffset)@default);
             }
 
             if (@default is float)
             {
-                return new OpenApiFloat((float) @default);
+                return new OpenApiFloat((float)@default);
             }
 
             if (@default is double)
             {
-                return new OpenApiDouble((double) @default);
+                return new OpenApiDouble((double)@default);
             }
 
             if (@default is decimal)
             {
-                return new OpenApiDouble((double) @default);
+                return new OpenApiDouble((double)@default);
             }
 
             if (@default is short)
             {
-                return new OpenApiInteger((short) @default);
+                return new OpenApiInteger((short)@default);
             }
 
             if (@default is int)
             {
-                return new OpenApiInteger((int) @default);
+                return new OpenApiInteger((int)@default);
             }
 
             if (@default is long)
             {
-                return new OpenApiLong((long) @default);
+                return new OpenApiLong((long)@default);
             }
 
             if (@default is ushort)
             {
-                return new OpenApiInteger((ushort) @default);
+                return new OpenApiInteger((ushort)@default);
             }
 
             if (@default is uint)
             {
-                return new OpenApiInteger((int) @default);
+                return new OpenApiInteger((int)@default);
             }
 
             if (@default is ulong)
             {
-                return new OpenApiLong((long) @default);
+                return new OpenApiLong((long)@default);
             }
 
-            return new OpenApiString((string) @default);
+            return new OpenApiString((string)@default);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -57,11 +58,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 foreach (var property in this.Properties)
                 {
-                    var attributes = new Attribute[]
+                    var attributes = new List<Attribute>
                     {
                         property.Value.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false),
                         property.Value.GetCustomAttribute<OpenApiPropertyAttribute>(inherit: false),
                     };
+                    attributes.AddRange(property.Value.GetCustomAttributes<ValidationAttribute>(inherit: false));
 
                     foreach (var visitor in collection.Visitors)
                     {
@@ -71,7 +73,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         }
 
                         var type = new KeyValuePair<string, Type>(property.Key, property.Value.PropertyType);
-                        visitor.Visit(this, type, namingStrategy, attributes);
+                        visitor.Visit(this, type, namingStrategy, attributes.ToArray());
                     }
                 }
 
