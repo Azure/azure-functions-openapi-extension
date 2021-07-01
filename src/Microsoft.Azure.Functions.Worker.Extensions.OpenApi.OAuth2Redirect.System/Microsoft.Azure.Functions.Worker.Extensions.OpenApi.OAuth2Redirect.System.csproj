@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\builds\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Version>1.0.0</Version>
+    <PackageId>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System</PackageId>
+    <Title>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System</Title>
+    <Summary>This package helps render the oauth2-redirect page endpoint through the out-of-process worker.</Summary>
+    <Description>This package helps render the oauth2-redirect page endpoint through the out-of-process worker.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\net5.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\net5.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.System.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+  </ItemGroup>
+
+</Project>

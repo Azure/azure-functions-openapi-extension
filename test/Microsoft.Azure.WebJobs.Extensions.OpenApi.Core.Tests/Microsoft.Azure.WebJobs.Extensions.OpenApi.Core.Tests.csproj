@@ -45,4 +45,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="dist\fake.css" />
+    <EmbeddedResource Include="dist\fake.js" />
+  </ItemGroup>
+
 </Project>

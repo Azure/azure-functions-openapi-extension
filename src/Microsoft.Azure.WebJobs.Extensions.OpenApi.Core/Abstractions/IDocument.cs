@@ -12,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This provides interfaces to the <see cref="Document"/> class.
+    /// This provides interfaces to its implementing class.
     /// </summary>
     public interface IDocument
     {
@@ -37,11 +37,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Adds server details.
         /// </summary>
-        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <param name="req"><see cref="IHttpRequestDataObject"/> instance.</param>
         /// <param name="routePrefix">Route prefix value.</param>
         /// <param name="options"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null);
+        IDocument AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null);
 
         /// <summary>
         /// Adds the naming strategy.

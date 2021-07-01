@@ -4,9 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
@@ -52,7 +51,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public ISwaggerUI AddServer(HttpRequest req, string routePrefix, IOpenApiConfigurationOptions options = null)
+        public ISwaggerUI AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
@@ -136,7 +135,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<string> RenderAsync(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null)
+        public async Task<string> RenderAsync(string endpoint, OpenApiAuthLevelType authLevel = OpenApiAuthLevelType.Anonymous, string authKey = null)
         {
             endpoint.ThrowIfNullOrWhiteSpace();
 
@@ -148,7 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public async Task<string> RenderOAuth2RedirectAsync(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null)
+        public async Task<string> RenderOAuth2RedirectAsync(string endpoint, OpenApiAuthLevelType authLevel = OpenApiAuthLevelType.Anonymous, string authKey = null)
         {
             var html = await Task.Factory
                                  .StartNew(() => this.RenderOAuth2Redirect(endpoint, authLevel, authKey))
@@ -157,7 +156,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return html;
         }
 
-        private string Render(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null)
+        private string Render(string endpoint, OpenApiAuthLevelType authLevel = OpenApiAuthLevelType.Anonymous, string authKey = null)
         {
             var swaggerUiTitle = $"{this._info.Title} - Swagger UI";
             var swaggerUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
@@ -178,7 +177,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        private string RenderOAuth2Redirect(string endpoint, AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null)
+        private string RenderOAuth2Redirect(string endpoint, OpenApiAuthLevelType authLevel = OpenApiAuthLevelType.Anonymous, string authKey = null)
         {
             var pageUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
             if (this.IsAuthKeyRequired(authLevel, authKey))
@@ -191,9 +190,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return html;
         }
 
-        private bool IsAuthKeyRequired(AuthorizationLevel authLevel = AuthorizationLevel.Anonymous, string authKey = null)
+        private bool IsAuthKeyRequired(OpenApiAuthLevelType authLevel = OpenApiAuthLevelType.Anonymous, string authKey = null)
         {
-            if (authLevel == AuthorizationLevel.Anonymous)
+            if (authLevel == OpenApiAuthLevelType.Anonymous)
             {
                 return false;
             }

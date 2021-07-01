@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
@@ -123,14 +122,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// </summary>
         /// <param name="key">Environment variables key to look for.</param>
         /// <returns>Returns the auth level of the document rendering page endpoint.</returns>
-        AuthorizationLevel GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document");
+        OpenApiAuthLevelType GetDocumentAuthLevel(string key = "OpenApi__AuthLevel__Document");
 
         /// <summary>
         /// Gets the auth level of the UI rendering page endpoint.
         /// </summary>
         /// <param name="key">Environment variables key to look for.</param>
         /// <returns>Returns the auth level of the UI rendering page endpoint.</returns>
-        AuthorizationLevel GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI");
+        OpenApiAuthLevelType GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI");
 
         /// <summary>
         /// Gets the API key for endpoints from environment variables.
