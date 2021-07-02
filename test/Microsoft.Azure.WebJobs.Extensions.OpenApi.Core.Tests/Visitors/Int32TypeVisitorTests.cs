@@ -87,7 +87,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow("hello", "lorem ipsum")]
-        public void Given_OpenApiPropertyDescriptionAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
+        public void Given_OpenApiPropertyAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
         {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(int));
@@ -95,6 +95,42 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
 
+            acceptor.Schemas[name].Nullable.Should().Be(false);
+            acceptor.Schemas[name].Default.Should().BeNull();
+            acceptor.Schemas[name].Description.Should().Be(description);
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", true, "lorem ipsum")]
+        [DataRow("hello", false, "lorem ipsum")]
+        public void Given_OpenApiPropertyAttribute_With_Default_When_Visit_Invoked_Then_It_Should_Return_Result(string name, bool nullable, string description)
+        {
+            var @default = 1;
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(int));
+            var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Default = @default, Description = description };
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas[name].Nullable.Should().Be(nullable);
+            acceptor.Schemas[name].Default.Should().NotBeNull();
+            (acceptor.Schemas[name].Default as OpenApiInteger).Value.Should().Be(@default);
+            acceptor.Schemas[name].Description.Should().Be(description);
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", true, "lorem ipsum")]
+        [DataRow("hello", false, "lorem ipsum")]
+        public void Given_OpenApiPropertyAttribute_Without_Default_When_Visit_Invoked_Then_It_Should_Return_Result(string name, bool nullable, string description)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(int));
+            var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas[name].Nullable.Should().Be(nullable);
+            acceptor.Schemas[name].Default.Should().BeNull();
             acceptor.Schemas[name].Description.Should().Be(description);
         }
 

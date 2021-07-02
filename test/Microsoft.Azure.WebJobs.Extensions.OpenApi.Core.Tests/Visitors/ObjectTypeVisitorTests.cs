@@ -108,7 +108,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow("hello", "lorem ipsum")]
-        public void Given_OpenApiPropertyDescriptionAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
+        public void Given_OpenApiPropertyAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
         {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeModel));
@@ -116,6 +116,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
 
+            acceptor.Schemas[name].Nullable.Should().Be(false);
+            acceptor.Schemas[name].Default.Should().BeNull();
             acceptor.Schemas[name].Description.Should().Be(description);
         }
 

@@ -137,9 +137,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns <c>True</c>, if the type is identified as enum without flags; otherwise returns <c>False</c>.</returns>
-        public static bool IsUnflaggedEnumType(this Type type)
+        public static bool IsEnumType(this Type type)
         {
             var isEnum = typeof(Enum).IsAssignableFrom(type);
+
+            return isEnum;
+        }
+
+        /// <summary>
+        /// Checks whether the given type is enum without flags or not.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as enum without flags; otherwise returns <c>False</c>.</returns>
+        public static bool IsUnflaggedEnumType(this Type type)
+        {
+            var isEnum = type.IsEnumType();
             if (!isEnum)
             {
                 return false;
