@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -144,6 +145,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             if (attributes.Any())
             {
                 Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
+                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
                 if (!attr.IsNullOrDefault())
                 {
                     if (dataType != "object")
