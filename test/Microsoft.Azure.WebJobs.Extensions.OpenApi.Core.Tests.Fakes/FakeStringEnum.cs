@@ -22,5 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         [EnumMember(Value = "dolor")]
         [Display("sit")]
         StringValue3,
+
+        StringValue4,
     }
 }
