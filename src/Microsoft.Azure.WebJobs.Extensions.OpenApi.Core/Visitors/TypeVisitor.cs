@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -145,8 +144,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             if (attributes.Any())
             {
                 Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
-                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
-
                 if (!attr.IsNullOrDefault())
                 {
                     if (dataType != "object")
@@ -230,65 +227,124 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             if (@default is bool)
             {
-                return new OpenApiBoolean((bool)@default);
+                return new OpenApiBoolean((bool) @default);
             }
 
             if (@default is DateTime)
             {
-                return new OpenApiDateTime((DateTime)@default);
+                return new OpenApiDateTime((DateTime) @default);
             }
 
             if (@default is DateTimeOffset)
             {
-                return new OpenApiDateTime((DateTimeOffset)@default);
+                return new OpenApiDateTime((DateTimeOffset) @default);
             }
 
             if (@default is float)
             {
-                return new OpenApiFloat((float)@default);
+                return new OpenApiFloat((float) @default);
             }
 
             if (@default is double)
             {
-                return new OpenApiDouble((double)@default);
+                return new OpenApiDouble((double) @default);
             }
 
             if (@default is decimal)
             {
-                return new OpenApiDouble((double)@default);
+                return new OpenApiDouble(Convert.ToDouble(@default));
             }
 
             if (@default is short)
             {
-                return new OpenApiInteger((short)@default);
+                return new OpenApiInteger((short) @default);
             }
 
             if (@default is int)
             {
-                return new OpenApiInteger((int)@default);
+                return new OpenApiInteger((int) @default);
             }
 
             if (@default is long)
             {
-                return new OpenApiLong((long)@default);
+                return new OpenApiLong((long) @default);
             }
 
             if (@default is ushort)
             {
-                return new OpenApiInteger((ushort)@default);
+                return new OpenApiInteger(Convert.ToInt16(@default));
             }
 
             if (@default is uint)
             {
-                return new OpenApiInteger((int)@default);
+                return new OpenApiInteger(Convert.ToInt32(@default));
             }
 
             if (@default is ulong)
             {
-                return new OpenApiLong((long)@default);
+                return new OpenApiLong(Convert.ToInt64(@default));
             }
 
-            return new OpenApiString((string)@default);
+            if (@default is Guid)
+            {
+                return new OpenApiString(Convert.ToString(@default));
+            }
+
+            return new OpenApiString((string) @default);
+        }
+
+        /// <summary>
+        /// Gets the default value from the <see cref="OpenApiPropertyAttribute"/> instance.
+        /// </summary>
+        /// <typeparam name="T">Type to compare.</typeparam>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the default data.</returns>
+        protected IOpenApiAny GetOpenApiPropertyDefault<T>(OpenApiPropertyAttribute attr)
+        {
+            var @default = attr.Default;
+            if (@default.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            if (typeof(T) == typeof(short))
+            {
+                return new OpenApiInteger((short) @default);
+            }
+
+            if (typeof(T) == typeof(int))
+            {
+                return new OpenApiInteger((int) @default);
+            }
+
+            if (typeof(T) == typeof(long))
+            {
+                return new OpenApiLong((long) @default);
+            }
+
+            if (@default is ushort)
+            {
+                return new OpenApiInteger(Convert.ToInt16(@default));
+            }
+
+            if (@default is uint)
+            {
+                return new OpenApiInteger(Convert.ToInt32(@default));
+            }
+
+            if (@default is ulong)
+            {
+                return new OpenApiLong(Convert.ToInt64(@default));
+            }
+
+            if (typeof(T) == typeof(string) && @default.GetType().IsEnumType())
+            {
+                var @enum = (Enum)Convert.ChangeType(@default, typeof(Enum));
+
+                return new OpenApiString((string) EnumExtensions.ToDisplayName(@enum));
+            }
+
+            return new OpenApiString((string) @default);
         }
 
         /// <summary>
