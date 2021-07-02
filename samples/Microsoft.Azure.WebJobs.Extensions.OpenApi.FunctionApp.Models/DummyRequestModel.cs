@@ -1,5 +1,7 @@
 using System;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
     public class DummyRequestModel
@@ -19,6 +21,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         public decimal DecimalValue { get; set; }
 
         public int? NullableIntValue { get; set; }
+
+        [OpenApiProperty(Nullable = false)]
+        public int? NotNullableIntValue { get; set; }
 
         public bool BoolValue { get; set; }
 
