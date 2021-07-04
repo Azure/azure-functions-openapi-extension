@@ -46,6 +46,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow("StringValue1", "lorem")]
         [DataRow("StringValue2", "ipsum")]
         [DataRow("StringValue3", "dolor")]
+        [DataRow("StringValue4", "StringValue4")]
         public void Given_MemberInfo_When_ToDisplayName_Invoked_Then_It_Should_Return_Result(string memberName, string expected)
         {
             var member = typeof(FakeStringEnum).GetMember(memberName).First();

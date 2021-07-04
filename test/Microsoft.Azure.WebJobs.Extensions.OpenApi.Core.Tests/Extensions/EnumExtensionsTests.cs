@@ -18,6 +18,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(FakeStringEnum.StringValue1, "lorem")]
         [DataRow(FakeStringEnum.StringValue2, "ipsum")]
         [DataRow(FakeStringEnum.StringValue3, "dolor")]
+        [DataRow(FakeStringEnum.StringValue4, "StringValue4")]
         public void Given_Enum_Method_Should_Return_Value(FakeStringEnum @enum, string expected)
         {
             var name = EnumExtensions.ToDisplayName(@enum);

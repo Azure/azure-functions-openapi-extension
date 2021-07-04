@@ -172,12 +172,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <returns>Returns the list of underlying enum name.</returns>
-        public static List<IOpenApiAny> ToOpenApiStringCollection(this Type type, NamingStrategy namingStrategy)
+        public static List<IOpenApiAny> ToOpenApiStringCollection(this Type type, NamingStrategy namingStrategy = null)
         {
             if (!type.IsUnflaggedEnumType())
             {
                 return null;
             }
+
+            // namingStrategy null check
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+            // namingStrategy null check
 
             var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
             var names = members.Select(p => p.ToDisplayName(namingStrategy));
