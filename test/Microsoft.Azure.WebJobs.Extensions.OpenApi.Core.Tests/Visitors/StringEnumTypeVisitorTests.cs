@@ -79,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeStringEnum));
-            var enums = enumType.ToOpenApiStringCollection(null);
+            var enums = enumType.ToOpenApiStringCollection();
 
             this._visitor.Visit(acceptor, type, this._strategy);
 
