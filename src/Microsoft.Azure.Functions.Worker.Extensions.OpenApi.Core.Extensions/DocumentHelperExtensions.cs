@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions
         /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
         public static List<MethodInfo> GetHttpTriggerMethods(this IDocumentHelper helper, Assembly assembly)
         {
-            var methods = assembly.GetTypes()
+            var methods = assembly.GetLoadableTypes()
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())

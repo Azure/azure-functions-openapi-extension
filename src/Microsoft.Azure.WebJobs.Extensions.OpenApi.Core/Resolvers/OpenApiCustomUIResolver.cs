@@ -20,7 +20,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <returns>Returns the <see cref="IOpenApiCustomUIOptions"/> instance resolved.</returns>
         public static IOpenApiCustomUIOptions Resolve(Assembly assembly)
         {
-            var type = assembly.GetTypes()
+            var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiCustomUIOptions", ignoreCase: true).IsNullOrDefault() == false);
             if (type.IsNullOrDefault())
             {

@@ -21,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// <returns>Returns the <see cref="IOpenApiConfigurationOptions"/> instance resolved.</returns>
         public static IOpenApiConfigurationOptions Resolve(Assembly assembly)
         {
-            var type = assembly.GetTypes()
+            var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false
                                                   && p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true);
             if (type.IsNullOrDefault())

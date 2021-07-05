@@ -49,7 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             var collection = new VisitorCollection();
             collection.Visitors = typeof(IVisitor).Assembly
-                                           .GetTypes()
+                                           .GetLoadableTypes()
                                            .Where(p => p.Name.EndsWith("Visitor") && p.IsClass && !p.IsAbstract)
                                            .Select(p => (IVisitor)Activator.CreateInstance(p, collection)).ToList(); // NOTE: there is no direct enforcement on the constructor arguments of the visitors
             return collection;
