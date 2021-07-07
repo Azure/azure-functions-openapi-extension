@@ -144,8 +144,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds the extra properties.
             if (attributes.Any())
             {
-                Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
                 schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
+
+                Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
                 if (!attr.IsNullOrDefault())
                 {
                     if (dataType != "object")
