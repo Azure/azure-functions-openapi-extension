@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -11,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using AnnotationsDataType = System.ComponentModel.DataAnnotations.DataType;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 {
@@ -381,6 +383,121 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Applying <see cref="ValidationAttribute"/> to <see cref="OpenApiSchema"/>
+        /// </summary>
+        /// <param name="schema"><see cref="OpenApiSchema"/> instance.</param>
+        /// <param name="customAttributes">DataAnnotation attributes</param>
+        public static void ApplyValidationAttributes(this OpenApiSchema schema, IEnumerable<ValidationAttribute> customAttributes)
+        {
+            foreach (var attribute in customAttributes)
+            {
+                if (attribute is DataTypeAttribute dataTypeAttribute)
+                {
+                    ApplyDataTypeAttribute(schema, dataTypeAttribute);
+                }
+
+                else if (attribute is MinLengthAttribute minLengthAttribute)
+                {
+                    ApplyMinLengthAttribute(schema, minLengthAttribute);
+                }
+                else if (attribute is MaxLengthAttribute maxLengthAttribute)
+                {
+                    ApplyMaxLengthAttribute(schema, maxLengthAttribute);
+                }
+
+                else if (attribute is RangeAttribute rangeAttribute)
+                {
+                    ApplyRangeAttribute(schema, rangeAttribute);
+                }
+
+                else if (attribute is RegularExpressionAttribute regularExpressionAttribute)
+                {
+                    ApplyRegularExpressionAttribute(schema, regularExpressionAttribute);
+                }
+
+                else if (attribute is StringLengthAttribute stringLengthAttribute)
+                {
+                    ApplyStringLengthAttribute(schema, stringLengthAttribute);
+                }
+            }
+        }
+
+     
+
+        private static void ApplyDataTypeAttribute(OpenApiSchema schema, DataTypeAttribute dataTypeAttribute)
+        {
+            var formats = new Dictionary<AnnotationsDataType, string>
+            {
+                { AnnotationsDataType.DateTime, "date-time" },
+                { AnnotationsDataType.Date, "date" },
+                { AnnotationsDataType.Time, "time" },
+                { AnnotationsDataType.Duration, "duration" },
+                { AnnotationsDataType.PhoneNumber, "tel" },
+                { AnnotationsDataType.Currency, "currency" },
+                { AnnotationsDataType.Text, "string" },
+                { AnnotationsDataType.Html, "html" },
+                { AnnotationsDataType.MultilineText, "multiline" },
+                { AnnotationsDataType.EmailAddress, "email" },
+                { AnnotationsDataType.Password, "password" },
+                { AnnotationsDataType.Url, "uri" },
+                { AnnotationsDataType.ImageUrl, "uri" },
+                { AnnotationsDataType.CreditCard, "credit-card" },
+                { AnnotationsDataType.PostalCode, "postal-code" }
+            };
+
+            if (formats.TryGetValue(dataTypeAttribute.DataType, out string format))
+            {
+                schema.Format = format;
+            }
+        }
+
+        private static void ApplyMinLengthAttribute(OpenApiSchema schema, MinLengthAttribute minLengthAttribute)
+        {
+            if (schema.Type == "array")
+            {
+                schema.MinItems = minLengthAttribute.Length;
+            }
+            else
+            {
+                schema.MinLength = minLengthAttribute.Length;
+            }
+        }
+
+        private static void ApplyMaxLengthAttribute(OpenApiSchema schema, MaxLengthAttribute maxLengthAttribute)
+        {
+            if (schema.Type == "array")
+            {
+                schema.MaxItems = maxLengthAttribute.Length;
+            }
+            else
+            {
+                schema.MaxLength = maxLengthAttribute.Length;
+            }
+        }
+
+        private static void ApplyRangeAttribute(OpenApiSchema schema, RangeAttribute rangeAttribute)
+        {
+            schema.Maximum = decimal.TryParse(rangeAttribute.Maximum.ToString(), out decimal maximum)
+                ? maximum
+                : schema.Maximum;
+
+            schema.Minimum = decimal.TryParse(rangeAttribute.Minimum.ToString(), out decimal minimum)
+                ? minimum
+                : schema.Minimum;
+        }
+
+        private static void ApplyRegularExpressionAttribute(OpenApiSchema schema, RegularExpressionAttribute regularExpressionAttribute)
+        {
+            schema.Pattern = regularExpressionAttribute.Pattern;
+        }
+
+        private static void ApplyStringLengthAttribute(OpenApiSchema schema, StringLengthAttribute stringLengthAttribute)
+        {
+            schema.MinLength = stringLengthAttribute.MinimumLength;
+            schema.MaxLength = stringLengthAttribute.MaximumLength;
         }
     }
 }

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -70,6 +73,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Extensions
             var result = OpenApiSchemaExtensions.IsOpenApiSchemaDictionary(schema);
 
             result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void Given_Instance_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+            var attributes = new List<ValidationAttribute>()
+            {
+                new StringLengthAttribute(15)
+                {
+                    MinimumLength = 10
+                },
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().Be(10);
+            schema.MaxLength.Should().Be(15);
         }
     }
 }

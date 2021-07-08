@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
