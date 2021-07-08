@@ -5,13 +5,13 @@ using System.Linq;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+
 using AnnotationsDataType = System.ComponentModel.DataAnnotations.DataType;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var retVal = new Dictionary<string, OpenApiSchema>();
             foreach (var property in properties)
             {
-                var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
+                var visibility = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
                 var propertyName = property.GetJsonPropertyName(namingStrategy);
 
                 var ts = property.DeclaringType.GetGenericArguments();
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 {
                     if (property.PropertyType.IsUnflaggedEnumType() && !returnSingleSchema)
                     {
-                        var recur1 = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, false, depth);
+                        var recur1 = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, false, depth);
                         retVal.AddRange(recur1);
 
                         var enumReference = new OpenApiReference()
@@ -166,18 +166,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     }
                     else if (property.PropertyType.IsSimpleType() || Nullable.GetUnderlyingType(property.PropertyType) != null || returnSingleSchema)
                     {
-                        schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, true, depth).Single().Value;
+                        schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, true, depth).Single().Value;
                     }
                     else if (property.PropertyType.IsOpenApiDictionary())
                     {
                         var elementType = property.PropertyType.GetGenericArguments()[1];
                         if (elementType.IsSimpleType() || elementType.IsOpenApiDictionary() || elementType.IsOpenApiArray())
                         {
-                            schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, true, depth).Single().Value;
+                            schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, true, depth).Single().Value;
                         }
                         else
                         {
-                            var recur1 = elementType.ToOpenApiSchemas(namingStrategy, visiblity, false, depth);
+                            var recur1 = elementType.ToOpenApiSchemas(namingStrategy, visibility, false, depth);
                             retVal.AddRange(recur1);
 
                             var elementReference = new OpenApiReference()
@@ -200,11 +200,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                         var elementType = property.PropertyType.GetElementType() ?? property.PropertyType.GetGenericArguments()[0];
                         if (elementType.IsSimpleType() || elementType.IsOpenApiDictionary() || elementType.IsOpenApiArray())
                         {
-                            schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, true, depth).Single().Value;
+                            schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, true, depth).Single().Value;
                         }
                         else
                         {
-                            var elementReference = elementType.ToOpenApiSchemas(namingStrategy, visiblity, false, depth);
+                            var elementReference = elementType.ToOpenApiSchemas(namingStrategy, visibility, false, depth);
                             retVal.AddRange(elementReference);
 
                             var reference1 = new OpenApiReference()
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     }
                     else
                     {
-                        var recur1 = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, false, depth);
+                        var recur1 = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, false, depth);
                         retVal.AddRange(recur1);
 
                         var reference1 = new OpenApiReference()
@@ -282,7 +282,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                         continue;
                     }
 
-                    schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visiblity, true, depth).Single().Value;
+                    schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchemas(namingStrategy, visibility, true, depth).Single().Value;
 
                     continue;
                 }
@@ -397,35 +397,46 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 if (attribute is DataTypeAttribute dataTypeAttribute)
                 {
                     ApplyDataTypeAttribute(schema, dataTypeAttribute);
+
+                    continue;
                 }
 
-                else if (attribute is MinLengthAttribute minLengthAttribute)
+                if (attribute is MinLengthAttribute minLengthAttribute)
                 {
                     ApplyMinLengthAttribute(schema, minLengthAttribute);
+
+                    continue;
                 }
-                else if (attribute is MaxLengthAttribute maxLengthAttribute)
+
+                if (attribute is MaxLengthAttribute maxLengthAttribute)
                 {
                     ApplyMaxLengthAttribute(schema, maxLengthAttribute);
+
+                    continue;
                 }
 
-                else if (attribute is RangeAttribute rangeAttribute)
+                if (attribute is RangeAttribute rangeAttribute)
                 {
                     ApplyRangeAttribute(schema, rangeAttribute);
+
+                    continue;
                 }
 
-                else if (attribute is RegularExpressionAttribute regularExpressionAttribute)
+                if (attribute is RegularExpressionAttribute regularExpressionAttribute)
                 {
                     ApplyRegularExpressionAttribute(schema, regularExpressionAttribute);
+
+                    continue;
                 }
 
-                else if (attribute is StringLengthAttribute stringLengthAttribute)
+                if (attribute is StringLengthAttribute stringLengthAttribute)
                 {
                     ApplyStringLengthAttribute(schema, stringLengthAttribute);
+
+                    continue;
                 }
             }
         }
-
-     
 
         private static void ApplyDataTypeAttribute(OpenApiSchema schema, DataTypeAttribute dataTypeAttribute)
         {

@@ -6,7 +6,6 @@ using System.Linq;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -144,8 +143,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Adds the extra properties.
             if (attributes.Any())
             {
-                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
-
                 Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
                 if (!attr.IsNullOrDefault())
                 {
@@ -164,6 +161,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
                     schema.Extensions.Add("x-ms-visibility", extension);
                 }
+
+                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
             }
 
             instance.Schemas.Add(name, schema);
