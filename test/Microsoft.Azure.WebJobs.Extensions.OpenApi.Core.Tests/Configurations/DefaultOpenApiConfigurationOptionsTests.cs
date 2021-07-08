@@ -21,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             settings.Info.Should().NotBeNull();
             settings.Info.Version.Should().Be("1.0.0");
-            settings.Info.Title.Should().Be("Azure Functions OpenAPI Extension");
+            settings.Info.Title.Should().Be(typeof(DefaultOpenApiConfigurationOptions).GetTypeInfo().Assembly.GetName().Name);
 
             settings.Servers.Should().NotBeNull();
             settings.Servers.Should().HaveCount(0);
