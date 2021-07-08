@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
+
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -75,16 +75,178 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Extensions
             result.Should().Be(expected);
         }
 
-        [TestMethod]
-        public void Given_Instance_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        [DataTestMethod]
+        [DataRow(DataType.DateTime, "date-time")]
+        [DataRow(DataType.Date, "date")]
+        [DataRow(DataType.Time, "time")]
+        [DataRow(DataType.Duration, "duration")]
+        [DataRow(DataType.PhoneNumber, "tel")]
+        [DataRow(DataType.Currency, "currency")]
+        [DataRow(DataType.Text, "string")]
+        [DataRow(DataType.Html, "html")]
+        [DataRow(DataType.MultilineText, "multiline")]
+        [DataRow(DataType.EmailAddress, "email")]
+        [DataRow(DataType.Password, "password")]
+        [DataRow(DataType.Url, "uri")]
+        [DataRow(DataType.ImageUrl, "uri")]
+        [DataRow(DataType.CreditCard, "credit-card")]
+        [DataRow(DataType.PostalCode, "postal-code")]
+        public void Given_MinLengthAttribute_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(DataType dataType, string expected)
         {
-
             var schema = new OpenApiSchema
             {
                 Type = "string",
                 Format = null,
                 Items = null,
             };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new DataTypeAttribute(dataType)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.Format.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(10)]
+        public void Given_MinLengthAttribute_With_StringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new MinLengthAttribute(length)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(10)]
+        public void Given_MinLengthAttribute_With_ArrayType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "array",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new MinLengthAttribute(length)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinItems.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(15)]
+        public void Given_MaxLengthAttribute_With_StringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new MaxLengthAttribute(length)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MaxLength.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(15)]
+        public void Given_MaxLengthAttribute_With_ArrayType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "array",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new MaxLengthAttribute(length)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MaxItems.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(10, 15)]
+        public void Given_RangeAttribute_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(int min, int max)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RangeAttribute(min, max)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.Minimum.Should().Be(min);
+            schema.Maximum.Should().Be(max);
+        }
+
+        [DataTestMethod]
+        [DataRow("helloworld")]
+        public void Given_RegularExpressionAttribute_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result(string pattern)
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RegularExpressionAttribute(pattern)
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.Pattern.Should().Be(pattern);
+        }
+
+        [TestMethod]
+        public void Given_StringLengthAttribute_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
             var attributes = new List<ValidationAttribute>()
             {
                 new StringLengthAttribute(15)
