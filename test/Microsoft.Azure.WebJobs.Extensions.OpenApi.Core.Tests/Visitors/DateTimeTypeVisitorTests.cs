@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using FluentAssertions;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -83,6 +83,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
             acceptor.Schemas[name].Format.Should().Be(dataFormat);
+        }
+
+        [DataTestMethod]
+        [DataRow(DataType.DateTime, "date-time")]
+        [DataRow(DataType.Date, "date")]
+        [DataRow(DataType.Time, "time")]
+        public void Given_DataTypeAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(DataType dataType, string expected)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
+            var attribute = new DataTypeAttribute(dataType);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("string");
+            acceptor.Schemas[name].Format.Should().Be(expected);
         }
 
         [DataTestMethod]

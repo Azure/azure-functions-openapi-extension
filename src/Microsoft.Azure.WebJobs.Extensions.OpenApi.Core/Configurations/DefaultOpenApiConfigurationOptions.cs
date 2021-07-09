@@ -51,11 +51,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <summary>
         /// Gets the OpenAPI document title.
         /// </summary>
-        /// <param name="type">Type to get the title.</param>
         /// <returns>Returns the OpenAPI document title.</returns>
-        protected static string GetOpenApiDocTitle(Type type = null)
+        protected static string GetOpenApiDocTitle()
         {
-            var title = Environment.GetEnvironmentVariable(OpenApiDocTitleKey) ?? DefaultOpenApiDocTitle(type);
+            var title = Environment.GetEnvironmentVariable(OpenApiDocTitleKey) ?? DefaultOpenApiDocTitle();
 
             return title;
         }
@@ -116,16 +115,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return "1.0.0";
         }
 
-        private static string DefaultOpenApiDocTitle(Type type = null)
+        private static string DefaultOpenApiDocTitle()
         {
-            if (type == null)
-            {
-                type = typeof(DefaultOpenApiConfigurationOptions);
-            }
-
-            var assembly = Assembly.GetAssembly(type);
-
-            return assembly.GetName().Name;
+            return "OpenAPI Document on Azure Functions";
         }
     }
 }
