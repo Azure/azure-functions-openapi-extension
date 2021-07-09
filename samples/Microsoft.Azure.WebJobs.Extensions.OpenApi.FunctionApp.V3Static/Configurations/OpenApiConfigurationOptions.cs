@@ -11,7 +11,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Config
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = GetOpenApiDocVersion(),
-            Title = GetOpenApiDocTitle(typeof(OpenApiConfigurationOptions)),
+            Title = GetOpenApiDocTitle(),
             Description = "A sample API that runs on Azure Functions (STATIC) 3.x using OpenAPI specification.",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()

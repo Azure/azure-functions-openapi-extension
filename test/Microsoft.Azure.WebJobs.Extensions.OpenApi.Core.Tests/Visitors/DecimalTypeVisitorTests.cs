@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using FluentAssertions;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -83,6 +83,55 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
             acceptor.Schemas[name].Format.Should().Be(dataFormat);
+        }
+
+        [DataTestMethod]
+        [DataRow(1)]
+        public void Given_MinLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(decimal));
+            var attribute = new MinLengthAttribute(length);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("number");
+            acceptor.Schemas[name].MinLength.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(10)]
+        public void Given_MaxLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int length)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(decimal));
+            var attribute = new MaxLengthAttribute(length);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("number");
+            acceptor.Schemas[name].MaxLength.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(1, 10)]
+        public void Given_RangeAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int min, int max)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(decimal));
+            var attribute = new RangeAttribute(min, max);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("number");
+            acceptor.Schemas[name].Minimum.Should().Be(min);
+            acceptor.Schemas[name].Maximum.Should().Be(max);
         }
 
         [DataTestMethod]

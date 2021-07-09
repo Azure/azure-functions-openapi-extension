@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+
+using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -8,9 +11,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
-using FluentAssertions;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -123,6 +123,60 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             }
 
             acceptor.RootSchemas.Count(p => p.Key == referenceId).Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<string>), 1)]
+        [DataRow(typeof(IList<string>), 1)]
+        [DataRow(typeof(ICollection<string>), 1)]
+        [DataRow(typeof(IEnumerable<string>), 1)]
+        [DataRow(typeof(IReadOnlyList<string>), 1)]
+        [DataRow(typeof(IReadOnlyCollection<string>), 1)]
+        [DataRow(typeof(List<FakeModel>), 1)]
+        [DataRow(typeof(IList<FakeModel>), 1)]
+        [DataRow(typeof(ICollection<FakeModel>), 1)]
+        [DataRow(typeof(IEnumerable<FakeModel>), 1)]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), 1)]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), 1)]
+        public void Given_MinLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, listType);
+            var attribute = new MinLengthAttribute(length);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("array");
+            acceptor.Schemas[name].MinItems.Should().Be(length);
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<string>), 10)]
+        [DataRow(typeof(IList<string>), 10)]
+        [DataRow(typeof(ICollection<string>), 10)]
+        [DataRow(typeof(IEnumerable<string>), 10)]
+        [DataRow(typeof(IReadOnlyList<string>), 10)]
+        [DataRow(typeof(IReadOnlyCollection<string>), 10)]
+        [DataRow(typeof(List<FakeModel>), 10)]
+        [DataRow(typeof(IList<FakeModel>), 10)]
+        [DataRow(typeof(ICollection<FakeModel>), 10)]
+        [DataRow(typeof(IEnumerable<FakeModel>), 10)]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), 10)]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), 10)]
+        public void Given_MaxLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
+        {
+            var name = "hello";
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, listType);
+            var attribute = new MaxLengthAttribute(length);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be("array");
+            acceptor.Schemas[name].MaxItems.Should().Be(length);
         }
 
         [DataTestMethod]
