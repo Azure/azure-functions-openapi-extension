@@ -69,6 +69,7 @@ To enable OpenAPI document, you will need to install a NuGet package, [Microsoft
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi --prerelease
 ```
 
+> [!NOTE]
 > This extension is currently in preview.
 
 With [Visual Studio Code][vs code], open your HTTP trigger, `MyHttpTrigger`, to enable the OpenAPI metadata, and add attribute classes on top of the `FunctionName(...)` decorator.
@@ -80,8 +81,8 @@ namespace MyOpenApiFunctionApp
     {
         // Add these four attribute classes below
         [OpenApiOperation(operationId: "getName", tags: new[] { "name" }, Summary = "Gets the name", Description = "This gets the name.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name", Description = "The name", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name", Description = "The name", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Summary = "The response", Description = "This returns the response")]
         // Add these four attribute classes above
 

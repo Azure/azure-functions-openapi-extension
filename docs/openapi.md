@@ -41,7 +41,10 @@ As a default, all endpoints to render Swagger UI and OpenAPI documents have the 
 }
 ```
 
-You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi__AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error. Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
+You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi__AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error.
+
+> [!NOTE]
+> Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
 
 
 ### Configure Swagger UI Visibility ###
@@ -56,7 +59,31 @@ You may want to only enable the Swagger UI page during the development time, and
 }
 ```
 
-If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won't be showing up, and you will see the 404 error. The default value is `false`.
+If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won't be showing up, and you will see the 404 error.
+
+> [!NOTE]
+> The default value for `OpenApi__HideSwaggerUI` is `false`.
+
+
+### Configure OpenAPI Information ###
+
+As a default, the OpenAPI document automatically generated provides a minimum set of information like:
+
+* OpenAPI Version: `2.0`
+* OpenAPI Document Title: `OpenAPI Document on Azure Functions`
+* OpenAPI Document Version: `1.0.0`
+
+You may want to provide consumers with more details by implementing the `IOpenApiConfigurationOptions` interface or inheriting the `DefaultOpenApiConfigurationOptions` class. On the other hand, you can use the following environment variables to avoid the app from being recompiled and redeployed. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__Version": "v2",
+    "OpenApi__DocTitle": "Azure Functions OpenAPI Extension",
+    "OpenApi__DocVersion": "1.0.0"
+  }
+}
+```
 
 
 ### Configure Custom Base URLs ###
