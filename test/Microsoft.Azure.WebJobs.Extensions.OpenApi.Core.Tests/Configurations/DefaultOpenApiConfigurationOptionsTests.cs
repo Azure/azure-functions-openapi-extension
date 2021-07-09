@@ -22,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             options.Info.Should().NotBeNull();
             options.Info.Version.Should().Be("1.0.0");
-            options.Info.Title.Should().Be(typeof(DefaultOpenApiConfigurationOptions).GetTypeInfo().Assembly.GetName().Name);
+            options.Info.Title.Should().Be("OpenAPI Document on Azure Functions");
 
             options.Servers.Should().NotBeNull();
             options.Servers.Should().HaveCount(0);
@@ -46,16 +46,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow(null)]
-        [DataRow("")]
-        [DataRow("hello world")]
-        public void Given_OpenApiDocTitle_When_Instantiated_Then_Property_Should_Return_Value(string title)
+        [DataRow(null, "OpenAPI Document on Azure Functions")]
+        [DataRow("", "OpenAPI Document on Azure Functions")]
+        [DataRow("hello world", "hello world")]
+        public void Given_OpenApiDocTitle_When_Instantiated_Then_Property_Should_Return_Value(string title, string expected)
         {
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", title);
-
-            var expected = title.IsNullOrWhiteSpace()
-                               ? typeof(DefaultOpenApiConfigurationOptions).GetTypeInfo().Assembly.GetName().Name
-                               : title;
 
             var options = new DefaultOpenApiConfigurationOptions();
 
@@ -123,21 +119,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow(null)]
-        [DataRow("")]
-        [DataRow("hello world")]
-        public void Given_EnvironmentVariable_When_GetOpenApiDocTitle_Invoked_Then_It_Should_Return_Result(string title)
+        [DataRow(null, "OpenAPI Document on Azure Functions")]
+        [DataRow("", "OpenAPI Document on Azure Functions")]
+        [DataRow("hello world", "hello world")]
+        public void Given_EnvironmentVariable_When_GetOpenApiDocTitle_Invoked_Then_It_Should_Return_Result(string title, string expected)
         {
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", title);
-
-            var expected = title.IsNullOrWhiteSpace()
-                               ? typeof(DefaultOpenApiConfigurationOptions).GetTypeInfo().Assembly.GetName().Name
-                               : title;
 
             var options = new DefaultOpenApiConfigurationOptions();
             var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("GetOpenApiDocTitle", BindingFlags.NonPublic | BindingFlags.Static);
 
-            var result = method.Invoke(options, new[] { (Type)null });
+            var result = method.Invoke(options, null);
 
             result.Should().BeOfType<string>();
             (result as string).Should().Be(expected);

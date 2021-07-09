@@ -1,10 +1,10 @@
 using System;
 
+using FluentAssertions;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-using FluentAssertions;
-
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
