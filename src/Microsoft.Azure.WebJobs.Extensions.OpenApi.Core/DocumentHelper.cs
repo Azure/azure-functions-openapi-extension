@@ -271,7 +271,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 throw new InvalidOperationException("Scheme MUST be provided");
             }
 
-            return attr.Scheme.ToDisplayName(namingStrategy);
+            return attr.Scheme.ToDisplayName();
         }
 
         private static string GetSecurityBearerFormat(OpenApiSecurityAttribute attr)

@@ -17,30 +17,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the display name of the enum value.
         /// </summary>
         /// <param name="enum">Enum value.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// 
         /// <returns>Display name of the enum value.</returns>
-        public static string ToString(this Enum @enum, NamingStrategy namingStrategy = null)
+        public static string ToString(this Enum @enum)
         {
-            return @enum.ToDisplayName(namingStrategy);
+            return @enum.ToDisplayName();
         }
 
         /// <summary>
         /// Gets the display name of the enum value.
         /// </summary>
         /// <param name="enum">Enum value.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// 
         /// <returns>Display name of the enum value.</returns>
-        public static string ToDisplayName(this Enum @enum, NamingStrategy namingStrategy = null)
+        public static string ToDisplayName(this Enum @enum)
         {
-            if (namingStrategy.IsNullOrDefault())
-            {
-                namingStrategy = new DefaultNamingStrategy();
-            }
-
             var type = @enum.GetType();
             var member = type.GetMember(@enum.ToString()).First();
 
-            return member.ToDisplayName(namingStrategy);
+            return member.ToDisplayName();
         }
 
         /// <summary>

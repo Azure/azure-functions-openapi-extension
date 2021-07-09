@@ -187,7 +187,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             // namingStrategy null check
 
             var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
-            var names = members.Select(p => p.ToDisplayName(namingStrategy));
+            var names = members.Select(p => p.ToDisplayName());
 
             return names.Select(p => (IOpenApiAny)new OpenApiString(p))
                         .ToList();

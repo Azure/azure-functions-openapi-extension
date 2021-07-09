@@ -33,28 +33,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the display name of the enum value.
         /// </summary>
         /// <param name="element"><see cref="MemberInfo"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// 
         /// <returns>Display name of the enum value.</returns>
-        public static string ToDisplayName(this MemberInfo element, NamingStrategy namingStrategy = null)
+        public static string ToDisplayName(this MemberInfo element)
         {
-            element.ThrowIfNullOrDefault();
-
-            if (namingStrategy.IsNullOrDefault())
-            {
-                namingStrategy = new DefaultNamingStrategy();
-            }
+            _ = element.ThrowIfNullOrDefault();
 
             var displayAttribute = element.GetCustomAttribute<DisplayAttribute>(inherit: false);
             var enumMemberAttribute = element.GetCustomAttribute<EnumMemberAttribute>(inherit: false);
 
             // EnumMemberAttribute takes precedence to DisplayAttribute
-            var name = !enumMemberAttribute.IsNullOrDefault()
+            return !enumMemberAttribute.IsNullOrDefault()
                        ? enumMemberAttribute.Value
                        : (!displayAttribute.IsNullOrDefault()
                           ? displayAttribute.Name
                           : element.Name);
-
-            return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
         }
     }
 }

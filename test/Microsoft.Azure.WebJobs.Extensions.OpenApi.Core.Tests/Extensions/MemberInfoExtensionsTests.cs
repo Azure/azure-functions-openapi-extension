@@ -37,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Null_When_ToDisplayName_Invoked_Then_It_Should_Throw_Exception()
         {
-            Action action = () => MemberInfoExtensions.ToDisplayName(null, null);
+            Action action = () => MemberInfoExtensions.ToDisplayName(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
