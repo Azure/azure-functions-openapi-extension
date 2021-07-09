@@ -6,6 +6,9 @@
 
     "AZURE_FUNCTION_PROXY_DISABLE_LOCAL_CALL": "true",
 
+    "OpenApi__Version": "v3",
+    "OpenApi__DocVersion": "3.0.0",
+    "OpenApi__DocTitle": "OpenAPI Sample on Azure Functions (STATIC)",
     "OpenApi__HideSwaggerUI": "false",
     "OpenApi__ApiKey": "",
     "OpenApi__AuthLevel__Document": "Anonymous",
