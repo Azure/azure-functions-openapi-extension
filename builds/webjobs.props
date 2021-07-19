@@ -1,10 +1,14 @@
 <Project>
 
+  <Import Project=".\common.props" />
+
   <PropertyGroup>
     <Product>Azure Functions OpenAPI Extension</Product>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>
+    <PackageIconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
@@ -12,5 +16,9 @@
     <Authors>Microsoft</Authors>
     <Company>Microsoft</Company>
   </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="..\..\images\webjobs\icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>

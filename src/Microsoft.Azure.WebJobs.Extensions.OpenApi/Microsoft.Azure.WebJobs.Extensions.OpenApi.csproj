@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\builds\common.props" />
+  <Import Project="..\..\builds\webjobs.props" />
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\builds\common.props" />
+  <Import Project="..\..\builds\webjobs.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
