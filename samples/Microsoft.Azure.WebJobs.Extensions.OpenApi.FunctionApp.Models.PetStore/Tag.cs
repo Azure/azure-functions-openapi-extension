@@ -1,4 +1,4 @@
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
     /// This represents the model entity for tag of Swagger Pet Store.

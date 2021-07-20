@@ -1,8 +1,6 @@
 using System;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
     /// This represents the model entity for order of Swagger Pet Store.
@@ -32,13 +30,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         /// <summary>
         /// Gets or sets the <see cref="OrderStatus"/> value.
         /// </summary>
-        [OpenApiProperty(Description = "Order Status")]
         public OrderStatus? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating whether the order is complete or not.
         /// </summary>
-        [OpenApiProperty(Default = false)]
         public bool? Complete { get; set; }
     }
 }

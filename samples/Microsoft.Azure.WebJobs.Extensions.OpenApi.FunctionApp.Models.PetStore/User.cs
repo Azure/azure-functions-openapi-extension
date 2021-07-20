@@ -1,6 +1,4 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
     /// This represents the model entity for user of Swagger Pet Store.
@@ -45,7 +43,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         /// <summary>
         /// Gets or sets the user status value.
         /// </summary>
-        [OpenApiProperty(Description = "User Status")]
         public int? UserStatus { get; set; }
     }
 }

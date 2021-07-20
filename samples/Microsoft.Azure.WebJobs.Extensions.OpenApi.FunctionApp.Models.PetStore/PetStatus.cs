@@ -1,9 +1,9 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using System.Runtime.Serialization;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
     /// This specifices the pet status.
@@ -14,19 +14,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         /// <summary>
         /// Identifies as "available".
         /// </summary>
-        [Display("available")]
+        [EnumMember(Value = "available")]
         Available = 1,
 
         /// <summary>
         /// Identifies as "pending".
         /// </summary>
-        [Display("pending")]
+        [EnumMember(Value = "pending")]
         Pending = 2,
 
         /// <summary>
         /// Identifies as "sold".
         /// </summary>
-        [Display("sold")]
+        [EnumMember(Value = "sold")]
         Sold = 3
     }
 }

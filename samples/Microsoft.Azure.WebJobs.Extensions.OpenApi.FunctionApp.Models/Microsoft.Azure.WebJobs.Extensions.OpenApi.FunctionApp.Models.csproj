@@ -14,6 +14,7 @@
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore.csproj" />
     <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->

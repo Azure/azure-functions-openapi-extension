@@ -24,6 +24,7 @@
   <!-- Uncomment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.0.3" OutputItemType="Analyzer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.1.0" />
@@ -32,11 +33,12 @@
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
