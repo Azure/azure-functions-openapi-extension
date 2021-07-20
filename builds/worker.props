@@ -3,18 +3,8 @@
   <Import Project=".\common.props" />
 
   <PropertyGroup>
-    <Product>Azure Functions OpenAPI Extension</Product>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/Azure/azure-functions-openapi-extension</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Azure/azure-functions-openapi-extension</RepositoryUrl>
     <PackageIconUrl>https://aka.ms/azure-functions-package-icon</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <Owners>Microsoft,Azure-SDK</Owners>
-    <Authors>Microsoft</Authors>
-    <Company>Microsoft</Company>
   </PropertyGroup>
 
   <ItemGroup>

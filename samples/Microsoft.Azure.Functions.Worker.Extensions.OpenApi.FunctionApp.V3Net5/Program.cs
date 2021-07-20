@@ -9,7 +9,6 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5
         {
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
                 .Build();
 
             host.Run();
