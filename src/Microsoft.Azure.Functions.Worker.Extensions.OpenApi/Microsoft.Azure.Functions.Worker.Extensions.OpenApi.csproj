@@ -3,7 +3,7 @@
   <Import Project="..\..\builds\worker.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -17,8 +17,8 @@
     <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</RootNamespace>
 
     <!--Version information-->
-    <VersionPrefix>0.7.2</VersionPrefix>
-    <VersionSuffix>-preview</VersionSuffix>
+    <!-- <VersionPrefix>0.7.2</VersionPrefix>
+    <VersionSuffix>-preview</VersionSuffix> -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -30,13 +30,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" /> -->
-    <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.1.0" /> -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.1.0" />
+    <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Abstractions" Version="1.0.0" /> -->
   </ItemGroup>
 
-  <!-- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
-  </ItemGroup> -->
+  </ItemGroup>
 
 </Project>
