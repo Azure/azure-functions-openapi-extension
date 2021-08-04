@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\builds\common.props" />
+  <Import Project="..\..\builds\worker.props" />
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -15,6 +15,10 @@
     <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI</PackageTags>
     <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</AssemblyName>
     <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</RootNamespace>
+
+    <!--Version information-->
+    <!-- <VersionPrefix>0.7.2</VersionPrefix>
+    <VersionSuffix>-preview</VersionSuffix> -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -27,11 +31,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.1.0" />
+    <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Abstractions" Version="1.0.0" /> -->
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.csproj" />
     <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
+
 </Project>

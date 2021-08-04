@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,7 +34,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataTestMethod]
         [DataRow(typeof(IOpenApiHttpTriggerContext))]
         [DataRow(typeof(OpenApiHttpTriggerContext))]
-        [DataRow(typeof(IOpenApiTriggerFunction))]
+        [DataRow(typeof(OpenApiTriggerFunction))]
         [DataRow(typeof(ISwaggerUI))]
         public async Task Given_Type_When_Initiated_Then_It_Should_NotReturn_ApplicationAssemblyWithGivenType(Type type)
         {

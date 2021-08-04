@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 
 using FluentAssertions;
 
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions.Tests.Fakes;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -27,17 +29,18 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071)]
         public void Given_Parameter_When_Instantiated_Then_It_Should_Return_Result(string scheme, string hostname, int port)
         {
-            var uri = new UriBuilder(scheme, hostname, port).Uri;
-
             var context = new Mock<FunctionContext>();
 
-            var req = new FakeHttpRequestData(context.Object);
-            req.SetUri(uri);
+            var ports = new[] { 80, 443 };
+            var baseHost = $"{hostname}{(ports.Contains(port) ? string.Empty : $":{port}")}";
+            var uri = Uri.TryCreate($"{scheme}://{baseHost}", UriKind.Absolute, out var tried) ? tried : null;
+
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
 
             var result = new HttpRequestObject(req);
 
             result.Scheme.Should().Be(scheme);
-            result.Host.Value.Should().Be(uri.Authority);
+            result.Host.Value.Should().Be(baseHost);
         }
     }
 }

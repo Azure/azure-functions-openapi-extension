@@ -1,5 +1,6 @@
 using Azure.Core.Serialization;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// Activate Newtonsoft.Json.
         /// </summary>
         /// <param name="builder"><see cref="IFunctionsWorkerApplicationBuilder"/> instance.</param>
+        /// <param name="settings"><see cref="JsonSerializerSettings"/> instance.</param>
         /// <returns>Returns <see cref="IFunctionsWorkerApplicationBuilder"/> instance.</returns>
         /// <remarks>
         /// The functions worker uses the Azure SDK's ObjectSerializer to abstract away all JSON serialization. This allows you to
@@ -25,13 +27,16 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         ///
         /// Reference: https://github.com/Azure/azure-functions-dotnet-worker/blob/main/samples/Configuration/Program.cs
         /// </remarks>
-        public static IFunctionsWorkerApplicationBuilder UseNewtonsoftJson(this IFunctionsWorkerApplicationBuilder builder)
+        public static IFunctionsWorkerApplicationBuilder UseNewtonsoftJson(this IFunctionsWorkerApplicationBuilder builder, JsonSerializerSettings settings = null)
         {
             builder.Services.Configure<WorkerOptions>(workerOptions =>
             {
-                var settings = NewtonsoftJsonObjectSerializer.CreateJsonSerializerSettings();
-                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                settings.NullValueHandling = NullValueHandling.Ignore;
+                if (settings.IsNullOrDefault())
+                {
+                    settings = NewtonsoftJsonObjectSerializer.CreateJsonSerializerSettings();
+                    settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    settings.NullValueHandling = NullValueHandling.Ignore;
+                }
 
                 workerOptions.Serializer = new NewtonsoftJsonObjectSerializer(settings);
             });

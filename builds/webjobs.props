@@ -1,0 +1,14 @@
+<Project>
+
+  <Import Project=".\common.props" />
+
+  <PropertyGroup>
+    <PackageIconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="..\..\images\webjobs\icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>

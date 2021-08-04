@@ -6,7 +6,7 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.Sec
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5
