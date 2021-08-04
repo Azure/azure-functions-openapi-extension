@@ -10,25 +10,15 @@
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="0.8.0-preview" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.Anonymous" Version="0.8.0-preview" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.Anonymous" Version="0.8.0-preview" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.Anonymous" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.0.0" />
   </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
-
-  <!-- Uncomment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
-  <!-- <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous" Version="0.8.0-preview" />
-  </ItemGroup> -->
-  <!-- Uncomment this block if you want to use Swagger UI NuGet package from https://nuget.org -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.0.3" OutputItemType="Analyzer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="0.7.2-preview" />
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
