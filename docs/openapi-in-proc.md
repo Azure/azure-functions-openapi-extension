@@ -103,3 +103,5 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
   }
 }
 ```
+
+> **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.

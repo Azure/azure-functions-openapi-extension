@@ -70,15 +70,6 @@ To enable OpenAPI document, you will need to install a NuGet package, [Microsoft
 dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi --prerelease
 ```
 
-You also need to install those NuGet packages.
-
-```bash
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous --prerelease
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerDocument.Anonymous --prerelease
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OpenApiDocument.Anonymous --prerelease
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi.OAuth2Redirect.Anonymous --prerelease
-```
-
 > [!NOTE]
 > This extension is currently in preview.
 

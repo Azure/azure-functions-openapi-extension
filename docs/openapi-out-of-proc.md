@@ -29,45 +29,14 @@ For the extension's advanced configuration, it expects the following config keys
 
 ### Configure Authorization Level ###
 
-As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`. However, if you want to secure those endpoints, change their authorisation level to `AuthorizationLevel.Function` and pass the API Key through either request header or querystring parameter. This can be done through the environment variables. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+As a default, all endpoints to render Swagger UI and OpenAPI documents have the authorisation level of `AuthorizationLevel.Anonymous`.
 
-```json
-{
-  "Values": {
-    "OpenApi__ApiKey": "",
-    "OpenApi__AuthLevel__Document": "Anonymous",
-    "OpenApi__AuthLevel__UI": "Anonymous"
-  }
-}
-```
-
-You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi__AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error.
-
-> [!NOTE]
-> Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
+> **NOTE**: Currently, this out-of-process worker extension only supports the `AuthorizationLevel.Anonymous` access.
 
 
 ### Configure Swagger UI Visibility ###
 
-You may want to only enable the Swagger UI page during the development time, and disable the page when publishing it to Azure. If you want to hide the Swagger UI page on production, DO NOT include any of the following NuGet package to your project in the release configuration.
-
-* [Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Admin](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Admin)
-* [Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous)
-* [Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Function](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Function)
-* [Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.System](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.System)
-* [Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.User](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.User)
-
-It can be achieved by adding a condition to your Functions app's `.csproj` file. Here's the sample `.csproj` file. The other values are omitted for brevity.
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup Condition="'$(Configuration)'=='Release'">>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi.SwaggerUI.Anonymous" Version="0.8.0-preview" />
-  </ItemGroup>
-
-</Project>
-```
+Unlike the in-process worker model, this out-of-process worker model currently doesn't support hiding Swagger UI.
 
 
 ### Configure OpenAPI Information ###
@@ -102,3 +71,5 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
   }
 }
 ```
+
+> **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.
