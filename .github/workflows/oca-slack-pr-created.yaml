@@ -1,0 +1,48 @@
+name: On OCA PR Created
+
+on:
+  pull_request:
+    types:
+    - opened
+    branches:
+    - main
+
+jobs:
+  labelling_messaging:
+    name: 'Add a label on submission: oca-pr then send a message to Slack'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # - name: Get event payload
+    #   shell: pwsh
+    #   run: |
+    #     Write-Host '${{ toJSON(github.event) }}'
+
+    - name: Get checkpoints
+      id: checkpoint
+      shell: pwsh
+      run: |
+        $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.pull_request.user.login) }}"
+
+        echo "::set-output name=isOcaParticipant::$isOcaParticipant"
+
+    - name: Add a label
+      if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
+      uses: buildsville/add-remove-label@v1
+      with:
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        label: 'oca-pr'
+        type: add
+
+    - name: Send a message to Slack
+      if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
+      shell: pwsh
+      run: |
+        $url = "${{ secrets.OCA_SLACK_WEBHOOK_URL }}"
+        $iconUrl = "${{ secrets.OCA_SLACK_WEBHOOK_ICON_URL }}"
+        $channel = "${{ secrets.OCA_SLACK_CHANNEL }}"
+        $text = "New PR #${{ github.event.pull_request.number }}, ${{ github.event.pull_request.title }}, has been created! :point_right: <${{ github.event.pull_request.html_url }}|View PR>"
+        $body = @{ "channel" = $channel; "username" = "AzFuncOpenApiBot"; "icon_url" = $iconUrl; "text" = $text; }
+
+        Invoke-RestMethod -Method Post -Uri $url -Body $($body | ConvertTo-Json)

@@ -20,6 +20,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
             {
                 services.AddSingleton<IOpenApiHttpTriggerContext, OpenApiHttpTriggerContext>();
                 services.AddSingleton<IOpenApiTriggerFunction, OpenApiTriggerFunction>();
+                // services.AddSingleton<DefaultOpenApiHttpTrigger, DefaultOpenApiHttpTrigger>();
             });
 
             return hostBuilder;

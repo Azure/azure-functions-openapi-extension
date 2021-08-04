@@ -1,5 +1,6 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore;
 
 using Newtonsoft.Json.Serialization;
 

@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {

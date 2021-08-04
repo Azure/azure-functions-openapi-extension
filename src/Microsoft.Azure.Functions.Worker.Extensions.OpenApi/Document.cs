@@ -4,15 +4,18 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
+
+using GenericExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.GenericExtensions;
+using OpenApiDocumentExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.OpenApiDocumentExtensions;
+using StringExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.StringExtensions;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
@@ -31,7 +34,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// </summary>
         public Document(IDocumentHelper helper)
         {
-            this._helper = helper.ThrowIfNullOrDefault();
+            this._helper = GenericExtensions.ThrowIfNullOrDefault(helper);
         }
 
         /// <inheritdoc />
@@ -71,7 +74,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
             var server = new OpenApiServer { Url = baseUrl };
 
-            if (options.IsNullOrDefault())
+            if (GenericExtensions.IsNullOrDefault(options))
             {
                 this.OpenApiDocument.Servers = new List<OpenApiServer>() { server };
 
@@ -101,7 +104,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddNamingStrategy(NamingStrategy strategy)
         {
-            this._strategy = strategy.ThrowIfNullOrDefault();
+            this._strategy = GenericExtensions.ThrowIfNullOrDefault(strategy);
 
             return this;
         }
@@ -109,7 +112,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddVisitors(VisitorCollection collection)
         {
-            this._collection = collection.ThrowIfNullOrDefault();
+            this._collection = GenericExtensions.ThrowIfNullOrDefault(collection);
 
             return this;
         }
@@ -125,7 +128,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2)
         {
-            if (this._strategy.IsNullOrDefault())
+            if (GenericExtensions.IsNullOrDefault(this._strategy))
             {
                 this._strategy = new DefaultNamingStrategy();
             }
@@ -136,19 +139,19 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             foreach (var method in methods)
             {
                 var trigger = this._helper.GetHttpTriggerAttribute(method);
-                if (trigger.IsNullOrDefault())
+                if (GenericExtensions.IsNullOrDefault(trigger))
                 {
                     continue;
                 }
 
                 var function = this._helper.GetFunctionNameAttribute(method);
-                if (function.IsNullOrDefault())
+                if (GenericExtensions.IsNullOrDefault(function))
                 {
                     continue;
                 }
 
                 var path = this._helper.GetHttpEndpoint(function, trigger);
-                if (path.IsNullOrWhiteSpace())
+                if (StringExtensions.IsNullOrWhiteSpace(path))
                 {
                     continue;
                 }
@@ -159,7 +162,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                 var operations = item.Operations;
 
                 var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (operation.IsNullOrDefault())
+                if (GenericExtensions.IsNullOrDefault(operation))
                 {
                     continue;
                 }
@@ -202,7 +205,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         {
             using (var sw = new StringWriter())
             {
-                this.OpenApiDocument.Serialise(sw, version, format);
+                OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, format);
 
                 return sw.ToString();
             }

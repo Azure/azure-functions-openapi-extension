@@ -53,7 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var requirements = new List<OpenApiSecurityRequirement>();
-            foreach(var attr in attributes)
+            foreach (var attr in attributes)
             {
                 var scheme = new OpenApiSecurityScheme()
                 {
@@ -96,7 +96,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 return new OpenApiRequestBody()
                 {
                     Content = contents,
-                    Required = attributes.First().Required
+                    Required = attributes.First().Required,
+                    Description = attributes.First().Description
                 };
             }
 
@@ -198,7 +199,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     continue;
                 }
 
-                foreach(var attr in attributes)
+                foreach (var attr in attributes)
                 {
                     if (schemes.ContainsKey(attr.SchemeName))
                     {
@@ -380,7 +381,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         private static OpenApiReference GetSecurityReference(OpenApiSecurityAttribute attr)
         {
-            var reference = new OpenApiReference() { Id = attr.SchemeName, Type= ReferenceType.SecurityScheme };
+            var reference = new OpenApiReference() { Id = attr.SchemeName, Type = ReferenceType.SecurityScheme };
 
             return reference;
         }

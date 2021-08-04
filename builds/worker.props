@@ -1,0 +1,14 @@
+<Project>
+
+  <Import Project=".\common.props" />
+
+  <PropertyGroup>
+    <PackageIconUrl>https://aka.ms/azure-functions-package-icon</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="..\..\images\worker\icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>

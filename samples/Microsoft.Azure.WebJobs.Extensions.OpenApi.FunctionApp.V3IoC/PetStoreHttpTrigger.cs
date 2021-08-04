@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
