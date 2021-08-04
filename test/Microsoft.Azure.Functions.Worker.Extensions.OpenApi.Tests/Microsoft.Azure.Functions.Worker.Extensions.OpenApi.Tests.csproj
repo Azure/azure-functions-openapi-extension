@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes\Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
