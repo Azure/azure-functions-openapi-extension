@@ -234,43 +234,35 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
 
 Alternatively, you can use both CSS and JavaScript files from CDN, which is from the Internet.
 
-    ```csharp
-    public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+```csharp
+public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+{
+    public OpenApiCustomUIOptions(Assembly assembly)
+        : base(assembly)
     {
-        public OpenApiCustomUIOptions(Assembly assembly)
-            : base(assembly)
-        {
-        }
-
-        // Declare if you want to change the custom CSS file name.
-        public override string CustomStylesheetPath { get; }
-            = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.css";
-
-        // Declare if you want to change the custom JavaScript file name.
-        public override string CustomJavaScriptPath { get; }
-            = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.js";
-
-        // Declare if you want to change the behaviours of handling the custom CSS file.
-        public override async Task<string> GetStylesheetAsync()
-        {
-            // DO SOMETHING BEFORE CALLING THE BASE METHOD
-
-            base.GetStylesheetAsync();
-
-            // DO SOMETHING AFTER CALLING THE BASE METHOD
-        }
-
-        // Declare if you want to change the behaviours of handling the custom JavaScript file.
-        public override async Task<string> GetJavaScriptAsync()
-        {
-            // DO SOMETHING BEFORE CALLING THE BASE METHOD
-
-            base.GetJavaScriptAsync();
-
-            // DO SOMETHING AFTER CALLING THE BASE METHOD
-        }
     }
-    ```
+    // Declare if you want to change the custom CSS file name.
+    public override string CustomStylesheetPath { get; }
+        = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.css";
+    // Declare if you want to change the custom JavaScript file name.
+    public override string CustomJavaScriptPath { get; }
+        = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.js";
+    // Declare if you want to change the behaviours of handling the custom CSS file.
+    public override async Task<string> GetStylesheetAsync()
+    {
+        // DO SOMETHING BEFORE CALLING THE BASE METHOD
+        base.GetStylesheetAsync();
+        // DO SOMETHING AFTER CALLING THE BASE METHOD
+    }
+    // Declare if you want to change the behaviours of handling the custom JavaScript file.
+    public override async Task<string> GetJavaScriptAsync()
+    {
+        // DO SOMETHING BEFORE CALLING THE BASE METHOD
+        base.GetJavaScriptAsync();
+        // DO SOMETHING AFTER CALLING THE BASE METHOD
+    }
+}
+```
 
 Either way, your customised CSS and JavaScript will be applied to the Swagger UI page.
 
