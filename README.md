@@ -16,14 +16,23 @@
 * [**Shortening Swagger UI Page URL with `proxies.json`**](docs/shortening-swagger-ui-page-url.md): This document shows how to shorten both Swagger UI page URL and `swagger.json` document URL, using `proxies.json`.
 
 
-## Sample Azure Function Apps with OpenAPI Metadata Enabled ##
+## Sample Azure Function Apps with OpenAPI Document Enabled ##
+
+Here are sample apps using the project references:
 
 * [Function App v1 proxy](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy)
 * [Function App v2 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static)
 * [Function App v2 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC)
 * [Function App v3 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static)
 * [Function App v3 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC)
-<!-- * [Function App v3 .NET 5](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Net5) -->
+* [Function App v3 .NET 5](samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5)
+
+Here are the other sample apps directly using the NuGet packages (external repository):
+
+* [Function App v3 with IoC Container](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/NetCoreApp31.FunctionApp.IoC)
+* [Function App v3 with Static](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/NetCoreApp31.FunctionApp.Static)
+* [Function App .NET 5 with IoC Container](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net50.FunctionApp.IoC)
+* [Function App .NET 5 with Static](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net50.FunctionApp.Static)
 
 
 ## Azure Functions V1 Support ##
