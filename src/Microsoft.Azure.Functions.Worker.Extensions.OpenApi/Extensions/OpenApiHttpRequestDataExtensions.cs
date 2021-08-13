@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
     /// <summary>
     /// This represents the extension entity for <see cref="HttpRequestData"/>.
     /// </summary>
-    public static class HttpRequestDataExtensions
+    public static class OpenApiHttpRequestDataExtensions
     {
         /// <summary>
         /// Gets the <see cref="QueryCollection"/> instance from the <see cref="HttpRequestData"/>.
@@ -21,6 +21,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <returns>Returns <see cref="QueryCollection"/> instance.</returns>
         public static IQueryCollection Queries(this HttpRequestData req)
         {
+            req.ThrowIfNullOrDefault();
+
             var queries = QueryHelpers.ParseNullableQuery(req.Url.Query);
             if (queries.IsNullOrDefault())
             {
@@ -38,6 +40,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <returns>Returns <see cref="StringValues"/> object.</returns>
         public static StringValues Query(this HttpRequestData req, string key)
         {
+            req.ThrowIfNullOrDefault();
+
             var queries = Queries(req);
             var value = queries.ContainsKey(key) ? queries[key] : new StringValues(default(string));
 
