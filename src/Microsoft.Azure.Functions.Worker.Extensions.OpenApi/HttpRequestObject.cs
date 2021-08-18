@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestData"/> instance.</param>
         public HttpRequestObject(HttpRequestData req)
         {
-            req.ThrowIfNullOrDefault();
+            // req.ThrowIfNullOrDefault();
 
             this.Scheme = req.Url.Scheme;
             this.Host = new[] { 80, 443 }.Contains(req.Url.Port)
