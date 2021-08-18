@@ -63,3 +63,16 @@ jobs:
       run: |
         dir
         dotnet test . -c Debug
+
+    - name: Say Congrats
+      if: success()
+      shell: pwsh
+      run: |
+        echo "Good!"
+
+    - name: Say Oops
+      if: failure()
+      shell: pwsh
+      run: |
+        echo "Oops!"
+
