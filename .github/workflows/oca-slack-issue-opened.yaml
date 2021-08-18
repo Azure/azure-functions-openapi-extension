@@ -47,6 +47,6 @@ jobs:
         $iconUrl = "${{ secrets.OCA_SLACK_WEBHOOK_ICON_URL }}"
         $channel = "${{ secrets.OCA_SLACK_CHANNEL }}"
         $text = "New Issue #${{ github.event.issue.number }}, ${{ github.event.issue.title }}, has been opened! :point_right: <${{ github.event.issue.html_url }}|View Issue>"
-        $body = @{ "channel" = $channel; "username" = "AzFuncOpenApiBot"; "icon_url" = $iconUrl; "text" = $text; }
+        $body = @{ "channel" = $channel; "username" = "shlee7131"; "icon_url" = $iconUrl; "text" = $text; }
 
         Invoke-RestMethod -Method Post -Uri $url -Body $($body | ConvertTo-Json)
