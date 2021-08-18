@@ -23,6 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
     /// </summary>
     public class Program
     {
+        qwe // fail build
         private static readonly char directorySeparator = Path.DirectorySeparatorChar;
 
         /// <summary>
