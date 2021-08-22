@@ -31,7 +31,7 @@ az apim create \
 
 ## Create Azure Function App ##
 
-Please refer to [the Azure Function app with the OpenAPI extension enabled](enable-open-api-endpoints-in-proc.md). Once the Function app is deployed to Azure, make sure you can generate `swagger.json` document on-the-fly.
+Please refer to [the Azure Function app with the OpenAPI extension enabled](enable-open-api-endpoints.md). Once the Function app is deployed to Azure, make sure you can generate `swagger.json` document on-the-fly.
 
 ![swagger.json on Azure][image-11]
 
