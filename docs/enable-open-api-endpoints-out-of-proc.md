@@ -3,7 +3,7 @@
 [OpenAPI metadata][openapi] supports in Azure Functions is now available with this extension, [Azure Functions OpenAPI Extension (Out-of-Process Worker)][az func openapi extension]. With this extension, you can directly let your API endpoints be discoverable.
 
 > [!IMPORTANT]
-> This extension supports only Azure Functions v3 and onwards. If you want to get your Azure Functions v2 supprted, find [this in-process model][docs in-proc]. If you want to get your Azure Functions v1 supported, find [this preview document][az func openapi v1 preview] or [community contribution][az func openapi community].
+> This extension supports only Azure Functions v3 and onwards. If you want to get your Azure Functions v2 supported, find [this in-process model][docs in-proc]. If you want to get your Azure Functions v1 supported, find [this preview document][az func openapi v1 preview] or [community contribution][az func openapi community].
 
 [OpenAPI metadata][openapi] allows wide variety of other software and applications to consume an Azure Functions app hosting HTTP APIs. The software and applications include Microsoft products and services like [Power Platform][power platform], [API Management][az apim] and third-party tools like [Postman][postman].
 
