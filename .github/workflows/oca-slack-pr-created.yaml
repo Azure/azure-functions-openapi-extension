@@ -46,4 +46,4 @@ jobs:
         $body = @{ "channel" = $channel; "username" = "AzFuncOpenApiBot"; "icon_url" = $iconUrl; "text" = $text; }
         $payload = $body | ConvertTo-Json
 
-        Invoke-RestMethod -Method Post -Uri $url -Body $([System.Text.Encoding]::UTF8.GetBytes($payload))
+        Invoke-RestMethod -Method Post -Uri $url -Body $($payload)
