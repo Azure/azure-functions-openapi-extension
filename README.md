@@ -38,6 +38,8 @@ Here are the other sample apps directly using the NuGet packages (external repos
 * [Function App .NET 6 with IoC Container (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.IoC)
 * [Function App .NET 6 with Static (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.Static)
 
+> **NOTE**: .NET 6 support is currently very early preview.
+
 
 ## Azure Functions V1 Support ##
 
