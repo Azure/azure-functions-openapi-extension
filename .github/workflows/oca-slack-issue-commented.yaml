@@ -12,16 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get event payload
-      shell: pwsh
-      run: |
-        Write-Host '${{ toJSON(github.event) }}'
+    # - name: Get event payload
+    #   shell: pwsh
+    #   run: |
+    #     Write-Host '${{ toJSON(github.event) }}'
 
     - name: Get checkpoints
       id: checkpoint
       shell: pwsh
       run: |
-        $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.issue.user.login) }}"
+        $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.comment.user.login) }}"
 
         echo "::set-output name=isOcaParticipant::$isOcaParticipant"
 
