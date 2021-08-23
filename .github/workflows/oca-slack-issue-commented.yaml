@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Get event payload
-    #   shell: pwsh
-    #   run: |
-    #     Write-Host '${{ toJSON(github.event) }}'
+    - name: Get event payload
+      shell: pwsh
+      run: |
+        Write-Host '${{ toJSON(github.event) }}'
 
     - name: Get checkpoints
       id: checkpoint
