@@ -83,7 +83,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 }
                 schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
             }
-
             instance.Schemas.Add(name, schema);
         }
 
