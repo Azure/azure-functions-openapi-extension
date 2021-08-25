@@ -114,15 +114,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2)
+        public IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null)
         {
             var assembly = Assembly.LoadFrom(assemblyPath);
 
-            return this.Build(assembly, version);
+            return this.Build(assembly, version, options);
         }
 
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2)
+        public IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null)
         {
             if (this._strategy.IsNullOrDefault())
             {
@@ -164,9 +164,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 }
 
                 operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
+                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection, options);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version, options);
+                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version, options);
 
                 operations[verb] = operation;
                 item.Operations = operations;

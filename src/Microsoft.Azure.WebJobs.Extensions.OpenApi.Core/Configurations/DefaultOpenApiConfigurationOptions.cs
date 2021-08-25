@@ -37,6 +37,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public virtual bool IncludeRequestingHostName { get; set; } = IsFunctionsRuntimeEnvironmentDevelopment();
 
+        /// <inheritdoc />
+        public virtual IAdditionalOpenApiParameter AdditionalParameters { get; set; }
+
+        /// <inheritdoc />
+        public virtual IAdditionalOpenApiRequestBody AdditionalOpenApiRequestBody { get; set; }
+
+        /// <inheritdoc />
+        public virtual IAdditionalOpenApiResponse AdditionalOpenApiResponse { get; set; }
+
         /// <summary>
         /// Gets the OpenAPI document version.
         /// </summary>

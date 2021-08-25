@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -137,9 +137,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
+                                    .Concat(options?.AdditionalParameters?.OpenApiParameters(element) ?? Enumerable.Empty<OpenApiParameterAttribute>())
                                     .Where(p => p.Deprecated == false)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();

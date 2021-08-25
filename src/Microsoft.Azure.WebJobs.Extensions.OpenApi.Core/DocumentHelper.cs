@@ -80,9 +80,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null)
         {
-            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
+            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
+                                    .Concat(options?.AdditionalOpenApiRequestBody?.OpenApiRequestBody(element) ?? Enumerable.Empty<OpenApiRequestBodyAttribute>());
             if (!attributes.Any())
             {
                 return null;
@@ -112,13 +113,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
+                                           .Concat(options?.AdditionalOpenApiResponse?.OpenApiResponseWithBody(element) ?? Enumerable.Empty<OpenApiResponseWithBodyAttribute>())
                                            .Where(p => p.Deprecated == false)
                                            .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
+                                              .Concat(options?.AdditionalOpenApiResponse?.OpenApiResponseWithoutBody(element) ?? Enumerable.Empty<OpenApiResponseWithoutBodyAttribute>())
                                               .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
             var responses = responsesWithBody.Concat(responsesWithoutBody)

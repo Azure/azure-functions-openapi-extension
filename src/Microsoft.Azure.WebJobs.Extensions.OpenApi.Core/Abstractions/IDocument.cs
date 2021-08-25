@@ -62,16 +62,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="assemblyPath">Assembly file path.</param>
         /// <param name="version">OpenAPI spec version.</param>
+        /// <param name="options"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2);
+        IDocument Build(string assemblyPath, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null);
 
         /// <summary>
         /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
+        /// <param name="options"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2);
+        IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null);
 
         /// <summary>
         /// Renders OpenAPI document.
