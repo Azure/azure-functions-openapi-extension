@@ -81,10 +81,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             {
                 swagger = document.InitialiseDocument()
                                   .AddMetadata(pi.OpenApiInfo)
-                                  .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix)
+                                  .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix, options: pi.OpenApiConfigurationOptions)
                                   .AddNamingStrategy(namingStrategy)
                                   .AddVisitors(collection)
-                                  .Build(pi.CompiledDllPath)
+                                  .Build(pi.CompiledDllPath, options: pi.OpenApiConfigurationOptions)
                                   .RenderAsync(version.ToOpenApiSpecVersion(), format.ToOpenApiFormat())
                                   .Result;
             }

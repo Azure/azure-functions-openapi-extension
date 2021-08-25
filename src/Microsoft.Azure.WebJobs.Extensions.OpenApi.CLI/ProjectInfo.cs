@@ -160,6 +160,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
         /// </summary>
         public virtual OpenApiInfo OpenApiInfo { get; private set; }
 
+        /// <summary>
+        /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance.
+        /// </summary>
+        public virtual IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; private set; }
+
         private void SetProjectPath(string path)
         {
             if (path.IsNullOrWhiteSpace() || path == ".")
@@ -234,7 +239,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
 
             var options = Activator.CreateInstance(type);
 
-            this.OpenApiInfo = (options as IOpenApiConfigurationOptions).Info;
+            this.OpenApiConfigurationOptions = (options as IOpenApiConfigurationOptions);
+            this.OpenApiInfo = this.OpenApiConfigurationOptions.Info;
         }
 
         private bool IsValidOpenApiInfo(OpenApiInfo openApiInfo)

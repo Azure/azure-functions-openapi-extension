@@ -29,19 +29,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         bool IncludeRequestingHostName { get; set; }
 
-        /// <summary>
-        /// Gets or sets a class that can be used to add additional parameters to the generated open api
-        /// </summary>
+        /// <inheritdoc cref="IAdditionalOpenApiParameter"/>
         IAdditionalOpenApiParameter AdditionalParameters { get; set; }
 
-        /// <summary>
-        /// Gets or sets a class that can be used to add a request body if the default document helper body parameter is null
-        /// </summary>
+        /// <inheritdoc cref="IAdditionalOpenApiRequestBody"/>
         IAdditionalOpenApiRequestBody AdditionalOpenApiRequestBody { get; set; }
 
-        /// <summary>
-        /// Gets or sets a class that can be used to add a request body if the default document helper response parameter is null
-        /// </summary>
+        /// <inheritdoc cref="IAdditionalOpenApiResponse"/>
         IAdditionalOpenApiResponse AdditionalOpenApiResponse { get; set; }
     }
 }
