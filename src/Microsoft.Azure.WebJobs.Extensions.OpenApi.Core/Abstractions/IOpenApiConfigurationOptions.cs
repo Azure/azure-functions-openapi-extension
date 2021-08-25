@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         bool IncludeRequestingHostName { get; set; }
 
         /// <inheritdoc cref="IAdditionalOpenApiParameter"/>
-        IAdditionalOpenApiParameter AdditionalParameters { get; set; }
+        IAdditionalOpenApiParameter AdditionalOpenApiParameters { get; set; }
 
         /// <inheritdoc cref="IAdditionalOpenApiRequestBody"/>
         IAdditionalOpenApiRequestBody AdditionalOpenApiRequestBody { get; set; }

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public bool IncludeRequestingHostName { get; set; }
 
         /// <inheritdoc />
-        public IAdditionalOpenApiParameter AdditionalParameters { get; set; }
+        public IAdditionalOpenApiParameter AdditionalOpenApiParameters { get; set; }
 
         /// <inheritdoc />
         public IAdditionalOpenApiRequestBody AdditionalOpenApiRequestBody { get; set; }

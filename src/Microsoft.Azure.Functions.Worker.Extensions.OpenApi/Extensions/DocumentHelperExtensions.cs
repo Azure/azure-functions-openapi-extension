@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Concat(options?.AdditionalParameters?.OpenApiParameters(element) ?? Enumerable.Empty<OpenApiParameterAttribute>())
+                                    .Concat(options?.AdditionalOpenApiParameters?.OpenApiParameters(element) ?? Enumerable.Empty<OpenApiParameterAttribute>())
                                     .Where(p => p.Deprecated == false)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
