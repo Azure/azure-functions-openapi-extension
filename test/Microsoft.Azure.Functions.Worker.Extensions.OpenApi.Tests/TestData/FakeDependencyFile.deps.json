@@ -1,0 +1,22 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "Microsoft.Azure.Functions.Worker.Extensions.OpenApi/1.0.0": {
+        "dependencies": {
+          "Microsoft.Azure.Core.NewtonsoftJson": "1.0.0",
+          "Microsoft.Azure.Functions.Worker.Core": "1.1.0",
+          "Microsoft.Azure.Functions.Worker.Extensions.Http": "3.0.12",
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.0.0"
+        },
+        "runtime": {
+          "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.dll": {}
+        }
+      }
+    }
+  }
+}
