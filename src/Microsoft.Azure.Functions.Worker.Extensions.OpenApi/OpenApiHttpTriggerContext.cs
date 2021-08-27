@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -235,27 +236,43 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         // This method relies on the dependency manifest file to find the function app runtime dll file.
         // It can be either <your_runtime>.deps.json or function.deps.json. In most cases, at least the
         // function.deps.json should exist, but in case no manifest exists, it will throw the exception.
+        // In case there are multiple .deps.json files, the root project will be picked, based on the
+        // dependencies mentioned in the .deps.json files.
         private async Task<string> GetRuntimeFilenameAsync(string functionAppDirectory)
         {
             var files = Directory.GetFiles(functionAppDirectory, "*.deps.json", SearchOption.AllDirectories);
-            var file = files.FirstOrDefault();
-            if (file.IsNullOrWhiteSpace())
+            if (!files.Any())
             {
                 throw new InvalidOperationException("Invalid function app directory");
             }
 
+            var dependencyManifests = new List<DependencyManifest>();
+            foreach (var file in files) {
+                dependencyManifests.Add(await GetDependencyManifestAsync(file));
+            }
+
+            var runtimes = dependencyManifests
+                .Select(manifest => manifest.Targets[manifest.RuntimeTarget.Name].First())
+                .Select(target => new
+                {
+                    Name = target.Key.Split("/").First(),
+                    FileName = target.Value.Runtime.First().Key,
+                    Dependencies = target.Value.Dependencies.Keys
+                });
+
+            var referencedRuntimes = runtimes.SelectMany(d => d.Dependencies);
+            return runtimes.FirstOrDefault(r => !referencedRuntimes.Contains(r.Name))?.FileName;
+        }
+
+        private static async Task<DependencyManifest> GetDependencyManifestAsync(string file)
+        {
             var serialised = default(string);
             using (var reader = File.OpenText(file))
             {
                 serialised = await reader.ReadToEndAsync();
             }
 
-            var manifesto = JsonConvert.DeserializeObject<DependencyManifest>(serialised);
-            var runtimeTarget = manifesto.RuntimeTarget.Name;
-            var runtimes = manifesto.Targets[runtimeTarget].Values;
-            var runtime = runtimes.First().Runtime.First().Key;
-
-            return runtime;
+            return JsonConvert.DeserializeObject<DependencyManifest>(serialised);
         }
 
         private Assembly GetAssembly(object instance)
