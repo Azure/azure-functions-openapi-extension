@@ -79,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 items.Reference = reference;
             }
 
-            // if key contains on subAcceptor, append special keyword.
+            // if contains key on subAcceptor, the special keyword append.
             if (subAcceptor.Schemas.ContainsKey(name))
             {
                 var scheme = instance.Schemas[name];
