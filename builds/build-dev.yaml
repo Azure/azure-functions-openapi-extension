@@ -42,4 +42,4 @@ stages:
     - template: 'template-steps-build-test.yaml'
       parameters:
         configuration: 'Debug'
-        os: '$(variables.imageName)'
+        isWindows: ${{ eq(variables.imageName, 'windows-latest') }}

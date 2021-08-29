@@ -1,6 +1,6 @@
 parameters:
   configuration: ''
-  os: ''
+  isWindows: false
 
 steps:
 - task: NodeTool@0
@@ -53,7 +53,7 @@ steps:
 
 - task: PowerShell@2
   displayName: '.NET Integration Test (Windows)'
-  condition: eq(${{ parameters.os }}, 'windows-latest')
+  condition: eq(${{ parameters.isWindows }}, true)
   inputs:
     targetType: Inline
     script: |
@@ -70,7 +70,7 @@ steps:
 
 - task: PowerShell@2
   displayName: '.NET Integration Test (Non-Windows)'
-  condition: ne(${{ parameters.os }}, 'windows-latest')
+  condition: eq(${{ parameters.isWindows }}, false)
   inputs:
     targetType: Inline
     script: |
