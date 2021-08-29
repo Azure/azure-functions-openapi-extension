@@ -37,8 +37,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public IAdditionalOpenApiResponse AdditionalOpenApiResponse { get; set; }
-
-        /// <inheritdoc />
-        public Func<OpenApiOperation, bool> OpenApiOperationFilter { get; set; }
     }
 }

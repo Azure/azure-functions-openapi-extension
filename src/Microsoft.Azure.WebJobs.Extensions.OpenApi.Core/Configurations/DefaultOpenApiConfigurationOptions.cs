@@ -46,9 +46,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public virtual IAdditionalOpenApiResponse AdditionalOpenApiResponse { get; set; }
 
-        /// <inheritdoc />
-        public virtual Func<OpenApiOperation, bool> OpenApiOperationFilter { get; set; }
-
         /// <summary>
         /// Gets the OpenAPI document version.
         /// </summary>

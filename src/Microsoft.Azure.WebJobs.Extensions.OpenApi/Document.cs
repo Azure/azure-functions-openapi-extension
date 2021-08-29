@@ -158,8 +158,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 var operations = item.Operations;
 
                 var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (operation.IsNullOrDefault()
-                    || (options?.OpenApiOperationFilter != null && options.OpenApiOperationFilter(operation)))
+                if (operation.IsNullOrDefault())
                 {
                     continue;
                 }

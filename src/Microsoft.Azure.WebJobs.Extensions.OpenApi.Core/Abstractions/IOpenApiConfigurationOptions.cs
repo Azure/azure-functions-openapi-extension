@@ -38,10 +38,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 
         /// <inheritdoc cref="IAdditionalOpenApiResponse"/>
         IAdditionalOpenApiResponse AdditionalOpenApiResponse { get; set; }
-
-        /// <summary>
-        /// A function to allow filtering out api operations, should return true to filter out operations
-        /// </summary>
-        Func<OpenApiOperation, bool> OpenApiOperationFilter { get; set; }
     }
 }

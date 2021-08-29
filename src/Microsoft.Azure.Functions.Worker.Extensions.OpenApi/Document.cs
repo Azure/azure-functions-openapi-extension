@@ -162,8 +162,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                 var operations = item.Operations;
 
                 var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (GenericExtensions.IsNullOrDefault(operation)
-                    || (options?.OpenApiOperationFilter != null && options.OpenApiOperationFilter(operation)))
+                if (GenericExtensions.IsNullOrDefault(operation))
                 {
                     continue;
                 }
