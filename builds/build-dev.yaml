@@ -42,4 +42,4 @@ stages:
     - template: 'template-steps-build-test.yaml'
       parameters:
         configuration: 'Debug'
-        os: '$(imageName)'
+        os: '$(variables.imageName)'
