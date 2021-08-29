@@ -3,6 +3,18 @@ parameters:
   os: ''
 
 steps:
+- task: NodeTool@0
+  displayName: 'Install node.js 14'
+  inputs:
+    versionSpec: '14.x'
+
+- task: PowerShell@2
+  displayName: 'Install Azure Functions Core Tools'
+  inputs:
+    targetType: Inline
+    script: |
+      npm install -g azure-functions-core-tools@3 --unsafe-perm true
+
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK 2.1 LTS'
   inputs:
