@@ -62,4 +62,4 @@ jobs:
       shell: pwsh
       run: |
         dir
-        dotnet test . -c Debug
+        dotnet test ./test/**/*.csproj -c Debug
