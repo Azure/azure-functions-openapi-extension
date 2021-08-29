@@ -1,20 +1,7 @@
 parameters:
   configuration: ''
-  isWindows: false
 
 steps:
-- task: NodeTool@0
-  displayName: 'Install node.js 14'
-  inputs:
-    versionSpec: '14.x'
-
-- task: PowerShell@2
-  displayName: 'Install Azure Functions Core Tools'
-  inputs:
-    targetType: Inline
-    script: |
-      npm install -g azure-functions-core-tools@3 --unsafe-perm true
-
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK 2.1 LTS'
   inputs:
@@ -50,38 +37,6 @@ steps:
     projects: '$(System.DefaultWorkingDirectory)/test/**/*.csproj'
     arguments: '-c ${{ parameters.configuration }} /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(System.DefaultWorkingDirectory)\TestResults\coverage'
     publishTestResult: true
-
-# - task: PowerShell@2
-#   displayName: '.NET Integration Test (Windows)'
-#   condition: eq(${{ parameters.isWindows }}, true)
-#   inputs:
-#     targetType: Inline
-#     script: |
-#       $func = $(Get-Command func).Source.Replace(".ps1", ".cmd")
-
-#       cd $(System.DefaultWorkingDirectory)/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
-#       Start-Process -NoNewWindow "$func" @("start","--verbose","false")
-#       Start-Sleep -s 60
-
-#       cd $(System.DefaultWorkingDirectory)/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
-#       dotnet test . -c ${{ parameters.configuration }} --logger "trx;LogFileName=$(System.DefaultWorkingDirectory)\TestResults\TestResult.trx"
-
-#       cd $(System.DefaultWorkingDirectory)
-
-- task: PowerShell@2
-  displayName: '.NET Integration Test (Non-Windows)'
-  condition: eq('${{ parameters.isWindows }}', 'false')
-  inputs:
-    targetType: Inline
-    script: |
-      cd $(System.DefaultWorkingDirectory)/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
-      Start-Process -NoNewWindow func @("start","--verbose","false")
-      Start-Sleep -s 60
-
-      cd $(System.DefaultWorkingDirectory)/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
-      dotnet test . -c ${{ parameters.configuration }} --logger "trx;LogFileName=$(System.DefaultWorkingDirectory)\TestResults\TestResult.trx"
-
-      cd $(System.DefaultWorkingDirectory)
 
 - task: PowerShell@2
   displayName: 'Save Test Run Status'
