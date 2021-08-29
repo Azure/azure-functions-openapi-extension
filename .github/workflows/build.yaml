@@ -62,4 +62,4 @@ jobs:
       shell: pwsh
       run: |
         dir
-        dotnet test ./test/**/*.csproj -c Debug --filter:"TestCategory=Integration"
+        dotnet test . -c Debug --filter:"TestCategory=Integration"
