@@ -23,7 +23,7 @@ jobs:
       id: checkpoint
       shell: pwsh
       run: |
-        echo "Requester: ${{ github.event.pull_request.user.login) }}"
+        echo "Requester: ${{ github.event.pull_request.user.login }}"
         $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.pull_request.user.login) }}"
 
         echo "::set-output name=isOcaParticipant::$isOcaParticipant"
