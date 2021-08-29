@@ -22,6 +22,16 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
+    - name: Setup node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Setup Azure Functions Core Tools
+      shell: pwsh
+      run: |
+        npm install -g azure-functions-core-tools@3 --unsafe-perm true
+
     - name: Setup .NET SDK 2.1 LTS
       uses: actions/setup-dotnet@v1
       with:
@@ -58,8 +68,41 @@ jobs:
         dir
         dotnet build . -c Debug -v minimal
 
-    - name: Test solution
+    - name: Run unit tests
       shell: pwsh
       run: |
         dir
+        dotnet test . -c Debug --filter:"TestCategory!=Integration"
+
+    # - name: Run integration tests (Windows)
+    #   if: matrix.os == 'windows-latest'
+    #   shell: pwsh
+    #   run: |
+    #     dir
+
+    #     $rootDir = $pwd.Path
+    #     $func = $(Get-Command func).Source.Replace(".ps1", ".cmd")
+
+    #     cd ./test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
+    #     Start-Process -NoNewWindow "$func" @("start","--verbose","false")
+    #     Start-Sleep -s 60
+
+    #     cd $rootDir/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
+    #     dotnet test . -c Debug
+    #     cd $rootDir
+
+    - name: Run integration tests (Non-Windows)
+      if: matrix.os != 'windows-latest'
+      shell: pwsh
+      run: |
+        dir
+
+        $rootDir = $pwd.Path
+
+        cd ./test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
+        Start-Process -NoNewWindow func @("start","--verbose","false")
+        Start-Sleep -s 60
+
+        cd $rootDir/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         dotnet test . -c Debug
+        cd $rootDir
