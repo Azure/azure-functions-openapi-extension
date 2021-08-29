@@ -70,7 +70,7 @@ steps:
 
 - task: PowerShell@2
   displayName: '.NET Integration Test (Non-Windows)'
-  condition: eq(${{ parameters.isWindows }}, false)
+  condition: eq('${{ parameters.isWindows }}', 'false')
   inputs:
     targetType: Inline
     script: |
