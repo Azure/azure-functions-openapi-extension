@@ -256,7 +256,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                 .Select(manifest => manifest.Targets[manifest.RuntimeTarget.Name].First())
                 .Select(target => new
                 {
-                    Name = target.Key.Split("/").First(),
+                    Name = target.Key.Split('/').First(),
                     FileName = target.Value.Runtime.First().Key,
                     Dependencies = target.Value.Dependencies.Keys
                 });
