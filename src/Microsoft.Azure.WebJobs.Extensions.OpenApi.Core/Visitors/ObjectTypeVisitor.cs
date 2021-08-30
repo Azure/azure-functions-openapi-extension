@@ -74,7 +74,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
-            
 
             return isVisitable;
         }
@@ -106,10 +105,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Processes properties.
+            var schemas = this.GetAllSchemas(instance);
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
-                                 .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+                                 .Select(p => new KeyValuePair<string, PropertyInfo>(p.GetJsonPropertyName(namingStrategy), p))
+                                 //.Where(kv => !schemas.ContainsKey(kv.Key))
+                                 .ToDictionary(kv => kv.Key, kv => kv.Value);
 
             this.ProcessProperties(instance, name, properties, namingStrategy);
 
@@ -171,6 +173,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             var subAcceptor = new OpenApiSchemaAcceptor()
             {
+                Parent = instance,
                 Properties = properties,
                 RootSchemas = instance.RootSchemas,
                 Schemas = schemas,
@@ -204,7 +207,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .GroupBy(p => p.Value.Title)
                                               .Select(p => p.First())

@@ -56,6 +56,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             var subAcceptor = new OpenApiSchemaAcceptor()
             {
+                Parent = instance,
                 Types = types,
                 RootSchemas = instance.RootSchemas,
                 Schemas = schemas,
@@ -81,7 +82,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject()
                                                        || p.Value.IsOpenApiSchemaArray()
                                                        || p.Value.IsOpenApiSchemaDictionary()

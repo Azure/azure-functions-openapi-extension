@@ -358,5 +358,40 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             return attr.Description;
         }
+
+        /// <summary>
+        /// Gets the all schemas
+        /// </summary>
+        /// <param name="acceptor"><see cref="OpenApiSchemaAcceptor"/> instance.</param>
+        /// <returns>Return all schemas.</returns>
+        protected Dictionary<string, OpenApiSchema> GetAllSchemas(IOpenApiSchemaAcceptor acceptor)
+        {
+            if (acceptor == null)
+            {
+                return new Dictionary<string, OpenApiSchema>();
+            }
+
+            var schemas = acceptor.Schemas.Concat(acceptor.RootSchemas);
+
+            if (acceptor.Parent != null)
+            {
+                schemas = schemas.Concat(this.GetAllSchemas(acceptor.Parent));
+            }
+
+            return this.SchemaKeyFilter(schemas).ToDictionary(kv => kv.Key, kv => kv.Value);
+        }
+
+        private IEnumerable<KeyValuePair<string, OpenApiSchema>> SchemaKeyFilter(IEnumerable<KeyValuePair<string, OpenApiSchema>> schemas)
+        {
+            var keySet = new HashSet<string>();
+
+            foreach (var kv in schemas)
+            {
+                if (keySet.Add(kv.Key))
+                {
+                    yield return kv;
+                }
+            }
+        }
     }
 }

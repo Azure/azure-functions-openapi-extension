@@ -38,6 +38,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
+        public IOpenApiSchemaAcceptor Parent { get; set; }
+
+        /// <inheritdoc />
         public Dictionary<string, OpenApiSchema> RootSchemas { get; set; } = new Dictionary<string, OpenApiSchema>();
 
         /// <inheritdoc />

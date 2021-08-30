@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
@@ -16,8 +15,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class ListObjectTypeVisitor : TypeVisitor
     {
-        private readonly Regex _schemeKeyRegex = new Regex("(?<num>[0-9])+$");
-
         /// <inheritdoc />
         public ListObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -58,6 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             var subAcceptor = new OpenApiSchemaAcceptor()
             {
+                Parent = instance,
                 Types = types,
                 RootSchemas = instance.RootSchemas,
                 Schemas = schemas,
@@ -79,36 +77,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 items.Reference = reference;
             }
 
-            // if contains key on subAcceptor, the special keyword append.
-            if (subAcceptor.Schemas.ContainsKey(name))
-            {
-                var scheme = instance.Schemas[name];
-                instance.Schemas.Remove(name);
-
-                do
-                {
-                    var regexMatch = this._schemeKeyRegex.Match(name);
-                    var num = regexMatch.Success
-                        ? int.Parse(regexMatch.Groups["num"].Value)
-                        : 0;
-
-                    if (regexMatch.Success)
-                    {
-                        name = name.Replace(regexMatch.Value, string.Empty);
-                    }
-
-                    name += $"_{++num}";
-
-                } while (subAcceptor.Schemas.ContainsKey(name));
-
-                instance.Schemas[name] = scheme;
-            }
-
             instance.Schemas[name].Items = items;
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject()
                                                        || p.Value.IsOpenApiSchemaArray()
                                                        || p.Value.IsOpenApiSchemaDictionary()

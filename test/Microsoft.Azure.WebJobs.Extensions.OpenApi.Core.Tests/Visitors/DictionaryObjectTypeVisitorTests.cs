@@ -187,5 +187,48 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
                 result.AdditionalProperties.Reference.Should().BeNull();
             }
         }
+
+        [TestMethod]
+        public void Given_Alias_Type_When_Visit_Invoked_Then_It_Should_Return_All_Sub_Schemas()
+        {
+            var originSchemaKey = "fakeAliasModel";
+            var visitType = typeof(Dictionary<FakeAliasModel, FakeAliasModel>);
+            var acceptor = new OpenApiSchemaAcceptor();
+
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(originSchemaKey, visitType), this._strategy);
+
+            acceptor.Schemas.Count.Should().Be(1);
+            acceptor.Schemas.Should().ContainKey("fakeAliasModel");
+
+            acceptor.Schemas["fakeAliasModel"].Type.Should().Be("object");
+            acceptor.Schemas["fakeAliasModel"].AdditionalProperties.Properties.Count.Should().Be(3);
+            acceptor.Schemas["fakeAliasModel"].AdditionalProperties.Type.Should().Be("object");
+            acceptor.Schemas["fakeAliasModel"].AdditionalProperties.Reference.Type.Should().Be(ReferenceType.Schema);
+            acceptor.Schemas["fakeAliasModel"].AdditionalProperties.Reference.Id.Should().Be("fakeAliasModel");
+
+            acceptor.RootSchemas.Count.Should().Be(4);
+
+            acceptor.RootSchemas.Should().ContainKey("fakeSubModel");
+            acceptor.RootSchemas["fakeSubModel"].Type.Should().Be("object");
+            acceptor.RootSchemas["fakeSubModel"].Properties.Count.Should().Be(1);
+            acceptor.RootSchemas["fakeSubModel"].Reference.Type.Should().Be(ReferenceType.Schema);
+            acceptor.RootSchemas["fakeSubModel"].Reference.Id.Should().Be("fakeSubModel");
+
+            acceptor.RootSchemas.Should().ContainKey("fakeAliasModel");
+            acceptor.RootSchemas["fakeAliasModel"].Type.Should().Be("object");
+            acceptor.RootSchemas["fakeAliasModel"].Properties.Count.Should().Be(3);
+            acceptor.RootSchemas["fakeAliasModel"].Reference.Type.Should().Be(ReferenceType.Schema);
+            acceptor.RootSchemas["fakeAliasModel"].Reference.Id.Should().Be("fakeAliasModel");
+
+            acceptor.RootSchemas.Should().ContainKey("fakeAliasSubModel");
+            acceptor.RootSchemas["fakeAliasSubModel"].Type.Should().Be("object");
+            acceptor.RootSchemas["fakeAliasSubModel"].Properties.Count.Should().Be(3);
+            acceptor.RootSchemas["fakeAliasSubModel"].Reference.Type.Should().Be(ReferenceType.Schema);
+            acceptor.RootSchemas["fakeAliasSubModel"].Reference.Id.Should().Be("fakeAliasSubModel");
+
+            acceptor.RootSchemas.Should().ContainKey("fakeDummyModel");
+            acceptor.RootSchemas["fakeDummyModel"].Type.Should().Be("object");
+            acceptor.RootSchemas["fakeDummyModel"].Properties.Count.Should().Be(0);
+        }
     }
 }
