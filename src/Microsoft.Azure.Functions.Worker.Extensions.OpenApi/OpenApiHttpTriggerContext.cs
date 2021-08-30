@@ -247,7 +247,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             }
 
             var dependencyManifests = new List<DependencyManifest>();
-            foreach (var file in files) {
+            foreach (var file in files)
+            {
                 dependencyManifests.Add(await GetDependencyManifestAsync(file));
             }
 
