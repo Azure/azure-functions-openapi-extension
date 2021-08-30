@@ -1,3 +1,5 @@
+using System.IO;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
@@ -16,5 +18,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets the host header that may include the port number.
         /// </summary>
         HostString Host { get; }
+
+        /// <summary>
+        /// Gets the query collection.
+        /// </summary>
+        IQueryCollection Query { get;}
+
+        /// <summary>
+        /// Gets the request payload stream.
+        /// </summary>
+        Stream Body { get;}
     }
 }

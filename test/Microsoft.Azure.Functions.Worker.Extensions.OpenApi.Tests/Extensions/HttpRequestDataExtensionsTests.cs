@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = OpenApiHttpRequestDataExtensions.Queries(req);
 
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}?{querystring}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = OpenApiHttpRequestDataExtensions.Queries(req);
 
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}?{querystring}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = OpenApiHttpRequestDataExtensions.Queries(req);
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}?{querystring}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = (string) OpenApiHttpRequestDataExtensions.Query(req, key);
 
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = (string) OpenApiHttpRequestDataExtensions.Query(req, "hello");
 
@@ -123,7 +123,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Extensions
             var baseHost = "localhost";
             var uri = Uri.TryCreate($"http://{baseHost}?{querystring}", UriKind.Absolute, out var tried) ? tried : null;
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body: null);
 
             var result = (string) OpenApiHttpRequestDataExtensions.Query(req, "hello");
 

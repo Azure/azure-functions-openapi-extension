@@ -1,3 +1,5 @@
+using System.IO;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -19,6 +21,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             this.Scheme = req.Scheme;
             this.Host = req.Host;
+            this.Query = req.Query;
+            this.Body = req.Body;
         }
 
         /// <inheritdoc/>
@@ -26,5 +30,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         /// <inheritdoc/>
         public virtual HostString Host { get; }
+
+        /// <inheritdoc/>
+        public virtual IQueryCollection Query { get;}
+
+        /// <inheritdoc/>
+        public virtual Stream Body { get;}
     }
 }
