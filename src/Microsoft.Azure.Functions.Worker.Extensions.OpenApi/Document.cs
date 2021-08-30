@@ -28,6 +28,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
         private NamingStrategy _strategy;
         private VisitorCollection _collection;
+        private IHttpRequestDataObject _req;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Document"/> class.
@@ -69,8 +70,10 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
+            this._req = req;
+
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
+            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
 
             var server = new OpenApiServer { Url = baseUrl };
 
@@ -135,7 +138,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
             var paths = new OpenApiPaths();
 
-            var methods = this._helper.GetHttpTriggerMethods(assembly);
+            var tags = StringExtensions.ToArray(this._req.Query["tag"], ",");
+            var methods = this._helper.GetHttpTriggerMethods(assembly, tags);
             foreach (var method in methods)
             {
                 var trigger = this._helper.GetHttpTriggerAttribute(method);

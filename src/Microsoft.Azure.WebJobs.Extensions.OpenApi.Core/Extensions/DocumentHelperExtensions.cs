@@ -24,8 +24,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="assembly">Assembly of Azure Function instance.</param>
+        /// <param name="tags">List of tags to filter methods.</param>
         /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
-        public static List<MethodInfo> GetHttpTriggerMethods(this IDocumentHelper helper, Assembly assembly)
+        public static List<MethodInfo> GetHttpTriggerMethods(this IDocumentHelper helper, Assembly assembly, IEnumerable<string> tags = null)
         {
             var methods = assembly.GetLoadableTypes()
                                   .SelectMany(p => p.GetMethods())
@@ -34,6 +35,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                                   .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
                                   .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
                                   .ToList();
+
+            if (!tags.Any())
+            {
+                return methods;
+            }
+
+            methods = methods.Where(p => p.GetCustomAttribute<OpenApiOperationAttribute>()
+                                          .Tags.Any(q => tags.Contains(q)))
+                             .ToList();
 
             return methods;
         }

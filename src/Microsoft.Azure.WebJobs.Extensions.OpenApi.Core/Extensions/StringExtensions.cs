@@ -1,5 +1,7 @@
 using System;
 
+using Microsoft.Extensions.Primitives;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 {
     /// <summary>
@@ -31,6 +33,28 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="StringValues"/> value to array of string.
+        /// </summary>
+        /// <param name="value"><see cref="StringValues"/> value.</param>
+        /// <param name="delimiter">Delimiter to split values.</param>
+        /// <returns>Returns the array of string.</returns>
+        public static string[] ToArray(this StringValues value, string delimiter = ",")
+        {
+            if (value.IsNullOrDefault())
+            {
+                return new string[0];
+            }
+
+            var values = value.ToString();
+            if (values.IsNullOrWhiteSpace())
+            {
+                return new string[0];
+            }
+
+            return values.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
@@ -32,6 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private readonly string swaggerUiStandalonePresetJs = $"{typeof(SwaggerUI).Namespace}.dist.swagger-ui-standalone-preset.js";
 
         private OpenApiInfo _info;
+        private IHttpRequestDataObject _req;
         private string _baseUrl;
         private string _swaggerUiCss;
         private string _swaggerUiCustomCss;
@@ -53,8 +56,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         /// <inheritdoc />
         public ISwaggerUI AddServer(IHttpRequestDataObject req, string routePrefix, IOpenApiConfigurationOptions options = null)
         {
+            this._req = req;
+
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
+            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
 
             if (options.IsNullOrDefault())
             {
@@ -160,9 +165,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         {
             var swaggerUiTitle = $"{this._info.Title} - Swagger UI";
             var swaggerUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
+
+            var queries = this._req.Query.ToDictionary(p => p.Key, p => p.Value);
             if (this.IsAuthKeyRequired(authLevel, authKey))
             {
-                swaggerUrl += $"?code={authKey}";
+                if (!queries.ContainsKey("code"))
+                {
+                    queries.Add("code", new StringValues(authKey));
+                }
+            }
+
+            if (queries.Any())
+            {
+                swaggerUrl += "?" + string.Join("&", queries.SelectMany(p => p.Value.Select(q => $"{p.Key}={q}")));
             }
 
             var html = this._indexHtml.Replace(SwaggerUITitlePlaceholder, swaggerUiTitle)
