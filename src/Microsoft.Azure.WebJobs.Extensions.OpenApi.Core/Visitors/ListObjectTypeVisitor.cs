@@ -55,7 +55,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             var subAcceptor = new OpenApiSchemaAcceptor()
             {
-                Parent = instance,
                 Types = types,
                 RootSchemas = instance.RootSchemas,
                 Schemas = schemas,

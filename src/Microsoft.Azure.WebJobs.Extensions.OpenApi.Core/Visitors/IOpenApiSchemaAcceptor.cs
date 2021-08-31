@@ -13,11 +13,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     public interface IOpenApiSchemaAcceptor : IAcceptor
     {
         /// <summary>
-        /// Get the parent instance
-        /// </summary>
-        IOpenApiSchemaAcceptor Parent { get; set; }
-
-        /// <summary>
         /// Gets the list of <see cref="OpenApiSchema"/> instances as key/value pair representing the root schemas.
         /// </summary>
         Dictionary<string, OpenApiSchema> RootSchemas { get; set; }
