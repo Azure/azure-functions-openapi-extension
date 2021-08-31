@@ -193,6 +193,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataRow("false", false)]
         [DataRow("", false)]
         [DataRow(null, false)]
+        public void Given_EnvironmentVariable_When_IsHttpForced_Invoked_Then_It_Should_Return_Result(string forceHttps, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttps);
+
+            var options = new DefaultOpenApiConfigurationOptions();
+            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpForced", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var result = method.Invoke(options, null);
+
+            result.Should().BeOfType<bool>();
+            ((bool)result).Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow("true", true)]
+        [DataRow("false", false)]
+        [DataRow("", false)]
+        [DataRow(null, false)]
         public void Given_EnvironmentVariable_When_IsHttpsForced_Invoked_Then_It_Should_Return_Result(string forceHttps, bool expected)
         {
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", forceHttps);

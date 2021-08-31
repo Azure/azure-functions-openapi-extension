@@ -31,6 +31,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         bool IncludeRequestingHostName { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating whether to force the HTTP protocol or not.
+        /// </summary>
+        bool ForceHttp { get; set; }
+
+        /// <summary>
         /// Gets or sets the value indicating whether to force the HTTPS protocol or not.
         /// </summary>
         bool ForceHttps { get; set; }

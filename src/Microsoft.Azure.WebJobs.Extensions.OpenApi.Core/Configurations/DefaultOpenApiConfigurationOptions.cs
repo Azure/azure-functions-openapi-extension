@@ -20,6 +20,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string OpenApiHostNamesKey = "OpenApi__HostNames";
         private const string OpenApiVersionKey = "OpenApi__Version";
         private const string FunctionsRuntimeEnvironmentKey = "AZURE_FUNCTIONS_ENVIRONMENT";
+        private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
 
         /// <inheritdoc />
@@ -37,6 +38,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public virtual bool IncludeRequestingHostName { get; set; } = IsFunctionsRuntimeEnvironmentDevelopment();
+
+        /// <inheritdoc />
+        public bool ForceHttp { get; set; } = IsHttpForced();
 
         /// <inheritdoc />
         public bool ForceHttps { get; set; } = IsHttpsForced();
@@ -105,6 +109,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         protected static bool IsFunctionsRuntimeEnvironmentDevelopment()
         {
             var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
+
+            return development;
+        }
+
+        /// <summary>
+        /// Checks whether HTTP is forced or not.
+        /// </summary>
+        /// <returns>Returns <c>True</c>, if HTTP is forced; otherwise returns <c>False</c>.</returns>
+        protected static bool IsHttpForced()
+        {
+            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpKey), out var result) ? result : false;;
 
             return development;
         }
