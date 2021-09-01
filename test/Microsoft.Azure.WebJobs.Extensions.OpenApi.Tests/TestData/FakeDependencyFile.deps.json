@@ -1,0 +1,22 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Microsoft.Azure.WebJobs.Extensions.OpenApi/1.0.0": {
+        "dependencies": {
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.0.0",
+          "Microsoft.Azure.WebJobs.Script.Abstractions": "1.0.0-preview",
+          "NETStandard.Library": "2.0.3"
+        },
+        "runtime": {
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.dll": {}
+        }
+      }
+    }
+  }
+}

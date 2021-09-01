@@ -9,12 +9,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes
 {
     public class FakeHttpRequestData : HttpRequestData
     {
-        public FakeHttpRequestData(FunctionContext functionContext, Uri uri) : base(functionContext)
+        public FakeHttpRequestData(FunctionContext functionContext, Uri uri, Stream body) : base(functionContext)
         {
             this.Url = uri;
+            this.Body = body;
         }
 
-        public override Stream Body => throw new NotImplementedException();
+        public override Stream Body { get; }
 
         public override HttpHeadersCollection Headers => throw new NotImplementedException();
 

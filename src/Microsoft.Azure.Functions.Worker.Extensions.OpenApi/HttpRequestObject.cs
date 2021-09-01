@@ -1,6 +1,8 @@
+using System.IO;
 using System.Linq;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -24,6 +26,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             this.Host = new[] { 80, 443 }.Contains(req.Url.Port)
                         ? new HostString(req.Url.Authority)
                         : new HostString(req.Url.Host, req.Url.Port);
+
+            this.Query = req.Queries();
+            this.Body = req.Body;
         }
 
         /// <inheritdoc/>
@@ -31,5 +36,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
         /// <inheritdoc/>
         public virtual HostString Host { get; }
+
+        /// <inheritdoc/>
+        public virtual IQueryCollection Query { get;}
+
+        /// <inheritdoc/>
+        public virtual Stream Body { get;}
     }
 }
