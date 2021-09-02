@@ -274,6 +274,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(ICollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IEnumerable<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyCollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
         public void Given_Alias_Type_When_Visit_Invoked_Then_It_Should_Return_All_Sub_Schemas(Type type, params Type[] schemaTypes)
         {
             var acceptor = new OpenApiSchemaAcceptor();
