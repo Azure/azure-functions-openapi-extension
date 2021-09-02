@@ -160,7 +160,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().NotBeNull();
-            (acceptor.Schemas[name].Default as OpenApiFloat).Value.Should().Be((byte)@default);
+            (acceptor.Schemas[name].Default as OpenApiByte).Value[0].Should().Be((byte)@default);
             acceptor.Schemas[name].Description.Should().Be(description);
         }
 
