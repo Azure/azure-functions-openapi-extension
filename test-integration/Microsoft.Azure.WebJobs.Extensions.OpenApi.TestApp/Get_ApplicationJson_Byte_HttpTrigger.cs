@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public static class Get_ApplicationJson_Byte_HttpTrigger
     {
         [FunctionName(nameof(Get_ApplicationJson_Byte_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Byte_HttpTrigger.Get_ApplicationJson_Byte), tags: new[] { "greeting" })]
+        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Byte_HttpTrigger.Get_ApplicationJson_Byte), tags: new[] { "byte" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ByteTypeClass), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_Byte(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-byte")] HttpRequest req,
