@@ -259,7 +259,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             if (@default is byte)
             {
-                return new OpenApiByte((byte)@default);
+                return new OpenApiByte((byte) @default);
             }
 
             if (@default is short)
