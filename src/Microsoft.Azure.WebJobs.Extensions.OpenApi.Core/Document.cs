@@ -13,7 +13,7 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
     /// This represents the document entity handling OpenAPI document.
@@ -129,50 +129,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 this._strategy = new DefaultNamingStrategy();
             }
 
-            var paths = new OpenApiPaths();
-
-            var methods = this._helper.GetHttpTriggerMethods(assembly);
-            foreach (var method in methods)
-            {
-                var trigger = this._helper.GetHttpTriggerAttribute(method);
-                if (trigger.IsNullOrDefault())
-                {
-                    continue;
-                }
-
-                var function = this._helper.GetFunctionNameAttribute(method);
-                if (function.IsNullOrDefault())
-                {
-                    continue;
-                }
-
-                var path = this._helper.GetHttpEndpoint(function, trigger);
-                if (path.IsNullOrWhiteSpace())
-                {
-                    continue;
-                }
-
-                var verb = this._helper.GetHttpVerb(trigger);
-
-                var item = this._helper.GetOpenApiPath(path, paths);
-                var operations = item.Operations;
-
-                var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (operation.IsNullOrDefault())
-                {
-                    continue;
-                }
-
-                operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
-
-                operations[verb] = operation;
-                item.Operations = operations;
-
-                paths[path] = item;
-            }
+            var (paths, methods) = this._helper.GetOpenApiPathAndMethodInfos(assembly, this._strategy, this._collection, version);
 
             this.OpenApiDocument.Paths = paths;
             this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);

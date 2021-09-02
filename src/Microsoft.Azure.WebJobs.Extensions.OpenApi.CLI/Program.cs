@@ -5,6 +5,7 @@ using System.Text;
 using Cocona;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
@@ -73,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
             var acceptor = new OpenApiSchemaAcceptor();
             var namingStrategy = new CamelCaseNamingStrategy();
             var collection = VisitorCollection.CreateInstance();
-            var helper = new DocumentHelper(filter, acceptor);
+            var helper = new OpenApiDocumentHelper(filter, acceptor);
             var document = new Document(helper);
 
             var swagger = default(string);

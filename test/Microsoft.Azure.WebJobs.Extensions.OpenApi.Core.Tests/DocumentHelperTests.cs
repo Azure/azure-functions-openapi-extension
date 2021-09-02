@@ -18,12 +18,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new DocumentHelper(null, null);
+            Action action = () => new DocumentHelper<FunctionNameAttribute>(null, null, f => f.Name);
             action.Should().Throw<ArgumentNullException>();
 
             var filter = new RouteConstraintFilter();
 
-            action = () => new DocumentHelper(filter, null);
+            action = () => new DocumentHelper<FunctionNameAttribute>(filter, null, f => f.Name);
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var namingStrategy = new DefaultNamingStrategy();
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var documentHelper = new DocumentHelper(filter, acceptor);
+            var documentHelper = new DocumentHelper<FunctionNameAttribute>(filter, acceptor, f => f.Name);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
