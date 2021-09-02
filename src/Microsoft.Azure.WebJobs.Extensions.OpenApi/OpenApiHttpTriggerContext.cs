@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var helper = new DocumentHelper(filter, acceptor);
+            var helper = new OpenApiDocumentHelper(filter, acceptor);
 
             this.Document = new Document(helper);
             this.SwaggerUI = new SwaggerUI();

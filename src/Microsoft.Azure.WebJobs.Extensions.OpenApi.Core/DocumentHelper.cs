@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Linq;
@@ -18,22 +19,79 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
     /// This represents the helper entity for the classes implementing the <see cref="IDocument"/> interface.
+    /// The attribute type parameter is used to filter the azure functions.
     /// </summary>
-    public class DocumentHelper : IDocumentHelper
+    public class DocumentHelper<T> : IDocumentHelper
+        where T : Attribute
     {
         private readonly RouteConstraintFilter _filter;
         private readonly IOpenApiSchemaAcceptor _acceptor;
+        private readonly Func<T, string> _functionNameAccessor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
+        /// Initializes a new instance of the <see cref="DocumentHelper{T}"/> class which uses
+        /// the attribute type to filter the azure functions that will be used in the open api.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
-        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
+        /// <param name="functionNameAccessor">Function to get the function name from the attribute</param>
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor, Func<T, string> functionNameAccessor)
         {
             this._filter = filter.ThrowIfNullOrDefault();
             this._acceptor = acceptor.ThrowIfNullOrDefault();
+            this._functionNameAccessor = functionNameAccessor.ThrowIfNullOrDefault();
         }
+
+        /// <inheritdoc/>
+        public (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version)
+        {
+            var paths = new OpenApiPaths();
+            var methods = this.GetHttpTriggerMethods(assembly);
+            foreach (var method in methods)
+            {
+                var trigger = this.GetHttpTriggerAttribute(method);
+                if (trigger.IsNullOrDefault())
+                {
+                    continue;
+                }
+
+                var function = this.GetFunctionAttribute(method);
+                if (function.IsNullOrDefault())
+                {
+                    continue;
+                }
+
+                var path = this.GetHttpEndpoint(function, trigger);
+                if (path.IsNullOrWhiteSpace())
+                {
+                    continue;
+                }
+
+                var verb = this.GetHttpVerb(trigger);
+
+                var item = this.GetOpenApiPath(path, paths);
+                var operations = item.Operations;
+
+                var operation = this.GetOpenApiOperation(method, function, verb);
+                if (operation.IsNullOrDefault())
+                {
+                    continue;
+                }
+
+                operation.Security = this.GetOpenApiSecurityRequirement(method, strategy);
+                operation.Parameters = this.GetOpenApiParameters(method, trigger, strategy, collection);
+                operation.RequestBody = this.GetOpenApiRequestBody(method, strategy, collection, version);
+                operation.Responses = this.GetOpenApiResponses(method, strategy, collection, version);
+
+                operations[verb] = operation;
+                item.Operations = operations;
+
+                paths[path] = item;
+            }
+
+            return (paths, methods);
+        }
+
 
         /// <inheritdoc />
         public OpenApiPathItem GetOpenApiPath(string path, OpenApiPaths paths)
@@ -387,6 +445,134 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var reference = new OpenApiReference() { Id = attr.SchemeName, Type = ReferenceType.SecurityScheme };
 
             return reference;
+        }
+
+        /// <summary>
+        /// Gets the list of HTTP triggers.
+        /// </summary>
+        /// <param name="assembly">Assembly of Azure Function instance.</param>
+        /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
+        private List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
+        {
+            var methods = assembly.GetLoadableTypes()
+                                  .SelectMany(p => p.GetMethods())
+                                  .Where(p => p.ExistsCustomAttribute<T>())
+                                  .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
+                                  .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
+                                  .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
+                                  .ToList();
+
+            return methods;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HttpTriggerAttribute"/> from the parameters of the method.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <returns><see cref="HttpTriggerAttribute"/> instance.</returns>
+        private HttpTriggerAttribute GetHttpTriggerAttribute(MethodInfo element)
+        {
+            var trigger = element.GetHttpTrigger();
+
+            return trigger;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="T"/> from the method.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <returns><see cref="T"/> instance.</returns>
+        private T GetFunctionAttribute(MethodInfo element)
+        {
+            var function = element.GetFunctionName<T>();
+
+            return function;
+        }
+
+        /// <summary>
+        /// Gets the HTTP trigger endpoint.
+        /// </summary>
+        /// <param name="function">Attribute instance.</param>
+        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <returns>Function HTTP endpoint.</returns>
+        private string GetHttpEndpoint(T function, HttpTriggerAttribute trigger)
+        {
+            var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? this._functionNameAccessor(function) : this.FilterRouteConstraints(trigger.Route)).Trim('/')}";
+
+            return endpoint;
+        }
+
+        /// <summary>
+        /// Gets the HTTP verb.
+        /// </summary>
+        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <returns><see cref="OperationType"/> value.</returns>
+        private OperationType GetHttpVerb(HttpTriggerAttribute trigger)
+        {
+            var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out var ot)
+                           ? ot
+                           : throw new InvalidOperationException();
+
+            return verb;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="OpenApiOperation"/> instance.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="function"><see cref="T"/> instance.</param>
+        /// <param name="verb"><see cref="OperationType"/> value.</param>
+        /// <returns><see cref="OpenApiOperation"/> instance.</returns>
+        private OpenApiOperation GetOpenApiOperation(MethodInfo element, T function, OperationType verb)
+        {
+            var op = element.GetOpenApiOperation();
+            if (op.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            var operation = new OpenApiOperation()
+            {
+                OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{this._functionNameAccessor(function)}_{verb}" : op.OperationId,
+                Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
+                Summary = op.Summary,
+                Description = op.Description,
+                Deprecated = op.Deprecated
+            };
+
+            if (op.Visibility != OpenApiVisibilityType.Undefined)
+            {
+                var visibility = new OpenApiString(op.Visibility.ToDisplayName());
+
+                operation.Extensions.Add("x-ms-visibility", visibility);
+            }
+
+            return operation;
+        }
+
+        /// <summary>
+        /// Gets the list of <see cref="OpenApiParameter"/> instances.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
+        private List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        {
+            var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
+                                    .Where(p => p.Deprecated == false)
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
+                                    .ToList();
+
+            // // TODO: Should this be forcibly provided?
+            // // This needs to be provided separately.
+            // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
+            // {
+            //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
+            // }
+
+            return parameters;
         }
     }
 }

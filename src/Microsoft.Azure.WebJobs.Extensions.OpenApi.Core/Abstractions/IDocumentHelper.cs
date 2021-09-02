@@ -15,7 +15,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
     /// </summary>
     public interface IDocumentHelper
     {
-        /// <summary>
+        (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version);
+
+            /// <summary>
         /// Gets the <see cref="OpenApiPathItem"/> instance.
         /// </summary>
         /// <param name="path">HTTP endpoint as a path.</param>

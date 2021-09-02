@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_When_GetFunctionName_Invoked_Then_It_Should_Throw_Exception()
         {
-            Action action = () => FunctionNameAttributeExtensions.GetFunctionName(null);
+            Action action = () => FunctionNameAttributeExtensions.GetFunctionName<FunctionNameAttribute>(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         {
             var method = typeof(FakeHttpTrigger).GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
 
-            var result = FunctionNameAttributeExtensions.GetFunctionName(method);
+            var result = FunctionNameAttributeExtensions.GetFunctionName<FunctionNameAttribute>(method);
 
             result.Should().BeOfType<FunctionNameAttribute>();
             result.Name.Should().Be(expected);

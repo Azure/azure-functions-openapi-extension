@@ -4,20 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
-using GenericExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.GenericExtensions;
-using OpenApiDocumentExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.OpenApiDocumentExtensions;
-using StringExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.StringExtensions;
-
-namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
     /// This represents the document entity handling OpenAPI document.
@@ -34,7 +30,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// </summary>
         public Document(IDocumentHelper helper)
         {
-            this._helper = GenericExtensions.ThrowIfNullOrDefault(helper);
+            this._helper = helper.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc />
@@ -74,7 +70,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
             var server = new OpenApiServer { Url = baseUrl };
 
-            if (GenericExtensions.IsNullOrDefault(options))
+            if (options.IsNullOrDefault())
             {
                 this.OpenApiDocument.Servers = new List<OpenApiServer>() { server };
 
@@ -104,7 +100,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddNamingStrategy(NamingStrategy strategy)
         {
-            this._strategy = GenericExtensions.ThrowIfNullOrDefault(strategy);
+            this._strategy = strategy.ThrowIfNullOrDefault();
 
             return this;
         }
@@ -112,7 +108,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddVisitors(VisitorCollection collection)
         {
-            this._collection = GenericExtensions.ThrowIfNullOrDefault(collection);
+            this._collection = collection.ThrowIfNullOrDefault();
 
             return this;
         }
@@ -128,55 +124,12 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2, IOpenApiConfigurationOptions options = null)
         {
-            if (GenericExtensions.IsNullOrDefault(this._strategy))
+            if (this._strategy.IsNullOrDefault())
             {
                 this._strategy = new DefaultNamingStrategy();
             }
 
-            var paths = new OpenApiPaths();
-
-            var methods = this._helper.GetHttpTriggerMethods(assembly);
-            foreach (var method in methods)
-            {
-                var trigger = this._helper.GetHttpTriggerAttribute(method);
-                if (GenericExtensions.IsNullOrDefault(trigger))
-                {
-                    continue;
-                }
-
-                var function = this._helper.GetFunctionNameAttribute(method);
-                if (GenericExtensions.IsNullOrDefault(function))
-                {
-                    continue;
-                }
-
-                var path = this._helper.GetHttpEndpoint(function, trigger);
-                if (StringExtensions.IsNullOrWhiteSpace(path))
-                {
-                    continue;
-                }
-
-                var verb = this._helper.GetHttpVerb(trigger);
-
-                var item = this._helper.GetOpenApiPath(path, paths);
-                var operations = item.Operations;
-
-                var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (GenericExtensions.IsNullOrDefault(operation))
-                {
-                    continue;
-                }
-
-                operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection, options);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version, options);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version, options);
-
-                operations[verb] = operation;
-                item.Operations = operations;
-
-                paths[path] = item;
-            }
+            var (paths, methods) = this._helper.GetOpenApiPathAndMethodInfos(assembly, this._strategy, this._collection, version);
 
             this.OpenApiDocument.Paths = paths;
             this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
@@ -205,7 +158,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         {
             using (var sw = new StringWriter())
             {
-                OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, format);
+                this.OpenApiDocument.Serialise(sw, version, format);
 
                 return sw.ToString();
             }
