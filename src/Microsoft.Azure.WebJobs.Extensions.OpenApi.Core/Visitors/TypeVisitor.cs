@@ -257,6 +257,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return new OpenApiDouble(Convert.ToDouble(@default));
             }
 
+            if (@default is byte)
+            {
+                return new OpenApiByte((byte)@default);
+            }
+
             if (@default is short)
             {
                 return new OpenApiInteger((short) @default);
