@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_Query_TextPlain_DateType_Tests
+    public class Get_Query_TextPlain_DataType_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-datetype", "get", "200")]
+        [DataRow("/get-query-textplain-datatype", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-datetype", "get", "200", "text/plain")]
+        [DataRow("/get-query-textplain-datatype", "get", "200", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-datetype", "get", "200", "text/plain", "dateTypeObject")]
+        [DataRow("/get-query-textplain-datatype", "get", "200", "text/plain", "dataTypeClass")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
         }
         [DataTestMethod]
-        [DataRow("dateTypeObject", "object")]
+        [DataRow("dataTypeClass", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,10 +67,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dateTypeObject", "nonNullbleDateTimeType", "string", "date-time", false)]
-        [DataRow("dateTypeObject", "nullbleDateTimeType", "string", "date-time", true)]
-        [DataRow("dateTypeObject", "nonNullbleDateType", "string", "date", false)]
-        [DataRow("dateTypeObject", "nullbleDateType", "string", "date", true)]
+        [DataRow("dataTypeClass", "dateTimeValue1", "string", "date-time", false)]
+        [DataRow("dataTypeClass", "dateTimeValue2", "string", "date", false)]
+        [DataRow("dataTypeClass", "dateTimeValue3", "string", "time", false)]
+        [DataRow("dataTypeClass", "nullableDateTimeValue1", "string", "date-time", true)]
+        [DataRow("dataTypeClass", "nullableDateTimeValue2", "string", "date", true)]
+        [DataRow("dataTypeClass", "nullableDateTimeValue3", "string", "time", true)]
+        [DataRow("dataTypeClass", "dateTimeOffsetValue1", "string", "date-time", false)]
+        [DataRow("dataTypeClass", "dateTimeOffsetValue2", "string", "date", false)]
+        [DataRow("dataTypeClass", "dateTimeOffsetValue3", "string", "time", false)]
+        [DataRow("dataTypeClass", "nullableDateTimeOffsetValue1", "string", "date-time", true)]
+        [DataRow("dataTypeClass", "nullableDateTimeOffsetValue2", "string", "date", true)]
+        [DataRow("dataTypeClass", "nullableDateTimeOffsetValue3", "string", "time", true)]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat, bool propertyNullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
