@@ -18,12 +18,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new DocumentHelper<FunctionNameAttribute>(null, null, f => f.Name);
+            Action action = () => new TestDocumentHelper(null, null);
             action.Should().Throw<ArgumentNullException>();
 
             var filter = new RouteConstraintFilter();
 
-            action = () => new DocumentHelper<FunctionNameAttribute>(filter, null, f => f.Name);
+            action = () => new TestDocumentHelper(filter, null);
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var namingStrategy = new DefaultNamingStrategy();
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var documentHelper = new DocumentHelper<FunctionNameAttribute>(filter, acceptor, f => f.Name);
+            var documentHelper = new TestDocumentHelper(filter, acceptor);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
@@ -83,6 +83,32 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("FirstName");
             schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("LastName");
 
+        }
+
+        [TestMethod]
+        public void Given_AdditionalOpenApiParameters_Included_In_Schema()
+        {
+            Action action = () => new TestDocumentHelper(null, null);
+            action.Should().Throw<ArgumentNullException>();
+
+            var filter = new RouteConstraintFilter();
+
+            action = () => new TestDocumentHelper(filter, null);
+            action.Should().Throw<ArgumentNullException>();
+        }
+    }
+
+    /// <summary>
+    /// Document helper for Azure Functions
+    /// </summary>
+    public class TestDocumentHelper : DocumentHelper<FunctionNameAttribute>
+    {
+        /// <summary
+        /// Initializes a new instance of the <see cref="TestDocumentHelper"/> class.
+        /// </summary>
+        public TestDocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
+            : base(filter, acceptor, f => f.Name)
+        {
         }
     }
 }

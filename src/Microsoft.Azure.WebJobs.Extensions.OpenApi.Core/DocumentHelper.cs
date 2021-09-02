@@ -43,7 +43,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc/>
-        public (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version)
+        public (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version, IOpenApiConfigurationOptions options = null)
         {
             var paths = new OpenApiPaths();
             var methods = this.GetHttpTriggerMethods(assembly);
@@ -79,9 +79,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 }
 
                 operation.Security = this.GetOpenApiSecurityRequirement(method, strategy);
-                operation.Parameters = this.GetOpenApiParameters(method, trigger, strategy, collection);
-                operation.RequestBody = this.GetOpenApiRequestBody(method, strategy, collection, version);
-                operation.Responses = this.GetOpenApiResponses(method, strategy, collection, version);
+                operation.Parameters = this.GetOpenApiParameters(method, trigger, strategy, collection, options);
+                operation.RequestBody = this.GetOpenApiRequestBody(method, strategy, collection, version, options);
+                operation.Responses = this.GetOpenApiResponses(method, strategy, collection, version, options);
 
                 operations[verb] = operation;
                 item.Operations = operations;
@@ -135,6 +135,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             return requirements;
+        }
+
+        /// <summary>
+        /// Gets the list of <see cref="OpenApiParameter"/> instances.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <param name="options"></param>
+        /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
+        private List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null)
+        {
+            var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
+                                    .Concat(options?.AdditionalOpenApiParameters?.OpenApiParameters(element) ?? Enumerable.Empty<OpenApiParameterAttribute>())
+                                    .Where(p => p.Deprecated == false)
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
+                                    .ToList();
+
+            // // TODO: Should this be forcibly provided?
+            // // This needs to be provided separately.
+            // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
+            // {
+            //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
+            // }
+
+            return parameters;
         }
 
         /// <inheritdoc />
@@ -548,31 +575,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             return operation;
-        }
-
-        /// <summary>
-        /// Gets the list of <see cref="OpenApiParameter"/> instances.
-        /// </summary>
-        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
-        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
-        /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        private List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
-        {
-            var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Where(p => p.Deprecated == false)
-                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
-                                    .ToList();
-
-            // // TODO: Should this be forcibly provided?
-            // // This needs to be provided separately.
-            // if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
-            // {
-            //     parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
-            // }
-
-            return parameters;
         }
     }
 }

@@ -11,13 +11,22 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This provides interfaces to the <see cref="DocumentHelper"/> class.
+    /// This provides interfaces to the <see cref="DocumentHelper{T}"/> class.
     /// </summary>
     public interface IDocumentHelper
     {
-        (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="strategy"></param>
+        /// <param name="collection"></param>
+        /// <param name="version"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        (OpenApiPaths paths, List<MethodInfo> methods) GetOpenApiPathAndMethodInfos(Assembly assembly, NamingStrategy strategy, VisitorCollection collection, OpenApiVersionType version, IOpenApiConfigurationOptions options = null);
 
-            /// <summary>
+        /// <summary>
         /// Gets the <see cref="OpenApiPathItem"/> instance.
         /// </summary>
         /// <param name="path">HTTP endpoint as a path.</param>
