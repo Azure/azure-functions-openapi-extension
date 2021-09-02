@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -68,6 +68,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var result = this._visitor.IsPayloadVisitable(type);
 
             result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(DataType.DateTime, "string", "hello", "date-time")]
+        [DataRow(DataType.Date, "string", "hello", "date")]
+        public void Given_DataTypeAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(DataType objectType, string dataType, string name, string expected)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(DateTime?));
+            var attribute = new DataTypeAttribute(objectType);
+
+            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+
+            acceptor.Schemas.Should().ContainKey(name);
+            acceptor.Schemas[name].Type.Should().Be(dataType);
+            acceptor.Schemas[name].Format.Should().Be(expected);
         }
 
         [DataTestMethod]
