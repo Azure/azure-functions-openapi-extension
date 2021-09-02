@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
@@ -14,6 +14,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <returns><see cref="OpenApiParameterAttribute"/> instance.</returns>
-        List<OpenApiParameterAttribute> OpenApiParameters(MethodInfo element);
+        IEnumerable<OpenApiParameterAttribute> OpenApiParameters(MethodInfo element);
     }
 }

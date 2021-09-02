@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
@@ -14,13 +14,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <returns><see cref="OpenApiResponseWithBodyAttribute"/> instance.</returns>
-        List<OpenApiResponseWithBodyAttribute> OpenApiResponseWithBody(MethodInfo element);
+        IEnumerable<OpenApiResponseWithBodyAttribute> OpenApiResponseWithBody(MethodInfo element);
 
         /// <summary>
         /// Allows generating the open api response without any body parameters for the provided method
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <returns><see cref="OpenApiResponseWithoutBodyAttribute"/> instance.</returns>
-        List<OpenApiResponseWithoutBodyAttribute> OpenApiResponseWithoutBody(MethodInfo element);
+        IEnumerable<OpenApiResponseWithoutBodyAttribute> OpenApiResponseWithoutBody(MethodInfo element);
     }
 }

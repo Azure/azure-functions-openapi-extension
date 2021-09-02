@@ -137,16 +137,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             return requirements;
         }
 
-        /// <summary>
-        /// Gets the list of <see cref="OpenApiParameter"/> instances.
-        /// </summary>
-        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
-        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
-        /// <param name="options"></param>
-        /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        private List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null)
+        /// <inheritdoc />
+        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Concat(options?.AdditionalOpenApiParameters?.OpenApiParameters(element) ?? Enumerable.Empty<OpenApiParameterAttribute>())

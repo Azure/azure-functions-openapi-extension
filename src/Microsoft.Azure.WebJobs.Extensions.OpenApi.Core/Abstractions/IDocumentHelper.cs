@@ -43,6 +43,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null);
 
         /// <summary>
+        /// Gets the list of <see cref="OpenApiParameter"/> instances.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <param name="options"></param>
+        /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
+        List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, IOpenApiConfigurationOptions options = null);
+
+        /// <summary>
         /// Gets the <see cref="OpenApiRequestBody"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>

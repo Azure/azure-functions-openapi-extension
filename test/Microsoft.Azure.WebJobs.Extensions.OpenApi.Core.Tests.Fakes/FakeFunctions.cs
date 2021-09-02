@@ -35,5 +35,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         public static void GenericMethodTwo()
         {
         }
+
+        public static void MethodNoAttributes()
+        {
+        }
     }
 }

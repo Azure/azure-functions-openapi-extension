@@ -1,12 +1,17 @@
 using System;
 using System.Linq;
+using System.Reflection;
 
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
 
 using Newtonsoft.Json.Serialization;
 
@@ -86,22 +91,86 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         }
 
         [TestMethod]
-        public void Given_AdditionalOpenApiParameters_Included_In_Schema()
+        public void Given_AdditionalOpenApiParameters_Configured_returns_ApiParameter()
         {
-            Action action = () => new TestDocumentHelper(null, null);
-            action.Should().Throw<ArgumentNullException>();
-
+            var namingStrategy = new DefaultNamingStrategy();
             var filter = new RouteConstraintFilter();
+            var acceptor = new OpenApiSchemaAcceptor();
+            var documentHelper = new TestDocumentHelper(filter, acceptor);
+            var visitorCollection = VisitorCollection.CreateInstance();
 
-            action = () => new TestDocumentHelper(filter, null);
-            action.Should().Throw<ArgumentNullException>();
+            var method = typeof(FakeFunctions).GetMethod(nameof(FakeFunctions.MethodNoAttributes));
+            var httpTriggerAttr = new HttpTriggerAttribute(new[] { "get" })
+            {
+                Route = "test/route",
+            };
+
+            var additionalParam = new OpenApiParameterAttribute("NoAttr");
+
+            var apiObj = new Mock<IAdditionalOpenApiParameter>();
+            apiObj.Setup(x => x.OpenApiParameters(It.IsAny<MethodInfo>())).Returns(new[] { additionalParam });
+            var options = new Mock<IOpenApiConfigurationOptions>();
+            options.Setup(x => x.AdditionalOpenApiParameters).Returns(apiObj.Object);
+
+            var apiParameters = documentHelper.GetOpenApiParameters(method, httpTriggerAttr, namingStrategy, visitorCollection, options.Object);
+
+            apiParameters.Should().HaveCount(1);
+            apiParameters.First().Name.Should().Be(additionalParam.Name);
+        }
+
+        [TestMethod]
+        public void Given_AdditionalOpenApiRequestBody_Configured_returns_BodyParameter()
+        {
+            var namingStrategy = new DefaultNamingStrategy();
+            var filter = new RouteConstraintFilter();
+            var acceptor = new OpenApiSchemaAcceptor();
+            var documentHelper = new TestDocumentHelper(filter, acceptor);
+            var visitorCollection = VisitorCollection.CreateInstance();
+
+            var method = typeof(FakeFunctions).GetMethod(nameof(FakeFunctions.MethodNoAttributes));
+
+            var bodyAttr = new OpenApiRequestBodyAttribute("application/json", typeof(string));
+
+            var apiObj = new Mock<IAdditionalOpenApiRequestBody>();
+            apiObj.Setup(x => x.OpenApiRequestBody(It.IsAny<MethodInfo>())).Returns(new[] { bodyAttr });
+            var options = new Mock<IOpenApiConfigurationOptions>();
+            options.Setup(x => x.AdditionalOpenApiRequestBody).Returns(apiObj.Object);
+
+            var requestBody = documentHelper.GetOpenApiRequestBody(method, namingStrategy, visitorCollection, Core.Enums.OpenApiVersionType.V3, options.Object);
+
+            requestBody.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void Given_AdditionalOpenApiResponse_Configured_returns_ResponseParameter()
+        {
+            var namingStrategy = new DefaultNamingStrategy();
+            var filter = new RouteConstraintFilter();
+            var acceptor = new OpenApiSchemaAcceptor();
+            var documentHelper = new TestDocumentHelper(filter, acceptor);
+            var visitorCollection = VisitorCollection.CreateInstance();
+
+            var method = typeof(FakeFunctions).GetMethod(nameof(FakeFunctions.MethodNoAttributes));
+
+            var BodyResponse = new OpenApiResponseWithBodyAttribute(System.Net.HttpStatusCode.OK, "BodyResponse", typeof(string));
+            var NoBodyResponse = new OpenApiResponseWithoutBodyAttribute(System.Net.HttpStatusCode.Created);
+
+            var apiObj = new Mock<IAdditionalOpenApiResponse>();
+            apiObj.Setup(x => x.OpenApiResponseWithBody(It.IsAny<MethodInfo>())).Returns(new[] { BodyResponse });
+            apiObj.Setup(x => x.OpenApiResponseWithoutBody(It.IsAny<MethodInfo>())).Returns(new[] { NoBodyResponse });
+            var options = new Mock<IOpenApiConfigurationOptions>();
+            options.Setup(x => x.AdditionalOpenApiResponse).Returns(apiObj.Object);
+
+            var responses = documentHelper.GetOpenApiResponses(method, namingStrategy, visitorCollection, Core.Enums.OpenApiVersionType.V3, options.Object);
+
+            responses.Should().HaveCount(2);
         }
     }
 
     /// <summary>
     /// Document helper for Azure Functions
     /// </summary>
-    public class TestDocumentHelper : DocumentHelper<FunctionNameAttribute>
+    internal class TestDocumentHelper : DocumentHelper<FunctionNameAttribute>
     {
         /// <summary
         /// Initializes a new instance of the <see cref="TestDocumentHelper"/> class.
