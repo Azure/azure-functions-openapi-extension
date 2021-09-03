@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_Byte_Tests
+    public class Get_ApplicationJson_ByteArray_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-byte", "get", "200")]
+        [DataRow("/get-applicationoctetstream-bytearray", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-byte", "get", "200", "application/json")]
+        [DataRow("/get-applicationoctetstream-bytearray", "get", "200", "application/octet-stream")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-byte", "get", "200", "application/json", "byteTypeClass")]
+        [DataRow("/get-applicationoctetstream-bytearray", "get", "200", "application/octet-stream", "singleByteArrayObject")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("byteTypeClass", "object")]
+        [DataRow("singleByteArrayObject", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,10 +67,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("byteTypeClass", "byteValue", "string", "byte", false, false)]
-        [DataRow("byteTypeClass", "nullableByteValue", "string", "byte", true, false)]
-        [DataRow("byteTypeClass", "byteArrayValue", "array", "byte", false, true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat, bool propertyNullable, bool isObject)
+        [DataRow("singleByteArrayObject", "byteArrayValue", "string", "base64")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -78,14 +76,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
-
-            if(isObject)
-            {
-                value = value["items"];
-            }
-
             value.Value<string>("format").Should().Be(propertyFormat);
-            value.Value<bool>("nullable").Should().Be(propertyNullable);
+
         }
     }
 }

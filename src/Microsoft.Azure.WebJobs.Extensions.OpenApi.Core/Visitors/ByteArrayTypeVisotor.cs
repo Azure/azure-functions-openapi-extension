@@ -10,12 +10,12 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="byte"/>.
+    /// This represents the type visitor for <see cref="byte[]"/>.
     /// </summary>
-    public class ByteTypeVisitor : TypeVisitor
+    public class ByteArrayTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
-        public ByteTypeVisitor(VisitorCollection visitorCollection)
+        public ByteArrayTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
         {
         }
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-            var isVisitable = this.IsVisitable(type, TypeCode.Byte);
+            var isVisitable = this.IsVisitable(type, TypeCode.Object) && type == typeof(byte[]);
 
             return isVisitable;
         }
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "byte", attributes: attributes);
+            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "base64", attributes: attributes);
         }
 
         /// <inheritdoc />
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.ParameterVisit(dataType: "string", dataFormat: "byte");
+            return this.ParameterVisit(dataType: "string", dataFormat: "base64");
         }
 
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.PayloadVisit(dataType: "string", dataFormat: "byte");
+            return this.PayloadVisit(dataType: "string", dataFormat: "base64");
         }
     }
 }
