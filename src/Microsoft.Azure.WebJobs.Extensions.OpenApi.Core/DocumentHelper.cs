@@ -133,8 +133,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
-            var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false))
-                                    .Select(p => p.BodyType);
+            var responsesAttributes = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)).ToList();
+            var responses = responsesAttributes.Select(p => p.BodyType);
+            
             var types = requests.Union(responses)
                                 .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)
                                 .Distinct()
@@ -146,8 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
-
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy), p => p);
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, UtilizeTypeFullName(p, responsesAttributes)), p => p);
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 
@@ -167,6 +167,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                                              });
 
             return union;
+            bool UtilizeTypeFullName(Type type, List<OpenApiResponseWithBodyAttribute> openApiResponseWithBodyAttributes)
+            {
+                var attribute = openApiResponseWithBodyAttributes.Where(p => p.BodyType.FullName == type.FullName);
+                var typeFullNameUtilized = attribute.FirstOrDefault()?.UseTypeFullName ?? false;
+
+                if (typeFullNameUtilized && !this._acceptor.TypesAcceptedWithFullName.Contains(type.FullName))
+                {
+                    this._acceptor.TypesAcceptedWithFullName.Add(type.FullName);
+                }
+                return typeFullNameUtilized;
+            }
         }
 
         /// <inheritdoc />

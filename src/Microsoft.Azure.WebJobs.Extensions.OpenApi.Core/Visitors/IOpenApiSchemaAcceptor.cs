@@ -26,5 +26,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// Gets the list of <see cref="Type"/> objects.
         /// </summary>
         Dictionary<string, Type> Types { get; set; }
+
+        /// <summary>
+        /// Gets and sets the list of types processed with their full name if exist.
+        /// </summary>
+        List<string> TypesAcceptedWithFullName { get; set; }
     }
 }

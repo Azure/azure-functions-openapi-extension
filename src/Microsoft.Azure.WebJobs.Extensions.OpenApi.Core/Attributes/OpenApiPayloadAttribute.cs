@@ -39,5 +39,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the type of the example. It SHOULD be inheriting the <see cref="OpenApiExample{T}"/> class.
         /// </summary>
         public virtual Type Example { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether or not the response's type's name should be used. 
+        /// </summary>
+        /// <remarks>
+        /// The default value is false.
+        /// </remarks>
+        public bool UseTypeFullName { get; set; }
     }
 }

@@ -117,7 +117,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
-                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, (acceptor as IOpenApiSchemaAcceptor)?.TypesAcceptedWithFullName?.Contains(type.Value.FullName) ?? false)
             };
 
             instance.Schemas[name].Reference = reference;

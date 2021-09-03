@@ -366,9 +366,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="useTypeFullName">Value indicating whether to utilize the type's full name</param>
         /// <returns>Returns the OpenAPI reference ID.</returns>
-        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null)
+        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null, bool useTypeFullName = false)
         {
+            var typeName = useTypeFullName ? type.FullName : type.Name;
+
             if (namingStrategy.IsNullOrDefault())
             {
                 namingStrategy = new DefaultNamingStrategy();
@@ -376,18 +379,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary || isList)
             {
-                var name = type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = typeName.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + "_" +
+                return namingStrategy.GetPropertyName(typeName.Split('`').First(), false) + "_" +
                        string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
             }
 
-            return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
+            return namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
         }
 
         /// <summary>
