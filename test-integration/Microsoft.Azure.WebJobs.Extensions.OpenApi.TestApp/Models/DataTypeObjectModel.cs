@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
-    public class DataTypeClass
+    public class DataTypeObjectModel
     {
         [DataType(DataType.DateTime)]
         public DateTime DateTimeValue1 { get; set; }
