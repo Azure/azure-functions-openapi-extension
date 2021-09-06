@@ -74,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat, string name)
         {
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
+            var type = new KeyValuePair<string, Type>(name, typeof(byte[]));
 
             this._visitor.Visit(acceptor, type, this._strategy);
 
@@ -84,57 +84,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(1, "string", "hello")]
-        public void Given_MinLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int length, string dataType, string name)
-        {
-            var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
-            var attribute = new MinLengthAttribute(length);
-
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
-
-            acceptor.Schemas.Should().ContainKey(name);
-            acceptor.Schemas[name].Type.Should().Be(dataType);
-            acceptor.Schemas[name].MinLength.Should().Be(length);
-        }
-
-        [DataTestMethod]
-        [DataRow(10, "string", "hello")]
-        public void Given_MaxLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int length, string dataType, string name)
-        {
-            var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
-            var attribute = new MaxLengthAttribute(length);
-
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
-
-            acceptor.Schemas.Should().ContainKey(name);
-            acceptor.Schemas[name].Type.Should().Be(dataType);
-            acceptor.Schemas[name].MaxLength.Should().Be(length);
-        }
-
-        [DataTestMethod]
-        [DataRow(1, 10, "string", "hello")]
-        public void Given_RangeAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(int min, int max, string dataType, string name)
-        {
-            var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
-            var attribute = new RangeAttribute(min, max);
-
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
-
-            acceptor.Schemas.Should().ContainKey(name);
-            acceptor.Schemas[name].Type.Should().Be(dataType);
-            acceptor.Schemas[name].Minimum.Should().Be(min);
-            acceptor.Schemas[name].Maximum.Should().Be(max);
-        }
-
-        [DataTestMethod]
         [DataRow("hello", "lorem ipsum")]
         public void Given_OpenApiPropertyAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, string description)
         {
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
+            var type = new KeyValuePair<string, Type>(name, typeof(byte[]));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
@@ -168,7 +122,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         public void Given_OpenApiPropertyAttribute_Without_Default_When_Visit_Invoked_Then_It_Should_Return_Result(string name, bool nullable, string description)
         {
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
+            var type = new KeyValuePair<string, Type>(name, typeof(byte[]));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
@@ -185,7 +139,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         public void Given_OpenApiSchemaVisibilityAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(string name, OpenApiVisibilityType visibility)
         {
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(byte));
+            var type = new KeyValuePair<string, Type>(name, typeof(byte[]));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
@@ -199,7 +153,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("string", "base64")]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.ParameterVisit(typeof(byte), this._strategy);
+            var result = this._visitor.ParameterVisit(typeof(byte[]), this._strategy);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
@@ -209,7 +163,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("string", "base64")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.PayloadVisit(typeof(byte), this._strategy);
+            var result = this._visitor.PayloadVisit(typeof(byte[]), this._strategy);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
