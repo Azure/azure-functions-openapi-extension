@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="visitor for byte array"/>.
+    /// This represents the type visitor for byte array.
     /// </summary>
     public class ByteArrayTypeVisitor : TypeVisitor
     {
