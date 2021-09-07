@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -80,8 +81,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
                     schema.Extensions.Add("x-ms-visibility", extension);
                 }
+                schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
             }
-
             instance.Schemas.Add(name, schema);
         }
 

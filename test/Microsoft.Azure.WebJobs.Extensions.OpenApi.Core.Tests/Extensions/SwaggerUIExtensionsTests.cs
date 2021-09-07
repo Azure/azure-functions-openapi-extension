@@ -19,13 +19,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         public void Given_Null_When_RenderAsync_Invoked_Then_It_Should_Throw_Exception()
         {
             Func<Task> func = async () => await SwaggerUIExtensions.RenderAsync(null, null).ConfigureAwait(false);
-            func.Should().Throw<ArgumentNullException>();
+            func.Should().ThrowAsync<ArgumentNullException>();
 
             var ui = new Mock<ISwaggerUI>();
             var task = Task.FromResult(ui.Object);
 
             func = async () => await SwaggerUIExtensions.RenderAsync(task, null).ConfigureAwait(false);
-            func.Should().Throw<ArgumentNullException>();
+            func.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -48,13 +48,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         public void Given_Null_When_RenderOAuth2RedirectAsync_Invoked_Then_It_Should_Throw_Exception()
         {
             Func<Task> func = async () => await SwaggerUIExtensions.RenderOAuth2RedirectAsync(null, null).ConfigureAwait(false);
-            func.Should().Throw<ArgumentNullException>();
+            func.Should().ThrowAsync<ArgumentNullException>();
 
             var ui = new Mock<ISwaggerUI>();
             var task = Task.FromResult(ui.Object);
 
             func = async () => await SwaggerUIExtensions.RenderOAuth2RedirectAsync(task, null).ConfigureAwait(false);
-            func.Should().Throw<ArgumentNullException>();
+            func.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]

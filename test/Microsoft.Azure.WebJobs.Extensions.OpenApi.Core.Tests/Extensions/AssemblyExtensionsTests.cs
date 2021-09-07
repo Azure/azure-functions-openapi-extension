@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Reflection.Emit;
+
 using FluentAssertions;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
