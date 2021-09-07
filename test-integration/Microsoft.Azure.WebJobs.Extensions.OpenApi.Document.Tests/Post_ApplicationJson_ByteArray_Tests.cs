@@ -26,6 +26,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("/post-applicationjson-bytearray", "post")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody(string path, string operationType)
+        {
+            var requestBody = this._doc["paths"][path][operationType]["requestBody"];
+          
+            requestBody.Should().NotBeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("/post-applicationjson-bytearray", "post", "application/octet-stream")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
+        {
+            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
+
+            content[contentType].Should().NotBeNull();
+        }
+
+
+        [DataTestMethod]
+        [DataRow("/post-applicationjson-bytearray", "post", "application/octet-stream", "string", "base64")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
+        {
+            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
+
+            var value = content[contentType]["schema"];
+
+            value.Should().NotBeNull();
+            value.Value<string>("type").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyFormat);
+        }
+
+        [DataTestMethod]
         [DataRow("/post-applicationjson-bytearray", "post", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
