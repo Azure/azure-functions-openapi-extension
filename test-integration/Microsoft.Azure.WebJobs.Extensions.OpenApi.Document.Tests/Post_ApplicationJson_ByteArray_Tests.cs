@@ -43,7 +43,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             content[contentType].Should().NotBeNull();
         }
 
-
         [DataTestMethod]
         [DataRow("/post-applicationjson-bytearray", "post", "application/octet-stream", "string", "base64")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
