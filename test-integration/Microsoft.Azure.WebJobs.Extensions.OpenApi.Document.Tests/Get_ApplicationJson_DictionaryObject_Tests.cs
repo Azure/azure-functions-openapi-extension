@@ -55,18 +55,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel", "object")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
+        [DataRow("dictionaryObjectModel", "object", "boolValue", "object", "boolean")]
+        [DataRow("dictionaryObjectModel", "object", "stringValue", "object", "string")]
+        [DataRow("dictionaryObjectModel", "object", "floatValue", "object", "number")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType, string propertyName, string propertyType, string itemType)
         {
-            var schemas = this._doc["components"]["schemas"];
+            var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName];
 
-            var schema = schemas[@ref];
+            var type = items["additionalProperties"]["type"];
 
-            schema.Should().NotBeNull();
-            schema.Value<string>("type").Should().Be(refType);
+            type.Should().NotBeNull();
+            type.Value<string>().Should().Be(itemType);
         }
 
         [DataTestMethod]
+        [DataRow("dictionaryObjectModel", "int32ObjectValue", "object", "int32ObjectModel")]
         [DataRow("dictionaryObjectModel", "stringObjectModel", "object", "stringObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemRef)
         {
