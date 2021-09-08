@@ -692,6 +692,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return true;
             }
 
+            if (type.IsGenericTypeOf(typeof(HashSet<>)))
+            {
+                return true;
+            }
+
+            if (type.IsGenericTypeOf(typeof(ISet<>)))
+            {
+                return true;
+            }
+
             return false;
         }
 
