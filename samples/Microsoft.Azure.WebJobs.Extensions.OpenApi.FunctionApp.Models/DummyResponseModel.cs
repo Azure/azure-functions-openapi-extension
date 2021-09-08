@@ -54,5 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         public DummySubResponseModel SubResponse2 { get; set; }
 
         public DummyGenericModel<DummyModel> DummyGenericDummyModel { get; set; }
+
+        public List<DummyResponseModel> Children { get; set; }
     }
 }

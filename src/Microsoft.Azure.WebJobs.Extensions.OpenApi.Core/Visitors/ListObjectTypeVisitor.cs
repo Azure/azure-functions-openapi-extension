@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using Microsoft.OpenApi.Models;
-
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
@@ -16,6 +13,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class ListObjectTypeVisitor : TypeVisitor
     {
+        private Dictionary<Type, OpenApiSchemaAcceptor> visitedTypes = new Dictionary<Type, OpenApiSchemaAcceptor>();
+
         /// <inheritdoc />
         public ListObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -31,9 +30,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy,
+            params Attribute[] attributes)
         {
-            var name = this.Visit(acceptor, name: type.Key, title: null, dataType: "array", dataFormat: null, attributes: attributes);
+            var name = this.Visit(acceptor, name: type.Key, title: null, dataType: "array", dataFormat: null,
+                attributes: attributes);
 
             if (name.IsNullOrWhiteSpace())
             {
@@ -48,22 +49,39 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Gets the schema for the underlying type.
             var underlyingType = type.Value.GetUnderlyingType();
+
+
+
             var types = new Dictionary<string, Type>()
             {
-                { underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy), underlyingType }
+                {
+                    underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(),
+                        underlyingType.IsOpenApiArray(), namingStrategy),
+                    underlyingType
+                }
             };
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            var subAcceptor = new OpenApiSchemaAcceptor()
-            {
-                Types = types,
-                RootSchemas = instance.RootSchemas,
-                Schemas = schemas,
-            };
 
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            OpenApiSchemaAcceptor subAcceptor;
+            if (!this.visitedTypes.ContainsKey(underlyingType))
+            {
+                subAcceptor = new OpenApiSchemaAcceptor()
+                {
+                    Types = types, RootSchemas = instance.RootSchemas, Schemas = schemas,
+                };
+                this.visitedTypes.Add(underlyingType, subAcceptor);
+                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+
+            }
+            else
+            {
+                subAcceptor = this.visitedTypes[underlyingType];
+            }
+
 
             var items = subAcceptor.Schemas.First().Value;
+
 
             // Adds the reference to the schema for the underlying type.
             if (this.IsReferential(underlyingType))
@@ -71,7 +89,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false,
+                        namingStrategy)
                 };
 
                 items.Reference = reference;
@@ -79,14 +98,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             instance.Schemas[name].Items = items;
 
+
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
-                                              .Where(p => p.Value.IsOpenApiSchemaObject()
-                                                       || p.Value.IsOpenApiSchemaArray()
-                                                       || p.Value.IsOpenApiSchemaDictionary()
-                                                    )
-                                              .ToDictionary(p => p.Key, p => p.Value);
+                .Where(p => !instance.Schemas.Keys.Contains(p.Key))
+                .Where(p => p.Value.IsOpenApiSchemaObject()
+                            || p.Value.IsOpenApiSchemaArray()
+                            || p.Value.IsOpenApiSchemaDictionary()
+                )
+                .ToDictionary(p => p.Key, p => p.Value);
 
             if (!schemasToBeAdded.Any())
             {
