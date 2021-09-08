@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_DictionaryObjectType_Tests
+    public class Get_ApplicationJson_DictionaryObject_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionaryObjectType", "get", "200")]
+        [DataRow("/get-applicationjson-dictionary", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionaryObjectType", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionaryObjectType", "get", "200", "application/json", "dictionaryObjectModel_string_string")]
+        [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json", "dictionaryObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel_string_string", "object")]
+        [DataRow("dictionaryObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,11 +67,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel_string_string", "dictionary", "object", "string")]
-        [DataRow("dictionaryObjectModel_string_string", "iDictionary", "object", "string")]
-        [DataRow("dictionaryObjectModel_string_string", "iReadOnlyDictionary", "object", "string")]
-        [DataRow("dictionaryObjectModel_string_string", "keyValuePair", "object", "string")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemType)
+        [DataRow("dictionaryObjectModel", "stringObjectModel", "object", "stringObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemRef)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -80,7 +77,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
             value["additionalProperties"].Should().NotBeNullOrEmpty();
-            value["additionalProperties"].Value<string>("type").Should().Be(itemType);
+            value["additionalProperties"].Value<string>("$ref").Should().Be($"#/components/schemas/{itemRef}");
+
+            this._doc["components"]["schemas"][itemRef].Should().NotBeNullOrEmpty();
         }
     }
 }

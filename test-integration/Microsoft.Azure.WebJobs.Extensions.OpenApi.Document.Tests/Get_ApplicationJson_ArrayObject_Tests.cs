@@ -75,6 +75,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("arrayObjectModel", "object", "decimalValue", "array")]
         [DataRow("arrayObjectModel", "object", "stringObjectValue", "array")]
         [DataRow("arrayObjectModel", "object", "int32ObjectValue", "array")]
+        [DataRow("arrayObjectModel", "object", "stringObjectModel", "array")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -105,6 +106,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataTestMethod]
         [DataRow("arrayObjectModel", "object", "stringObjectValue", "array", "stringObjectModel")]
         [DataRow("arrayObjectModel", "object", "int32ObjectValue", "array", "int32ObjectModel")]
+        [DataRow("arrayObjectModel", "object", "stringObjectModel", "array", "stringObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItemReference(string @ref, string refType, string propertyName, string propertyType, string itemRef)
         {
             var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName]["items"];
@@ -113,6 +115,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             itemReference.Should().NotBeNull();
             itemReference.Value<string>().Should().Be($"#/components/schemas/{itemRef}");
+
+            this._doc["components"]["schemas"][itemRef].Should().NotBeNullOrEmpty();
         }
     }
 }

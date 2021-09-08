@@ -13,10 +13,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public class Get_ApplicationJson_DictionaryObject_HttpTrigger
     {
         [FunctionName(nameof(Get_ApplicationJson_DictionaryObject_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_DictionaryObject_HttpTrigger.Get_ApplicationJson_DictionaryObjectType), tags: new[] { "dictionaryObjectType" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DictionaryObjectModel<string, string>), Description = "The OK response")]
+        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_DictionaryObject_HttpTrigger.Get_ApplicationJson_DictionaryObjectType), tags: new[] { "dictionary" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DictionaryObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_DictionaryObjectType(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-dictionaryObjectType")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-dictionary")] HttpRequest req,
             ILogger log)
         {
             var result = new OkResult();
