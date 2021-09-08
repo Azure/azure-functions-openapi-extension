@@ -19,6 +19,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class ObjectTypeVisitor : TypeVisitor
     {
+        private readonly HashSet<Type> _noVisitableTypes = new HashSet<Type>
+        {
+            typeof(Guid),       typeof(DateTime),       typeof(DateTimeOffset),
+            typeof(Uri),        typeof(Type),           typeof(object),
+            typeof(byte[])
+        };
+
+        private readonly HashSet<string> _noAddedKeys = new HashSet<string>
+        {
+            "object", "jToken", "jObject"
+        };
+
         /// <inheritdoc />
         public ObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -30,27 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object);
 
-            if (type == typeof(Guid))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(DateTime))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(DateTimeOffset))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(Uri))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(Type))
-            {
-                isVisitable = false;
-            }
-            else if(type == typeof(byte[]))
+            if (this._noVisitableTypes.Contains(type))
             {
                 isVisitable = false;
             }
@@ -213,7 +205,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                               .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => p.Key != "jObject" && p.Key != "jToken"))
+            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key)))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {
