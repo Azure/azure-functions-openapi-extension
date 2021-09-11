@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
-    public class DoubleTypeObjectModel
+    public class DoubleObjectModel
     {
         public double Value { get; set; }
     }
