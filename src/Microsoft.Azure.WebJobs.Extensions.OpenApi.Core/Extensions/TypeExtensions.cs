@@ -368,9 +368,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="useTypeFullName">Value indicating whether to utilize the type's full name</param>
         /// <returns>Returns the OpenAPI reference ID.</returns>
-        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null, bool useTypeFullName = false)
+        public static string GetOpenApiReferenceId(
+            this Type type,
+            bool isDictionary,
+            bool isList,
+            NamingStrategy namingStrategy = null,
+            bool useTypeFullName = false)
         {
+            const string Delimiter = "_";
             var typeName = useTypeFullName ? type.FullName : type.Name;
+            var propertyName = string.Empty;
 
             if (namingStrategy.IsNullOrDefault())
             {
@@ -379,18 +386,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary || isList)
             {
-                var name = typeName.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = typeName.Split('`').First() + Delimiter + type.GetOpenApiSubTypeName(namingStrategy);
 
-                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+                propertyName = namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(typeName.Split('`').First(), false) + "_" +
-                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+                propertyName = namingStrategy.GetPropertyName(typeName.Split('`').First(), false) + Delimiter +
+                       string.Join(Delimiter, type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
             }
 
-            return namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
+            propertyName = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
+            return ConformPropertyName();
+            string ConformPropertyName() => propertyName.Replace(".", Delimiter).Replace("+", Delimiter);
         }
 
         /// <summary>
