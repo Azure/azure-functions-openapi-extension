@@ -9,6 +9,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
     /// </summary>
     public abstract class OpenApiPayloadAttribute : Attribute
     {
+        private string _typeFullNameAlias = string.Empty;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiPayloadAttribute"/> class.
         /// </summary>
@@ -47,5 +49,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// The default value is false.
         /// </remarks>
         public bool UseTypeFullName { get; set; }
+
+        /// <summary>
+        /// Gets or optionally sets the type full name's alias. 
+        /// </summary>
+        /// <remarks>
+        /// This property is taken into account if UseTypeFullName set to true.
+        /// </remarks>
+        public string TypeFullNameAlias
+        {
+            get => this._typeFullNameAlias;
+            set
+            {
+                if(value.Contains(".") || value.Contains("+"))
+                {
+                    throw new ArgumentException($"The alias name should not contain dot (.) or plus (+).");
+                }
+                this._typeFullNameAlias = value;
+            }
+        }
     }
 }

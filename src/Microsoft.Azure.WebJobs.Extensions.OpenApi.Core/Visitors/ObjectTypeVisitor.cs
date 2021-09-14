@@ -112,12 +112,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
             this.ProcessProperties(instance, name, properties, namingStrategy);
-
+            var typeFullNameAlias = string.Empty;
+            var useTypeFullName = (acceptor as IOpenApiSchemaAcceptor)?.TypesAcceptedWithFullName?.TryGetValue(type.Value.FullName, out typeFullNameAlias);
             // Adds the reference.
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
-                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, (acceptor as IOpenApiSchemaAcceptor)?.TypesAcceptedWithFullName?.Contains(type.Value.FullName) ?? false)
+                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, typeFullNameAlias, useTypeFullName ?? false)
             };
 
             instance.Schemas[name].Reference = reference;

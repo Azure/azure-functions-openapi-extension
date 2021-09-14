@@ -147,7 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, UtilizeTypeFullName(p, responsesAttributes)), p => p);
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, GetTypeFullNameAlias(p, responsesAttributes) ,UtilizeTypeFullName(p, responsesAttributes)), p => p);
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 
@@ -171,12 +171,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             {
                 var attribute = openApiResponseWithBodyAttributes.Where(p => p.BodyType.FullName == type.FullName);
                 var typeFullNameUtilized = attribute.FirstOrDefault()?.UseTypeFullName ?? false;
+                var typeFullNameAlias = GetTypeFullNameAlias(type, openApiResponseWithBodyAttributes);
 
-                if (typeFullNameUtilized && !this._acceptor.TypesAcceptedWithFullName.Contains(type.FullName))
+                if (typeFullNameUtilized && !this._acceptor.TypesAcceptedWithFullName.TryGetValue(type.FullName, out var _))
                 {
-                    this._acceptor.TypesAcceptedWithFullName.Add(type.FullName);
+                    this._acceptor.TypesAcceptedWithFullName.Add(type.FullName, typeFullNameAlias);
                 }
                 return typeFullNameUtilized;
+            }
+            string GetTypeFullNameAlias(Type type, List<OpenApiResponseWithBodyAttribute> openApiResponseWithBodyAttributes)
+            {
+                var attribute = openApiResponseWithBodyAttributes.Where(p => p.BodyType.FullName == type.FullName);
+                var typeFullNameAlias = attribute.FirstOrDefault()?.TypeFullNameAlias;
+                return typeFullNameAlias;
             }
         }
 

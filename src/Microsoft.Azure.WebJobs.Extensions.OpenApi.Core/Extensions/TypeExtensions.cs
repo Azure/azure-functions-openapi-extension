@@ -366,13 +366,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="typeFullNameAlias">Value indicating the optional alias name given to a type's full name to shorten the references</param>
         /// <param name="useTypeFullName">Value indicating whether to utilize the type's full name</param>
         /// <returns>Returns the OpenAPI reference ID.</returns>
+        /// <remarks>
+        /// If useTypeFullName is true and typeFullNameAlias not specified, the reference Id will be constructed as {FirstPartOfNamespace}_{NestedTypeName}.
+        /// </remarks>
         public static string GetOpenApiReferenceId(
             this Type type,
             bool isDictionary,
             bool isList,
             NamingStrategy namingStrategy = null,
+            string typeFullNameAlias = null,
             bool useTypeFullName = false)
         {
             const string Delimiter = "_";
@@ -398,8 +403,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             propertyName = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
-            return ConformPropertyName();
-            string ConformPropertyName() => propertyName.Replace(".", Delimiter).Replace("+", Delimiter);
+            return ConformReference(ShortenReference(propertyName));
+            string ConformReference(string referenceId) => referenceId.Replace(".", Delimiter).Replace("+", Delimiter);
+            string ShortenReference(string referenceId)
+            {
+                if (useTypeFullName)
+                {
+                    if (string.IsNullOrEmpty(typeFullNameAlias))
+                    {
+                        var tokens = referenceId.Split(Delimiter.ToCharArray()[0]);
+                        if (tokens?.Length > 1)
+                        {
+                            return $"{tokens[0]}_{tokens[tokens.Length - 1]}";
+                        }
+                    }
+                    else
+                    {
+                        return typeFullNameAlias;
+                    }
+                }
+                return referenceId;
+            }
         }
 
         /// <summary>

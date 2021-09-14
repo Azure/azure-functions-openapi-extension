@@ -28,8 +28,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         Dictionary<string, Type> Types { get; set; }
 
         /// <summary>
-        /// Gets and sets the list of types processed with their full name if exist.
+        /// Gets and sets the dictionary of types processed with their full name if exist.
         /// </summary>
-        List<string> TypesAcceptedWithFullName { get; set; }
+        /// <remarks>
+        /// The key is the type's full name and the value is the type's full name's alias if exists.
+        /// </remarks>
+        Dictionary<string, string> TypesAcceptedWithFullName { get; set; }
     }
 }
