@@ -60,7 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, attribute.TypeFullNameAlias, attribute.UseTypeFullName)
+                    Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, attribute.BodyTypeAlias, attribute.UseTypeFullName)
                 };
 
                 schema.Reference = reference;

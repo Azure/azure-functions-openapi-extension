@@ -182,7 +182,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             string GetTypeFullNameAlias(Type type, List<OpenApiResponseWithBodyAttribute> openApiResponseWithBodyAttributes)
             {
                 var attribute = openApiResponseWithBodyAttributes.Where(p => p.BodyType.FullName == type.FullName);
-                var typeFullNameAlias = attribute.FirstOrDefault()?.TypeFullNameAlias;
+                var typeFullNameAlias = attribute.FirstOrDefault()?.BodyTypeAlias;
                 return typeFullNameAlias;
             }
         }

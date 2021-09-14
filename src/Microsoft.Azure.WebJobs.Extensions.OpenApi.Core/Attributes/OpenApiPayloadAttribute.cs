@@ -56,7 +56,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// <remarks>
         /// This property is taken into account if UseTypeFullName set to true.
         /// </remarks>
-        public string TypeFullNameAlias
+        public string BodyTypeAlias
         {
             get => this._typeFullNameAlias;
             set

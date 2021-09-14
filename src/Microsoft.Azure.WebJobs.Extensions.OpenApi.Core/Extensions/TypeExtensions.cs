@@ -366,18 +366,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        /// <param name="typeFullNameAlias">Value indicating the optional alias name given to a type's full name to shorten the references</param>
+        /// <param name="bodyTypeAlias">Value indicating the optional alias name given to a type's full name to shorten the references</param>
         /// <param name="useTypeFullName">Value indicating whether to utilize the type's full name</param>
         /// <returns>Returns the OpenAPI reference ID.</returns>
         /// <remarks>
-        /// If useTypeFullName is true and typeFullNameAlias specified, the reference Id will equal to the full type's alias name.
+        /// If useTypeFullName is true and bodyTypeAlias specified, the reference Id will equal to the full type's alias name.
         /// </remarks>
         public static string GetOpenApiReferenceId(
             this Type type,
             bool isDictionary,
             bool isList,
             NamingStrategy namingStrategy = null,
-            string typeFullNameAlias = null,
+            string bodyTypeAlias = null,
             bool useTypeFullName = false)
         {
             const string Delimiter = "_";
@@ -403,11 +403,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             propertyName = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
-            return UseTypeFullNameAlias(ConformReferenceId());
+            return UseBodyTypeAlias(ConformReferenceId());
             string ConformReferenceId() => propertyName.Replace(".", Delimiter).Replace("+", Delimiter);
-            string UseTypeFullNameAlias(string referenceId)
-                => useTypeFullName && !string.IsNullOrEmpty(typeFullNameAlias)
-                    ? typeFullNameAlias
+            string UseBodyTypeAlias(string referenceId)
+                => useTypeFullName && !string.IsNullOrEmpty(bodyTypeAlias)
+                    ? bodyTypeAlias
                     : referenceId;
         }
 
