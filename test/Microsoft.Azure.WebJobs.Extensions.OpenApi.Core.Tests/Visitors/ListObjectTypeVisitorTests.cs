@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -295,6 +294,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             else
             {
                 result.Items.Reference.Should().BeNull();
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(ICollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IEnumerable<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyCollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        public void Given_Alias_Type_When_Visit_Invoked_Then_It_Should_Return_All_Sub_Schemas(Type type, params Type[] schemaTypes)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var key = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), this._strategy);
+
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy);
+
+            acceptor.RootSchemas.Count.Should().Be(schemaTypes.Length);
+
+            foreach (var schemaType in schemaTypes)
+            {
+                var subKey = schemaType.GetOpenApiReferenceId(schemaType.IsOpenApiDictionary(), schemaType.IsOpenApiArray(), this._strategy);
+
+                acceptor.RootSchemas.Should().ContainKey(subKey);
             }
         }
     }
