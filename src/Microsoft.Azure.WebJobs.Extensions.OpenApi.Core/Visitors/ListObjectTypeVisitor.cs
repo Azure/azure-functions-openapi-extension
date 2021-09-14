@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
@@ -81,7 +80,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject()
                                                        || p.Value.IsOpenApiSchemaArray()
                                                        || p.Value.IsOpenApiSchemaDictionary()
