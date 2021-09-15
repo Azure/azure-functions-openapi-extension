@@ -7,8 +7,8 @@
 
 ## Getting Started ##
 
-* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly. It's currently in preview.
-  * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi.md)
+* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints-in-proc.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly. It's currently in preview.
+  * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
 * [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
