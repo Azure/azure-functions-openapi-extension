@@ -393,12 +393,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 var name = typeName.Split('`').First() + Delimiter + type.GetOpenApiSubTypeName(namingStrategy);
 
-                propertyName = namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                propertyName = namingStrategy.GetPropertyName(typeName.Split('`').First(), false) + Delimiter +
+                return namingStrategy.GetPropertyName(typeName.Split('`').First(), false) + Delimiter +
                        string.Join(Delimiter, type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
             }
 
