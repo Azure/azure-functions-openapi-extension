@@ -6,6 +6,9 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 {
@@ -21,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <returns><see cref="OpenApiParameter"/> instance.</returns>
-        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null)
+        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -84,6 +87,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 parameter.Extensions.Add("x-ms-visibility", visibility);
             }
 
+            if (attribute.Example.IsNullOrDefault())
+            {
+                return parameter;
+            }
+
+            var example = (dynamic)Activator.CreateInstance(attribute.Example);
+            var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
+
+            parameter.Examples = examples;
+            if (version == OpenApiVersionType.V2)
+            {
+                parameter.Example = examples.First().Value.Value;
+            }
             return parameter;
         }
     }
