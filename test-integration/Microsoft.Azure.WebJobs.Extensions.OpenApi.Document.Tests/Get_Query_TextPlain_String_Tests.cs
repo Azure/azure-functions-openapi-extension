@@ -70,6 +70,31 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("/get-query-textplain-string", "get", "name", "\"Lorem\"")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterExample(string path, string operationType, string name, string exampleData)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var example = parameter["example"].ToString();
+
+            example.Should().Be(exampleData);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-query-textplain-string", "get", "name", "stringParamter", "\"Lorem\"")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName, string exampleData)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var example = parameter["examples"];
+
+            example[exampleName].Should().NotBeNull();
+            example[exampleName].Value<string>("value").Should().Be(exampleData);
+        }
+
+        [DataTestMethod]
         [DataRow("/get-query-textplain-string", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
