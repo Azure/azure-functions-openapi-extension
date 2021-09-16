@@ -11,13 +11,14 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
-    public static class Get_ApplicationJson_DoubleObject_HttpTrigger
+    public static class Post_ApplicationJson_DoubleObject_HttpTrigger
     {
-        [FunctionName(nameof(Get_ApplicationJson_DoubleObject_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_DoubleObject_HttpTrigger.Get_ApplicationJson_DoubleObject), tags: new[] { "double" })]
+        [FunctionName(nameof(Post_ApplicationJson_DoubleObject_HttpTrigger))]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_DoubleObject_HttpTrigger.Post_ApplicationJson_DoubleObject), tags: new[] { "double" })]
+        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(bool), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DoubleObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Get_ApplicationJson_DoubleObject(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-double")] HttpRequest req,
+        public static async Task<IActionResult> Post_ApplicationJson_DoubleObject(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-double")] HttpRequest req,
             ILogger log)
         {
             var result  = new OkResult();
