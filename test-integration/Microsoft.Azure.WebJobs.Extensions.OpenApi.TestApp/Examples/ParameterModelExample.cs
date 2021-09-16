@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Examples
     {
         public override IOpenApiExample<string> Build(NamingStrategy namingStrategy = null)
         {
-            this.Examples.Add(OpenApiExampleResolver.Resolve("stringParamter","Lorem", namingStrategy));
+            this.Examples.Add(OpenApiExampleResolver.Resolve("name","Lorem", namingStrategy));
             return this;
         }
     }

@@ -82,7 +82,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "name", "stringParamter", "\"Lorem\"")]
+        [DataRow("/get-query-textplain-string", "get", "name", "name", "\"Lorem\"")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName, string exampleData)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
