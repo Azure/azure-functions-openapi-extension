@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_Boolean_Tests
+    public class Post_ApplicationJson_Boolean_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,37 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-boolean", "get", "200")]
+        [DataRow("/post-applicationjson-boolean", "post")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody(string path, string operationType)
+        {
+            var requestBody = this._doc["paths"][path][operationType]["requestBody"];
+
+            requestBody.Should().NotBeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("/post-applicationjson-boolean", "post", "text/plain")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
+        {
+            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
+
+            content[contentType].Should().NotBeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("/post-applicationjson-boolean", "post", "text/plain", "boolean")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType)
+        {
+            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
+
+            var value = content[contentType]["schema"];
+
+            value.Should().NotBeNull();
+            value.Value<string>("type").Should().Be(propertyType);
+        }
+
+        [DataTestMethod]
+        [DataRow("/post-applicationjson-boolean", "post", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-boolean", "get", "200", "application/json")]
+        [DataRow("/post-applicationjson-boolean", "post", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-boolean", "get", "200", "application/json", "booleanObjectModel")]
+        [DataRow("/post-applicationjson-boolean", "post", "200", "application/json", "booleanObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -67,8 +97,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("booleanObjectModel", "object", "booleanValue", "boolean")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType)
+        [DataRow("booleanObjectModel", "booleanValue", "boolean")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -77,6 +107,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
         }
-
     }
 }

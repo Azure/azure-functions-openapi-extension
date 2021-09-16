@@ -11,13 +11,14 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
-    public static class Get_ApplicationJson_Boolean_HttpTrigger
+    public static class Post_ApplicationJson_Boolean_HttpTrigger
     {
-        [FunctionName(nameof(Get_ApplicationJson_Boolean_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Boolean_HttpTrigger.Get_ApplicationJson_Boolean), tags: new[] { "boolean" })]
+        [FunctionName(nameof(Post_ApplicationJson_Boolean_HttpTrigger))]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_Boolean_HttpTrigger.Post_ApplicationJson_Boolean), tags: new[] { "boolean" })]
+        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(bool), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(BooleanObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Get_ApplicationJson_Boolean(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-boolean")] HttpRequest req,
+        public static async Task<IActionResult> Post_ApplicationJson_Boolean(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-boolean")] HttpRequest req,
             ILogger log)
         {
             var result  = new OkResult();
