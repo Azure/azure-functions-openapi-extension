@@ -91,11 +91,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 return parameter;
             }
+            if (!attribute.Example.HasInterface("IOpenApiExample`1"))
+            {
+                return parameter;
+            }
 
             var example = (dynamic)Activator.CreateInstance(attribute.Example);
             var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
 
             parameter.Examples = examples;
+            if (version == OpenApiVersionType.V2)
+            {
+                parameter.Example = examples.First().Value.Value;
+            }
+
             return parameter;
         }
     }
