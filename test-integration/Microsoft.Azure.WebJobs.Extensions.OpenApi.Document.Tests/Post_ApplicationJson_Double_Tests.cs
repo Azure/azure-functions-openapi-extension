@@ -44,8 +44,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "text/plain", "double")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType)
+        [DataRow("/post-applicationjson-double", "post", "text/plain", "number", "double")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
@@ -53,6 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyType);
         }
 
         [DataTestMethod]
@@ -97,8 +98,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("doubleObjectModel", "doubleValue", "double")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
+        [DataRow("doubleObjectModel", "doubleValue", "number", "double")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -106,6 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyType);
         }
     }
 }
