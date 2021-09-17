@@ -31,6 +31,18 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             assembly.DefinedTypes.Select(p => p.FullName).Should().Contain(ti.FullName);
         }
 
+        [TestMethod]
+        public async Task Given_Type_With_Referenced_Project_When_Initiated_Then_It_Should_Return_ApplicationAssemblyOfRootAssembly()
+        {
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext();
+
+            var assembly = (await context.SetApplicationAssemblyAsync(location, false))
+                                         .ApplicationAssembly;
+
+            assembly.FullName.Should().Be(typeof(OpenApiHttpTriggerContextTests).Assembly.FullName);
+        }
+
         [DataTestMethod]
         [DataRow(typeof(IOpenApiHttpTriggerContext))]
         [DataRow(typeof(OpenApiHttpTriggerContext))]

@@ -50,6 +50,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            else if(type == typeof(byte[]))
+            {
+                isVisitable = false;
+            }
             else if (type.IsOpenApiArray())
             {
                 isVisitable = false;
@@ -74,7 +78,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
-            
 
             return isVisitable;
         }
@@ -204,7 +207,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .GroupBy(p => p.Value.Title)
                                               .Select(p => p.First())

@@ -1,0 +1,53 @@
+name: On OCA Issue Opened
+
+on:
+  issue_comment:
+    types:
+    - created
+
+jobs:
+  labelling_messaging:
+    name: 'Add a label on creation: oca-issue then send a message to Slack'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # - name: Get event payload
+    #   shell: pwsh
+    #   run: |
+    #     Write-Host '${{ toJSON(github.event) }}'
+
+    - name: Get checkpoints
+      id: checkpoint
+      shell: pwsh
+      run: |
+        $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.comment.user.login) }}"
+
+        echo "::set-output name=isOcaParticipant::$isOcaParticipant"
+
+    - name: Add a label
+      if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
+      shell: pwsh
+      run: |
+        $headers = @{ "Authorization" = "token ${{ secrets.GITHUB_TOKEN }}"; "User-Agent" = "OCA Bot"; "Accept" = "application/vnd.github.v3+json" }
+        $issueId = "${{ github.event.issue.number }}"
+
+        $labelsToAdd = "oca-issue" -split ","
+        $body = @{ "labels" = $labelsToAdd }
+
+        $url = $("${{ github.event.repository.issues_url}}".Replace("{/number}", "/$issueId")) + "/labels"
+
+        Invoke-RestMethod -Method Post -Uri $url -Headers $headers -Body $($body | ConvertTo-Json)
+
+    - name: Send a message to Slack
+      if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
+      shell: pwsh
+      run: |
+        $url = "${{ secrets.OCA_SLACK_WEBHOOK_URL }}"
+        $iconUrl = "${{ secrets.OCA_SLACK_WEBHOOK_ICON_URL }}"
+        $channel = "${{ secrets.OCA_SLACK_CHANNEL }}"
+        $text = "`@${{ github.event.comment.user.login }} has left a New Comment on the Issue #${{ github.event.issue.number }}! :point_right: <${{ github.event.issue.html_url }}|View Issue>"
+        $body = @{ "channel" = $channel; "username" = "AzFuncOpenApiBot"; "icon_url" = $iconUrl; "text" = $text; }
+        $payload = $body | ConvertTo-Json
+
+        Invoke-RestMethod -Method Post -Uri $url -Body $($payload)

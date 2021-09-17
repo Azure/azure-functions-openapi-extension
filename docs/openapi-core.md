@@ -179,6 +179,9 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
 
 Suppose you want to customise the look and feels of the Swagger UI page. In this case, there are two options you can choose.
 
+
+### Use CSS and JavaScript Files Embedded ###
+
 1. Add `custom.css` and `custom.js` under the `dist` directory of your Functions app project. Then, update your `.csproj` file to embed both files like:
 
     ```xml
@@ -225,6 +228,41 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
         }
     }
     ```
+
+
+### Use CSS and JavaScript Files from CDN ###
+
+Alternatively, you can use both CSS and JavaScript files from CDN, which is from the Internet.
+
+```csharp
+public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+{
+    public OpenApiCustomUIOptions(Assembly assembly)
+        : base(assembly)
+    {
+    }
+    // Declare if you want to change the custom CSS file name.
+    public override string CustomStylesheetPath { get; }
+        = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.css";
+    // Declare if you want to change the custom JavaScript file name.
+    public override string CustomJavaScriptPath { get; }
+        = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.js";
+    // Declare if you want to change the behaviours of handling the custom CSS file.
+    public override async Task<string> GetStylesheetAsync()
+    {
+        // DO SOMETHING BEFORE CALLING THE BASE METHOD
+        base.GetStylesheetAsync();
+        // DO SOMETHING AFTER CALLING THE BASE METHOD
+    }
+    // Declare if you want to change the behaviours of handling the custom JavaScript file.
+    public override async Task<string> GetJavaScriptAsync()
+    {
+        // DO SOMETHING BEFORE CALLING THE BASE METHOD
+        base.GetJavaScriptAsync();
+        // DO SOMETHING AFTER CALLING THE BASE METHOD
+    }
+}
+```
 
 Either way, your customised CSS and JavaScript will be applied to the Swagger UI page.
 
@@ -611,17 +649,17 @@ public class MyResponse
 ```
 
 
-### `OpenApiPropertyDescriptionAttribute` ###
+### `OpenApiPropertyAttribute` ###
 
 This decorator provides model properties with description.
 
 ```csharp
 public class MyModel
 {
-    [OpenApiPropertyDescription("The number value")]
+    [OpenApiProperty(Nullable = true, Default = 10, Description = "The number value")]
     public int Number { get; set; }
 
-    [OpenApiPropertyDescription("The text value")]
+    [OpenApiProperty(Nullable = true, Default = "Hello World", Description = "The text value")]
     public string Text { get; set; }
 }
 
@@ -631,15 +669,26 @@ public class MyModel
 //     "number": {
 //       "type": "integer",
 //       "format": "int32",
-//       "description": "The number value"
+//       "nullable": true,
+//       "description": "The number value",
+//       "default": 10
 //     },
 //     "text": {
 //       "type": "string",
-//       "description": "The text value"
+//       "nullable": true,
+//       "description": "The text value",
+//       "default": "Hello World"
 //     }
 //   }
 // }
 ```
+
+> [!IMPORTANT]
+> If you use C# 8.0 or later for your Azure Functions app development, you MUST use this decorator to describe the `string` data type to be nullable or not.
+
+* `Nullable`: defines a value indicating whether the property is nullable or not. This value takes precedence regardless the property itself is nullable value type or not.
+* `Default`: defines the default value of the property.
+* `Description`: defines the description of the property.
 
 
 ### `DisplayAttribute` ###
@@ -684,6 +733,63 @@ namespace Contoso
 //   "default": "zero"
 // }
 ```
+
+
+## Supported System.ComponentModel.DataAnnotations Decorators ##
+
+Some of [ValidationAttribute](https://docs.microsoft.com/dotnet/api/system.componentmodel.dataannotations.validationattribute) classes from [System.ComponentModel.DataAnnotations](https://www.nuget.org/packages/System.ComponentModel.Annotations/4.4.0) are supported for payload definition.
+
+
+### `DataTypeAttribute` ###
+
+Properties decorated with the `DataTypeAttribute` class impacts on the `OpenApiSchema.Format` value.
+
+* `DataType.DateTime`: `date-time`
+* `DataType.Date`: `date`
+* `DataType.Time`: `time`
+* `DataType.Duration`: `duration`
+* `DataType.PhoneNumber`: `tel`
+* `DataType.Currency`: `currency`
+* `DataType.Text`: `string`
+* `DataType.Html`: `html`
+* `DataType.MultilineText`: `multiline`
+* `DataType.EmailAddress`: `email`
+* `DataType.Password`: `password`
+* `DataType.Url`: `uri`
+* `DataType.ImageUrl`: `uri`
+* `DataType.CreditCard`: `credit-card`
+* `DataType.PostalCode`: `postal-code`
+
+
+### `RegularExpressionAttribute` ###
+
+Properties decorated with the `RegularExpressionAttribute` class impacts on the `OpenApiSchema.Pattern` value.
+
+
+### `StringLengthAttribute` ###
+
+Properties decorated with the `StringLengthAttribute` class impacts on both `OpenApiSchema.MinLength`and `OpenApiSchema.MaxLength` values.
+
+
+### `RangeAttribute` ###
+
+Properties decorated with the `RangeAttribute` class impacts on both `OpenApiSchema.Minimum` and `OpenApiSchema.Maximum` value.
+
+
+### `MinLengthAttribute` ###
+
+Properties decorated with the `MinLengthAttribute` class impacts on either `OpenApiSchema.MinItems` or `OpenApiSchema.MinLength` value.
+
+* If `OpenApiSchema.Type` is `array`: `OpenApiSchema.MinItems`
+* If `OpenApiSchema.Type` is NOT `array`: `OpenApiSchema.MinLength`
+
+
+### `MaxLengthAttribute` ###
+
+Properties decorated with the `MaxLengthAttribute` class impacts on either `OpenApiSchema.MaxItems` or `OpenApiSchema.MaxLength` value.
+
+* If `OpenApiSchema.Type` is `array`: `OpenApiSchema.MaxItems`
+* If `OpenApiSchema.Type` is NOT `array`: `OpenApiSchema.MaxLength`
 
 
 ## Supported Json.NET Decorators ##

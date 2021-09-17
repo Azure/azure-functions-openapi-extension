@@ -46,7 +46,8 @@ jobs:
         $url = "${{ secrets.OCA_SLACK_WEBHOOK_URL }}"
         $iconUrl = "${{ secrets.OCA_SLACK_WEBHOOK_ICON_URL }}"
         $channel = "${{ secrets.OCA_SLACK_CHANNEL }}"
-        $text = "Issue #${{ github.event.issue.number }}, ${{ github.event.issue.title }}, has been re-opened! :point_right: <${{ github.event.issue.html_url }}|View Issue>"
+        $text = "`@${{ github.event.issue.user.login }} has reopened the Issue #${{ github.event.issue.number }}, ${{ github.event.issue.title }}! :point_right: <${{ github.event.issue.html_url }}|View Issue>"
         $body = @{ "channel" = $channel; "username" = "AzFuncOpenApiBot"; "icon_url" = $iconUrl; "text" = $text; }
+        $payload = $body | ConvertTo-Json
 
-        Invoke-RestMethod -Method Post -Uri $url -Body $($body | ConvertTo-Json)
+        Invoke-RestMethod -Method Post -Uri $url -Body $($payload)
