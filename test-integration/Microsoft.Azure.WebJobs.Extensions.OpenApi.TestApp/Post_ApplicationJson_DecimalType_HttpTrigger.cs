@@ -14,18 +14,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
-    public class Get_ApplicationJson_DecimalType_HttpTrigger
+    public class Post_ApplicationJson_DecimalType_HttpTrigger
     {
-        [FunctionName(nameof(Get_ApplicationJson_DecimalType_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_DecimalType_HttpTrigger.Get_ApplicationJson_DecimalType), tags: new[] { "dataType" })]
+        [FunctionName(nameof(Post_ApplicationJson_DecimalType_HttpTrigger))]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_DecimalType_HttpTrigger.Post_ApplicationJson_DecimalType), tags: new[] { "demical" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DecimalTypeObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Get_ApplicationJson_DecimalType(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-datatype")] HttpRequest req,
+
+        public static async Task<IActionResult> Post_ApplicationJson_DecimalType(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-decimal")] HttpRequest req,
             ILogger log)
         {
             var result = new OkResult();
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
-    }
+    }   
 }
