@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 
             schemas.Should().ContainKey("FakeClassModel");
 
-            schemas["FakeClassModel"].Properties.Count.Should().Be(2);
+            schemas["FakeClassModel"].Properties.Count.Should().Be(3);
             schemas["FakeClassModel"].Type.Should().Be("object");
 
             schemas.Should().ContainKey("FakeOtherClassModel");
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             schemas["FakeOtherClassModel"].Properties.Count.Should().Be(2);
             schemas["FakeOtherClassModel"].Type.Should().Be("object");
 
-            schemas["FakeClassModel"].Properties.Count.Should().Be(2);
+            schemas["FakeClassModel"].Properties.Count.Should().Be(3);
             schemas["FakeClassModel"].Type.Should().Be("object");
 
             schemas.Should().ContainKey("FakeListModel");
