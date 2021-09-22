@@ -40,20 +40,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override bool IsParameterVisitable(Type type)
-        {
-            var isVisitable = this.IsVisitable(type);
-
-            return isVisitable;
-        }
-
-        /// <inheritdoc />
-        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
-        {
-            return this.ParameterVisit(dataType: "object", dataFormat: null);
-        }
-
-        /// <inheritdoc />
         public override bool IsPayloadVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type);
