@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
         private readonly HashSet<string> _noAddedKeys = new HashSet<string>
         {
-            "object", "jToken", "jObject"
+            "OBJECT", "JTOKEN", "JOBJECT"
         };
 
         /// <inheritdoc />
@@ -204,7 +204,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                               .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key)))
+            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {
