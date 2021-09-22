@@ -12,5 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
         public IReadOnlyCollection<decimal> DecimalValue { get; set; }
         public HashSet<StringObjectModel> StringObjectValue { get; set; }
         public ISet<Int32ObjectModel> Int32ObjectValue { get; set; }
+
+        public IEnumerable<StringObjectModel> StringObjectModel { get; set; }
     }
 }

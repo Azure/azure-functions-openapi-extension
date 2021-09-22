@@ -187,5 +187,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
                 result.AdditionalProperties.Reference.Should().BeNull();
             }
         }
+
+        [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IDictionary<string, FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyDictionary<string, FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(KeyValuePair<string, FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        public void Given_Alias_Type_When_Visit_Invoked_Then_It_Should_Return_All_Sub_Schemas(Type type, params Type[] schemaTypes)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var key = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), this._strategy);
+
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy);
+
+            acceptor.RootSchemas.Count.Should().Be(schemaTypes.Length);
+
+            foreach (var schemaType in schemaTypes)
+            {
+                var subKey = schemaType.GetOpenApiReferenceId(schemaType.IsOpenApiDictionary(), schemaType.IsOpenApiArray(), this._strategy);
+
+                acceptor.RootSchemas.Should().ContainKey(subKey);
+            }
+        }
     }
 }
