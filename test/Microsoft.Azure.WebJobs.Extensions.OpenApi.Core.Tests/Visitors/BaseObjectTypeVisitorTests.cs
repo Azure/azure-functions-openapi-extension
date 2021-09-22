@@ -47,17 +47,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(object), true)]
         [DataRow(typeof(FakeModel), false)]
         [DataRow(typeof(int), false)]
-        public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
-        {
-            var result = this._visitor.IsParameterVisitable(type);
-
-            result.Should().Be(expected);
-        }
-
-        [DataTestMethod]
-        [DataRow(typeof(object), true)]
-        [DataRow(typeof(FakeModel), false)]
-        [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsPayloadVisitable(type);
