@@ -71,6 +71,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataTestMethod]
         [DataRow("dictionaryObjectModel", "int32ObjectValue", "object", "int32ObjectModel")]
         [DataRow("dictionaryObjectModel", "stringObjectModel", "object", "stringObjectModel")]
+        [DataRow("dictionaryObjectModel", "stringArrayValue", "object", "string[]_string")]
+        [DataRow("dictionaryObjectModel", "intArrayValue", "object", "int32[]_int32")]
+
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemRef)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -83,6 +86,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             value["additionalProperties"].Value<string>("$ref").Should().Be($"#/components/schemas/{itemRef}");
 
             this._doc["components"]["schemas"][itemRef].Should().NotBeNullOrEmpty();
+        }
+
+        [DataTestMethod]
+        [DataRow("string[]_string", "array")]
+        [DataRow("int32[]_int32", "array")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentReferenceSchema(string @ref, string refType)
+        {
+            var schemas = this._doc["components"]["schemas"];
+            var schema = schemas[@ref]["type"];
+
+            schema.Should().NotBeNull();
+            schema.Value<string>().Should().Be(refType);
+            schema.Value<string>().Should().Be(refType);
+        }
+
+        [DataTestMethod]
+        [DataRow("string[]_string", "array", "string")]
+        [DataRow("int32[]_int32", "array", "integer")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentReferenceSchema(string @ref, string refType, string itemType)
+        {
+            var items = this._doc["components"]["schemas"][@ref];
+            var type = items["items"]["type"];
+            type.Should().NotBeNull();
+            type.Value<string>().Should().Be(itemType);
         }
     }
 }
