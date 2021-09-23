@@ -19,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         [FunctionName(nameof(Post_ApplicationJson_DecimalType_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_DecimalType_HttpTrigger.Post_ApplicationJson_DecimalType), tags: new[] { "demical" })]
         [OpenApiRequestBody(contentType: "application/octet-stream", bodyType: typeof(decimal), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DecimalTypeObjectModel), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/octet-stream", bodyType: typeof(DecimalTypeObjectModel), Description = "The OK response")]
 
         public static async Task<IActionResult> Post_ApplicationJson_DecimalType(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-decimal")] HttpRequest req,
