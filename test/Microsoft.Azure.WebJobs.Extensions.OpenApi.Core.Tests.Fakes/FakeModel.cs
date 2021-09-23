@@ -25,6 +25,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         [JsonProperty]
         public string FakePropertyNoAnnotation { get; set; }
 
+        public object FakeObject { get; set; }
+
         /// <summary>
         /// Gets or sets the nullable int value.
         /// </summary>

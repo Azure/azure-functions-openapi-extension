@@ -16,6 +16,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class DictionaryObjectTypeVisitor : TypeVisitor
     {
+        private readonly Dictionary<Type, OpenApiSchemaAcceptor> visitedTypes = new Dictionary<Type, OpenApiSchemaAcceptor>();
+
         /// <inheritdoc />
         public DictionaryObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -54,14 +56,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             };
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            var subAcceptor = new OpenApiSchemaAcceptor()
+            OpenApiSchemaAcceptor subAcceptor;
+            if (!this.visitedTypes.ContainsKey(underlyingType))
             {
-                Types = types,
-                RootSchemas = instance.RootSchemas,
-                Schemas = schemas,
-            };
-
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+                subAcceptor = new OpenApiSchemaAcceptor()
+                {
+                    Types = types, RootSchemas = instance.RootSchemas, Schemas = schemas,
+                };
+                this.visitedTypes.Add(underlyingType, subAcceptor);
+                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            }
+            else
+            {
+                subAcceptor = this.visitedTypes[underlyingType];
+            }
 
             var properties = subAcceptor.Schemas.First().Value;
 
