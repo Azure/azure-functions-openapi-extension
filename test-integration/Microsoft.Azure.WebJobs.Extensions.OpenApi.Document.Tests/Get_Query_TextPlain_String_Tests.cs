@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -67,6 +68,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var schema = parameter["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-query-textplain-string", "get", "name")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var example = parameter["examples"];
+
+            example["intValue"].Value<int>("value").Should().Be(1);
+            example["stringValue"].Value<string>("value").Should().Be("stringValue");
+            example["doubleValue"].Value<double>("value").Should().Be(0.123);
+            example["date-timeValue"].Value<DateTime>("value").Should().Be(DateTime.Parse("2021.01.01"));
+            example["booleanValue"].Value<bool>("value").Should().Be(false);
         }
 
         [DataTestMethod]
