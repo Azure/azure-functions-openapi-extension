@@ -84,6 +84,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             example["doubleValue"].Value<double>("value").Should().Be(0.123);
             example["date-timeValue"].Value<DateTime>("value").Should().Be(DateTime.Parse("2021.01.01"));
             example["booleanValue"].Value<bool>("value").Should().Be(false);
+
         }
 
         [DataTestMethod]

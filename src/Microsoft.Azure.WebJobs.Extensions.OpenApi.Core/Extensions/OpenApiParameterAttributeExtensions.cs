@@ -96,6 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
 
             parameter.Examples = examples;
+
             return parameter;
         }
     }
