@@ -14,10 +14,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public static class Get_ApplicationJson_BaseObject_HttpTrigger
     {
         [FunctionName(nameof(Get_ApplicationJson_BaseObject_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_BaseObject_HttpTrigger.Get_ApplicationJson_Object), tags: new[] { "greeting" })]
+        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_BaseObject_HttpTrigger.Get_ApplicationJson_BaseObject), tags: new[] { "greeting" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(HasBaseObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Get_ApplicationJson_Object(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-base-object")] HttpRequest req,
+        public static async Task<IActionResult> Get_ApplicationJson_BaseObject(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-baseobject")] HttpRequest req,
             ILogger log)
         {
             var result  = new OkResult();
