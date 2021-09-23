@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-base-object", "get", "200")]
+        [DataRow("/get-applicationjson-baseobject", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-base-object", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,19 +44,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-base-object", "get", "200", "application/json", "stringObjectModel")]
+        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "stringObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Not_Return_ReferenceSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
         }
 
-
         [DataTestMethod]
         [DataRow("hasBaseObjectModel", "objectValue", true)]
         [DataRow("hasBaseObjectModel", "nonObjectValue", false)]
         [DataRow("hasBaseObjectModel", "subModel", false)]
-        [DataRow("hasBaseObjectSubModel", "subObjectValue",true)]
-        public void Given_OpenApiDocument_Then_Type_Of_Property_Should_Return_Type_If_It_Is_BaseObject_Or_Not(string @ref, string propName,bool isBaseObject)
+        [DataRow("hasBaseObjectSubModel", "subObjectValue", true)]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName,bool isBaseObject)
         {
             var schemas = this._doc["components"]["schemas"];
 
@@ -71,6 +70,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
                 type.Should().NotBe("object");
             }
         }
-
     }
 }

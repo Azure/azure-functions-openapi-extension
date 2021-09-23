@@ -15,20 +15,26 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="object"/>.
+    /// This represents the type visitor for typed object, not <see cref="object"/>.
     /// </summary>
     public class ObjectTypeVisitor : TypeVisitor
     {
         private readonly HashSet<Type> _noVisitableTypes = new HashSet<Type>
         {
-            typeof(Guid),       typeof(DateTime),       typeof(DateTimeOffset),
-            typeof(Uri),        typeof(Type),           typeof(object),
+            typeof(Guid),
+            typeof(DateTime),
+            typeof(DateTimeOffset),
+            typeof(Uri),
+            typeof(Type),
+            typeof(object),
             typeof(byte[])
         };
 
         private readonly HashSet<string> _noAddedKeys = new HashSet<string>
         {
-            "OBJECT", "JTOKEN", "JOBJECT"
+            "OBJECT",
+            "JTOKEN",
+            "JOBJECT"
         };
 
         /// <inheritdoc />
