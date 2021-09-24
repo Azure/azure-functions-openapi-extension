@@ -59,12 +59,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
             name.ThrowIfNullOrWhiteSpace();
             if (instance == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentNullException(nameof(instance));
             }
             var resolver = new DefaultContractResolver() { NamingStrategy = namingStrategy ?? new DefaultNamingStrategy() };
             settings.ContractResolver = resolver;
 
-            IOpenApiAny openApiExampleValue = OpenApiExampleFactory.CreateInstance<T>(instance,settings);
+            var openApiExampleValue = OpenApiExampleFactory.CreateInstance<T>(instance,settings);
             var example = new OpenApiExample()
             {
                 Summary = summary,

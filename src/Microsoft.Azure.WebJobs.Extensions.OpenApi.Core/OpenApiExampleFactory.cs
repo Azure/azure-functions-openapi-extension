@@ -11,10 +11,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
     /// </summary>
     public static class OpenApiExampleFactory
     {
-        public static IOpenApiAny CreateInstance<T>(T instance)
-        {
-            return CreateInstance<T>(instance, new JsonSerializerSettings());
-        }
         /// <summary>
         /// Creates a new instance of <see cref="IOpenApiAny"/> based on the OpenAPI document format.
         /// </summary>
@@ -23,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         /// <returns><see cref="IOpenApiAny"/> instance.</returns>
         public static IOpenApiAny CreateInstance<T>(T instance, JsonSerializerSettings settings)
         {
-            IOpenApiAny openApiExampleValue = null;
+            var openApiExampleValue = default(IOpenApiAny);
 
             switch (Type.GetTypeCode(typeof(T)))
             {

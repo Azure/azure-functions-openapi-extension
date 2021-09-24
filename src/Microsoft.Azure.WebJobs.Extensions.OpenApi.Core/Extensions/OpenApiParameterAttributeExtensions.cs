@@ -23,6 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="attribute"><see cref="OpenApiParameterAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiParameter"/> instance.</returns>
         public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
         {

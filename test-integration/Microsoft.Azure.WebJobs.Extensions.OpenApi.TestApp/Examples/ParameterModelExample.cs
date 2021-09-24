@@ -12,12 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Examples
     {
         public override IOpenApiExample<string> Build(NamingStrategy namingStrategy = null)
         {
-            this.Examples.Add(OpenApiExampleResolver.Resolve("intValue", 1, namingStrategy));
             this.Examples.Add(OpenApiExampleResolver.Resolve("stringValue", "stringValue", namingStrategy));
-            this.Examples.Add(OpenApiExampleResolver.Resolve("doubleValue", 0.123, namingStrategy));
-            this.Examples.Add(OpenApiExampleResolver.Resolve("date-timeValue", DateTime.Parse("2021.01.01"), namingStrategy));
-            this.Examples.Add(OpenApiExampleResolver.Resolve("booleanValue", false, namingStrategy));
-
             return this;
         }
     }
