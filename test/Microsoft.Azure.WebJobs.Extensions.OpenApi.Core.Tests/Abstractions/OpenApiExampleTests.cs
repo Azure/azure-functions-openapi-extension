@@ -108,8 +108,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Abstractions
         }
 
         [TestMethod]
-        [DataRow("singleValue1", (float)1)]
-        [DataRow("singleValue2", (float)0)]
+        [DataRow("singleValue1", (float)1.1)]
+        [DataRow("singleValue2", (float)0.0)]
         public void Given_SingleType_When_Instantiated_Then_It_Should_Return_Result(string exampleName, float exampleValue)
         {
             var namingStrategy = new DefaultNamingStrategy();
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Abstractions
         }
 
         [TestMethod]
-        [DataRow("doubleValue1", 1.0)]
+        [DataRow("doubleValue1", 1.1)]
         [DataRow("doubleValue2", 0.0)]
         public void Given_DoubleType_When_Instantiated_Then_It_Should_Return_Result(string exampleName, double exampleValue)
         {
