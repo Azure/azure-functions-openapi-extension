@@ -18,25 +18,57 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
     [TestClass]
     public class TypeExtensionsTests
     {
-        [TestMethod]
-        public void Given_IList_Should_Return_True() =>
-            typeof(IList<string>).IsOpenApiArray().Should().BeTrue();
+        [DataTestMethod]
+        [DataRow(typeof(string), false)]
+        [DataRow(typeof(int), false)]
+        [DataRow(typeof(double), false)]
+        [DataRow(typeof(bool), false)]
+        [DataRow(typeof(Array), true)]
+        [DataRow(typeof(string[]), true)]
+        [DataRow(typeof(List<string>), true)]
+        [DataRow(typeof(IList<string>), true)]
+        [DataRow(typeof(ICollection<string>), true)]
+        [DataRow(typeof(IEnumerable<string>), true)]
+        [DataRow(typeof(IReadOnlyList<string>), true)]
+        [DataRow(typeof(IReadOnlyCollection<string>), true)]
+        [DataRow(typeof(HashSet<string>), true)]
+        [DataRow(typeof(ISet<string>), true)]
+        [DataRow(typeof(Dictionary<string, string>), false)]
+        [DataRow(typeof(IDictionary<string, string>), false)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), false)]
+        [DataRow(typeof(KeyValuePair<string, string>), false)]
+        public void Given_ArrayTypes_When_IsOpenApiArray_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.IsOpenApiArray(type);
 
-        [TestMethod]
-        public void Given_List_Should_Return_True() =>
-            typeof(List<string>).IsOpenApiArray().Should().BeTrue();
+            result.Should().Be(expected);
+        }
 
-        [TestMethod]
-        public void Given_Array_Method_Should_Return_True() =>
-            typeof(string[]).IsOpenApiArray().Should().BeTrue();
+        [DataTestMethod]
+        [DataRow(typeof(string), false)]
+        [DataRow(typeof(int), false)]
+        [DataRow(typeof(double), false)]
+        [DataRow(typeof(bool), false)]
+        [DataRow(typeof(Array), false)]
+        [DataRow(typeof(string[]), false)]
+        [DataRow(typeof(List<string>), false)]
+        [DataRow(typeof(IList<string>), false)]
+        [DataRow(typeof(ICollection<string>), false)]
+        [DataRow(typeof(IEnumerable<string>), false)]
+        [DataRow(typeof(IReadOnlyList<string>), false)]
+        [DataRow(typeof(IReadOnlyCollection<string>), false)]
+        [DataRow(typeof(HashSet<string>), false)]
+        [DataRow(typeof(ISet<string>), false)]
+        [DataRow(typeof(Dictionary<string, string>), true)]
+        [DataRow(typeof(IDictionary<string, string>), true)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
+        [DataRow(typeof(KeyValuePair<string, string>), true)]
+        public void Given_DictionaryTypes_When_IsOpenApiDictionary_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.IsOpenApiDictionary(type);
 
-        [TestMethod]
-        public void Given_Object_That_Extends_List_Should_Return_False() =>
-            typeof(JObject).IsOpenApiArray().Should().BeFalse();
-
-        [TestMethod]
-        public void Given_String_Method_Should_Return_False() =>
-            typeof(string).IsOpenApiArray().Should().BeFalse();
+            result.Should().Be(expected);
+        }
 
         [TestMethod]
         public void Given_DefaultNamingStrategy_When_GetOpenApiTypeName_Invoked_Then_It_Should_Return_Result()
