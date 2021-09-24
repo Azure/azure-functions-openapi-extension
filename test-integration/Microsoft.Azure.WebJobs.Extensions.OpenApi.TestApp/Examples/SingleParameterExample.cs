@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Examples
 {
-    public class FakeSingleParameterExample : OpenApiExample<float>
+    public class SingleParameterExample : OpenApiExample<float>
     {
         public override IOpenApiExample<float> Build(NamingStrategy namingStrategy = null)
         {

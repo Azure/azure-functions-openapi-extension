@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_Query_TextPlain_String_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_Query_TextPlain_String_HttpTrigger.Get_Query_TextPlain_String), tags: new[] { "greeting" })]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Example = typeof(ParameterModelExample), Required = true, Type = typeof(string), Description = "The **Name** parameter")]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_Query_TextPlain_String(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-query-textplain-string")] HttpRequest req,
