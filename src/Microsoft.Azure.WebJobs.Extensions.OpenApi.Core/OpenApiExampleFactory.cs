@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     openApiExampleValue = new OpenApiLong(Convert.ToInt64(instance));
                     break;
                 case TypeCode.UInt16:
-                    openApiExampleValue = new OpenApiInteger(Convert.ToUInt16(instance));
+                    openApiExampleValue = new OpenApiDouble(Convert.ToUInt16(instance));
                     break;
                 case TypeCode.UInt32:
                     openApiExampleValue = new OpenApiDouble(Convert.ToUInt32(instance));
