@@ -221,6 +221,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("/get-query-parameter-examples", "get", "dateTimeOffsetParameter", "dateTimeOffsetValue1", "05/01/2008", "dateTimeOffsetValue2", "11:36 PM")]
+        [DataRow("/get-query-parameter-examples", "get", "dateTimeOffsetParameter", "dateTimeOffsetValue3", "05/01/2008 +1:00", "dateTimeOffsetValue4", "Thu May 01, 2008")]
+        public void Given_OpenApiDocument_DateTimeOffsetType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName1, string exampleValue1, string exampleName2, string exampleValue2)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var examples = parameter["examples"];
+
+            examples[exampleName1]["value"].Value<DateTime>().Should().Be(DateTime.Parse(exampleValue1));
+            examples[exampleName2]["value"].Value<DateTime>().Should().Be(DateTime.Parse(exampleValue2));
+        }
+
+        [DataTestMethod]
         [DataRow("/get-query-parameter-examples", "get", "booleanParameter", "booleanValue1", true, "booleanValue2", false)]
         public void Given_OpenApiDocument_BooleanType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName1, bool exampleValue1, string exampleName2, bool exampleValue2)
         {

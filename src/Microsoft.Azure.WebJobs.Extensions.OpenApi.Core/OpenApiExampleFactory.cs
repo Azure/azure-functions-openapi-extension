@@ -19,9 +19,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         /// <returns><see cref="IOpenApiAny"/> instance.</returns>
         public static IOpenApiAny CreateInstance<T>(T instance, JsonSerializerSettings settings)
         {
+            Type type = typeof(T);
+            var @enum = Type.GetTypeCode(type);
             var openApiExampleValue = default(IOpenApiAny);
 
-            switch (Type.GetTypeCode(typeof(T)))
+            switch (@enum)
             {
                 case TypeCode.Int16:
                     openApiExampleValue = new OpenApiInteger(Convert.ToInt16(instance));
@@ -57,7 +59,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     openApiExampleValue = new OpenApiDateTime(Convert.ToDateTime(instance));
                     break;
                 case TypeCode.Object:
-                    openApiExampleValue = new OpenApiString(JsonConvert.SerializeObject(instance, settings));
+                    if(type == typeof(DateTimeOffset))
+                    {
+                        openApiExampleValue = new OpenApiDateTime((DateTimeOffset)(Convert.ChangeType(instance, type)));
+                    }
+                    else
+                    {
+                        openApiExampleValue = new OpenApiString(JsonConvert.SerializeObject(instance, settings));
+                    }
                     break;
                 default:
                     throw new InvalidOperationException("Invalid OpenAPI data Format");

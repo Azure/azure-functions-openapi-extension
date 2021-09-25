@@ -26,6 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         [OpenApiParameter(name: "singleParameter", In = ParameterLocation.Query, Required = true, Example = typeof(SingleParameterExample), Type = typeof(float), Description = "The **single** parameter")]
         [OpenApiParameter(name: "doubleParameter", In = ParameterLocation.Query, Required = true, Example = typeof(DoubleParameterExample), Type = typeof(double), Description = "The **double** parameter")]
         [OpenApiParameter(name: "dateTimeParameter", In = ParameterLocation.Query, Required = true, Example = typeof(DateTimeParameterExample), Type = typeof(DateTime), Description = "The **dateTime** parameter")]
+        [OpenApiParameter(name: "dateTimeOffsetParameter", In = ParameterLocation.Query, Required = true, Example = typeof(DateTimeOffsetParameterExample), Type = typeof(DateTimeOffset), Description = "The **dateTimeOffset** parameter")]
         [OpenApiParameter(name: "booleanParameter", In = ParameterLocation.Query, Required = true, Example = typeof(BooleanParameterExample), Type = typeof(bool), Description = "The **boolean** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_Query_ParameterExamples(

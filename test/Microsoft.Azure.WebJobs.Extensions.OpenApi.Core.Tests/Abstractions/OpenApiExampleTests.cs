@@ -162,5 +162,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Abstractions
             result[exampleName].Value.Should().BeOfType<OpenApiDateTime>();
             (result[exampleName].Value as OpenApiDateTime).Value.Should().Be(DateTime.Parse(exampleValue));
         }
+
+        [TestMethod]
+        [DataRow("dateTimeOffsetValue1", "05/01/2008")]
+        [DataRow("dateTimeOffsetValue2", "11:36 PM")]
+        [DataRow("dateTimeOffsetValue3", "05/01/2008 +1:00")]
+        [DataRow("dateTimeOffsetValue4", "Thu May 01, 2008")]
+        public void Given_DateTimeOffsetType_When_Instantiated_Then_It_Should_Return_Result(string exampleName, string exampleValue)
+        {
+            var namingStrategy = new DefaultNamingStrategy();
+            var example = new FakeDateTimeOffsetParameterExample();
+
+            var result = example.Build(namingStrategy).Examples;
+
+            result[exampleName].Value.Should().BeOfType<OpenApiDateTime>();
+            (result[exampleName].Value as OpenApiDateTime).Value.Should().Be(DateTimeOffset.Parse(exampleValue));
+        }
     }
 }
