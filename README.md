@@ -8,7 +8,8 @@
 ## Getting Started ##
 
 * [**Enable OpenAPI documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly. It's currently in preview.
-  * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi.md)
+  * [**Microsoft.Azure.Functions.Worker.Extensions.OpenApi**](docs/openapi-out-of-proc.md)
+  * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
 * [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
@@ -38,12 +39,10 @@ Here are the other sample apps directly using the NuGet packages (external repos
 * [Function App .NET 6 with IoC Container (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.IoC)
 * [Function App .NET 6 with Static (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.Static)
 
-> **NOTE**: .NET 6 support is currently very early preview.
-
 
 ## Azure Functions V1 Support ##
 
-This library supports Azure Functions V2 and onwards. If you still want to get your v1 app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions).
+This library supports Azure Functions V2 and onwards. If you still want to get your v1 app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
 
 
 ## Issues? ##

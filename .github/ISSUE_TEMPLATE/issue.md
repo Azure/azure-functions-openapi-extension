@@ -1,10 +1,9 @@
 ---
-name: ISSUE
+name: Bug report, feature request or other
 about: Create a report to help us improve
-title: ''
+title: Bug report, feature request or other request
 labels: ''
 assignees: ''
-
 ---
 
 **Describe the issue**
