@@ -42,6 +42,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             req.SetupGet(p => p.Host).Returns(hoststring);
 
             var dict = new Dictionary<string, StringValues>() { { key, new StringValues(value) } };
+            var header = new HeaderDictionary(dict);
+            req.SetupGet(p => p.Headers).Returns(header);
+
             var query = new QueryCollection(dict);
             req.SetupGet(p => p.Query).Returns(query);
 
@@ -53,6 +56,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
 
             result.Scheme.Should().Be(scheme);
             result.Host.Value.Should().Be(baseHost);
+            result.Headers.Should().ContainKey(key);
             result.Query.Should().ContainKey(key);
             ((string) result.Query[key]).Should().Be(value);
             (new StreamReader(result.Body)).ReadToEnd().Should().Be(payload);
