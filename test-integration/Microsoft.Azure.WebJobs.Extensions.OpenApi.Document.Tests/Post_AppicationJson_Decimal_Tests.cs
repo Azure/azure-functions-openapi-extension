@@ -107,7 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyFormat);
         }
 
     }
