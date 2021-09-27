@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-decimal", "post", "text/plain")]
+        [DataRow("/post-applicationjson-decimal", "post", "application/octet-stream")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-decimal", "post", "text/plain", "number", "double")]
+        [DataRow("/post-applicationjson-decimal", "post", "application/octet-stream", "number", "double")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
