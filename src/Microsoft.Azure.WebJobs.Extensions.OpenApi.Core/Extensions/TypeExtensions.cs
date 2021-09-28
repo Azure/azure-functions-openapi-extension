@@ -107,6 +107,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return isReferential;
         }
 
+        private static HashSet<Type> jObjects = new HashSet<Type>
+        {
+            typeof(JObject),
+            typeof(JToken),
+            typeof(JArray),
+        };
+
         /// <summary>
         /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
         /// </summary>
@@ -119,12 +126,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return false;
             }
 
-            if (type == typeof(JObject))
-            {
-                return true;
-            }
-
-            if (type == typeof(JToken))
+            if (jObjects.Any(p => p == type))
             {
                 return true;
             }
@@ -657,82 +659,31 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
         private static bool IsArrayType(this Type type)
         {
-            if (type.BaseType == typeof(Array))
-            {
-                return true;
-            }
+            var isArrayType = type.Name.Equals("String", StringComparison.InvariantCultureIgnoreCase) == false &&
+                              type.GetInterfaces()
+                                  .Where(p => p.IsInterface)
+                                  .Where(p => p.Name.Equals("IEnumerable", StringComparison.InvariantCultureIgnoreCase) == true)
+                                  .Any() &&
+                              type.IsJObjectType() == false &&
+                              type.IsDictionaryType() == false;
 
-            if (type.IsGenericTypeOf(typeof(List<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(IList<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(ICollection<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(IEnumerable<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(IReadOnlyList<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(IReadOnlyCollection<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(HashSet<>)))
-            {
-                return true;
-            }
-
-            if (type.IsGenericTypeOf(typeof(ISet<>)))
-            {
-                return true;
-            }
-
-            return false;
+            return isArrayType;
         }
+
+        private static HashSet<string> dictionaries = new HashSet<string>
+        {
+            "Dictionary`2",
+            "IDictionary`2",
+            "IReadOnlyDictionary`2",
+            "KeyValuePair`2",
+        };
 
         private static bool IsDictionaryType(this Type type)
         {
-            if (!type.IsGenericType)
-            {
-                return false;
-            }
+            var isDictionaryType = type.IsGenericType &&
+                                   dictionaries.Any(p => type.Name.Equals(p, StringComparison.InvariantCultureIgnoreCase) == true);
 
-            if (type.Name.Equals("Dictionary`2", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            if (type.Name.Equals("IDictionary`2", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            if (type.Name.Equals("IReadOnlyDictionary`2", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            if (type.Name.Equals("KeyValuePair`2", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return isDictionaryType;
         }
 
         private static bool IsNullableType(this Type type, out Type underlyingType)
