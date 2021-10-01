@@ -116,22 +116,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (nonReferentialTypes.Contains(type))
             {
-                return false;
+                isReferential = false;
             }
 
             if (type.IsOpenApiNullable())
             {
-                return false;
+                isReferential = false;
             }
 
             if (type.IsUnflaggedEnumType())
             {
-                return false;
+                isReferential = false;
             }
 
             if (type.IsJObjectType())
             {
-                return false;
+                isReferential = false;
             }
 
 
