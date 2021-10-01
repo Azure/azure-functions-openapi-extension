@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
@@ -15,10 +16,44 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
     public static class OpenApiHttpRequestDataExtensions
     {
         /// <summary>
-        /// Gets the <see cref="QueryCollection"/> instance from the <see cref="HttpRequestData"/>.
+        /// Gets the <see cref="IHeaderDictionary"/> instance from the <see cref="HttpRequestData"/>.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestData"/> instance.</param>
-        /// <returns>Returns <see cref="QueryCollection"/> instance.</returns>
+        /// <returns>Returns <see cref="IHeaderDictionary"/> instance.</returns>
+        public static IHeaderDictionary Headers(this HttpRequestData req)
+        {
+            req.ThrowIfNullOrDefault();
+
+            var headers = req.Headers.ToDictionary(p => p.Key, p => new StringValues(p.Value.ToArray()));
+            if (headers.IsNullOrDefault() || headers.Any() == false)
+            {
+                headers = new Dictionary<string, StringValues>();
+            }
+
+            return new HeaderDictionary(headers);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StringValues"/> object from the header of <see cref="HttpRequestData"/>.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequestData"/> instance.</param>
+        /// <param name="key">Header key.</param>
+        /// <returns>Returns <see cref="StringValues"/> object.</returns>
+        public static StringValues Header(this HttpRequestData req, string key)
+        {
+            req.ThrowIfNullOrDefault();
+
+            var headers = Headers(req);
+            var value = headers.ContainsKey(key) ? headers[key] : new StringValues(default(string));
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryCollection"/> instance from the <see cref="HttpRequestData"/>.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequestData"/> instance.</param>
+        /// <returns>Returns <see cref="IQueryCollection"/> instance.</returns>
         public static IQueryCollection Queries(this HttpRequestData req)
         {
             req.ThrowIfNullOrDefault();
@@ -33,7 +68,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         }
 
         /// <summary>
-        /// Gets the <see cref="StringValues"/> object from the <see cref="HttpRequestData"/>.
+        /// Gets the <see cref="StringValues"/> object from the querystring of <see cref="HttpRequestData"/>.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestData"/> instance.</param>
         /// <param name="key">Querystring key.</param>

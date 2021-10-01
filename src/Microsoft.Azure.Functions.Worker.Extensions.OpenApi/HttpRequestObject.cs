@@ -27,6 +27,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                         ? new HostString(req.Url.Authority)
                         : new HostString(req.Url.Host, req.Url.Port);
 
+            this.Headers = req.Headers();
             this.Query = req.Queries();
             this.Body = req.Body;
         }
@@ -36,6 +37,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
         /// <inheritdoc/>
         public virtual HostString Host { get; }
+
+        /// <inheritdoc/>
+        public virtual IHeaderDictionary Headers { get; }
 
         /// <inheritdoc/>
         public virtual IQueryCollection Query { get;}

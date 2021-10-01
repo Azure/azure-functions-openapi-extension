@@ -141,6 +141,24 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public virtual async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
+        {
+            var result = default(OpenApiAuthorizationResult);
+            var type = this.ApplicationAssembly
+                           .GetLoadableTypes()
+                           .SingleOrDefault(p => p.HasInterface<IOpenApiHttpTriggerAuthorization>());
+            if (type.IsNullOrDefault())
+            {
+                return result;
+            }
+
+            var auth = Activator.CreateInstance(type) as IOpenApiHttpTriggerAuthorization;
+            result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <inheritdoc />
         public virtual VisitorCollection GetVisitorCollection()
         {
             var collection = VisitorCollection.CreateInstance();

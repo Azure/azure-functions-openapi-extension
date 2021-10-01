@@ -21,6 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             this.Scheme = req.Scheme;
             this.Host = req.Host;
+            this.Headers = req.Headers;
             this.Query = req.Query;
             this.Body = req.Body;
         }
@@ -30,6 +31,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         /// <inheritdoc/>
         public virtual HostString Host { get; }
+
+        /// <inheritdoc/>
+        public virtual IHeaderDictionary Headers { get; }
 
         /// <inheritdoc/>
         public virtual IQueryCollection Query { get;}
