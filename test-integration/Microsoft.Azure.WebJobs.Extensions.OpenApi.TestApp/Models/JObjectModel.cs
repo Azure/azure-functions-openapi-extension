@@ -5,9 +5,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
     public class JObjectModel
     {
-        public JObject jObjectValue { get; set; }
-        public JToken jTokenValue { get; set; }
-        public JArray jArrayValue { get; set; }
+        public JObject JObjectValue { get; set; }
+        public JToken JTokenValue { get; set; }
+        public JArray JArrayValue { get; set; }
 
     }
 }
