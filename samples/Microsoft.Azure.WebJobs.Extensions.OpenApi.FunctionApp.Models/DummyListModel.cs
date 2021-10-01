@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
@@ -9,5 +11,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
         public HashSet<int> ListValues2 { get; set; }
 
         public ISet<DummyStringModel> ListValues3 { get; set; }
+
+        public ValidationProblemDetails ValidationProblemDetails { get; set; }
     }
 }
