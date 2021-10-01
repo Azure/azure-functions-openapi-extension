@@ -15,10 +15,28 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="object"/>.
+    /// This represents the type visitor for typed object, not <see cref="object"/>.
     /// </summary>
     public class ObjectTypeVisitor : TypeVisitor
     {
+        private readonly HashSet<Type> _noVisitableTypes = new HashSet<Type>
+        {
+            typeof(Guid),
+            typeof(DateTime),
+            typeof(DateTimeOffset),
+            typeof(Uri),
+            typeof(Type),
+            typeof(object),
+            typeof(byte[])
+        };
+
+        private readonly HashSet<string> _noAddedKeys = new HashSet<string>
+        {
+            "OBJECT",
+            "JTOKEN",
+            "JOBJECT"
+        };
+
         /// <inheritdoc />
         public ObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -30,23 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object);
 
-            if (type == typeof(Guid))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(DateTime))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(DateTimeOffset))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(Uri))
-            {
-                isVisitable = false;
-            }
-            else if (type == typeof(Type))
+            if (this._noVisitableTypes.Contains(type))
             {
                 isVisitable = false;
             }
@@ -74,7 +76,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
-            
 
             return isVisitable;
         }
@@ -204,13 +205,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
-                                              .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .GroupBy(p => p.Value.Title)
                                               .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => p.Key != "jObject" && p.Key != "jToken"))
+            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {

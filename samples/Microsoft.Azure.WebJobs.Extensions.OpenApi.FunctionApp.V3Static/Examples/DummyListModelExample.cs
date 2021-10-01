@@ -18,7 +18,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static.Exampl
                     "dummy",
                     new DummyListModel()
                     {
-                        ListValues = new List<DummyStringModel>() { new DummyStringModel() { StringValue = "Hello World", UriValue = new Uri("https://localhost") } }
+                        ListValues1 = new List<DummyStringModel>() { new DummyStringModel() { StringValue = "Hello World", UriValue = new Uri("https://localhost") } },
+                        ListValues2 = new HashSet<int>() { 1, 2 },
+                        ListValues3 = new HashSet<DummyStringModel>() { new DummyStringModel() { StringValue = "Hello World", UriValue = new Uri("https://localhost") } },
                     },
                     namingStrategy
                 ));

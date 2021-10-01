@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -50,6 +49,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), true)]
         [DataRow(typeof(IReadOnlyList<string>), true)]
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
+        [DataRow(typeof(HashSet<string>), true)]
+        [DataRow(typeof(ISet<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -65,6 +66,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), true)]
         [DataRow(typeof(IReadOnlyList<string>), true)]
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
+        [DataRow(typeof(HashSet<string>), true)]
+        [DataRow(typeof(ISet<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -80,6 +83,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), true)]
         [DataRow(typeof(IReadOnlyList<string>), true)]
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
+        [DataRow(typeof(HashSet<string>), true)]
+        [DataRow(typeof(ISet<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -95,12 +100,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), "array", null, "string", false, "string", 0)]
         [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false, "string", 0)]
         [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(HashSet<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(ISet<string>), "array", null, "string", false, "string", 0)]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IList<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(HashSet<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
@@ -132,12 +141,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), 1)]
         [DataRow(typeof(IReadOnlyList<string>), 1)]
         [DataRow(typeof(IReadOnlyCollection<string>), 1)]
+        [DataRow(typeof(HashSet<string>), 1)]
+        [DataRow(typeof(ISet<string>), 1)]
         [DataRow(typeof(List<FakeModel>), 1)]
         [DataRow(typeof(IList<FakeModel>), 1)]
         [DataRow(typeof(ICollection<FakeModel>), 1)]
         [DataRow(typeof(IEnumerable<FakeModel>), 1)]
         [DataRow(typeof(IReadOnlyList<FakeModel>), 1)]
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), 1)]
+        [DataRow(typeof(HashSet<FakeModel>), 1)]
+        [DataRow(typeof(ISet<FakeModel>), 1)]
         public void Given_MinLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
         {
             var name = "hello";
@@ -159,12 +172,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), 10)]
         [DataRow(typeof(IReadOnlyList<string>), 10)]
         [DataRow(typeof(IReadOnlyCollection<string>), 10)]
+        [DataRow(typeof(HashSet<string>), 10)]
+        [DataRow(typeof(ISet<string>), 10)]
         [DataRow(typeof(List<FakeModel>), 10)]
         [DataRow(typeof(IList<FakeModel>), 10)]
         [DataRow(typeof(ICollection<FakeModel>), 10)]
         [DataRow(typeof(IEnumerable<FakeModel>), 10)]
         [DataRow(typeof(IReadOnlyList<FakeModel>), 10)]
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), 10)]
+        [DataRow(typeof(HashSet<FakeModel>), 10)]
+        [DataRow(typeof(ISet<FakeModel>), 10)]
         public void Given_MaxLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
         {
             var name = "hello";
@@ -218,12 +235,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), "array", null, "string", false)]
         [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false)]
         [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false)]
+        [DataRow(typeof(HashSet<string>), "array", null, "string", false)]
+        [DataRow(typeof(ISet<string>), "array", null, "string", false)]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", true)]
         [DataRow(typeof(IList<FakeModel>), "array", null, "object", true)]
         [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true)]
         [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true)]
         [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true)]
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(HashSet<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true)]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isItemToBeNull)
         {
             var result = this._visitor.ParameterVisit(listType, this._strategy);
@@ -245,12 +266,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IEnumerable<string>), "array", null, "string", false, null)]
         [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false, null)]
         [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(HashSet<string>), "array", null, "string", false, null)]
+        [DataRow(typeof(ISet<string>), "array", null, "string", false, null)]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", true, "fakeModel")]
         [DataRow(typeof(IList<FakeModel>), "array", null, "object", true, "fakeModel")]
         [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true, "fakeModel")]
         [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true, "fakeModel")]
         [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true, "fakeModel")]
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(HashSet<FakeModel>), "array", null, "object", true, "fakeModel")]
+        [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true, "fakeModel")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool reference, string referenceId)
         {
             var result = this._visitor.PayloadVisit(listType, this._strategy);
@@ -269,6 +294,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             else
             {
                 result.Items.Reference.Should().BeNull();
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(List<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(ICollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IEnumerable<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyList<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        [DataRow(typeof(IReadOnlyCollection<FakeAliasCollectionModel>), typeof(FakeAliasCollectionModel), typeof(FakeAliasSubModel), typeof(FakeSubModel), typeof(FakeDummyModel))]
+        public void Given_Alias_Type_When_Visit_Invoked_Then_It_Should_Return_All_Sub_Schemas(Type type, params Type[] schemaTypes)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var key = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), this._strategy);
+
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy);
+
+            acceptor.RootSchemas.Count.Should().Be(schemaTypes.Length);
+
+            foreach (var schemaType in schemaTypes)
+            {
+                var subKey = schemaType.GetOpenApiReferenceId(schemaType.IsOpenApiDictionary(), schemaType.IsOpenApiArray(), this._strategy);
+
+                acceptor.RootSchemas.Should().ContainKey(subKey);
             }
         }
     }
