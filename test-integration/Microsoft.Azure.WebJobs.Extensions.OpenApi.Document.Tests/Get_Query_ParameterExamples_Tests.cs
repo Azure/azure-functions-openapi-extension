@@ -248,6 +248,31 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("/get-query-parameter-examples", "get", "guidParameter", "guidValue1", "74be27de-1e4e-49d9-b579-fe0b331d3642")]
+        public void Given_OpenApiDocument_GuidType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName, string exampleValue)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var examples = parameter["examples"];
+
+            examples[exampleName]["value"].Value<string>().Should().Be(exampleValue);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-query-parameter-examples", "get", "byteArrayParameter", "byteArrayValue1", "rBgS8A==", "byteArrayValue2", "/zIR")]
+        public void Given_OpenApiDocument_ByteArrayType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName1, string exampleValue1, string exampleName2, string exampleValue2)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var examples = parameter["examples"];
+
+            examples[exampleName1]["value"].Value<string>().Should().Be(exampleValue1);
+            examples[exampleName2]["value"].Value<string>().Should().Be(exampleValue2);
+        }
+
+        [DataTestMethod]
         [DataRow("/get-query-parameter-examples", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {

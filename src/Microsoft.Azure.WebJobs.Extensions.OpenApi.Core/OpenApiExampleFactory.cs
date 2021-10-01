@@ -63,6 +63,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                     {
                         openApiExampleValue = new OpenApiDateTime((DateTimeOffset)(Convert.ChangeType(instance, type)));
                     }
+                    else if (type == typeof(Guid))
+                    {
+                        openApiExampleValue = new OpenApiString(Convert.ToString(instance));
+                    }
+                    else if (type == typeof(byte[]))
+                    {
+                        openApiExampleValue = new OpenApiString(Convert.ToBase64String((byte[])Convert.ChangeType(instance,type)));
+                    }
                     else
                     {
                         openApiExampleValue = new OpenApiString(JsonConvert.SerializeObject(instance, settings));
