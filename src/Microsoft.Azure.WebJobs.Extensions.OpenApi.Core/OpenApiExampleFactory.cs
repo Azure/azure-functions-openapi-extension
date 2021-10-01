@@ -58,23 +58,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 case TypeCode.DateTime:
                     openApiExampleValue = new OpenApiDateTime(Convert.ToDateTime(instance));
                     break;
+                case TypeCode.Object when type == typeof(DateTimeOffset):
+                    openApiExampleValue = new OpenApiDateTime((DateTimeOffset)(Convert.ChangeType(instance, type)));
+                    break;
+                case TypeCode.Object when type == typeof(Guid):
+                    openApiExampleValue = new OpenApiString(Convert.ToString(instance));
+                    break;
+                case TypeCode.Object when type == typeof(byte[]):
+                    openApiExampleValue = new OpenApiString(Convert.ToBase64String((byte[])Convert.ChangeType(instance, type)));
+                    break;
                 case TypeCode.Object:
-                    if(type == typeof(DateTimeOffset))
-                    {
-                        openApiExampleValue = new OpenApiDateTime((DateTimeOffset)(Convert.ChangeType(instance, type)));
-                    }
-                    else if (type == typeof(Guid))
-                    {
-                        openApiExampleValue = new OpenApiString(Convert.ToString(instance));
-                    }
-                    else if (type == typeof(byte[]))
-                    {
-                        openApiExampleValue = new OpenApiString(Convert.ToBase64String((byte[])Convert.ChangeType(instance,type)));
-                    }
-                    else
-                    {
-                        openApiExampleValue = new OpenApiString(JsonConvert.SerializeObject(instance, settings));
-                    }
+                    openApiExampleValue = new OpenApiString(JsonConvert.SerializeObject(instance, settings));
                     break;
                 default:
                     throw new InvalidOperationException("Invalid OpenAPI data Format");
