@@ -20,9 +20,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         HostString Host { get; }
 
         /// <summary>
+        /// Gets the header collection.
+        /// </summary>
+        IHeaderDictionary Headers { get; }
+
+        /// <summary>
         /// Gets the query collection.
         /// </summary>
-        IQueryCollection Query { get;}
+        IQueryCollection Query { get; }
 
         /// <summary>
         /// Gets the request payload stream.

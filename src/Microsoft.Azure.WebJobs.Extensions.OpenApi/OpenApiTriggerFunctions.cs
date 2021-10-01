@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
@@ -35,15 +36,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation($"swagger.{extension} was requested.");
 
+            var request = new HttpRequestObject(req);
             var result = default(string);
             var content = default(ContentResult);
             try
             {
-                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
-                                      .Document
+                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                                        .AuthorizeAsync(request)
+                                        .ConfigureAwait(false);
+                if (!auth.IsNullOrDefault())
+                {
+                    content = new ContentResult()
+                    {
+                        Content = auth.Payload,
+                        ContentType = auth.ContentType,
+                        StatusCode = (int)auth.StatusCode,
+                    };
+
+                    return content;
+                }
+
+                result = await context.Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                                      .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
@@ -92,12 +108,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation($"{version}.{extension} was requested.");
 
+            var request = new HttpRequestObject(req);
             var result = default(string);
             var content = default(ContentResult);
             try
             {
-                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
-                                      .Document
+                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                                        .AuthorizeAsync(request)
+                                        .ConfigureAwait(false);
+                if (!auth.IsNullOrDefault())
+                {
+                    content = new ContentResult()
+                    {
+                        Content = auth.Payload,
+                        ContentType = auth.ContentType,
+                        StatusCode = (int)auth.StatusCode,
+                    };
+
+                    return content;
+                }
+
+                result = await context.Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
                                       .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
@@ -147,12 +178,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation("SwaggerUI page was requested.");
 
+            var request = new HttpRequestObject(req);
             var result = default(string);
             var content = default(ContentResult);
             try
             {
-                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
-                                      .SwaggerUI
+                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                                        .AuthorizeAsync(request)
+                                        .ConfigureAwait(false);
+                if (!auth.IsNullOrDefault())
+                {
+                    content = new ContentResult()
+                    {
+                        Content = auth.Payload,
+                        ContentType = auth.ContentType,
+                        StatusCode = (int)auth.StatusCode,
+                    };
+
+                    return content;
+                }
+
+                result = await context.SwaggerUI
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
                                       .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildAsync(context.PackageAssembly, context.OpenApiCustomUIOptions)
@@ -199,13 +245,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             log.LogInformation("The oauth2-redirect.html page was requested.");
 
+            var request = new HttpRequestObject(req);
             var result = default(string);
             var content = default(ContentResult);
             try
             {
-                result = await (await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory))
-                                      .SwaggerUI
-                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                             .ConfigureAwait(false);
+
+                result = await context.SwaggerUI
+                                      .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .BuildOAuth2RedirectAsync(context.PackageAssembly)
                                       .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
