@@ -69,7 +69,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             this._req = req;
 
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
+
+            var isHttpForced = options.ForceHttp;
+            var isHttpsForced = options.ForceHttps;
+
+            var baseUrl = "";
+
+            // Forcing scheme to be a http or https
+            if (isHttpForced == false && isHttpsForced == false)
+            {
+                baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
+            }
+            else if (isHttpForced == true && isHttpsForced == false)
+            {
+                baseUrl = $"http://{this._req.Host}{prefix}";
+            }
+            else if (isHttpForced == false && isHttpsForced == true)
+            {
+                baseUrl = $"https://{this._req.Host}{prefix}";
+            }
+            else
+            {
+                baseUrl = $"https://{this._req.Host}{prefix}";
+            }
+
 
             var server = new OpenApiServer { Url = baseUrl };
 

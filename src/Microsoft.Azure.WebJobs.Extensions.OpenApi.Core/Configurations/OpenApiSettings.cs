@@ -28,5 +28,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public bool IncludeRequestingHostName { get; set; }
+
+        /// <inheritdoc />
+        public bool ForceHttp { get; set; }
+
+        /// <inheritdoc />
+        public bool ForceHttps { get; set; }
     }
 }
