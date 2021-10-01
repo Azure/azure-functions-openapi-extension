@@ -10,5 +10,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
         public KeyValuePair<string, Int32ObjectModel> Int32ObjectValue { get; set; }
 
         public IDictionary<string, StringObjectModel> StringObjectModel { get; set; }
+
+        public Dictionary<int, int[]> IntArrayValue { get; set; }
+        public Dictionary<string, string[]> StringArrayValue { get; set; }
     }
 }
