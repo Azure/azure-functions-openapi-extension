@@ -68,45 +68,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
         }
 
-
-        /// <summary>
-        /// Checks whether the type can be referenced or not.
-        /// </summary>
-        /// <param name="type">Type to check.</param>
-        /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
-        public static bool IsReferentialType(this Type type)
-        {
-            var @enum = Type.GetTypeCode(type);
-            var isReferential = @enum == TypeCode.Object;
-
-            if (type == typeof(Guid))
-            {
-                isReferential = false;
-            }
-            if (type == typeof(DateTime))
-            {
-                isReferential = false;
-            }
-            if (type == typeof(DateTimeOffset))
-            {
-                isReferential = false;
-            }
-            if (type.IsOpenApiNullable())
-            {
-                isReferential = false;
-            }
-            if (type.IsUnflaggedEnumType())
-            {
-                isReferential = false;
-            }
-            if (type.IsJObjectType())
-            {
-                isReferential = false;
-            }
-
-            return isReferential;
-        }
-
         private static HashSet<Type> jObjects = new HashSet<Type>
         {
             typeof(JObject),
@@ -133,6 +94,51 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             return false;
         }
+
+        private static HashSet<Type> nonReferentialTypes = new HashSet<Type>
+        {
+            typeof(Guid),
+            typeof(DateTime),
+            typeof(DateTimeOffset),
+            typeof(object),
+        };
+
+        /// <summary>
+        /// Checks whether the type can be referenced or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
+
+        public static bool IsReferentialType(this Type type)
+        {
+            var @enum = Type.GetTypeCode(type);
+            var isReferential = @enum == TypeCode.Object;
+
+            if (nonReferentialTypes.Contains(type))
+            {
+                isReferential = false;
+            }
+
+            if (type.IsOpenApiNullable())
+            {
+                isReferential = false;
+            }
+
+            if (type.IsUnflaggedEnumType())
+            {
+                isReferential = false;
+            }
+
+            if (type.IsJObjectType())
+            {
+                isReferential = false;
+            }
+
+
+            return isReferential;
+        }
+
+
 
         /// <summary>
         /// Checks whether the given type is enum without flags or not.
@@ -375,13 +381,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 namingStrategy = new DefaultNamingStrategy();
             }
-
-            if (isDictionary || isList)
+            
+            if(isDictionary)
             {
-                var name = type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
-
+                var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
+            if(isList)
+            {
+                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy): type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);; 
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+            }            
 
             if (type.IsGenericType)
             {

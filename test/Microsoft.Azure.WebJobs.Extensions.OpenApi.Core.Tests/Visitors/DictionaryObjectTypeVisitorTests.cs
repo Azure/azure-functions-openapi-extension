@@ -34,6 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, string[]>), false)]
         [DataRow(typeof(Dictionary<string, string>), false)]
         public void Given_Type_When_IsNavigatable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -43,6 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, string[]>), true)] 
         [DataRow(typeof(Dictionary<string, string>), true)]
         [DataRow(typeof(IDictionary<string, string>), true)]
         [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
@@ -56,6 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, string[]>), false)] 
         [DataRow(typeof(Dictionary<string, string>), false)]
         [DataRow(typeof(IDictionary<string, string>), false)]
         [DataRow(typeof(IReadOnlyDictionary<string, string>), false)]
@@ -69,6 +72,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(Dictionary<string, string[]>), true)] 
         [DataRow(typeof(Dictionary<string, string>), true)]
         [DataRow(typeof(IDictionary<string, string>), true)]
         [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
@@ -87,6 +91,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", false, "string", 0)]
         [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", false, "string", 0)]
         [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(Dictionary<string, string[]>), "object", null, "array", true, "list_string", 1)] //
         [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
