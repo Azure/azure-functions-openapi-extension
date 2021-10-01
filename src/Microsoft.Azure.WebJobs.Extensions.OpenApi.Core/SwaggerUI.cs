@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -59,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             this._req = req;
 
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
+            var baseUrl = $"{this._req.GetScheme(options)}://{this._req.Host}{prefix}";
 
             if (options.IsNullOrDefault())
             {
