@@ -95,7 +95,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return false;
         }
 
-        private static HashSet<Type> nonReferential = new HashSet<Type>
+        private static HashSet<Type> nonReferentialTypes = new HashSet<Type>
         {
             typeof(Guid),
             typeof(DateTime),
@@ -103,12 +103,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             typeof(object),
         };
 
+        /// <summary>
+        /// Checks whether the type can be referenced or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
+
         public static bool IsReferentialType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
             var isReferential = @enum == TypeCode.Object;
 
-            if (nonReferential.Contains(type))
+            if (nonReferentialTypes.Contains(type))
             {
                 return false;
             }
@@ -378,7 +384,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             
             if(isDictionary)
             {
-                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
             if(isList)
