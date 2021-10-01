@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 using FluentAssertions;
 
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 {
@@ -71,7 +75,6 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
                                          .PackageAssembly;
 
             assembly.DefinedTypes.Should().Contain(typeof(ISwaggerUI).GetTypeInfo());
-            assembly.DefinedTypes.Should().NotContain(typeof(IOpenApiHttpTriggerContext).GetTypeInfo());
         }
 
         [TestMethod]
@@ -111,6 +114,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             settings.RoutePrefix.Should().Be("api");
 
+        }
+
+        [TestMethod]
+        public async Task Given_Authorization_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result()
+        {
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var req = new Mock<IHttpRequestDataObject>();
+            var context = new OpenApiHttpTriggerContext();
+
+            var result = await context.SetApplicationAssemblyAsync(location, false)
+                                      .AuthorizeAsync(req.Object);
+
+            result.StatusCode.Should().Be(FakeOpenApiHttpTriggerAuthorization.StatusCode);
+            result.ContentType.Should().Be(FakeOpenApiHttpTriggerAuthorization.ContentType);
+            result.Payload.Should().Be(FakeOpenApiHttpTriggerAuthorization.Payload);
         }
 
         [DataTestMethod]
