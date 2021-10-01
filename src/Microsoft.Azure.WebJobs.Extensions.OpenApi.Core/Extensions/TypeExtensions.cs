@@ -35,25 +35,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 case TypeCode.Boolean:
                 case TypeCode.DateTime:
                 case TypeCode.String:
+                case TypeCode.Object when type == typeof(Guid):
+                case TypeCode.Object when type == typeof(DateTime):
+                case TypeCode.Object when type == typeof(DateTimeOffset):
                     return true;
-
-                case TypeCode.Object:
-                    if (type == typeof(Guid))
-                    {
-                        return true;
-                    }
-                    else if (type == typeof(DateTime))
-                    {
-                        return true;
-                    }
-                    else if (type == typeof(DateTimeOffset))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
 
                 case TypeCode.Empty:
                 case TypeCode.DBNull:
@@ -95,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return false;
         }
 
-        private static HashSet<Type> nonReferentialTypes = new HashSet<Type>
+        private static HashSet<Type> nonReferentials = new HashSet<Type>
         {
             typeof(Guid),
             typeof(DateTime),
@@ -114,7 +99,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var @enum = Type.GetTypeCode(type);
             var isReferential = @enum == TypeCode.Object;
 
-            if (nonReferentialTypes.Contains(type))
+            if (nonReferentials.Contains(type))
             {
                 isReferential = false;
             }
@@ -134,16 +119,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 isReferential = false;
             }
 
-
             return isReferential;
         }
-
-
 
         /// <summary>
         /// Checks whether the given type is enum without flags or not.
         /// </summary>
-        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns <c>True</c>, if the type is identified as enum without flags; otherwise returns <c>False</c>.</returns>
         public static bool IsEnumType(this Type type)
         {
@@ -381,7 +363,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 namingStrategy = new DefaultNamingStrategy();
             }
-            
+
             if(isDictionary)
             {
                 var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
@@ -389,9 +371,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
             if(isList)
             {
-                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy): type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);; 
+                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy): type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);;
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
-            }            
+            }
 
             if (type.IsGenericType)
             {
