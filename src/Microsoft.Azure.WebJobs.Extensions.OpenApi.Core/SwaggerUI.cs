@@ -59,10 +59,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{this._req.GetScheme(options)}://{this._req.Host}{prefix}";
+            var absolutePath = default(string);
 
             if (options.IsNullOrDefault())
             {
                 this._baseUrl = baseUrl;
+
+                absolutePath = new Uri(this._baseUrl).AbsolutePath.Trim('/');
+                this._swaggerUiApiPrefix = absolutePath;
 
                 return this;
             }
@@ -84,7 +88,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             this._baseUrl = servers.First().Url;
-            this._swaggerUiApiPrefix = prefix;
+
+            absolutePath = new Uri(this._baseUrl).AbsolutePath.Trim('/');
+            this._swaggerUiApiPrefix = absolutePath;
 
             return this;
         }

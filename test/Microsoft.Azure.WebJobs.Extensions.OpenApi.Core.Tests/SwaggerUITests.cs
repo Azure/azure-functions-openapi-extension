@@ -115,5 +115,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 
             (fi.GetValue(ui) as string).Should().Be(expected);
         }
+
+        [DataTestMethod]
+        [DataRow("http", "localhost", "api", "api")]
+        [DataRow("https", "localhost", "api/", "api")]
+        [DataRow("http", "localhost", "api/prod", "api/prod")]
+        [DataRow("https", "localhost", "api/prod/", "api/prod")]
+        public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_SwaggerUIApiPrefix(string scheme, string host, string routePrefix, string expected)
+        {
+            var req = new Mock<IHttpRequestDataObject>();
+            req.SetupGet(p => p.Scheme).Returns(scheme);
+
+            var hostString = new HostString(host);
+            req.SetupGet(p => p.Host).Returns(hostString);
+
+            var ui = new SwaggerUI();
+
+            ui.AddServer(req.Object, routePrefix, null);
+
+            var fi = ui.GetType().GetField("_swaggerUiApiPrefix", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            (fi.GetValue(ui) as string).Should().Be(expected);
+        }
     }
 }
