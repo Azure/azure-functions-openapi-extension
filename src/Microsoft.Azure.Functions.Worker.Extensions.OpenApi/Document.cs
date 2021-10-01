@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
 using GenericExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.GenericExtensions;
+using HttpRequestDataObjectExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.HttpRequestDataObjectExtensions;
 using OpenApiDocumentExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.OpenApiDocumentExtensions;
 using StringExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.StringExtensions;
 
@@ -73,7 +74,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             this._req = req;
 
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
+            var baseUrl = $"{HttpRequestDataObjectExtensions.GetScheme(this._req, options)}://{this._req.Host}{prefix}";
 
             var server = new OpenApiServer { Url = baseUrl };
 
