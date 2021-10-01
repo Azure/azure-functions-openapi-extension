@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -56,16 +57,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         public static KeyValuePair<string, OpenApiExample> Resolve<T>(string name, string summary, string description, T instance, NamingStrategy namingStrategy = null)
         {
             name.ThrowIfNullOrWhiteSpace();
-            instance.ThrowIfNullOrDefault();
-
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
             var resolver = new DefaultContractResolver() { NamingStrategy = namingStrategy ?? new DefaultNamingStrategy() };
             settings.ContractResolver = resolver;
 
+            var openApiExampleValue = OpenApiExampleFactory.CreateInstance<T>(instance,settings);
             var example = new OpenApiExample()
             {
                 Summary = summary,
                 Description = description,
-                Value = new OpenApiString(JsonConvert.SerializeObject(instance, settings)),
+                Value = openApiExampleValue,
             };
             var kvp = new KeyValuePair<string, OpenApiExample>(name, example);
 

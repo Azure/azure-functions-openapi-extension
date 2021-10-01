@@ -5,7 +5,6 @@ using System.Reflection;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -160,7 +159,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataRow("V2", OpenApiVersionType.V2)]
         [DataRow("v3", OpenApiVersionType.V3)]
         [DataRow("V3", OpenApiVersionType.V3)]
-        public void Given_EnvironmentVariable_When_GetHostNames_Invoked_Then_It_Should_Return_Result(string version, OpenApiVersionType expected)
+        public void Given_EnvironmentVariable_When_GetOpenApiVersion_Invoked_Then_It_Should_Return_Result(string version, OpenApiVersionType expected)
         {
             Environment.SetEnvironmentVariable("OpenApi__Version", version);
 
@@ -176,12 +175,48 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataTestMethod]
         [DataRow("Development", true)]
         [DataRow("Production", false)]
-        public void Given_EnvironmentVariable_When_GetHostNames_Invoked_Then_It_Should_Return_Result(string environment, bool expected)
+        public void Given_EnvironmentVariable_When_IsFunctionsRuntimeEnvironmentDevelopment_Invoked_Then_It_Should_Return_Result(string environment, bool expected)
         {
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", environment);
 
             var options = new DefaultOpenApiConfigurationOptions();
             var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsFunctionsRuntimeEnvironmentDevelopment", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var result = method.Invoke(options, null);
+
+            result.Should().BeOfType<bool>();
+            ((bool)result).Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow("true", true)]
+        [DataRow("false", false)]
+        [DataRow("", false)]
+        [DataRow(null, false)]
+        public void Given_EnvironmentVariable_When_IsHttpForced_Invoked_Then_It_Should_Return_Result(string forceHttps, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttps);
+
+            var options = new DefaultOpenApiConfigurationOptions();
+            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpForced", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var result = method.Invoke(options, null);
+
+            result.Should().BeOfType<bool>();
+            ((bool)result).Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow("true", true)]
+        [DataRow("false", false)]
+        [DataRow("", false)]
+        [DataRow(null, false)]
+        public void Given_EnvironmentVariable_When_IsHttpsForced_Invoked_Then_It_Should_Return_Result(string forceHttps, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttps", forceHttps);
+
+            var options = new DefaultOpenApiConfigurationOptions();
+            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpsForced", BindingFlags.NonPublic | BindingFlags.Static);
 
             var result = method.Invoke(options, null);
 

@@ -69,7 +69,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             this._req = req;
 
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
-            var baseUrl = $"{this._req.Scheme}://{this._req.Host}{prefix}";
+            var baseUrl = $"{this._req.GetScheme(options)}://{this._req.Host}{prefix}";
 
             var server = new OpenApiServer { Url = baseUrl };
 
