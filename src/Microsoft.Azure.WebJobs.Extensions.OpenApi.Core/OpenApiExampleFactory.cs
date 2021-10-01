@@ -1,8 +1,8 @@
-using Microsoft.OpenApi.Any;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
+using Microsoft.OpenApi.Any;
+
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
@@ -73,6 +73,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 default:
                     throw new InvalidOperationException("Invalid OpenAPI data Format");
             }
+
             return openApiExampleValue;
         }
     }
