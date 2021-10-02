@@ -107,6 +107,59 @@ There's a chance if you want to force the Swagger UI to render either HTTP or HT
 > **NOTE**: If your Azure Functions app is running on the [Linux Dedicated Plan](https://docs.microsoft.com/azure/azure-functions/dedicated-plan?WT.mc_id=github-0000-juyoo), consider this configuration.
 
 
+## Swaggrer UI Endpoints Filtering ##
+
+You may want to selectively display endpoints on the Swagger UI and OpenAPI documents. In this case, you can use the tags to filter which endpoints you want to show. For example, you've got endpoints like:
+
+```csharp
+[FunctionName("MyAdminFunction1")]
+[OpenApiOperation(operationId: ..., tags: new[] { "admin" })]
+...
+public static async Task<IActionResult> MyAdminFunction1(...)
+{
+    ...
+}
+
+[FunctionName("MyAdminFunction2")]
+[OpenApiOperation(operationId: ..., tags: new[] { "admin" })]
+...
+public static async Task<IActionResult> MyAdminFunction2(...)
+{
+    ...
+}
+
+[FunctionName("MyFunction1")]
+[OpenApiOperation(operationId: ..., tags: new[] { "product" })]
+...
+public static async Task<IActionResult> MyFunction1(...)
+{
+    ...
+}
+
+[FunctionName("MyFunction2")]
+[OpenApiOperation(operationId: ..., tags: new[] { "product" })]
+...
+public static async Task<IActionResult> MyFunction2(...)
+{
+    ...
+}
+```
+
+If you only want to only show the admin API endpoints, add `filter=admin` to the querystring:
+
+```
+http://localhost:7071/api/swagger/ui?filter=admin
+http://localhost:7071/api/swagger.json?filter=admin
+```
+
+If you want to only show the product related API endpoints, add `filter=product` to the querystring:
+
+```
+http://localhost:7071/api/swagger/ui?filter=product
+http://localhost:7071/api/swagger.json?filter=product
+```
+
+
 ## Further Authentication and Authorisation ##
 
 This extension relies on the built-in authentication method, either `code=` in the querystring or `x-functions-key` in the request header. However, if you want additional authentication and authorisation for both Swagger UI and OpenAPI documents, you can implement the `IOpenApiHttpTriggerAuthorization` interface or inherit the `DefaultOpenApiHttpTriggerAuthorization` class. Here's the `DefaultOpenApiHttpTriggerAuthorization` class implementing the `IOpenApiHttpTriggerAuthorization` interface.
