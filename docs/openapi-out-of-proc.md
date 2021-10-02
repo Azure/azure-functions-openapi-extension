@@ -47,7 +47,7 @@ As a default, the OpenAPI document automatically generated provides a minimum se
 * OpenAPI Document Title: `OpenAPI Document on Azure Functions`
 * OpenAPI Document Version: `1.0.0`
 
-You may want to provide consumers with more details by implementing the `IOpenApiConfigurationOptions` interface or inheriting the `DefaultOpenApiConfigurationOptions` class. On the other hand, you can use the following environment variables to avoid the app from being recompiled and redeployed. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+You may want to provide consumers with more details by implementing the `IOpenApiConfigurationOptions` interface or inheriting the `DefaultOpenApiConfigurationOptions` class. If you inherit the `DefaultOpenApiConfigurationOptions` class, you can use the following environment variables to avoid the app from being recompiled and redeployed. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
 
 ```json
 {
@@ -73,3 +73,19 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
 ```
 
 > **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.
+
+
+### Force HTTP or HTTPS for Swagger UI ###
+
+There's a chance if you want to force the Swagger UI to render either HTTP or HTTPS. Both are set to `false` by default. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__ForceHttps": "true",
+    "OpenApi__ForceHttp": "false",
+  }
+}
+```
+
+> **NOTE**: If your Azure Functions app is running on the [Linux Dedicated Plan](https://docs.microsoft.com/azure/azure-functions/dedicated-plan?WT.mc_id=github-0000-juyoo), consider this configuration.

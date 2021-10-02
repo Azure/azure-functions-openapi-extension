@@ -139,6 +139,27 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 ```
 
 
+### Force HTTP or HTTPS for Swagger UI ###
+
+> **NOTE**: If you use the [Linux Dedicated Plan](https://docs.microsoft.com/azure/azure-functions/dedicated-plan?WT.mc_id=github-0000-juyoo), you can consider this HTTP/HTTPS enforcement settings.
+
+If you want to force either HTTP or HTTPS, configure the following properties on the `IOpenApiConfigurationOptions` interface.
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    ...
+
+    public bool ForceHttps { get; set; } = true;
+    public bool ForceHttp { get; set; } = true;
+
+    ...
+}
+```
+
+You can set either property to `true`, and based on the combination of both, your Swagger UI renders contents through either HTTP or HTTPS. However, if you set both properties to `true`, HTTPS takes precedence.
+
+
 ### Inheriting `DefaultOpenApiConfigurationOptions` ###
 
 Instead of implementing `IOpenApiConfigurationOptions`, you can inherit `DefaultOpenApiConfigurationOptions`. As `Info`, `Servers` and `OpenApiVersion` properties have the modifier of `virtual`, you can freely override them or leave them as default.
@@ -172,6 +193,9 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     };
 
     public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
+
+    // Consider Linux Dedicated Plan only.
+    public override bool ForceHttps { get; set; } = true;
 }
 ```
 
