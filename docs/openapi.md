@@ -29,8 +29,7 @@ As a default, all endpoints to render Swagger UI and OpenAPI documents have the 
 
 You can have granular controls to both Swagger UI and OpenAPI documents by setting the authorisation level to `Anonymous`, `User`, `Function`, `System` or `Admin`. Make sure that you MUST provide the `OpenApi__AuthKey` value, if you choose the `OpenApi__AuthLevel__Document` value other than `Anonymous`. Otherwise, it will throw an error.
 
-> [!NOTE]
-> Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
+> **NOTE**: Both Swagger UI and OpenAPI document pages are allowed `Anonymous` access by default.
 
 
 ### Configure Swagger UI Visibility ###
@@ -49,8 +48,7 @@ You may want to only enable the Swagger UI page during the development time, and
 
 If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won't be showing up, and you will see the 404 error.
 
-> [!NOTE]
-> The default value for `OpenApi__HideSwaggerUI` is `false`.
+> **NOTE**: The default value for `OpenApi__HideSwaggerUI` is `false`.
 
 
 ### Configure OpenAPI Information ###
@@ -93,7 +91,7 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
 
 There's a chance if you want to force the Swagger UI to render either HTTP or HTTPS. If you inherit the `DefaultOpenApiConfigurationOptions` class, you can configure environment variables to add them. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
 
-> Both values are set to `false` by default.
+> **NOTE**: Both values are set to `false` by default.
 
 ```json
 {
@@ -162,7 +160,9 @@ http://localhost:7071/api/swagger.json?filter=product
 
 ## Further Authentication and Authorisation ##
 
-This extension relies on the built-in authentication method, either `code=` in the querystring or `x-functions-key` in the request header. However, if you want additional authentication and authorisation for both Swagger UI and OpenAPI documents, you can implement the `IOpenApiHttpTriggerAuthorization` interface or inherit the `DefaultOpenApiHttpTriggerAuthorization` class. Here's the `DefaultOpenApiHttpTriggerAuthorization` class implementing the `IOpenApiHttpTriggerAuthorization` interface.
+This extension relies on the built-in authentication method, either `code=` in the querystring or `x-functions-key` in the request header. However, if you want additional authentication and authorisation for both Swagger UI and OpenAPI documents, you can implement the `IOpenApiHttpTriggerAuthorization` interface or inherit the `DefaultOpenApiHttpTriggerAuthorization` class.
+
+Here's the `DefaultOpenApiHttpTriggerAuthorization` class implementing the `IOpenApiHttpTriggerAuthorization` interface.
 
 ```csharp
 public class DefaultOpenApiHttpTriggerAuthorization : IOpenApiHttpTriggerAuthorization
@@ -176,7 +176,7 @@ public class DefaultOpenApiHttpTriggerAuthorization : IOpenApiHttpTriggerAuthori
 }
 ```
 
-If you want your own implementation with OAuth2, you may like to do the following:
+If you want your own implementation with OAuth2, you may like to do like:
 
 ```csharp
 public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthorization
@@ -185,18 +185,21 @@ public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthoriz
     {
         var result = default(OpenApiAuthorizationResult);
         var authtoken = (string) req.Headers["Authorization"];
+
+        // Redirect to the auth page, if no auth header is found.
         if (authtoken.IsNullOrWhiteSpace())
         {
             result = new OpenApiAuthorizationResult()
             {
-                StatusCode = HttpStatusCode.Unauthorized,
-                ContentType = "text/plain",
-                Payload = "Unauthorized",
+                StatusCode = HttpStatusCode.Redirect,
+                ContentType = "text/html",
+                Payload = "<html><head><meta http-equiv=\"refresh\" content=\"0;url=https://login.microsoftonline.com/common/oauth2/v2.0/authorize\"/></head><body></body></html>",
             };
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
+        // Shows invalid auth format, if the auth header is not the bearer token.
         if (authtoken.StartsWith("Bearer", ignoreCase: true, CultureInfo.InvariantCulture) == false)
         {
             result = new OpenApiAuthorizationResult()
@@ -209,6 +212,7 @@ public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthoriz
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
+        // Shows invalid auth token, if token value is invalid.
         var token = authtoken.Split(' ').Last();
         if (token != "secret")
         {
@@ -222,6 +226,10 @@ public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthoriz
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
+        // DO SOMETHING IF AUTH TOKEN IS VALID.
+        ...
+
+        // Return null if auth is valid.
         return await Task.FromResult(result).ConfigureAwait(false);
     }
 }
