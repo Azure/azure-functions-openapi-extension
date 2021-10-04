@@ -6,6 +6,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
     public class DecimalTypeObjectModel
     {
-        public decimal Value { get; set; }
+        public decimal DecimalValue { get; set; }
     }
 }
