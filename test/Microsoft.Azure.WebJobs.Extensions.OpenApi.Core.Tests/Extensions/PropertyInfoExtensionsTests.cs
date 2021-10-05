@@ -42,6 +42,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [TestMethod]
+        public void Given_Property_When_GetDataMemberName_Invoked_Then_It_Should_Return_DataMemberName()
+        {
+            var name = "DataMemberFakeProperty";
+            var jsonPropertyName = "anotherDataMemberFakeProperty";
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().Be(jsonPropertyName);
+        }
+
+        [TestMethod]
         public void Given_Property_When_GetJsonPropertyName_IsEmpty_Then_It_Should_Return_ElementName()
         {
             var name = "FakePropertyNoPropertyValue";

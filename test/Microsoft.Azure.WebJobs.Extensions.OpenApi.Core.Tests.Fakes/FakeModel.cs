@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
 {
@@ -24,6 +25,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
 
         [JsonProperty]
         public string FakePropertyNoAnnotation { get; set; }
+
+        [DataMember(Name = "anotherDataMemberFakeProperty")]
+        public string DataMemberFakeProperty { get; set; } 
 
         public object FakeObject { get; set; }
 
