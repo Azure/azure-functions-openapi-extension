@@ -59,7 +59,7 @@ steps:
 - task: AzureFileCopy@4
   displayName: 'Publish Artifacts'
   inputs:
-    SourcePath: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+    SourcePath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     azureSubscription: 'Azure SDK Engineering System'
     Destination: AzureBlob
     storage: azuresdkpartnerdrops
