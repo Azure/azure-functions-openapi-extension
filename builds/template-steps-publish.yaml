@@ -63,4 +63,4 @@ steps:
     azureSubscription: 'Azure SDK Engineering System'
     Destination: AzureBlob
     storage: azuresdkpartnerdrops
-    ContainerName: 'azure-functions-openapi-extension/dotnet/$(Version)'
+    ContainerName: 'azure-functions/dotnet/openapi-extension/$(Version)'
