@@ -29,13 +29,13 @@
   </style>
 </head>
 
-  <body>
-    <div id="swagger-ui"></div>
-    <script>[[SWAGGER_UI_CUSTOM_JS]]</script>
-    <script>[[SWAGGER_UI_BUNDLE_JS]]</script>
-    <script>[[SWAGGER_UI_STANDALONE_PRESET_JS]]</script>
-    <script>
-    window.onload = function() {
+<body>
+  <div id="swagger-ui"></div>
+  <script>[[SWAGGER_UI_CUSTOM_JS]]</script>
+  <script>[[SWAGGER_UI_BUNDLE_JS]]</script>
+  <script>[[SWAGGER_UI_STANDALONE_PRESET_JS]]</script>
+  <script>
+    window.onload = function () {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
         url: "[[SWAGGER_URL]]",
@@ -55,5 +55,5 @@
       window.ui = ui;
     };
   </script>
-  </body>
+</body>
 </html>
