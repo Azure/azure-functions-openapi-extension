@@ -53,5 +53,5 @@ steps:
   displayName: 'Publish Artifacts'
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: drop
+    artifactName: drop/${{ parameters.version }}
     publishLocation: Container
