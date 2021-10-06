@@ -18,6 +18,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         string CustomJavaScriptPath { get; }
 
         /// <summary>
+        /// Gets filepath for Favicon for custom UI.
+        /// </summary>
+        string CustomFaviconPath { get; }
+
+        /// <summary>
         /// Gets the stylesheet to be rendered on the page.
         /// </summary>
         /// <returns>The stylesheet string for custom UI.</returns>
@@ -28,5 +33,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <returns>The JavaScript string for custom UI.</returns>
         Task<string> GetJavaScriptAsync();
+
+        /// <summary>
+        /// Gets the image to be rendered on the page.
+        /// </summary>
+        /// <returns>The stylesheet string for custom UI.</returns>
+        Task<string> GetFaviconAsync();
+
     }
 }

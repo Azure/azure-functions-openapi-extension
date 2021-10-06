@@ -46,6 +46,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [TestMethod]
+        public async Task Given_Type_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var options = new DefaultOpenApiCustomUIOptions(assembly);
+
+            var result = await options.GetFaviconAsync().ConfigureAwait(false);
+
+            result.Should().BeEmpty();
+        }
+
+        [TestMethod]
         public async Task Given_File_When_GetStylesheetAsync_Invoked_Then_It_Should_Return_Result()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -87,6 +98,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             var options = new FakeUriCustomUIOptions(assembly);
 
             var result = await options.GetJavaScriptAsync().ConfigureAwait(false);
+
+            result.Should().NotBeEmpty();
+        }
+
+        [TestMethod]
+        public async Task Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var options = new FakeUriCustomUIOptions(assembly);
+
+            var result = await options.GetFaviconAsync().ConfigureAwait(false);
 
             result.Should().NotBeEmpty();
         }

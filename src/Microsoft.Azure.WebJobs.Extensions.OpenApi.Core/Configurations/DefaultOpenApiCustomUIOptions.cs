@@ -33,6 +33,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc/>
         public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
 
+        public virtual string CustomFaviconPath { get; } = "dist.custom.png";
+
         /// <inheritdoc/>
         public virtual async Task<string> GetStylesheetAsync()
         {
@@ -53,6 +55,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             }
 
             return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<string> GetFaviconAsync()
+        {
+            if (Uri.TryCreate(this.CustomFaviconPath, UriKind.Absolute, out var imageUri))
+            {
+                return imageUri.AbsoluteUri;
+            }
+
+            return string.Empty;
         }
 
         private async Task<string> ReadFromStream(string path)
