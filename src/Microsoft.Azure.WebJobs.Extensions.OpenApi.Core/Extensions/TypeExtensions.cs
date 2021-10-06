@@ -275,6 +275,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Checks whether the given type is exception or not, from the OpenAPI perspective.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as exception; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiException(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return type.IsExceptionType();
+        }
+
+        /// <summary>
         /// Checks whether the given type is array or not, from the OpenAPI perspective.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
@@ -669,6 +684,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             "IReadOnlyDictionary`2",
             "KeyValuePair`2",
         };
+
+        public static bool IsExceptionType(this Type type)
+        {
+            if (type == null)
+            {
+                return false;
+            }
+
+            if (type == typeof(Exception))
+            {
+                return true;
+            }
+
+            return IsExceptionType(type.BaseType);
+        }
 
         private static bool IsDictionaryType(this Type type)
         {

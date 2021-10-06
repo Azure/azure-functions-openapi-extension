@@ -27,6 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.HasRecursiveProperty();
+
             if (type == typeof(Guid))
             {
                 isVisitable = false;
@@ -55,7 +56,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
-
 
             return isVisitable;
         }
@@ -141,6 +141,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             if (type.IsOpenApiDictionary())
+            {
+                return false;
+            }
+
+            if (type.IsOpenApiException())
             {
                 return false;
             }

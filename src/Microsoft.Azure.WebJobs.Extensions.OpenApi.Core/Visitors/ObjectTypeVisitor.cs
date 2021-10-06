@@ -149,6 +149,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return false;
             }
 
+            if (type.IsOpenApiException())
+            {
+                return false;
+            }
+
             return true;
         }
 
