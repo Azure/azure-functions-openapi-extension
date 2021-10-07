@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Post_ApplicationJson_DateTimeObject_Tests
+    public class Post_ApplicationJson_DateTime_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post")]
+        [DataRow("/post-applicationjson-datetime", "post")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody(string path, string operationType)
         {
             var requestBody = this._doc["paths"][path][operationType]["requestBody"];
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post", "text/plain")]
+        [DataRow("/post-applicationjson-datetime", "post", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post", "text/plain", "string", "date-time")]
+        [DataRow("/post-applicationjson-datetime", "post", "text/plain", "string", "date-time")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post", "200")]
+        [DataRow("/post-applicationjson-datetime", "post", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post", "200", "application/json")]
+        [DataRow("/post-applicationjson-datetime", "post", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeobject", "post", "200", "application/json", "dateTimeObjectModel")]
+        [DataRow("/post-applicationjson-datetime", "post", "200", "application/json", "dateTimeObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -99,16 +99,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dateTimeObjectModel", "dateTimeValue", "string", "date-time")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
+        [DataRow("dateTimeObjectModel", "dateTimeValue", "string", "date-time", "dateTimeOffsetValue", "string", "date-time")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName1, string propertyType1, string propertyFormat1, string propertyName2, string propertyType2, string propertyFormat2)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
-            var value = properties[propertyName];
+            var value1 = properties[propertyName1];
+            var value2 = properties[propertyName2];
 
-            value.Should().NotBeNull();
-            value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
+            value1.Should().NotBeNull();
+            value1.Value<string>("type").Should().Be(propertyType1);
+            value1.Value<string>("format").Should().Be(propertyFormat1);
+
+            value2.Should().NotBeNull();
+            value2.Value<string>("type").Should().Be(propertyType2);
+            value2.Value<string>("format").Should().Be(propertyFormat2);
         }
     }
 
@@ -177,7 +182,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-datetimeoffset", "post", "200", "application/json", "dateTimeOffsetObjectModel")]
+        [DataRow("/post-applicationjson-datetimeoffset", "post", "200", "application/json", "dateTimeObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -188,7 +193,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dateTimeOffsetObjectModel", "object")]
+        [DataRow("dateTimeObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -200,16 +205,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dateTimeOffsetObjectModel", "dateTimeOffsetValue", "string", "date-time")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
+        [DataRow("dateTimeObjectModel", "dateTimeValue", "string", "date-time", "dateTimeOffsetValue", "string", "date-time")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName1, string propertyType1, string propertyFormat1, string propertyName2, string propertyType2, string propertyFormat2)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
-            var value = properties[propertyName];
+            var value1 = properties[propertyName1];
+            var value2 = properties[propertyName2];
 
-            value.Should().NotBeNull();
-            value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
+            value1.Should().NotBeNull();
+            value1.Value<string>("type").Should().Be(propertyType1);
+            value1.Value<string>("format").Should().Be(propertyFormat1);
+
+            value2.Should().NotBeNull();
+            value2.Value<string>("type").Should().Be(propertyType2);
+            value2.Value<string>("format").Should().Be(propertyFormat2);
         }
     }
 }  
