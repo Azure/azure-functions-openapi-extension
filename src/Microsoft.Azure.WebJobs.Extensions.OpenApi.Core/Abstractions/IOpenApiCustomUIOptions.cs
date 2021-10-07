@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
@@ -20,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Gets filepath for Favicon for custom UI.
         /// </summary>
-        string CustomFaviconPath { get; }
+        List<string> CustomFaviconMetaTags { get; }
 
         /// <summary>
         /// Gets the stylesheet to be rendered on the page.
@@ -33,12 +34,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <returns>The JavaScript string for custom UI.</returns>
         Task<string> GetJavaScriptAsync();
-
-        /// <summary>
-        /// Gets the image to be rendered on the page.
-        /// </summary>
-        /// <returns>The stylesheet string for custom UI.</returns>
-        Task<string> GetFaviconAsync();
-
     }
 }

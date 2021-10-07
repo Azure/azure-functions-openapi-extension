@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -33,7 +34,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc/>
         public virtual string CustomJavaScriptPath { get; } = "dist.custom.js";
 
-        public virtual string CustomFaviconPath { get; } = "dist.custom.png";
+        public virtual List<string> CustomFaviconMetaTags { get; } = new List<string>()
+        {
+            "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-32x32.png\" sizes=\"32x32\" />",
+            "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-16x16.png\" sizes=\"16x16\" />"
+        };
 
         /// <inheritdoc/>
         public virtual async Task<string> GetStylesheetAsync()
@@ -55,17 +60,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             }
 
             return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public virtual async Task<string> GetFaviconAsync()
-        {
-            if (Uri.TryCreate(this.CustomFaviconPath, UriKind.Absolute, out var imageUri))
-            {
-                return imageUri.AbsoluteUri;
-            }
-
-            return string.Empty;
         }
 
         private async Task<string> ReadFromStream(string path)

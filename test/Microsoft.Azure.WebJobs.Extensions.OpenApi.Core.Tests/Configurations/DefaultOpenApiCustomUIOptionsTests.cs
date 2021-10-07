@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -21,6 +22,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             options.CustomStylesheetPath.Should().Be("dist.custom.css");
             options.CustomJavaScriptPath.Should().Be("dist.custom.js");
+            options.CustomFaviconMetaTags.Should().BeEquivalentTo(new List<string>()
+            {
+                "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-32x32.png\" sizes=\"32x32\" />",
+                "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-16x16.png\" sizes=\"16x16\" />"
+            });
         }
 
         [TestMethod]
@@ -51,9 +57,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             var assembly = Assembly.GetExecutingAssembly();
             var options = new DefaultOpenApiCustomUIOptions(assembly);
 
-            var result = await options.GetFaviconAsync().ConfigureAwait(false);
+            var result = options.CustomFaviconMetaTags;
 
-            result.Should().BeEmpty();
+            result.Should().NotBeEmpty();
         }
 
         [TestMethod]
@@ -108,7 +114,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
 
-            var result = await options.GetFaviconAsync().ConfigureAwait(false);
+            var result = options.CustomFaviconMetaTags;
 
             result.Should().NotBeEmpty();
         }
