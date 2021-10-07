@@ -44,6 +44,8 @@
     <EmbeddedResource Include="dist/swagger-ui.css" />
     <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
     <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
+    <EmbeddedResource Include="dist/favicon-16x16.png" />
+    <EmbeddedResource Include="dist/favicon-32x32.png" />
   </ItemGroup>
 
 </Project>

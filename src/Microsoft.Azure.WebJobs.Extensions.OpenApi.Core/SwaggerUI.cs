@@ -25,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private const string SwaggerUICustomJsPlaceholder = "[[SWAGGER_UI_CUSTOM_JS]]";
         private const string SwaggerUIStandalonePresetJsPlaceholder = "[[SWAGGER_UI_STANDALONE_PRESET_JS]]";
         private const string SwaggerUIApiPrefix = "[[SWAGGER_UI_API_PREFIX]]";
-        private const string SwaggerUIFaviconLink = "[[SWAGGER_UI_FAVICON_LINKS]]";
+        private const string SwaggerUIFaviconLink = "[[SWAGGER_UI_FAVICON_LINK]]";
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
 
         private readonly string indexHtml = $"{typeof(SwaggerUI).Namespace}.dist.index.html";
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string _swaggerUiApiPrefix;
         private string _indexHtml;
         private string _oauth2RedirectHtml;
-        private List<string> _swaggerUiFaviconLink;
+        private string _swaggerUiFaviconLink;
 
         /// <inheritdoc />
         public ISwaggerUI AddMetadata(OpenApiInfo info)
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             {
                 this._swaggerUiCustomCss = await options.GetStylesheetAsync();
                 this._swaggerUiCustomJs = await options.GetJavaScriptAsync();
-                this._swaggerUiFaviconLink = options.CustomFaviconMetaTags;
+                this._swaggerUiFaviconLink = string.Join("", options.CustomFaviconMetaTags);
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
@@ -174,7 +174,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         {
             var swaggerUiTitle = $"{this._info.Title} - Swagger UI";
             var swaggerUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
-            var swaggerFaviconTag = string.Join("", this._swaggerUiFaviconLink);
 
             var queries = this._req.Query.ToDictionary(p => p.Key, p => p.Value);
             if (this.IsAuthKeyRequired(authLevel, authKey))
@@ -196,7 +195,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                                       .Replace(SwaggerUIBundleJsPlaceholder, this._swaggerUiBundleJs)
                                       .Replace(SwaggerUICustomJsPlaceholder, this._swaggerUiCustomJs)
                                       .Replace(SwaggerUIStandalonePresetJsPlaceholder, this._swaggerUiStandalonePresetJs)
-                                      .Replace(SwaggerUIFaviconLink, swaggerFaviconTag)
+                                      .Replace(SwaggerUIFaviconLink, this._swaggerUiFaviconLink)
                                       .Replace(SwaggerUrlPlaceholder, swaggerUrl);
 
             return html;

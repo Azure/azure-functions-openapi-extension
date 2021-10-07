@@ -24,8 +24,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.CustomJavaScriptPath.Should().Be("dist.custom.js");
             options.CustomFaviconMetaTags.Should().BeEquivalentTo(new List<string>()
             {
-                "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-32x32.png\" sizes=\"32x32\" />",
-                "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-16x16.png\" sizes=\"16x16\" />"
+                "<link rel=\"icon\" type=\"image/png\" href=\"dist.favicon-32x32.png\" sizes=\"32x32\" />",
+                "<link rel=\"icon\" type=\"image/png\" href=\"dist.favicon-16x16.png\" sizes=\"16x16\" />"
             });
         }
 
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [TestMethod]
-        public async Task Given_Type_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
+        public void Given_Type_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var options = new DefaultOpenApiCustomUIOptions(assembly);
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [TestMethod]
-        public async Task Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
+        public void Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
