@@ -1,7 +1,7 @@
 using System;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
@@ -71,5 +71,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the value indicating whether the parameter is deprecated or not.
         /// </summary>
         public virtual bool Deprecated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the example. It SHOULD be inheriting the <see cref="OpenApiExample{T}"/> class.
+        /// </summary>
+        public virtual Type Example { get; set; }
     }
 }

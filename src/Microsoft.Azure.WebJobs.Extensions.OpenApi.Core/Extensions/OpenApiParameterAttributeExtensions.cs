@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
-
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -20,8 +23,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="attribute"><see cref="OpenApiParameterAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
+        /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
         /// <returns><see cref="OpenApiParameter"/> instance.</returns>
-        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null)
+        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -82,6 +86,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());
 
                 parameter.Extensions.Add("x-ms-visibility", visibility);
+            }
+
+            if (attribute.Example.IsNullOrDefault())
+            {
+                return parameter;
+            }
+
+            var example = (dynamic)Activator.CreateInstance(attribute.Example);
+            var examples = (IDictionary<string, OpenApiExample>)example.Build(namingStrategy).Examples;
+
+            parameter.Examples = examples;
+            if (version == OpenApiVersionType.V2)
+            {
+                parameter.Example = examples.First().Value.Value;
             }
 
             return parameter;

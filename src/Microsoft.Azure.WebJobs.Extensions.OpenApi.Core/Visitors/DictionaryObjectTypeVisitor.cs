@@ -4,7 +4,6 @@ using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -16,6 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class DictionaryObjectTypeVisitor : TypeVisitor
     {
+        private readonly Dictionary<Type, OpenApiSchemaAcceptor> visitedTypes = new Dictionary<Type, OpenApiSchemaAcceptor>();
+
         /// <inheritdoc />
         public DictionaryObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -54,14 +55,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             };
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            var subAcceptor = new OpenApiSchemaAcceptor()
+            OpenApiSchemaAcceptor subAcceptor;
+            if (!this.visitedTypes.ContainsKey(underlyingType))
             {
-                Types = types,
-                RootSchemas = instance.RootSchemas,
-                Schemas = schemas,
-            };
-
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+                subAcceptor = new OpenApiSchemaAcceptor()
+                {
+                    Types = types, RootSchemas = instance.RootSchemas, Schemas = schemas,
+                };
+                this.visitedTypes.Add(underlyingType, subAcceptor);
+                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            }
+            else
+            {
+                subAcceptor = this.visitedTypes[underlyingType];
+            }
 
             var properties = subAcceptor.Schemas.First().Value;
 
@@ -71,7 +78,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy)
                 };
 
                 properties.Reference = reference;
@@ -132,7 +139,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy)
                 };
 
                 properties.Reference = reference;

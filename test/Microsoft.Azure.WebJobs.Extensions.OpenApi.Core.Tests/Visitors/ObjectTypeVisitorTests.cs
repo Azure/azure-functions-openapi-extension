@@ -44,6 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(FakeModel), true)]
+        [DataRow(typeof(object), false)]
         [DataRow(typeof(int), false)]
         [DataRow(typeof(Uri), false)]
         [DataRow(typeof(IEnumerable<object>), false)]
@@ -57,6 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(FakeModel), false)]
+        [DataRow(typeof(object), false)]
         [DataRow(typeof(int), false)]
         [DataRow(typeof(Uri), false)]
         [DataRow(typeof(IEnumerable<object>), false)]

@@ -1,11 +1,10 @@
 using System;
 
+using FluentAssertions;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
-
-using FluentAssertions;
-
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

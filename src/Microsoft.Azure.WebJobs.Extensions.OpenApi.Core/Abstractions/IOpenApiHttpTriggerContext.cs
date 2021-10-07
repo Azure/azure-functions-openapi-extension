@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
@@ -10,10 +9,10 @@ using Microsoft.OpenApi;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This provides interfaces to <see cref="OpenApiHttpTriggerContext"/>.
+    /// This provides interfaces to OpenApiHttpTriggerContext
     /// </summary>
     public interface IOpenApiHttpTriggerContext
     {
@@ -74,7 +73,15 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// </summary>
         /// <param name="functionAppDirectory">Function app directory.</param>
         /// <param name="appendBin">Value indicating whether to append the "bin" directory or not.</param>
+        /// <returns>Returns the <see cref="IOpenApiHttpTriggerContext"/> instance.</returns>
         Task<IOpenApiHttpTriggerContext> SetApplicationAssemblyAsync(string functionAppDirectory, bool appendBin = true);
+
+        /// <summary>
+        /// Authorizes the endpoint.
+        /// </summary>
+        /// <param name="req"><see cref="IHttpRequestDataObject"/> instance.</param>
+        /// <returns>Returns <see cref="OpenApiAuthorizationResult"/> instance.</returns>
+        Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req);
 
         /// <summary>
         /// Gets the <see cref="VisitorCollection"/> instance.

@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Serialization;
+using System;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Abstractions
 {

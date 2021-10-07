@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -36,15 +37,19 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var ports = new[] { 80, 443 };
             var baseHost = $"{hostname}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var uri = Uri.TryCreate($"{scheme}://{baseHost}?{key}={value}", UriKind.Absolute, out var tried) ? tried : null;
+
+            var headers = new Dictionary<string, string>() { { key, value } };
+
             var bytes = Encoding.UTF8.GetBytes(payload);
             var body = new MemoryStream(bytes);
 
-            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, body);
+            var req = (HttpRequestData) new FakeHttpRequestData(context.Object, uri, headers, body);
 
             var result = new HttpRequestObject(req);
 
             result.Scheme.Should().Be(scheme);
             result.Host.Value.Should().Be(baseHost);
+            result.Headers.Should().ContainKey(key);
             result.Query.Should().ContainKey(key);
             ((string) result.Query[key]).Should().Be(value);
             (new StreamReader(result.Body)).ReadToEnd().Should().Be(payload);
