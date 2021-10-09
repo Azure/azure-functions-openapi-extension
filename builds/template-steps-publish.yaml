@@ -9,49 +9,59 @@ steps:
     command: custom
     custom: 'pack'
     projects: |
-      # ./src/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj
+      ./src/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj
       ./src/Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings/Microsoft.Azure.WebJobs.Extensions.OpenApi.AppSettings.csproj
       ./src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.csproj
       ./src/Microsoft.Azure.WebJobs.Extensions.OpenApi/Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj
     arguments: '-c ${{ parameters.configuration }} -o $(Build.ArtifactStagingDirectory) --no-build --include-symbols /p:PackageVersion=${{ parameters.version }} -v Quiet'
 
-- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-  displayName: 'ESRP CodeSigning: Nupkg'
-  condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
-  inputs:
-    ConnectedServiceName: 'ESRP Service'
-    FolderPath: '$(Build.ArtifactStagingDirectory)'
-    Pattern: '*.nupkg'
-    signConfigType: inlineSignParams
-    inlineOperation: |
-     [
-         {
-           "KeyCode": "CP-401405",
-           "OperationCode": "NuGetSign",
-           "Parameters": {},
-           "ToolName": "sign",
-           "ToolVersion": "1.0"
-         },
-         {
-           "KeyCode": "CP-401405",
-           "OperationCode": "NuGetVerify",
-           "Parameters": {},
-           "ToolName": "sign",
-           "ToolVersion": "1.0"
-         }
-     ]
+# - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+#   displayName: 'ESRP CodeSigning: Nupkg'
+#   condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
+#   inputs:
+#     ConnectedServiceName: 'ESRP Service'
+#     FolderPath: '$(Build.ArtifactStagingDirectory)'
+#     Pattern: '*.nupkg'
+#     signConfigType: inlineSignParams
+#     inlineOperation: |
+#      [
+#          {
+#            "KeyCode": "CP-401405",
+#            "OperationCode": "NuGetSign",
+#            "Parameters": {},
+#            "ToolName": "sign",
+#            "ToolVersion": "1.0"
+#          },
+#          {
+#            "KeyCode": "CP-401405",
+#            "OperationCode": "NuGetVerify",
+#            "Parameters": {},
+#            "ToolName": "sign",
+#            "ToolVersion": "1.0"
+#          }
+#      ]
 
-- task: PowerShell@2
-  displayName: 'Delete CodeSignSummary Files'
-  condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
-  inputs:
-    targetType: Inline
-    script: |
-      Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include CodeSignSummary-*.md -Recurse | Remove-Item -Force
+# - task: PowerShell@2
+#   displayName: 'Delete CodeSignSummary Files'
+#   condition: and(succeeded(), eq(variables['SignArtifacts'], 'true'))
+#   inputs:
+#     targetType: Inline
+#     script: |
+#       Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include CodeSignSummary-*.md -Recurse | Remove-Item -Force
 
-- task: PublishBuildArtifacts@1
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Artifacts'
+#   inputs:
+#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
+#     artifactName: drop/${{ parameters.version }}
+#     publishLocation: Container
+
+- task: AzureFileCopy@4
   displayName: 'Publish Artifacts'
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: drop
-    publishLocation: Container
+    SourcePath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    azureSubscription: 'Azure SDK Engineering System'
+    Destination: AzureBlob
+    storage: azuresdkpartnerdrops
+    ContainerName: drops
+    BlobPrefix: 'azure-functions-openapi-extension/dotnet/$(Version)'

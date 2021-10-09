@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_JObject_Tests
+    public class Get_ApplicationJson_GenericAndRecursiveObject_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-jobject", "get", "200")]
+        [DataRow("/get-applicationjson-genericandrecursive", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-jobject", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-genericandrecursive", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-jobject", "get", "200", "application/json", "jObjectModel")]
+        [DataRow("/get-applicationjson-genericandrecursive", "get", "200", "application/json", "genericAndRecursiveObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,40 +55,31 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jObjectModel", "object")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
-        {
-            var schemas = this._doc["components"]["schemas"];
-
-            var schema = schemas[@ref];
-
-            schema.Should().NotBeNull();
-            schema.Value<string>("type").Should().Be(refType);
-        }
-
-        [DataTestMethod]
-        [DataRow("jObjectModel", "jObjectValue", "object")]
-        [DataRow("jObjectModel", "jTokenValue", "object")]
-        [DataRow("jObjectModel", "jArrayValue", "object")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
+        [DataRow("genericAndRecursiveObjectModel", "object", "listValue", "array")]
+        [DataRow("genericAndRecursiveObjectModel", "object", "dictionaryValue", "object")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_PropertyType(string @ref, string refType, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
-
             var value = properties[propertyName];
 
-            value.Should().NotBeNull();
-            value.Value<string>("type").Should().Be(propertyType);
+            var type = value["type"];
+
+            type.Should().NotBeNull();
+            type.Value<string>().Should().Be(propertyType);
         }
 
         [DataTestMethod]
-        [DataRow("jObject")]
-        [DataRow("jToken")]
-        [DataRow("jArray")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_Null(string @ref)
+        [DataRow("genericAndRecursiveObjectModel", "object", "listValue", "items", "genericAndRecursiveObjectModel")]
+        [DataRow("genericAndRecursiveObjectModel", "object", "dictionaryValue", "additionalProperties", "genericAndRecursiveObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType, string propertyName, string propertyType, string itemReference)
         {
-            var @object = this._doc["components"]["schemas"][@ref];
+            var properties = this._doc["components"]["schemas"][@ref]["properties"];
+            var value = properties[propertyName];
 
-            @object.Should().BeNull();
+            var itemRef = value[propertyType]["$ref"];
+
+            itemRef.Should().NotBeNull();
+            itemRef.Value<string>().Should().Be($"#/components/schemas/{itemReference}");
         }
     }
 }

@@ -34,7 +34,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             "OBJECT",
             "JTOKEN",
-            "JOBJECT"
+            "JOBJECT",
+            "JARRAY",
         };
 
         /// <inheritdoc />
