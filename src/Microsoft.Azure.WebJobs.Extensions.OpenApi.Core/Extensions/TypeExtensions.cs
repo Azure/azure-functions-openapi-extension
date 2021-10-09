@@ -685,6 +685,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             "KeyValuePair`2",
         };
 
+
+        /// <summary>
+        /// Checks whether the given type has a exception class or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the given type has a exception class; otherwise returns <c>False</c>.</returns>
         public static bool IsExceptionType(this Type type)
         {
             if (type == null)

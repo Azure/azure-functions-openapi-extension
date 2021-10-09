@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
@@ -8,7 +7,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
         public List<GenericAndRecursiveModel> Children  { get; set; }
 
         public Dictionary<string, GenericAndRecursiveModel> Children2 { get; set; }
-
-        public Exception Exception { get; set; }
     }
 }
