@@ -44,18 +44,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "stringObjectModel")]
+        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "baseObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Not_Return_ReferenceSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
+
+            var @ref = content[contentType]["schema"]["$ref"];
+
+            @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
         }
 
         [DataTestMethod]
-        [DataRow("hasBaseObjectModel", "objectValue", true)]
-        [DataRow("hasBaseObjectModel", "nonObjectValue", false)]
-        [DataRow("hasBaseObjectModel", "subModel", false)]
-        [DataRow("hasBaseObjectSubModel", "subObjectValue", true)]
-        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName,bool isBaseObject)
+        [DataRow("baseObjectModel", "baseObjectValue", true)]
+        [DataRow("baseObjectModel", "nonObjectValue", false)]
+        [DataRow("baseObjectModel", "subObjectValue", false)]
+        [DataRow("baseSubObjectModel", "baseSubObjectValue", true)]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName, bool isBaseObject)
         {
             var schemas = this._doc["components"]["schemas"];
 
@@ -69,6 +73,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             {
                 type.Should().NotBe("object");
             }
+        }
+
+        [TestMethod]
+        public void Given_OpenApiDocument_Then_It_Should_Return_Null()
+        {
+            var @object = this._doc["components"]["schemas"]["object"];
+
+            @object.Should().BeNull();
         }
     }
 }

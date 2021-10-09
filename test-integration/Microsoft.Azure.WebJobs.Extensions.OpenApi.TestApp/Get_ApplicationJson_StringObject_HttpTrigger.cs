@@ -11,13 +11,13 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
-    public static class Get_ApplicationJson_Object_HttpTrigger
+    public static class Get_ApplicationJson_StringObject_HttpTrigger
     {
-        [FunctionName(nameof(Get_ApplicationJson_Object_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Object_HttpTrigger.Get_ApplicationJson_Object), tags: new[] { "greeting" })]
+        [FunctionName(nameof(Get_ApplicationJson_StringObject_HttpTrigger))]
+        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_StringObject_HttpTrigger.Get_ApplicationJson_StringObject), tags: new[] { "string" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StringObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Get_ApplicationJson_Object(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-object")] HttpRequest req,
+        public static async Task<IActionResult> Get_ApplicationJson_StringObject(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-string")] HttpRequest req,
             ILogger log)
         {
             var result  = new OkResult();

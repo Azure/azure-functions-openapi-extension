@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string")]
+        [DataRow("/get-textplain-string")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Path(string path)
         {
             var paths = this._doc["paths"];
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get")]
+        [DataRow("/get-textplain-string", "get")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationType(string path, string operationType)
         {
             var pathItem = this._doc["paths"][path];
@@ -46,32 +46,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "name", "query", true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameter(string path, string operationType, string name, string @in, bool required)
-        {
-            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
-
-            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
-
-            parameter.Should().NotBeNull();
-            parameter.Value<string>("in").Should().Be(@in);
-            parameter.Value<bool>("required").Should().Be(required);
-        }
-
-        [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "name", "string")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType)
-        {
-            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
-            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
-
-            var schema = parameter["schema"];
-
-            schema.Value<string>("type").Should().Be(dataType);
-        }
-
-        [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "200")]
+        [DataRow("/get-textplain-string", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -80,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "200", "text/plain")]
+        [DataRow("/get-textplain-string", "get", "200", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -89,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string", "get", "200", "text/plain", "string")]
+        [DataRow("/get-textplain-string", "get", "200", "text/plain", "string")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string dataType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
