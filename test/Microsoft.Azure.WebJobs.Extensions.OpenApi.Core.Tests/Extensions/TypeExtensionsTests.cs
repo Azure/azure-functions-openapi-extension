@@ -179,7 +179,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(ArgumentException), true)]
         public void Given_Type_When_IsExceptionType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
-            var result = TypeExtensions.IsExceptionType(type);
+            var result = TypeExtensions.IsOpenApiException(type);
 
             result.Should().Be(expected);
         }

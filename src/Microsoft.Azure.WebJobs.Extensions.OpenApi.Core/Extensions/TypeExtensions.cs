@@ -286,7 +286,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return false;
             }
 
-            return type.IsExceptionType();
+            return typeof(Exception).IsAssignableFrom(type);
         }
 
         /// <summary>
@@ -684,27 +684,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             "IReadOnlyDictionary`2",
             "KeyValuePair`2",
         };
-
-
-        /// <summary>
-        /// Checks whether the given type has a exception class or not.
-        /// </summary>
-        /// <param name="type">Type to check.</param>
-        /// <returns>Returns <c>True</c>, if the given type has a exception class; otherwise returns <c>False</c>.</returns>
-        public static bool IsExceptionType(this Type type)
-        {
-            if (type == null)
-            {
-                return false;
-            }
-
-            if (type == typeof(Exception))
-            {
-                return true;
-            }
-
-            return IsExceptionType(type.BaseType);
-        }
 
         private static bool IsDictionaryType(this Type type)
         {

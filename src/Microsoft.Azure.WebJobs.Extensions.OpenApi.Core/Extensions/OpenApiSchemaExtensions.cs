@@ -307,11 +307,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return false;
             }
 
-            if (schema.Title?.ToLower().EndsWith("exception") == true)
-            {
-                return false;
-            }
-
             if (!schema.Format.IsNullOrWhiteSpace())
             {
                 return false;

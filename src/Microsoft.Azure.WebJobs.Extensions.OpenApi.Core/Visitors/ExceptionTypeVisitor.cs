@@ -13,9 +13,9 @@ using Newtonsoft.Json.Serialization;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="object"/> that contains recursive properties.
+    /// This represents the type visitor for <see cref="Exception"/>.
     /// </summary>
-    public class RecursiveObjectTypeVisitor : TypeVisitor
+    public class ExceptionTypeVisitor : TypeVisitor
     {
         private readonly HashSet<string> _noAddedKeys = new HashSet<string>
         {
@@ -25,45 +25,39 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             "JARRAY",
         };
 
+        private readonly HashSet<string> _serializePropertyNameSet = new HashSet<string>
+        {
+            nameof(Exception.InnerException),
+            nameof(Exception.Message),
+            nameof(Exception.StackTrace),
+        };
+
+        private readonly HashSet<string> _normalPropertyNameSet;
+        private readonly HashSet<string> _recursivePropertyNameSet;
+
         /// <inheritdoc />
-        public RecursiveObjectTypeVisitor(VisitorCollection visitorCollection)
+        public ExceptionTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
         {
+            var exceptionType = typeof(Exception);
+            var exceptionProperties = exceptionType.GetProperties()
+                                                   .Where(p => this._serializePropertyNameSet.Contains(p.Name))
+                                                   .ToArray();
+
+            var normalPropertyNames = exceptionProperties.Where(p => p.PropertyType != exceptionType)
+                                                         .Select(p => p.Name);
+
+            var recursivePropertyNames = exceptionProperties.Where(p => p.PropertyType == exceptionType)
+                                                         .Select(p => p.Name);
+
+            this._normalPropertyNameSet = new HashSet<string>(normalPropertyNames);
+            this._recursivePropertyNameSet = new HashSet<string>(recursivePropertyNames);
         }
 
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-            var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.HasRecursiveProperty();
-
-            if (type == typeof(Guid))
-            {
-                isVisitable = false;
-            }
-            if (type == typeof(DateTime))
-            {
-                isVisitable = false;
-            }
-            if (type == typeof(DateTimeOffset))
-            {
-                isVisitable = false;
-            }
-            if (type == typeof(Type))
-            {
-                isVisitable = false;
-            }
-            if (type.IsOpenApiNullable())
-            {
-                isVisitable = false;
-            }
-            if (type.IsUnflaggedEnumType())
-            {
-                isVisitable = false;
-            }
-            if (type.IsJObjectType())
-            {
-                isVisitable = false;
-            }
+            var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.IsOpenApiException();
 
             return isVisitable;
         }
@@ -79,32 +73,28 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return;
             }
 
-            if (!this.IsNavigatable(type.Value))
-            {
-                return;
-            }
-
             var instance = acceptor as OpenApiSchemaAcceptor;
             if (instance.IsNullOrDefault())
             {
                 return;
             }
 
-            // Processes non-recursive properties
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
                                  .Where(p => p.PropertyType != type.Value)
-                                 .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+                                 .ToArray();
 
-            this.ProcessProperties(instance, name, properties, namingStrategy);
+            // Processes properties.
+            var normalProperties = properties.Where(p => this._normalPropertyNameSet.Contains(p.Name))
+                                             .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+
+            this.ProcessProperties(instance, name, normalProperties, namingStrategy);
 
             // Processes recursive properties
-            var recursiveProperties = type.Value
-                                          .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                          .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
-                                          .Where(p => p.PropertyType == type.Value)
-                                          .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+            var recursiveProperties = properties.Where(p => this._recursivePropertyNameSet.Contains(p.Name))
+                                                .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+
             var recursiveSchemas = recursiveProperties.ToDictionary(p => p.Key,
                                                                     p => new OpenApiSchema()
                                                                     {
@@ -131,48 +121,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override bool IsNavigatable(Type type)
-        {
-            if (type.IsJObjectType())
-            {
-                return false;
-            }
-
-            if (type.IsOpenApiNullable())
-            {
-                return false;
-            }
-
-            if (type.IsOpenApiArray())
-            {
-                return false;
-            }
-
-            if (type.IsOpenApiDictionary())
-            {
-                return false;
-            }
-
-            if (type.IsOpenApiException())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc />
         public override bool IsPayloadVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type);
 
             return isVisitable;
-        }
-
-        /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
-        {
-            return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
         private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
