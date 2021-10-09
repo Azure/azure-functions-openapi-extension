@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Post_ApplicationJson_Double_Tests
+    public class Post_ApplicationJson_String_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,16 +26,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post")]
+        [DataRow("/post-applicationjson-string", "post")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody(string path, string operationType)
         {
             var requestBody = this._doc["paths"][path][operationType]["requestBody"];
 
             requestBody.Should().NotBeNull();
         }
-        
+
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "text/plain")]
+        [DataRow("/post-applicationjson-string", "post", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -44,8 +44,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "text/plain", "number", "double")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
+        [DataRow("/post-applicationjson-string", "post", "text/plain", "string")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
@@ -53,11 +53,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "200")]
+        [DataRow("/post-applicationjson-string", "post", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -66,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "200", "application/json")]
+        [DataRow("/post-applicationjson-string", "post", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -75,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-double", "post", "200", "application/json", "doubleObjectModel")]
+        [DataRow("/post-applicationjson-string", "post", "200", "application/json", "stringObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -86,7 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("doubleObjectModel", "object")]
+        [DataRow("stringObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -98,8 +97,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("doubleObjectModel", "doubleValue", "number", "double")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
+        [DataRow("stringObjectModel", "stringValue", "string")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -107,7 +106,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
         }
     }
 }

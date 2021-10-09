@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public static class Get_Query_ParameterExamples_HttpTrigger
     {
         [FunctionName(nameof(Get_Query_ParameterExamples_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Get_Query_ParameterExamples_HttpTrigger.Get_Query_ParameterExamples), tags: new[] { "parameter examples" })]
+        [OpenApiOperation(operationId: nameof(Get_Query_ParameterExamples_HttpTrigger.Get_Query_ParameterExamples), tags: new[] { "parameterExamples" })]
         [OpenApiParameter(name: "stringParameter", In = ParameterLocation.Query, Required = true, Example = typeof(StringParameterExample), Type = typeof(string), Description = "The **string** parameter")]
         [OpenApiParameter(name: "int16Parameter", In = ParameterLocation.Query, Required = true, Example = typeof(Int16ParameterExample), Type = typeof(short), Description = "The **int16** parameter")]
         [OpenApiParameter(name: "int32Parameter", In = ParameterLocation.Query, Required = true, Example = typeof(Int32ParameterExample), Type = typeof(int), Description = "The **int32** parameter")]
