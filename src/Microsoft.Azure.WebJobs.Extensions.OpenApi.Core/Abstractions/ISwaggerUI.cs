@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
     /// This provides interfaces to the <see cref="SwaggerUI"/> class.
     /// </summary>
-    public interface ISwaggerUI
+    public interface ISwaggerUI : IServiceCollection
     {
         /// <summary>
         /// Adds metadata to build OpenAPI document.
