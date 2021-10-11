@@ -54,14 +54,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-datetime", "get", "200", "text/plain", "string")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTime(string path, string operationType, string responseCode, string contentType, string dataType)
+        [DataRow("/get-textplain-datetime", "get", "200", "text/plain", "string", "date-time")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTime(string path, string operationType, string responseCode, string contentType, string dataType, string dataFormat)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
             var schema = content[contentType]["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
+            schema.Value<string>("format").Should().Be(dataFormat);
         }
 
         [DataTestMethod]
@@ -92,14 +93,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-datetimeoffset", "get", "200", "text/plain", "string")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTimeOffset(string path, string operationType, string responseCode, string contentType, string dataType)
+        [DataRow("/get-textplain-datetimeoffset", "get", "200", "text/plain", "string", "date-time")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTimeOffset(string path, string operationType, string responseCode, string contentType, string dataType, string dataFormat)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
             var schema = content[contentType]["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
+            schema.Value<string>("format").Should().Be(dataFormat);
         }
     }
 }  
