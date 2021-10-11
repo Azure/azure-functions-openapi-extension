@@ -27,34 +27,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-datetime", "get")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody_DateTime(string path, string operationType)
+        [DataRow("/get-textplain-datetime")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_Path_DateTime(string path)
         {
-            var requestBody = this._doc["paths"][path][operationType]["requestBody"];
+            var paths = this._doc["paths"];
 
-            requestBody.Should().NotBeNull();
-        }
-
-        [DataTestMethod]
-        [DataRow("/get-textplain-datetime", "get", "text/plain")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType_DateTime(string path, string operationType, string contentType)
-        {
-            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
-
-            content[contentType].Should().NotBeNull();
-        }
-
-        [DataTestMethod]
-        [DataRow("/get-textplain-datetime", "get", "text/plain", "string", "date-time")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_DateTime(string path, string operationType, string contentType, string propertyType, string propertyFormat)
-        {
-            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
-
-            var value = content[contentType]["schema"];
-
-            value.Should().NotBeNull();
-            value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
+            paths.Value<JToken>(path).Should().NotBeNull();
         }
 
         [DataTestMethod]
@@ -76,34 +54,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-datetimeoffset", "get")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody_DateTimeOffset(string path, string operationType)
+        [DataRow("/get-textplain-datetime", "get", "200", "text/plain", "string")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTime(string path, string operationType, string responseCode, string contentType, string dataType)
         {
-            var requestBody = this._doc["paths"][path][operationType]["requestBody"];
+            var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
-            requestBody.Should().NotBeNull();
+            var schema = content[contentType]["schema"];
+
+            schema.Value<string>("type").Should().Be(dataType);
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-datetimeoffset", "get", "text/plain")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType_DateTimeOffset(string path, string operationType, string contentType)
+        [DataRow("/get-textplain-datetimeoffset")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_Path_DateTimeOffset(string path)
         {
-            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
+            var paths = this._doc["paths"];
 
-            content[contentType].Should().NotBeNull();
-        }
-
-        [DataTestMethod]
-        [DataRow("/get-textplain-datetimeoffset", "get", "text/plain", "string", "date-time")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_DateTimeOffset(string path, string operationType, string contentType, string propertyType, string propertyFormat)
-        {
-            var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
-
-            var value = content[contentType]["schema"];
-
-            value.Should().NotBeNull();
-            value.Value<string>("type").Should().Be(propertyType);
-            value.Value<string>("format").Should().Be(propertyFormat);
+            paths.Value<JToken>(path).Should().NotBeNull();
         }
 
         [DataTestMethod]
@@ -122,6 +89,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
             content[contentType].Should().NotBeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-textplain-datetimeoffset", "get", "200", "text/plain", "string")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_DateTimeOffset(string path, string operationType, string responseCode, string contentType, string dataType)
+        {
+            var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
+
+            var schema = content[contentType]["schema"];
+
+            schema.Value<string>("type").Should().Be(dataType);
         }
     }
 }  
