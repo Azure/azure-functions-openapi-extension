@@ -11,9 +11,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
-    // test two endpoints
-    // 1. post-applicationjson-datetime
-    // 2. post-applicationjson-datetimeoffset
     [TestClass]
     [TestCategory(Constants.TestCategory)]
     public class Post_ApplicationJson_DateTime_Tests

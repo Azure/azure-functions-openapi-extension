@@ -11,12 +11,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
-    // test two endpoints
-    // 1. post-textplain-datetime
-    // 2. post-textplain-datetimeoffset
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Post_TextPlain_DateTime_Tests
+    public class Get_TextPlain_DateTime_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -30,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetime", "post")]
+        [DataRow("/get-textplain-datetime", "get")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody_DateTime(string path, string operationType)
         {
             var requestBody = this._doc["paths"][path][operationType]["requestBody"];
@@ -39,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetime", "post", "text/plain")]
+        [DataRow("/get-textplain-datetime", "get", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType_DateTime(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -48,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetime", "post", "text/plain", "string", "date-time")]
+        [DataRow("/get-textplain-datetime", "get", "text/plain", "string", "date-time")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_DateTime(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -61,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetime", "post", "200")]
+        [DataRow("/get-textplain-datetime", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse_DateTime(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -70,7 +67,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetime", "post", "200", "text/plain")]
+        [DataRow("/get-textplain-datetime", "get", "200", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType_DateTime(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -79,7 +76,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetimeoffset", "post")]
+        [DataRow("/get-textplain-datetimeoffset", "get")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody_DateTimeOffset(string path, string operationType)
         {
             var requestBody = this._doc["paths"][path][operationType]["requestBody"];
@@ -88,7 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetimeoffset", "post", "text/plain")]
+        [DataRow("/get-textplain-datetimeoffset", "get", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType_DateTimeOffset(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -97,7 +94,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetimeoffset", "post", "text/plain", "string", "date-time")]
+        [DataRow("/get-textplain-datetimeoffset", "get", "text/plain", "string", "date-time")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_DateTimeOffset(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -110,7 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetimeoffset", "post", "200")]
+        [DataRow("/get-textplain-datetimeoffset", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse_DateTimeOffset(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -119,7 +116,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-textplain-datetimeoffset", "post", "200", "text/plain")]
+        [DataRow("/get-textplain-datetimeoffset", "get", "200", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType_DateTimeOffset(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
