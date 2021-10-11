@@ -32,26 +32,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             nameof(Exception.StackTrace),
         };
 
-        private readonly HashSet<string> _normalPropertyNameSet;
-        private readonly HashSet<string> _recursivePropertyNameSet;
-
         /// <inheritdoc />
         public ExceptionTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
         {
-            var exceptionType = typeof(Exception);
-            var exceptionProperties = exceptionType.GetProperties()
-                                                   .Where(p => this._serializePropertyNameSet.Contains(p.Name))
-                                                   .ToArray();
-
-            var normalPropertyNames = exceptionProperties.Where(p => p.PropertyType != exceptionType)
-                                                         .Select(p => p.Name);
-
-            var recursivePropertyNames = exceptionProperties.Where(p => p.PropertyType == exceptionType)
-                                                         .Select(p => p.Name);
-
-            this._normalPropertyNameSet = new HashSet<string>(normalPropertyNames);
-            this._recursivePropertyNameSet = new HashSet<string>(recursivePropertyNames);
         }
 
         /// <inheritdoc />
@@ -79,36 +63,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return;
             }
 
+            // Processes properties.
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
                                  .Where(p => p.PropertyType != type.Value)
-                                 .ToArray();
+                                 .Where(p => this._serializePropertyNameSet.Contains(p.Name))
+                                 .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            // Processes properties.
-            var normalProperties = properties.Where(p => this._normalPropertyNameSet.Contains(p.Name))
-                                             .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
-
-            this.ProcessProperties(instance, name, normalProperties, namingStrategy);
-
-            // Processes recursive properties
-            var recursiveProperties = properties.Where(p => this._recursivePropertyNameSet.Contains(p.Name))
-                                                .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
-
-            var recursiveSchemas = recursiveProperties.ToDictionary(p => p.Key,
-                                                                    p => new OpenApiSchema()
-                                                                    {
-                                                                        Type = "object",
-                                                                        Reference = new OpenApiReference()
-                                                                        {
-                                                                            Type = ReferenceType.Schema,
-                                                                            Id = p.Value.PropertyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-                                                                        }
-                                                                    });
-            foreach (var recursiveSchema in recursiveSchemas)
-            {
-                instance.Schemas[name].Properties.Add(recursiveSchema);
-            }
+            this.ProcessProperties(instance, name, properties, namingStrategy);
 
             // Adds the reference.
             var reference = new OpenApiReference()
