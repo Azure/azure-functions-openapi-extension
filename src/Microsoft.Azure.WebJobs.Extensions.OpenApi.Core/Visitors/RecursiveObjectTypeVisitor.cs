@@ -40,29 +40,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTime))
+            else if (type == typeof(DateTime))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTimeOffset))
+            else if (type == typeof(DateTimeOffset))
             {
                 isVisitable = false;
             }
-            if (type == typeof(Type))
+            else if (type == typeof(Type))
             {
                 isVisitable = false;
             }
-            if (type.IsOpenApiNullable())
+            else if (type.IsOpenApiNullable())
             {
                 isVisitable = false;
             }
-            if (type.IsUnflaggedEnumType())
+            else if (type.IsUnflaggedEnumType())
             {
                 isVisitable = false;
             }
-            if (type.IsJObjectType())
+            else if (type.IsJObjectType())
             {
                 isVisitable = false;
+            }
+            else if (type.IsOpenApiException())
+            {
+                return false;
             }
 
             return isVisitable;
@@ -149,11 +153,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             if (type.IsOpenApiDictionary())
-            {
-                return false;
-            }
-
-            if (type.IsOpenApiException())
             {
                 return false;
             }
