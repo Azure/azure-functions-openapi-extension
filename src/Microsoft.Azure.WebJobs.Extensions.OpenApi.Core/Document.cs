@@ -13,7 +13,7 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
     /// <summary>
     /// This represents the document entity handling OpenAPI document.
