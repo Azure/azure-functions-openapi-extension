@@ -74,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("integer", null)]
+        [DataRow("integer", "int64")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var name = "hello";
@@ -204,7 +204,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("integer", null)]
+        [DataRow("integer", "int64")]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var result = this._visitor.ParameterVisit(typeof(ulong), this._strategy);
@@ -214,7 +214,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("integer", null)]
+        [DataRow("integer", "int64")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var result = this._visitor.PayloadVisit(typeof(ulong), this._strategy);
