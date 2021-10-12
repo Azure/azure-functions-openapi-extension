@@ -49,10 +49,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
-            var @ref = content[contentType]["schema"];
-
+            var schema = content[contentType]["schema"];
+            
             schema.Value<string>("type").Should().Be(dataType);
-            schema.Value<string>("type").Should().Be(dataFormat);
+            schema.Value<string>("format").Should().Be(dataFormat);
         }
     }
 }
