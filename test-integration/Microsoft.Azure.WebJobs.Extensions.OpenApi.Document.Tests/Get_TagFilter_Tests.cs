@@ -22,12 +22,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [TestInitialize]
         public async Task Init()
         {
-            var json = await http.GetStringAsync(Constants.OpenApiDocEndpoint + "?tag=tagfilter").ConfigureAwait(false);
+            var json = await http.GetStringAsync(Constants.OpenApiDocEndpoint + "?tag=tagFilter").ConfigureAwait(false);
             this._doc = JsonConvert.DeserializeObject<JObject>(json);
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-textplain-string")]
+        [DataRow("/get-textplain-string")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Null(string path)
         {
             var paths = this._doc["paths"];
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-tagfilter")]
+        [DataRow("/get-tagfilter")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Path(string path)
         {
             var paths = this._doc["paths"];
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-query-tagfilter", "get", "tagfilter")]
+        [DataRow("/get-tagfilter", "get", "tagFilter")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Tag(string path, string operationType, string tag)
         {
             var tags = this._doc["paths"][path][operationType]["tags"].Children();

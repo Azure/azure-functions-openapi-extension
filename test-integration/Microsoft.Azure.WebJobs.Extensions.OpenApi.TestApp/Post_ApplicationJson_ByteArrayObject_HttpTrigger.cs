@@ -11,13 +11,13 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
-    public static class Post_ApplicationJson_ByteArray_HttpTrigger
+    public static class Post_ApplicationJson_ByteArrayObject_HttpTrigger
     {
-        [FunctionName(nameof(Post_ApplicationJson_ByteArray_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_ByteArray_HttpTrigger.Post_ApplicationJson_ByteArray), tags: new[] { "bytearray" })]
+        [FunctionName(nameof(Post_ApplicationJson_ByteArrayObject_HttpTrigger))]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_ByteArrayObject_HttpTrigger.Post_ApplicationJson_ByteArrayObject), tags: new[] { "bytearray" })]
         [OpenApiRequestBody(contentType: "application/octet-stream", bodyType: typeof(byte[]), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ByteArrayObjectModel), Description = "The OK response")]
-        public static async Task<IActionResult> Post_ApplicationJson_ByteArray(
+        public static async Task<IActionResult> Post_ApplicationJson_ByteArrayObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-bytearray")] HttpRequest req,
             ILogger log)
         {
