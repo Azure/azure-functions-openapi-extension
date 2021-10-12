@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_DataMember_Tests
+    public class Get_ApplicationJson_JsonProperty_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-datamember", "get", "200")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-datamember", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-datamember", "get", "200", "application/json", "dataMemberObjectModel")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json", "jsonPropertyObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dataMemberObjectModel", "object")]
+        [DataRow("jsonPropertyObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,11 +67,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dataMemberObjectModel", "object", "DataMemberValue1", "string", null)]
-        [DataRow("dataMemberObjectModel", "object", "DataMemberValue2", "integer", "int32")]
-        [DataRow("dataMemberObjectModel", "object", "DataMemberValue3", "string", "date-time")]
-        [DataRow("dataMemberObjectModel", "object", "DataMemberValue4", "boolean", null)]
-        [DataRow("dataMemberObjectModel", "object", "DataMemberValue5", "number", "double")]
+        [DataRow("jsonPropertyObjectModel", "object", "memBer1", "string", null)]
+        [DataRow("jsonPropertyObjectModel", "object", "MEMBER2", "integer", "int32")]
+        [DataRow("jsonPropertyObjectModel", "object", "MeMBer3", "string", "date-time")]
+        [DataRow("jsonPropertyObjectModel", "object", "member4", "boolean", null)]
+        [DataRow("jsonPropertyObjectModel", "object", "MembeR5", "number", "double")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
