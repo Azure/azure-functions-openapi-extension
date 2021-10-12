@@ -67,15 +67,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object", "boolValue", "array")]
+        [DataRow("arrayObjectModel", "object", "booleanValue", "array")]
         [DataRow("arrayObjectModel", "object", "stringValue", "array")]
         [DataRow("arrayObjectModel", "object", "int32Value", "array")]
         [DataRow("arrayObjectModel", "object", "int64Value", "array")]
         [DataRow("arrayObjectModel", "object", "floatValue", "array")]
         [DataRow("arrayObjectModel", "object", "decimalValue", "array")]
         [DataRow("arrayObjectModel", "object", "stringObjectValue", "array")]
-        [DataRow("arrayObjectModel", "object", "int32ObjectValue", "array")]
-        [DataRow("arrayObjectModel", "object", "stringObjectModel", "array")]
+        [DataRow("arrayObjectModel", "object", "integerObjectValue", "array")]
+        [DataRow("arrayObjectModel", "object", "numberObjectValue", "array")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object", "boolValue", "array", "boolean")]
+        [DataRow("arrayObjectModel", "object", "booleanValue", "array", "boolean")]
         [DataRow("arrayObjectModel", "object", "stringValue", "array", "string")]
         [DataRow("arrayObjectModel", "object", "int32Value", "array", "integer")]
         [DataRow("arrayObjectModel", "object", "int64Value", "array", "integer")]
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("arrayObjectModel", "object", "stringObjectValue", "array", "stringObjectModel")]
-        [DataRow("arrayObjectModel", "object", "int32ObjectValue", "array", "int32ObjectModel")]
-        [DataRow("arrayObjectModel", "object", "stringObjectModel", "array", "stringObjectModel")]
+        [DataRow("arrayObjectModel", "object", "integerObjectValue", "array", "integerObjectModel")]
+        [DataRow("arrayObjectModel", "object", "numberObjectValue", "array", "numberObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItemReference(string @ref, string refType, string propertyName, string propertyType, string itemRef)
         {
             var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName]["items"];
