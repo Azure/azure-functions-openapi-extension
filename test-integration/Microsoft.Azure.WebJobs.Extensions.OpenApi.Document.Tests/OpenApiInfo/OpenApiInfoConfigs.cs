@@ -1,4 +1,4 @@
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.OpenApiInfo
 {
     public class OpenApiInfoConfigs
     {

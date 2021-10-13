@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {

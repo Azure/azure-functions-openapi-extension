@@ -11,6 +11,10 @@
     <Owners>Microsoft,Azure-SDK</Owners>
     <Authors>Microsoft</Authors>
     <Company>Microsoft</Company>
+
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
 </Project>

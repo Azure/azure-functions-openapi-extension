@@ -1,6 +1,6 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models;
+
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Examples
