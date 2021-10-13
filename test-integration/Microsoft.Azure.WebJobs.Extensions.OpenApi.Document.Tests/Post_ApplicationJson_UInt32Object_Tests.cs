@@ -74,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-uint32", "post", "200", "application/json", "uInt32ObjectModel")]
+        [DataRow("/post-applicationjson-uint32", "post", "200", "application/json", "integerObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("uInt32ObjectModel", "object")]
+        [DataRow("integerObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("uInt32ObjectModel", "value", "integer")]
+        [DataRow("integerObjectModel", "uInt32Value", "integer")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

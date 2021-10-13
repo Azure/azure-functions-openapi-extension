@@ -16,8 +16,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_UInt32_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_UInt32_HttpTrigger.Post_ApplicationJson_UInt32), tags: new[] { "UInt32" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(UInt32), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UInt32ObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(uint), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_UInt32(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-uint32")] HttpRequest req,
             ILogger log)
