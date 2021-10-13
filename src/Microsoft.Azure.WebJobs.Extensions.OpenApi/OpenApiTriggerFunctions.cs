@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -21,7 +22,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         private const string ContentTypeJson = "application/json";
         private const string ContentTypeYaml = "text/vnd.yaml";
 
-        private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
+        private static IOpenApiHttpTriggerContext context;
+        private static IEnumerable<IDocumentExtension> registeredExtensions;
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
@@ -56,15 +58,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     return content;
                 }
 
-                result = await context.Document
-                                      .InitialiseDocument()
-                                      .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
-                                      .AddNamingStrategy(context.NamingStrategy)
-                                      .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
-                                      .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
-                                      .ConfigureAwait(false);
+                var document = context.Document
+                    .InitialiseDocument()
+                    .AddMetadata(context.OpenApiConfigurationOptions.Info)
+                    .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
+                    .AddNamingStrategy(context.NamingStrategy)
+                    .AddVisitors(context.GetVisitorCollection())
+                    .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion);
+
+                // Call any registered document extensions
+                foreach (var ext in registeredExtensions)
+                {
+                    ext.ExtendDocument(document, req);
+                }
+
+                result = await document
+                    .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
+                    .ConfigureAwait(false);
 
                 content = new ContentResult()
                 {
@@ -128,15 +138,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     return content;
                 }
 
-                result = await context.Document
+                var document = context.Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiConfigurationOptions.Info)
                                       .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
-                                      .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
-                                      .ConfigureAwait(false);
+                                      .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version));
+
+                // Call any registered document extensions
+                foreach (var ext in registeredExtensions)
+                {
+                    ext.ExtendDocument(document, req);
+                }
+
+                result = await document
+                    .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
+                    .ConfigureAwait(false);
 
                 content = new ContentResult()
                 {

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Script.Description;
 
 using Newtonsoft.Json.Linq;
@@ -29,10 +31,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiTriggerFunctionProvider"/> class.
         /// </summary>
-        public OpenApiTriggerFunctionProvider(OpenApiSettings settings)
+        public OpenApiTriggerFunctionProvider(OpenApiSettings settings, IOpenApiHttpTriggerContext ctx = null, IEnumerable<IDocumentExtension> extensions = null)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this._bindings = this.SetupOpenApiHttpBindings();
+
+            context = ctx ?? new OpenApiHttpTriggerContext();
+            registeredExtensions = extensions ?? Enumerable.Empty<IDocumentExtension>();
         }
 
         /// <inheritdoc />
