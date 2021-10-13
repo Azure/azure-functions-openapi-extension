@@ -36,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-uri", "post", "application/json")]
+        [DataRow("/post-applicationjson-uri", "post", "text/plain")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentType(string path, string operationType, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -45,14 +45,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-uri", "post", "application/json", "uri")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string reference)
+        [DataRow("/post-applicationjson-uri", "post", "text/plain", "string", "uri")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
-            var @ref = content[contentType]["schema"]["$ref"];
+            var value = content[contentType]["schema"];
 
-            @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
+            value.Should().NotBeNull();
+            value.Value<string>("type").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyFormat);
         }
 
         [DataTestMethod]

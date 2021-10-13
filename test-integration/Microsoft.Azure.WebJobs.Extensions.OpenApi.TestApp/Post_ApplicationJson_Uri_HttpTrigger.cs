@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_Uri_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_Uri_HttpTrigger.Post_ApplicationJson_Uri), tags: new[] { "uri" })]
-        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Uri), Required = true, Description = "The OK response")]
+        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(Uri), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UriObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_Uri(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-uri")] HttpRequest req,
