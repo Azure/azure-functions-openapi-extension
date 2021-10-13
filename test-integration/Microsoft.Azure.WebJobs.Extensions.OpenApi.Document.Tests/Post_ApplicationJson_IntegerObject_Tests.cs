@@ -384,7 +384,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
                 @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
             }
 
-
             [DataTestMethod]
             [DataRow("integerObjectModel", "object")]
             public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)

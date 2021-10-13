@@ -52,7 +52,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_UInt16Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_Integer_HttpTrigger.Post_ApplicationJson_UInt16Object), tags: new[] { "uint16value" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ushort), Required = true, Description = "The OK response")]
@@ -91,8 +90,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
-
-
-
     }
 }
