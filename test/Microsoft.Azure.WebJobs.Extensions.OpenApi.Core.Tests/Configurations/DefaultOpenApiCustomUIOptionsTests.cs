@@ -114,7 +114,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
 
-            var result = await options.GetFaviconMetaTags().ConfigureAwait(false);
+            var result = await options.GetFaviconMetaTagsAsync().ConfigureAwait(false);
 
             result.Should().NotBeEmpty();
         }
