@@ -55,13 +55,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
             
             [DataTestMethod]
-            [DataRow("/post-applicationjson-int16", "post", "text/plain", "integer")]
-            [DataRow("/post-applicationjson-int32", "post", "text/plain", "integer")]
-            [DataRow("/post-applicationjson-int64", "post", "text/plain", "integer")]
-            [DataRow("/post-applicationjson-uint16", "post", "text/plain", "integer")]
-            [DataRow("/post-applicationjson-uint32", "post", "text/plain", "integer")]
-            [DataRow("/post-applicationjson-uint64", "post", "text/plain", "integer")]
-            public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType)
+            [DataRow("/post-applicationjson-int16", "post", "text/plain", "integer", "int32")]
+            [DataRow("/post-applicationjson-int32", "post", "text/plain", "integer", "int32")]
+            [DataRow("/post-applicationjson-int64", "post", "text/plain", "integer", "int64")]
+            [DataRow("/post-applicationjson-uint16", "post", "text/plain", "integer", null)]
+            [DataRow("/post-applicationjson-uint32", "post", "text/plain", "integer", null)]
+            [DataRow("/post-applicationjson-uint64", "post", "text/plain", "integer", "int64")]
+            public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
             {
                 var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
@@ -69,6 +69,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
                 value.Should().NotBeNull();
                 value.Value<string>("type").Should().Be(propertyType);
+                value.Value<string>("format").Should().Be(propertyFormat);
+
             }
 
             [DataTestMethod]
