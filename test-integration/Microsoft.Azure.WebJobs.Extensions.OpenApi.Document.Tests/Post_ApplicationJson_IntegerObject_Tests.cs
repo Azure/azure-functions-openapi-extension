@@ -128,27 +128,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
 
             [DataTestMethod]
-            [DataRow("integerObjectModel",  "int16Value", "integer", "int32",  "int32Value", "integer", "int32",  "int64Value", "integer", "int64")]
-            [DataRow("integerObjectModel", "uInt16Value", "integer",    null, "uInt32Value", "integer",    null, "uInt64Value", "integer", "int64")]
-            public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName1, string propertyType1, string propertyFormat1, string propertyName2, string propertyType2, string propertyFormat2, string propertyName3, string propertyType3, string propertyFormat3)
+            [DataRow("integerObjectModel", "int16Value", "integer", "int32")]
+            [DataRow("integerObjectModel", "int32Value", "integer", "int32")]
+            [DataRow("integerObjectModel", "int64Value", "integer", "int64")]
+            [DataRow("integerObjectModel", "uInt16Value", "integer", null)]
+            [DataRow("integerObjectModel", "uInt32Value", "integer", null)]
+            [DataRow("integerObjectModel", "uInt64Value", "integer", "int64")]
+            public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
             {
                 var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
-                var value1 = properties[propertyName1];
-                var value2 = properties[propertyName2];
-                var value3 = properties[propertyName3];
+                var value = properties[propertyName];
 
-                value1.Should().NotBeNull();
-                value1.Value<string>("type").Should().Be(propertyType1);
-                value1.Value<string>("format").Should().Be(propertyFormat1);
+                value.Should().NotBeNull();
+                value.Value<string>("type").Should().Be(propertyType);
+                value.Value<string>("format").Should().Be(propertyFormat);
 
-                value2.Should().NotBeNull();
-                value2.Value<string>("type").Should().Be(propertyType2);
-                value2.Value<string>("format").Should().Be(propertyFormat2);
-
-                value3.Should().NotBeNull();
-                value3.Value<string>("type").Should().Be(propertyType3);
-                value3.Value<string>("format").Should().Be(propertyFormat3);
             }
         }
     }
