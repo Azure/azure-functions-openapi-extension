@@ -39,6 +39,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets the favicon meta tags to be rendered on the page.
         /// </summary>
         /// <returns>The Favicon meta tags for custom UI.</returns>
-        IEnumerable<string> GetFaviconMetaTags();
+        Task<IEnumerable<string>> GetFaviconMetaTags();
     }
 }

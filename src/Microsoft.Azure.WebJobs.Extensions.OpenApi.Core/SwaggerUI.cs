@@ -25,8 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private const string SwaggerUICustomJsPlaceholder = "[[SWAGGER_UI_CUSTOM_JS]]";
         private const string SwaggerUIStandalonePresetJsPlaceholder = "[[SWAGGER_UI_STANDALONE_PRESET_JS]]";
         private const string SwaggerUIApiPrefix = "[[SWAGGER_UI_API_PREFIX]]";
-        private const string SwaggerUIFaviconLink1 = "[[SWAGGER_UI_FAVICON_LINK_1]]";
-        private const string SwaggerUIFaviconLink2 = "[[SWAGGER_UI_FAVICON_LINK_2]]";
+        private const string SwaggerUIFaviconLinks = "[[SWAGGER_UI_FAVICON_LINKS]]";
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
 
         private readonly string indexHtml = $"{typeof(SwaggerUI).Namespace}.dist.index.html";
@@ -37,6 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         private OpenApiInfo _info;
         private IHttpRequestDataObject _req;
+        private IEnumerable<string> _swaggerUiFaviconLinks;
         private string _baseUrl;
         private string _swaggerUiCss;
         private string _swaggerUiCustomCss;
@@ -46,8 +46,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string _swaggerUiApiPrefix;
         private string _indexHtml;
         private string _oauth2RedirectHtml;
-        private string _swaggerUiFaviconLink1;
-        private string _swaggerUiFaviconLink2;
 
         /// <inheritdoc />
         public ISwaggerUI AddMetadata(OpenApiInfo info)
@@ -107,8 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             {
                 this._swaggerUiCustomCss = await options.GetStylesheetAsync();
                 this._swaggerUiCustomJs = await options.GetJavaScriptAsync();
-                this._swaggerUiFaviconLink1 = options.GetFaviconMetaTags().ElementAt(0);
-                this._swaggerUiFaviconLink2 = options.GetFaviconMetaTags().ElementAt(1);            
+                this._swaggerUiFaviconLinks = await options.GetFaviconMetaTags();       
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
@@ -198,8 +195,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                                       .Replace(SwaggerUIBundleJsPlaceholder, this._swaggerUiBundleJs)
                                       .Replace(SwaggerUICustomJsPlaceholder, this._swaggerUiCustomJs)
                                       .Replace(SwaggerUIStandalonePresetJsPlaceholder, this._swaggerUiStandalonePresetJs)
-                                      .Replace(SwaggerUIFaviconLink1, this._swaggerUiFaviconLink1)
-                                      .Replace(SwaggerUIFaviconLink2, this._swaggerUiFaviconLink2)
+                                      .Replace(SwaggerUIFaviconLinks, string.Join("\n  ", this._swaggerUiFaviconLinks))
                                       .Replace(SwaggerUrlPlaceholder, swaggerUrl);
 
             return html;

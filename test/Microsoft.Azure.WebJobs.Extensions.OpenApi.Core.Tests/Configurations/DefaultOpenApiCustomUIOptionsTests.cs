@@ -109,12 +109,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [TestMethod]
-        public void Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
+        public async Task Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
 
-            var result = options.GetFaviconMetaTags();
+            var result = await options.GetFaviconMetaTags().ConfigureAwait(false);
 
             result.Should().NotBeEmpty();
         }
