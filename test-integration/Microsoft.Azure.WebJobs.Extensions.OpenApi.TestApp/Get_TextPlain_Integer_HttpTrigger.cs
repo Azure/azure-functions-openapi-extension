@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int16))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int16), tags: new[] { "int16value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int32), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(short), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Int16(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-int16")] HttpRequest req,
         ILogger log)
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int32))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int32), tags: new[] { "int32value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int32), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(int), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Int32(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-int32")] HttpRequest req,
         ILogger log)
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int64))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_Int64), tags: new[] { "int64value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int64), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(long), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Int64(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-int64")] HttpRequest req,
         ILogger log)
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt16))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt16), tags: new[] { "uint16value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int32), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(ushort), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_UInt16(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-uint16")] HttpRequest req,
         ILogger log)
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt32))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt32), tags: new[] { "uint32value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int32), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(uint), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_UInt32(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-uint32")] HttpRequest req,
         ILogger log)
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt64))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Integer_HttpTrigger.Get_TextPlain_UInt64), tags: new[] { "uint64value" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Int64), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(ulong), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_UInt64(
         [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-uint64")] HttpRequest req,
         ILogger log)
