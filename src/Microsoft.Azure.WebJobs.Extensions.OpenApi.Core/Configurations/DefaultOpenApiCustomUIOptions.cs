@@ -18,6 +18,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
     {
         private static readonly HttpClient http = new HttpClient();
 
+        private static readonly List<string> faviconPaths = new List<string>()
+        {
+            "dist.favicon-16x16.png",
+            "dist.favicon-32x32.png",
+        };
+
         private readonly Assembly _assembly;
         
         /// <summary>
@@ -29,11 +35,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             this._assembly = assembly.ThrowIfNullOrDefault();
         }
 
-        private static List<string> FaviconPaths = new List<string>()
-        {
-            "dist.favicon-16x16.png",
-            "dist.favicon-32x32.png",
-        };
         /// <inheritdoc/>
         public virtual string CustomStylesheetPath { get; } = "dist.custom.css";
 
@@ -48,12 +49,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         };
 
         /// <inheritdoc/>
-        public virtual async Task<IEnumerable<string>> GetFaviconMetaTags()
+        public virtual async Task<IEnumerable<string>> GetFaviconMetaTagsAsync()
         {
             var metaTags = new List<string>();
             foreach(var faviconMetaTag in this.CustomFaviconMetaTags)
             {
-                metaTags.Add(await this.TryResolveToBase64Async(faviconMetaTag).ConfigureAwait(false));
+                metaTags.Add(await this.ResolveFaviconMetaTagAsync(faviconMetaTag).ConfigureAwait(false));
             }
             return metaTags;
         }
@@ -80,27 +81,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
         }
 
-        private async Task<string> TryResolveToBase64Async(string metatag)
+        private async Task<string> ResolveFaviconMetaTagAsync(string metatag)
         {
-            foreach(var faviconPath in FaviconPaths)
+            var faviconPath = faviconPaths.SingleOrDefault(p => metatag.Contains(p));
+            if (faviconPath.IsNullOrWhiteSpace())
             {
-                if (metatag.Contains(faviconPath))
+                return metatag;
+            }
+
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{faviconPath}"))
+            {
+                var memoryStream = new MemoryStream();
+                if (stream.IsNullOrDefault())
                 {
-                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{faviconPath}"))
-                    {
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            if (stream.IsNullOrDefault())
-                            {
-                                return metatag;
-                            }
-                            await stream.CopyToAsync(memoryStream).ContinueWith((t) =>
-                            {
-                                metatag = metatag.Replace(faviconPath,string.Format(@"data:image/png;base64, {0}", Convert.ToBase64String(memoryStream.ToArray())));
-                            });
-                        }
-                    }
+                    return metatag;
                 }
+                await stream.CopyToAsync(memoryStream).ContinueWith((t) =>
+                {
+                    metatag = metatag.Replace(faviconPath, string.Format(@"data:image/png;base64, {0}", Convert.ToBase64String(memoryStream.ToArray())));
+                });
             }
             return metatag;
         }
