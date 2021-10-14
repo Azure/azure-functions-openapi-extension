@@ -128,8 +128,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
 
             [DataTestMethod]
-            [DataRow("integerObjectModel",  "int16Value", "integer",  "int32",  "int32Value", "integer",  "int32",   "int64Value", "integer", "int64")]
-            [DataRow("integerObjectModel", "uInt16Value", "integer",     null, "uInt32Value", "integer",     null,  "uInt64Value", "integer", "int64")]
+            [DataRow("integerObjectModel",  "int16Value", "integer", "int32",  "int32Value", "integer", "int32",  "int64Value", "integer", "int64")]
+            [DataRow("integerObjectModel", "uInt16Value", "integer",    null, "uInt32Value", "integer",    null, "uInt64Value", "integer", "int64")]
             public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName1, string propertyType1, string propertyFormat1, string propertyName2, string propertyType2, string propertyFormat2, string propertyName3, string propertyType3, string propertyFormat3)
             {
                 var properties = this._doc["components"]["schemas"][@ref]["properties"];
