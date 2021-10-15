@@ -15,7 +15,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         /// </summary>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <returns>Returns <see cref="OkResult"/> instance.</returns>
+#if NET5_0
+        [Microsoft.Azure.Functions.Worker.Function("FakeFunction")]
+#else
         [FunctionName("FakeFunction")]
+#endif
         public async Task<IActionResult> DoSomething(
             [HttpTrigger] HttpRequest req
         )

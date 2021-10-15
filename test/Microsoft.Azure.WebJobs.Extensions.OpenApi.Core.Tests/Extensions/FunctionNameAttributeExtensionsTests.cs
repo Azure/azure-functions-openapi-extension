@@ -3,9 +3,11 @@ using System.Reflection;
 
 using FluentAssertions;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 {
@@ -15,7 +17,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_When_GetFunctionName_Invoked_Then_It_Should_Throw_Exception()
         {
-            Action action = () => FunctionNameAttributeExtensions.GetFunctionName(null);
+            Action action = () => new Mock<IDocumentHelper>().Object.GetFunctionNameAttribute(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -26,10 +28,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         {
             var method = typeof(FakeHttpTrigger).GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
 
-            var result = FunctionNameAttributeExtensions.GetFunctionName(method);
+            var result = new Mock<IDocumentHelper>().Object.GetFunctionNameAttribute(method);
 
+#if NET5_0
+            result.Should().BeOfType<Functions.Worker.FunctionAttribute>();
+#else
             result.Should().BeOfType<FunctionNameAttribute>();
+#endif
             result.Name.Should().Be(expected);
+
         }
     }
 }

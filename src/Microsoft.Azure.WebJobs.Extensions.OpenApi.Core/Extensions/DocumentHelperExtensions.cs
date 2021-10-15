@@ -12,6 +12,16 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
+#if NETSTANDARD2_0
+using FA = Microsoft.Azure.WebJobs.FunctionNameAttribute;
+using TA = Microsoft.Azure.WebJobs.HttpTriggerAttribute;
+#endif
+
+#if NET5_0
+using FA = Microsoft.Azure.Functions.Worker.FunctionAttribute;
+using TA = Microsoft.Azure.Functions.Worker.HttpTriggerAttribute;
+#endif
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 {
     /// <summary>
@@ -30,10 +40,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         {
             var methods = assembly.GetLoadableTypes()
                                   .SelectMany(p => p.GetMethods())
-                                  .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
+                                  .Where(p => p.ExistsCustomAttribute<FA>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
                                   .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
-                                  .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
+                                  .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<TA>()) != null)
                                   .ToList();
 
             if (!tags.Any())
@@ -49,27 +59,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Gets the <see cref="HttpTriggerAttribute"/> from the parameters of the method.
+        /// Gets the <see cref="TA"/> from the parameters of the method.
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <returns><see cref="HttpTriggerAttribute"/> instance.</returns>
-        public static HttpTriggerAttribute GetHttpTriggerAttribute(this IDocumentHelper helper, MethodInfo element)
+        /// <returns><see cref="TA"/> instance.</returns>
+        public static TA GetHttpTriggerAttribute(this IDocumentHelper helper, MethodInfo element)
         {
-            var trigger = element.GetHttpTrigger();
+            element.ThrowIfNullOrDefault();
+
+            var trigger = element.GetParameters()
+                .First()
+                .GetCustomAttribute<TA>(inherit: false);
 
             return trigger;
         }
 
         /// <summary>
-        /// Gets the <see cref="FunctionNameAttribute"/> from the method.
+        /// Gets the <see cref="FA"/> from the method.
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <returns><see cref="FunctionNameAttribute"/> instance.</returns>
-        public static FunctionNameAttribute GetFunctionNameAttribute(this IDocumentHelper helper, MethodInfo element)
+        /// <returns><see cref="FA"/> instance.</returns>
+        public static FA GetFunctionNameAttribute(this IDocumentHelper helper, MethodInfo element)
         {
-            var function = element.GetFunctionName();
+            element.ThrowIfNullOrDefault();
+
+            var function = element.GetCustomAttribute<FA>(inherit: false);
 
             return function;
         }
@@ -78,10 +94,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the HTTP trigger endpoint.
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
-        /// <param name="function"><see cref="FunctionNameAttribute"/> instance.</param>
-        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="function"><see cref="FA"/> instance.</param>
+        /// <param name="trigger"><see cref="TA"/> instance.</param>
         /// <returns>Function HTTP endpoint.</returns>
-        public static string GetHttpEndpoint(this IDocumentHelper helper, FunctionNameAttribute function, HttpTriggerAttribute trigger)
+        public static string GetHttpEndpoint(this IDocumentHelper helper, FA function, TA trigger)
         {
             var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : helper.FilterRouteConstraints(trigger.Route)).Trim('/')}";
 
@@ -92,9 +108,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the HTTP verb.
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
-        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="trigger"><see cref="TA"/> instance.</param>
         /// <returns><see cref="OperationType"/> value.</returns>
-        public static OperationType GetHttpVerb(this IDocumentHelper helper, HttpTriggerAttribute trigger)
+        public static OperationType GetHttpVerb(this IDocumentHelper helper, TA trigger)
         {
             var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out OperationType ot)
                            ? ot
@@ -108,10 +124,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="function"><see cref="FunctionNameAttribute"/> instance.</param>
+        /// <param name="function"><see cref="FA"/> instance.</param>
         /// <param name="verb"><see cref="OperationType"/> value.</param>
         /// <returns><see cref="OpenApiOperation"/> instance.</returns>
-        public static OpenApiOperation GetOpenApiOperation(this IDocumentHelper helper, MethodInfo element, FunctionNameAttribute function, OperationType verb)
+        public static OpenApiOperation GetOpenApiOperation(this IDocumentHelper helper, MethodInfo element, FA function, OperationType verb)
         {
             var op = element.GetOpenApiOperation();
             if (op.IsNullOrDefault())
@@ -143,11 +159,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
+        /// <param name="trigger"><see cref="TA"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, TA trigger, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
