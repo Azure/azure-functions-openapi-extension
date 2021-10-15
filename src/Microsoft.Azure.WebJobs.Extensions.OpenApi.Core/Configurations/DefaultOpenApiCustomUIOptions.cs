@@ -90,16 +90,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             }
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{faviconPath}"))
+            using (var memoryStream = new MemoryStream())
             {
-                var memoryStream = new MemoryStream();
                 if (stream.IsNullOrDefault())
                 {
                     return metatag;
                 }
-                await stream.CopyToAsync(memoryStream).ContinueWith((t) =>
-                {
-                    metatag = metatag.Replace(faviconPath, string.Format(@"data:image/png;base64, {0}", Convert.ToBase64String(memoryStream.ToArray())));
-                });
+                await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
+                metatag = metatag.Replace(faviconPath, string.Format(@"data:image/png;base64, {0}", Convert.ToBase64String(memoryStream.ToArray())));
             }
             return metatag;
         }
