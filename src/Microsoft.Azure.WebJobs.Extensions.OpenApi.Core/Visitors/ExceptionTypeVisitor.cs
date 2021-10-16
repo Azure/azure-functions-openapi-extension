@@ -62,5 +62,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             return isVisitable;
         }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return this.PayloadVisit(dataType: "object", dataFormat: null);
+        }
     }
 }
