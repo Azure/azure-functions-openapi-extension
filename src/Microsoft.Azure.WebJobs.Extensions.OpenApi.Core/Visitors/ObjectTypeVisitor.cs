@@ -88,11 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            var title = type.Value.IsGenericType
-                ? namingStrategy.GetPropertyName(type.Value.GetTypeName().Split('`').First(), hasSpecifiedName: false) + "_" +
-                  string.Join("_",
-                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.GetTypeName(), false)))
-                : namingStrategy.GetPropertyName(type.Value.GetTypeName(), hasSpecifiedName: false);
+            var title = namingStrategy.GetPropertyName(type.Value.GetPropertyName(), hasSpecifiedName: false);
             var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
 
             if (name.IsNullOrWhiteSpace())

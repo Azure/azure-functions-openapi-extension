@@ -639,29 +639,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
         }
 
-        /*
         /// <summary>
         /// Get type name depend on <see cref="OpenApiNamespaceType"/>
         /// </summary>
-        /// <param name="element"><see cref="PropertyInfo"/> instance.</param>
+        /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the type name by <see cref="OpenApiNamespaceType"/></returns>
-        public static string GetPropertyName(this PropertyInfo element, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetPropertyName(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
-            var shortName = element.Name;
-            var fullName = $"{GetTypeName(element.PropertyType)}.{shortName}";
+            var typeName = type.GetTypeName(namespaceType);
 
-            switch (namespaceType)
+            if (type.IsGenericType)
             {
-                case OpenApiNamespaceType.FullName:
-                    return fullName;
-
-                case OpenApiNamespaceType.ShortName:
-                default:
-                    return shortName;
+                return $"{typeName.Split('`').First()}" +
+                       $"_" +
+                       $"{string.Join("_", type.GenericTypeArguments.Select(a => a.GetTypeName(namespaceType)))}";
             }
+
+            return typeName;
         }
-        */
 
         /// <summary>
         /// Checks whether the given type has a recursive property or not.
