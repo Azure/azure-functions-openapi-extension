@@ -86,5 +86,44 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             schema.Value<string>("type").Should().Be(dataType);
             schema.Value<string>("format").Should().Be(dataFormat);
         }
+
+
+        [DataTestMethod]
+        [DataRow("/get-textplain-int16", "get", "int16value", "path", true)]
+        [DataRow("/get-textplain-int32", "get", "int32value", "path", true)]
+        [DataRow("/get-textplain-int64", "get", "int64value", "path", true)]
+        [DataRow("/get-textplain-uint16", "get", "uint16value", "path", true)]
+        [DataRow("/get-textplain-uint32", "get", "uint32value", "path", true)]
+        [DataRow("/get-textplain-uint64", "get", "uint64value", "path", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameter(string path, string operationType, string name, string @in, bool required)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            parameter.Should().NotBeNull();
+            parameter.Value<string>("in").Should().Be(@in);
+            parameter.Value<bool>("required").Should().Be(required);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-path-parameter-examples", "get", "stringParameter", "string")]
+        [DataRow("/get-path-parameter-examples", "get", "int16Parameter", "integer")]
+        [DataRow("/get-path-parameter-examples", "get", "int32Parameter", "integer")]
+        [DataRow("/get-textplain-int16", "get", "int16value", "int32")]
+        [DataRow("/get-textplain-int32", "get", "int32value", "int32")]
+        [DataRow("/get-textplain-int64", "get", "int64value", "int64")]
+        [DataRow("/get-textplain-uint16", "get", "uint16value", null)]
+        [DataRow("/get-textplain-uint32", "get", "uint32value", null)]
+        [DataRow("/get-textplain-uint64", "get", "uint64value", "int64")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var schema = parameter["schema"];
+
+            schema.Value<string>("type").Should().Be(dataType);
+        }
     }
 }
