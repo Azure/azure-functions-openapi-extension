@@ -275,6 +275,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Checks whether the given type is exception or not, from the OpenAPI perspective.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as exception; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiException(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return typeof(Exception).IsAssignableFrom(type);
+        }
+
+        /// <summary>
         /// Checks whether the given type is array or not, from the OpenAPI perspective.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
