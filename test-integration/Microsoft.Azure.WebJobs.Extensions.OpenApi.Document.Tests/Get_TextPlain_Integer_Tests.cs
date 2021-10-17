@@ -71,6 +71,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-textplain-int16", "get", "200", "text/plain", "integer", "int32")]
+        [DataRow("/get-textplain-int32", "get", "200", "text/plain", "integer", "int32")]
+        [DataRow("/get-textplain-int64", "get", "200", "text/plain", "integer", "int64")]
+        [DataRow("/get-textplain-uint16", "get", "200", "text/plain", "integer", null)]
+        [DataRow("/get-textplain-uint32", "get", "200", "text/plain", "integer", null)]
+        [DataRow("/get-textplain-uint64", "get", "200", "text/plain", "integer", "int64")]
+
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string dataType, string dataFormat)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
