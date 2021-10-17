@@ -99,7 +99,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
 
-            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name && p["in"].Value<string>() == @in);
 
             parameter.Should().NotBeNull();
             parameter.Value<string>("in").Should().Be(@in);
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-textplain-int16", "get", "int16value", "integer", "int32","path")]
         [DataRow("/get-textplain-int32", "get", "int32value", "integer", "int32", "path")]
         [DataRow("/get-textplain-int64", "get", "int64value", "integer", "int64", "path")]
-        [DataRow("/get-textplain-uint16", "get", "uint16value", "integer", null, "path")]
+        [DataRow("/get-textplain-uint16", "get", "uint16value", "integer", "int32", "path")]
         [DataRow("/get-textplain-uint32", "get", "uint32value", "integer", null, "path")]
         [DataRow("/get-textplain-uint64", "get", "uint64value", "integer", "int64","path")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType, string dataFormat, string @in)
@@ -119,8 +119,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name && p["in"].Value<string>() == @in);
 
             var schema = parameter["schema"];
-
-
 
             schema.Value<string>("type").Should().Be(dataType);
             schema.Value<string>("format").Should().Be(dataFormat);
