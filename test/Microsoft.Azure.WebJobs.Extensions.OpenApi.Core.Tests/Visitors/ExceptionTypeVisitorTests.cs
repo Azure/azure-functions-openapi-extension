@@ -21,6 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiNamespaceType _namespaceType;
 
         [TestInitialize]
         public void Init()
@@ -28,6 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = new VisitorCollection();
             this._visitor = new ExceptionTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._namespaceType = OpenApiNamespaceType.ShortName;
         }
 
 
@@ -106,7 +108,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, listType);
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -121,7 +123,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(List<string>));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(false);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -138,7 +140,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(List<string>));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
             acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();

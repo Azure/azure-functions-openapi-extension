@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var helper = new DocumentHelper(filter, acceptor, this._configOptions.NamespaceType);
+            var helper = new DocumentHelper(filter, acceptor);
 
             this.Document = new Document(helper);
             this.SwaggerUI = new SwaggerUI();

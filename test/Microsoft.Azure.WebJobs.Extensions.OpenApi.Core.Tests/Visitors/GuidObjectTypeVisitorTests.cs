@@ -21,6 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiNamespaceType _namespaceType;
 
         [TestInitialize]
         public void Init()
@@ -28,6 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = new VisitorCollection();
             this._visitor = new GuidObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._namespaceType = OpenApiNamespaceType.ShortName;
         }
 
         [DataTestMethod]
@@ -77,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(Guid));
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -92,7 +94,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Guid));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(false);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -109,7 +111,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Guid));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Default = @default, Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().NotBeNull();
@@ -126,7 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Guid));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -143,7 +145,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Guid));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
             acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
@@ -154,7 +156,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("string", "uuid")]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.ParameterVisit(typeof(Guid), this._strategy);
+            var result = this._visitor.ParameterVisit(typeof(Guid), this._strategy, this._namespaceType);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
@@ -164,7 +166,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("string", "uuid")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.PayloadVisit(typeof(Guid), this._strategy);
+            var result = this._visitor.PayloadVisit(typeof(Guid), this._strategy, this._namespaceType);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);

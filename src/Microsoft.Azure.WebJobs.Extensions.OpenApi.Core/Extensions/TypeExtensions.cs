@@ -383,14 +383,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 namingStrategy = new DefaultNamingStrategy();
             }
 
-            if (isDictionary && isList)
+            if (isDictionary)
             {
-                var typeName = GetTypeName(type, namespaceType);
-                var subTypeName = type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.GetCollectionTypeName("Dictionary", namingStrategy, namespaceType);
 
-                var name = typeName.EndsWith("[]")
-                    ? $"{typeName.Split(new[] { "[]" }, StringSplitOptions.None)[0]}_{subTypeName}"
-                    : $"{typeName.Split('`')[0]}_{subTypeName}";
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+            }
+
+            if (isList)
+            {
+                var name = type.GetCollectionTypeName("List", namingStrategy, namespaceType);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
@@ -617,6 +619,32 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
 
             return names;
+        }
+
+        private static string GetCollectionTypeName(
+            this Type type, string replaceKey, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        {
+            var typeName = type.Name;
+            var subTypeName = type.GetOpenApiSubTypeName(namingStrategy);
+            var hasBracket = typeName.EndsWith("[]");
+
+            switch (namespaceType)
+            {
+                case OpenApiNamespaceType.FullName when hasBracket:
+                    return $"{type.Namespace}.{replaceKey}_{subTypeName}";
+
+                case OpenApiNamespaceType.FullName:
+                    return $"{type.Namespace}.{typeName.Split('`')[0]}_{subTypeName}";
+
+                case OpenApiNamespaceType.ShortName when hasBracket:
+                    return $"{replaceKey}_{subTypeName}";
+
+                case OpenApiNamespaceType.ShortName:
+                    return $"{typeName.Split('`')[0]}_{subTypeName}";
+
+                default:
+                    throw new NotSupportedException($"{namespaceType} is not supported.");
+            }
         }
 
         /// <summary>

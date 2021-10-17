@@ -24,6 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiNamespaceType _namespaceType;
 
         [TestInitialize]
         public void Init()
@@ -31,6 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = VisitorCollection.CreateInstance();
             this._visitor = new ListObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._namespaceType = OpenApiNamespaceType.ShortName;
         }
 
         [DataTestMethod]
@@ -116,7 +118,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, listType);
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -158,7 +160,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, listType);
             var attribute = new MinLengthAttribute(length);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be("array");
@@ -189,7 +191,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, listType);
             var attribute = new MaxLengthAttribute(length);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be("array");
@@ -204,7 +206,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(List<string>));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(false);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -221,7 +223,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(List<string>));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._namespaceType, attribute);
 
             acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
             acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
@@ -247,7 +249,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true)]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isItemToBeNull)
         {
-            var result = this._visitor.ParameterVisit(listType, this._strategy);
+            var result = this._visitor.ParameterVisit(listType, this._strategy, this._namespaceType);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
@@ -278,7 +280,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true, "fakeModel")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool reference, string referenceId)
         {
-            var result = this._visitor.PayloadVisit(listType, this._strategy);
+            var result = this._visitor.PayloadVisit(listType, this._strategy, this._namespaceType);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
@@ -309,13 +311,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var key = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), this._strategy);
 
-            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy);
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy, this._namespaceType);
 
             acceptor.RootSchemas.Count.Should().Be(schemaTypes.Length);
 
             foreach (var schemaType in schemaTypes)
             {
-                var subKey = schemaType.GetOpenApiReferenceId(schemaType.IsOpenApiDictionary(), schemaType.IsOpenApiArray(), this._strategy);
+                var subKey = schemaType.GetOpenApiReferenceId(schemaType.IsOpenApiDictionary(), schemaType.IsOpenApiArray(), this._strategy, this._namespaceType);
 
                 acceptor.RootSchemas.Should().ContainKey(subKey);
             }
