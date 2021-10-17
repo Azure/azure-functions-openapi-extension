@@ -23,19 +23,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
     {
         private readonly RouteConstraintFilter _filter;
         private readonly IOpenApiSchemaAcceptor _acceptor;
-        private readonly OpenApiNamespaceType _namespaceType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
-        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
-        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor, OpenApiNamespaceType namespaceType)
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
         {
             this._filter = filter.ThrowIfNullOrDefault();
             this._acceptor = acceptor.ThrowIfNullOrDefault();
-            this._namespaceType = namespaceType;
         }
 
         /// <inheritdoc />
@@ -83,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiNamespaceType namespaceType, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -92,7 +89,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version, this._namespaceType));
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, namespaceType, collection, version));
 
             if (contents.Any())
             {
@@ -109,20 +106,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         /// <inheritdoc />
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
-            return this.GetOpenApiResponses(element, namingStrategy, null);
+            return this.GetOpenApiResponses(element, namingStrategy, namespaceType, null);
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                            .Where(p => p.Deprecated == false)
-                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version) });
+                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, namespaceType, version: version) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
-                                              .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+                                              .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, namespaceType) });
 
             var responses = responsesWithBody.Concat(responsesWithoutBody)
                                              .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.Response)
@@ -132,7 +129,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType, VisitorCollection collection)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -150,11 +147,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, this._namespaceType), p => p);
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, namespaceType), p => p);
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 
-            this._acceptor.Accept(collection, namingStrategy);
+            this._acceptor.Accept(collection, namingStrategy, namespaceType);
 
             var union = schemas.Concat(rootSchemas.Where(p => !schemas.Keys.Contains(p.Key)))
                                .Distinct()

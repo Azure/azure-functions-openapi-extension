@@ -22,13 +22,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <typeparam name="T">Type of payload attribute inheriting <see cref="OpenApiPayloadAttribute"/>.</typeparam>
         /// <param name="attribute">OpenApi payload attribute.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
-        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
         public static OpenApiMediaType ToOpenApiMediaType<T>(
-            this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null,
-            OpenApiVersionType version = OpenApiVersionType.V2, OpenApiNamespaceType namespaceType = default)
+            this T attribute, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName,
+            VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
             where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();

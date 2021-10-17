@@ -24,8 +24,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns><see cref="OpenApiParameter"/> instance.</returns>
-        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
+        public static OpenApiParameter ToOpenApiParameter(
+            this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null,
+            OpenApiVersionType version = OpenApiVersionType.V2, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -41,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             var type = attribute.Type;
 
-            var schema = collection.ParameterVisit(type, namingStrategy);
+            var schema = collection.ParameterVisit(type, namingStrategy, namespaceType);
 
             var parameter = new OpenApiParameter()
             {

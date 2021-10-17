@@ -50,6 +50,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         IDocument AddNamingStrategy(NamingStrategy strategy);
 
         /// <summary>
+        /// Adds the namespace type.
+        /// </summary>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
+        /// <returns><see cref="IDocument"/> instance.</returns>
+        IDocument AddNamespaceType(OpenApiNamespaceType namespaceType);
+
+        /// <summary>
         /// Adds the visitor collection.
         /// </summary>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>

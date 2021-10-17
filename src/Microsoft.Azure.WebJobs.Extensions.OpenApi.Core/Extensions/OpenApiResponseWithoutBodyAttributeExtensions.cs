@@ -2,6 +2,7 @@ using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -19,8 +20,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="attribute"><see cref="OpenApiResponseWithoutBodyAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
-        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithoutBodyAttribute attribute, NamingStrategy namingStrategy = null)
+        public static OpenApiResponse ToOpenApiResponse(
+            this OpenApiResponseWithoutBodyAttribute attribute, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             attribute.ThrowIfNullOrDefault();
 

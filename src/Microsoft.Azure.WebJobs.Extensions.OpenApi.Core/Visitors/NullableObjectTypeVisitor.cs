@@ -5,6 +5,7 @@ using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -33,7 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType, params Attribute[] attributes)
         {
             var instance = acceptor as OpenApiSchemaAcceptor;
             if (instance.IsNullOrDefault())
@@ -55,7 +56,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy, namespaceType);
 
             // Adds the schema for the underlying type.
             var name = subAcceptor.Schemas.First().Key;
@@ -94,10 +95,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType)
         {
             var underlyingType = type.GetUnderlyingType();
-            var schema = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
+            var schema = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy, namespaceType);
 
             schema.Nullable = true;
 
@@ -113,10 +114,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType)
         {
             var underlyingType = type.GetUnderlyingType();
-            var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
+            var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy, namespaceType);
 
             schema.Nullable = true;
 

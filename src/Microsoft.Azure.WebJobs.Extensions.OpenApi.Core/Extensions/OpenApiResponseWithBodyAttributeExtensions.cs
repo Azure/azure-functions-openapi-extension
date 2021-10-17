@@ -22,17 +22,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="attribute"><see cref="OpenApiResponseWithBodyAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
-        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
+        public static OpenApiResponse ToOpenApiResponse(
+            this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null,
+            OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName, VisitorCollection collection = null,
+            OpenApiVersionType version = OpenApiVersionType.V2)
         {
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
                                   ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
                                   : attribute.Description;
-            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection, version);
+            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, namespaceType, collection, version);
             var content = new Dictionary<string, OpenApiMediaType>()
                               {
                                   { attribute.ContentType, mediaType }

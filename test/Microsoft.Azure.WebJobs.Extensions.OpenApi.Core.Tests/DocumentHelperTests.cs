@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
 
-            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection);
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, OpenApiNamespaceType.ShortName, visitorCollection);
 
             schemas.Should().NotBeNull();
             schemas.Count.Should().Be(6);

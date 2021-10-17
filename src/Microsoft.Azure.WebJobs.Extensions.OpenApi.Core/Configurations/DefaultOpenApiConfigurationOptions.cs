@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public bool ForceHttps { get; set; } = IsHttpsForced();
 
         /// <inheritdoc />
-        public OpenApiNamespaceType NamespaceType { get; set; } = default;
+        public OpenApiNamespaceType NamespaceType { get; set; } = OpenApiNamespaceType.ShortName;
 
         /// <summary>
         /// Gets the OpenAPI document version.

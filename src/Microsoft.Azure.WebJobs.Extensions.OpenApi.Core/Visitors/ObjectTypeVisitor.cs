@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -86,9 +87,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType, params Attribute[] attributes)
         {
-            var title = namingStrategy.GetPropertyName(type.Value.GetPropertyName(), hasSpecifiedName: false);
+            var title = namingStrategy.GetPropertyName(type.Value.GetPropertyName(namespaceType), hasSpecifiedName: false);
             var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
 
             if (name.IsNullOrWhiteSpace())
@@ -113,13 +114,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            this.ProcessProperties(instance, name, properties, namingStrategy);
+            this.ProcessProperties(instance, name, properties, namingStrategy, namespaceType);
 
             // Adds the reference.
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
-                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, namespaceType)
             };
 
             instance.Schemas[name].Reference = reference;
@@ -162,12 +163,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType)
         {
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
-        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
+        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType)
         {
             var schemas = new Dictionary<string, OpenApiSchema>();
 
@@ -178,7 +179,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy, namespaceType);
 
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())

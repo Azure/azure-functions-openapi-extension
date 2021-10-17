@@ -22,6 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     {
         private readonly IDocumentHelper _helper;
 
+        private OpenApiNamespaceType _namespaceType;
         private NamingStrategy _strategy;
         private VisitorCollection _collection;
         private IHttpRequestDataObject _req;
@@ -109,6 +110,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public IDocument AddNamespaceType(OpenApiNamespaceType namespaceType)
+        {
+            this._namespaceType = namespaceType;
+
+            return this;
+        }
+
+        /// <inheritdoc />
         public IDocument AddVisitors(VisitorCollection collection)
         {
             this._collection = collection.ThrowIfNullOrDefault();
@@ -169,8 +178,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
                 operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, this._namespaceType, version);
+                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._namespaceType, this._collection, version);
 
                 operations[verb] = operation;
                 item.Operations = operations;
@@ -179,7 +188,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             }
 
             this.OpenApiDocument.Paths = paths;
-            this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
+            this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._namespaceType, this._collection);
             this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes(methods, this._strategy);
             // this.OpenApiDocument.SecurityRequirements = this.OpenApiDocument
             //                                                 .Paths
