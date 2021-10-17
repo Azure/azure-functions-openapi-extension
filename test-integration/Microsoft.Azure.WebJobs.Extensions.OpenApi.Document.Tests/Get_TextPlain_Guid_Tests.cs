@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,6 +24,32 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         {
             var json = await http.GetStringAsync(Constants.OpenApiDocEndpoint).ConfigureAwait(false);
             this._doc = JsonConvert.DeserializeObject<JObject>(json);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-textplain-guid", "get", "guid_path", "path", true)]
+        [DataRow("/get-textplain-guid", "get", "guid_query", "query", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameter(string path, string operationType, string name, string @in, bool required)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"];
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            parameter.Should().NotBeNull();
+            parameter.Value<string>("in").Should().Be(@in);
+            parameter.Value<bool>("required").Should().Be(required);
+        }
+
+        [DataRow("/get-textplain-guid", "get", "guid_path", "string", "uuid")]
+        [DataRow("/get-textplain-guid", "get", "guid_query", "string", "uuid")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType, string dataFormat)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var schema = parameter["schema"];
+
+            schema.Value<string>("type").Should().Be(dataType);
+            schema.Value<string>("format").Should().Be(dataFormat);
         }
 
         [DataTestMethod]
