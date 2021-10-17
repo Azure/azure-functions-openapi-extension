@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Post_ApplicationJson_ExceptionObject_HttpTrigger_Tests
+    public class Post_ApplicationJson_ExceptionObject_Tests
     {
 
         private static HttpClient http = new HttpClient();
@@ -46,15 +46,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-exception", "post", "application/json", "#/components/schemas/stackOverflowException")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentReferenceSchema(string path, string operationType, string contentType, string propertyType)
+        [DataRow("/post-applicationjson-exception", "post", "application/json", "invalidOperationException")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentReferenceSchema(string path, string operationType, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
-            var value = content[contentType]["schema"];
+            var @ref = content[contentType]["schema"]["$ref"];
 
-            value.Should().NotBeNull();
-            value.Value<string>("$ref").Should().Be(propertyType);
+            @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
         }
 
         [DataTestMethod]
@@ -76,7 +75,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-exception", "post", "200", "application/json", "stackOverflowException")]
+        [DataRow("/post-applicationjson-exception", "post", "200", "application/json", "exceptionObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -87,6 +86,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("exceptionObjectModel", "object")]
+        [DataRow("exception", "object")]
+        [DataRow("invalidOperationException", "object")]
         [DataRow("stackOverflowException", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
@@ -96,6 +98,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             schema.Should().NotBeNull();
             schema.Value<string>("type").Should().Be(refType);
+        }
+
+        [DataTestMethod]
+        [DataRow("exceptionObjectModel", "exceptionValue", "object")]
+        [DataRow("exceptionObjectModel", "invalidOperationExceptionValue", "object")]
+        [DataRow("exceptionObjectModel", "stackOverflowExceptionValue", "object")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
+        {
+            var properties = this._doc["components"]["schemas"][@ref]["properties"];
+
+            var value = properties[propertyName];
+
+            value.Should().NotBeNull();
+            value.Value<string>("type").Should().Be(propertyType);
         }
     }
 }
