@@ -177,6 +177,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(StackOverflowException), true)]
         [DataRow(typeof(AggregateException), true)]
         [DataRow(typeof(ArgumentException), true)]
+        [DataRow(typeof(object), false)]
         public void Given_Type_When_IsExceptionType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = TypeExtensions.IsOpenApiException(type);
