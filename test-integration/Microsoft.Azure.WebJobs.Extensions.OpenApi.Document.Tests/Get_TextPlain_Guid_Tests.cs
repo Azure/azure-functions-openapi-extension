@@ -47,7 +47,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
 
             var schema = parameter["schema"];
-
+            
             schema.Value<string>("type").Should().Be(dataType);
             schema.Value<string>("format").Should().Be(dataFormat);
         }
