@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -32,10 +33,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
             var title = type.Value.IsGenericType
-                ? namingStrategy.GetPropertyName(type.Value.Name.Split('`').First(), hasSpecifiedName: false) + "_" +
+                ? namingStrategy.GetPropertyName(type.Value.GetTypeName().Split('`').First(), hasSpecifiedName: false) + "_" +
                   string.Join("_",
-                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)))
-                : namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
+                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.GetTypeName(), false)))
+                : namingStrategy.GetPropertyName(type.Value.GetTypeName(), hasSpecifiedName: false);
             this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
         }
 

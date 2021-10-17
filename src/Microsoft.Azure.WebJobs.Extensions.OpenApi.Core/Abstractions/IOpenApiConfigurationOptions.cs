@@ -39,5 +39,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the value indicating whether to force the HTTPS protocol or not.
         /// </summary>
         bool ForceHttps { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of object name.
+        /// </summary>
+        OpenApiNamespaceType NamespaceType { get; set; }
     }
 }
