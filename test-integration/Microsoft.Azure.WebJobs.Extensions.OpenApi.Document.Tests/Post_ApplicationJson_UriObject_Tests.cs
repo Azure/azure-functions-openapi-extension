@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Post_ApplicationJson_Uri_Tests
+    public class Post_ApplicationJson_UriObject_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("uriObjectModel", "value", "string", "uri")]
+        [DataRow("uriObjectModel", "uriValue", "string", "uri")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

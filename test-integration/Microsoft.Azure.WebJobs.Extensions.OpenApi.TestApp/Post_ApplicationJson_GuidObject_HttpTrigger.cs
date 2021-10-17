@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public static class Post_ApplicationJson_GuidObject_HttpTrigger
     {
         [FunctionName(nameof(Post_ApplicationJson_GuidObject_HttpTrigger))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_GuidObject_HttpTrigger), tags: new[] { "Guid" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_GuidObject_HttpTrigger), tags: new[] { "guid" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(Guid), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GuidObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_GuidObject(
