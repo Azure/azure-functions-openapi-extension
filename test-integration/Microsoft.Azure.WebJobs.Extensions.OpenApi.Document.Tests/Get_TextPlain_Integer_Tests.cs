@@ -107,13 +107,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-int16", "get", "int16value", "int32")]
-        [DataRow("/get-textplain-int32", "get", "int32value", "int32")]
-        [DataRow("/get-textplain-int64", "get", "int64value", "int64")]
-        [DataRow("/get-textplain-uint16", "get", "uint16value", null)]
-        [DataRow("/get-textplain-uint32", "get", "uint32value", null)]
-        [DataRow("/get-textplain-uint64", "get", "uint64value", "int64")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType)
+        [DataRow("/get-textplain-int16", "get", "int16value", "integer", "int32")]
+        [DataRow("/get-textplain-int32", "get", "int32value", "integer", "int32")]
+        [DataRow("/get-textplain-int64", "get", "int64value", "integer", "int64")]
+        [DataRow("/get-textplain-uint16", "get", "uint16value", "integer", null)]
+        [DataRow("/get-textplain-uint32", "get", "uint32value", "integer", null)]
+        [DataRow("/get-textplain-uint64", "get", "uint64value", "integer", "int64")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType, string dataFormat)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
             var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
@@ -121,6 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var schema = parameter["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
+            schema.Value<string>("format").Should().Be(dataFormat);
         }
     }
 }
