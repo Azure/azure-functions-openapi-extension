@@ -32,27 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
             var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
-            var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
-
-            if (name.IsNullOrWhiteSpace())
-            {
-                return;
-            }
-
-            var instance = acceptor as OpenApiSchemaAcceptor;
-            if (instance.IsNullOrDefault())
-            {
-                return;
-            }
-
-            // Adds the reference.
-            var reference = new OpenApiReference()
-            {
-                Type = ReferenceType.Schema,
-                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-            };
-
-            instance.Schemas[name].Reference = reference;
+            this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
         }
 
         /// <inheritdoc />
