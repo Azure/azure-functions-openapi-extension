@@ -107,9 +107,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-path-parameter-examples", "get", "stringParameter", "string")]
-        [DataRow("/get-path-parameter-examples", "get", "int16Parameter", "integer")]
-        [DataRow("/get-path-parameter-examples", "get", "int32Parameter", "integer")]
         [DataRow("/get-textplain-int16", "get", "int16value", "int32")]
         [DataRow("/get-textplain-int32", "get", "int32value", "int32")]
         [DataRow("/get-textplain-int64", "get", "int64value", "int64")]
