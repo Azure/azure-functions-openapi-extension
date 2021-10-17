@@ -84,6 +84,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
                 items.Reference = reference;
             }
+            else
+            {
+                // Remove the title so that it does not appear in the non-reference schema.
+                items.Title = null;
+            }
 
             instance.Schemas[name].Items = items;
 
