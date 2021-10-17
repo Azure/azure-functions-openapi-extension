@@ -111,9 +111,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
             acceptor.Schemas[name].Format.Should().Be(dataFormat);
-
-            acceptor.Schemas[name].Reference.Should().NotBeNull();
-            acceptor.Schemas[name].Reference.Id.Should().Be(id);
         }
 
         [DataTestMethod]
