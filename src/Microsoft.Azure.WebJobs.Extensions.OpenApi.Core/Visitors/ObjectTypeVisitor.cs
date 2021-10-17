@@ -30,14 +30,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             typeof(byte[])
         };
 
-        private readonly HashSet<string> _noAddedKeys = new HashSet<string>
-        {
-            "OBJECT",
-            "JTOKEN",
-            "JOBJECT",
-            "JARRAY",
-        };
-
         /// <inheritdoc />
         public ObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -74,10 +66,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 isVisitable = false;
             }
             else if (type.HasRecursiveProperty())
-            {
-                isVisitable = false;
-            }
-            else if (type.IsOpenApiException())
             {
                 isVisitable = false;
             }
@@ -215,7 +203,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                               .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))
+            foreach (var schema in schemasToBeAdded.Where(p => !OpenApiReadonlyData.IsNonReferentialsTypeString(p.Key)))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {

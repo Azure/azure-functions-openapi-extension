@@ -105,7 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return;
             }
 
-            foreach (var schema in schemasToBeAdded)
+            foreach (var schema in schemasToBeAdded.Where(p => !OpenApiReadonlyData.IsNonReferentialsTypeString(p.Key)))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {

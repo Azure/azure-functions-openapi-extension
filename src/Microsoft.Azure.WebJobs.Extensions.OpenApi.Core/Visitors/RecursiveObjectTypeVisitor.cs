@@ -17,14 +17,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class RecursiveObjectTypeVisitor : TypeVisitor
     {
-        private readonly HashSet<string> _noAddedKeys = new HashSet<string>
-        {
-            "OBJECT",
-            "JTOKEN",
-            "JOBJECT",
-            "JARRAY",
-        };
-
         /// <inheritdoc />
         public RecursiveObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -217,7 +209,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))
+            foreach (var schema in schemasToBeAdded.Where(p => !OpenApiReadonlyData.IsNonReferentialsTypeString(p.Key)))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {
