@@ -85,6 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             typeof(Guid),
             typeof(DateTime),
             typeof(DateTimeOffset),
+            typeof(Uri),
             typeof(object),
         };
 
