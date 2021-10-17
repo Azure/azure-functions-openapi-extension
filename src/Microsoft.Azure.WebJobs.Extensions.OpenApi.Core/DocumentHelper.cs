@@ -23,16 +23,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
     {
         private readonly RouteConstraintFilter _filter;
         private readonly IOpenApiSchemaAcceptor _acceptor;
+        private readonly OpenApiNamespaceType _namespaceType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
-        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor, OpenApiNamespaceType namespaceType)
         {
             this._filter = filter.ThrowIfNullOrDefault();
             this._acceptor = acceptor.ThrowIfNullOrDefault();
+            this._namespaceType = namespaceType;
         }
 
         /// <inheritdoc />
@@ -89,7 +92,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version));
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version, this._namespaceType));
 
             if (contents.Any())
             {
@@ -147,7 +150,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy), p => p);
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy, this._namespaceType), p => p);
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 

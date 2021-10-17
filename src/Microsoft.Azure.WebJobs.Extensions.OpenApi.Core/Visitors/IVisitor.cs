@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -25,8 +25,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <param name="attributes">List of attribute instances.</param>
-        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes);
+        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType, params Attribute[] attributes);
 
         /// <summary>
         /// Checks whether the type is navigatable to its sub-type or not.
@@ -47,7 +48,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy);
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
+        OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType);
 
         /// <summary>
         /// Checks whether the type is visitable or not for payloads.
@@ -61,6 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy);
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
+        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType);
     }
 }

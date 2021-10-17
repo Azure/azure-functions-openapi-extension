@@ -24,8 +24,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(
+            this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null,
+            OpenApiVersionType version = OpenApiVersionType.V2, OpenApiNamespaceType namespaceType = default)
+            where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -42,16 +46,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var type = attribute.BodyType;
 
             // Generate schema based on the type.
-            var schema = collection.PayloadVisit(type, namingStrategy);
+            var schema = collection.PayloadVisit(type, namingStrategy, namespaceType);
 
             // Add deprecated attribute.
-            if (attribute is OpenApiRequestBodyAttribute)
+            if (attribute is OpenApiRequestBodyAttribute bodyAttribute)
             {
-                schema.Deprecated = (attribute as OpenApiRequestBodyAttribute).Deprecated;
+                schema.Deprecated = bodyAttribute.Deprecated;
             }
-            if (attribute is OpenApiResponseWithBodyAttribute)
+            if (attribute is OpenApiResponseWithBodyAttribute withBodyAttribute)
             {
-                schema.Deprecated = (attribute as OpenApiResponseWithBodyAttribute).Deprecated;
+                schema.Deprecated = withBodyAttribute.Deprecated;
             }
 
             // For array and dictionary object, the reference has already been added by the visitor.
@@ -60,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                    Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, namespaceType)
                 };
 
                 schema.Reference = reference;

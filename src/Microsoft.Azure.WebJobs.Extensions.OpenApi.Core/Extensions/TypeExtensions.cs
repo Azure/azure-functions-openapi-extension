@@ -645,7 +645,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the type name by <see cref="OpenApiNamespaceType"/></returns>
-        public static string GetPropertyName(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetPropertyName(this Type type, OpenApiNamespaceType namespaceType = default)
         {
             var typeName = type.GetTypeName(namespaceType);
 

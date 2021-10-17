@@ -6,13 +6,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
     public enum OpenApiNamespaceType
     {
         /// <summary>
-        /// Identifies the long(full) format.
-        /// </summary>
-        FullName,
-
-        /// <summary>
         /// Identifies the short format.
         /// </summary>
         ShortName,
+
+        /// <summary>
+        /// Identifies the long(full) format.
+        /// </summary>
+        FullName,
     }
 }
