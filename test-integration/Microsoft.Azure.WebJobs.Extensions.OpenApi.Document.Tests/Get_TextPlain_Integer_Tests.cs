@@ -116,7 +116,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType, string dataFormat, string @in)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
-            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name && p["in"] == @in);
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name && p["in"].Value<string>() == @in);
 
             var schema = parameter["schema"];
 
