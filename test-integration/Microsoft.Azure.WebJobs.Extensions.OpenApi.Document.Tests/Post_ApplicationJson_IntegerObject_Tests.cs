@@ -1,11 +1,12 @@
+using System.Net.Http;
+using System.Threading.Tasks;
+
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
@@ -53,13 +54,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
                 content[contentType].Should().NotBeNull();
             }
-            
+
             [DataTestMethod]
             [DataRow("/post-applicationjson-int16", "post", "text/plain", "integer", "int32")]
             [DataRow("/post-applicationjson-int32", "post", "text/plain", "integer", "int32")]
             [DataRow("/post-applicationjson-int64", "post", "text/plain", "integer", "int64")]
-            [DataRow("/post-applicationjson-uint16", "post", "text/plain", "integer", null)]
-            [DataRow("/post-applicationjson-uint32", "post", "text/plain", "integer", null)]
+            [DataRow("/post-applicationjson-uint16", "post", "text/plain", "integer", "int32")]
+            [DataRow("/post-applicationjson-uint32", "post", "text/plain", "integer", "int32")]
             [DataRow("/post-applicationjson-uint64", "post", "text/plain", "integer", "int64")]
             public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
             {
@@ -133,8 +134,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             [DataRow("integerObjectModel", "int16Value", "integer", "int32")]
             [DataRow("integerObjectModel", "int32Value", "integer", "int32")]
             [DataRow("integerObjectModel", "int64Value", "integer", "int64")]
-            [DataRow("integerObjectModel", "uInt16Value", "integer", null)]
-            [DataRow("integerObjectModel", "uInt32Value", "integer", null)]
+            [DataRow("integerObjectModel", "uInt16Value", "integer", "int32")]
+            [DataRow("integerObjectModel", "uInt32Value", "integer", "int32")]
             [DataRow("integerObjectModel", "uInt64Value", "integer", "int64")]
             public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
             {
@@ -145,7 +146,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
                 value.Should().NotBeNull();
                 value.Value<string>("type").Should().Be(propertyType);
                 value.Value<string>("format").Should().Be(propertyFormat);
-
             }
         }
     }
