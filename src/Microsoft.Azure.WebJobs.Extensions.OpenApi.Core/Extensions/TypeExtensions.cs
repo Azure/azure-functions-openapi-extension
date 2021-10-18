@@ -484,12 +484,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsOpenApiDictionary())
             {
-                return $"Dictionary of {type.GetOpenApiSubTypeName()}";
+                return $"Dictionary of {type.GetOpenApiSubTypeName(namingStrategy, namespaceType)}";
             }
 
             if (type.IsOpenApiArray())
             {
-                return $"Array of {type.GetOpenApiSubTypeName()}";
+                return $"Array of {type.GetOpenApiSubTypeName(namingStrategy, namespaceType)}";
             }
 
             if (type.IsGenericType)
@@ -649,6 +649,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var typeName = type.Name;
             var subTypeName = type.GetOpenApiSubTypeName(namingStrategy, namespaceType);
             var hasBracket = typeName.EndsWith("[]");
+
+            replaceKey = namingStrategy.GetPropertyName(replaceKey, hasSpecifiedName: false);
 
             switch (namespaceType)
             {
