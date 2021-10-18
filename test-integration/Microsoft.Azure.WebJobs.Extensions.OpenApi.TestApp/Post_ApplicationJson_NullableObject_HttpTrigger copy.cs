@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     public static class Post_ApplicationJson_NullableObject_HttpTrigger
     {
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableBoolean))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableBoolean), tags: new[] { "bool" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableBoolean), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(bool?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableBoolean(
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt16))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt16), tags: new[] { "uint16" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt16), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ushort?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableUInt16(
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt32))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt32), tags: new[] { "uint32" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt32), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(uint?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableUInt32(
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt64))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt64), tags: new[] { "uint64" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableUInt64), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ulong?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableUInt64(
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt16))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt16), tags: new[] { "int16" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt16), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(short?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableInt16(
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt32))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt32), tags: new[] { "int32" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt32), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(int?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableInt32(
@@ -92,9 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt64))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt64), tags: new[] { "int64" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableInt64), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(long?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableInt64(
@@ -106,9 +105,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableSingle))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableSingle), tags: new[] { "single" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableSingle), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(float?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableSingle(
@@ -120,9 +118,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDouble))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDouble), tags: new[] { "double" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDouble), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(double?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableDouble(
@@ -134,9 +131,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDecimal))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDecimal), tags: new[] { "decimal" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDecimal), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(decimal?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableDecimal(
@@ -148,9 +144,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTime))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTime), tags: new[] { "datetime" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTime), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(DateTime?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableDateTime(
@@ -162,9 +157,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             return await Task.FromResult(result).ConfigureAwait(false);
         }
 
-
         [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTimeOffset))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTimeOffset), tags: new[] { "datetimeoffset" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_NullableDateTimeOffset), tags: new[] { "nullable" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(DateTimeOffset?), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_NullableDateTimeOffset(
