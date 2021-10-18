@@ -34,7 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
-                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
+                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription(namingStrategy, namespaceType)}"
                                   : attribute.Description;
             var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, namespaceType, collection, version);
             var content = new Dictionary<string, OpenApiMediaType>()

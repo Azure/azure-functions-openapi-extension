@@ -46,7 +46,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="returnSingleSchema">Value indicating whether to return single schema or not.</param>
         /// <param name="depth">Recurring depth.</param>
         /// <returns>Returns <see cref="Dictionary{String, OpenApiSchema}"/> instance.</returns>
-        public static Dictionary<string, OpenApiSchema> ToOpenApiSchemas(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null, bool returnSingleSchema = false, int depth = 0)
+        public static Dictionary<string, OpenApiSchema> ToOpenApiSchemas(
+            this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null, bool returnSingleSchema = false, int depth = 0)
         {
             type.ThrowIfNullOrDefault();
 
@@ -247,7 +248,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = property.PropertyType.GetOpenApiRootReferenceId()
+                    Id = property.PropertyType.GetOpenApiRootReferenceId(namingStrategy)
                 };
 
                 var referenceSchema = new OpenApiSchema() { Reference = reference };

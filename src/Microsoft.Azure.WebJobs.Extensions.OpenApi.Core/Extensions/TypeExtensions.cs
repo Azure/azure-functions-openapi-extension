@@ -399,27 +399,31 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(GetTypeName(type, namespaceType).Split('`').First(), false) + "_" +
-                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(GetTypeName(a, namespaceType), false)));
+                var firstTypeName = GetTypeName(type, namingStrategy, namespaceType).Split('`').First();
+
+                return namingStrategy.GetPropertyName(firstTypeName, hasSpecifiedName: false)
+                       + "_"
+                       + string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(GetTypeName(a, namingStrategy, namespaceType), false)));
             }
 
-            return namingStrategy.GetPropertyName(GetTypeName(type, namespaceType), hasSpecifiedName: false);
+            return namingStrategy.GetPropertyName(GetTypeName(type, namingStrategy, namespaceType), hasSpecifiedName: false);
         }
 
         /// <summary>
         /// Gets the OpenAPI root reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the OpenAPI root reference ID.</returns>
-        public static string GetOpenApiRootReferenceId(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetOpenApiRootReferenceId(this Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             if (!type.IsGenericType)
             {
-                return GetTypeName(type, namespaceType);
+                return GetTypeName(type, namingStrategy, namespaceType);
             }
 
-            return type.GetOpenApiGenericRootName();
+            return type.GetOpenApiGenericRootName(namingStrategy, namespaceType);
         }
 
         /// <summary>
@@ -468,10 +472,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the OpenAPI description from the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the OpenAPI description from the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiDescription(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetOpenApiDescription(this Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
             if (type.IsOpenApiDictionary())
             {
                 return $"Dictionary of {type.GetOpenApiSubTypeName()}";
@@ -484,26 +494,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsGenericType)
             {
-                return $"{type.GetOpenApiGenericRootName()} containing {type.GetOpenApiSubTypeNames()}";
+                return $"{type.GetOpenApiGenericRootName(namingStrategy, namespaceType)} containing {type.GetOpenApiSubTypeNames(namingStrategy, namespaceType)}";
             }
 
-            return GetTypeName(type, namespaceType);
+            return GetTypeName(type, namingStrategy, namespaceType);
         }
 
         /// <summary>
         /// Gets the root name of the given generic type.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the root name of the given generic type.</returns>
-        public static string GetOpenApiGenericRootName(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetOpenApiGenericRootName(
+            this Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             if (!type.IsGenericType)
             {
-                return GetTypeName(type, namespaceType);
+                return GetTypeName(type, namingStrategy, namespaceType);
             }
 
-            var name = GetTypeName(type, namespaceType).Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries).First();
+            var name = GetTypeName(type, namingStrategy, namespaceType)
+                .Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries)
+                .First();
 
             return name;
         }
@@ -523,7 +537,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 namingStrategy = new DefaultNamingStrategy();
             }
 
-            var typeName = type.IsGenericType ? type.GetOpenApiGenericRootName() : GetTypeName(type, namespaceType);
+            var typeName = type.IsGenericType
+                ? type.GetOpenApiGenericRootName(namingStrategy, namespaceType)
+                : GetTypeName(type, namingStrategy, namespaceType);
+
             var name = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
 
             return name;
@@ -562,7 +579,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the name of the sub type of the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiSubTypeName(this Type type, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetOpenApiSubTypeName(
+            this Type type, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             if (namingStrategy.IsNullOrDefault())
             {
@@ -571,21 +589,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsDictionaryType())
             {
-                var name = type.GetGenericArguments()[1].GetTypeName(namespaceType);
+                var name = type.GetGenericArguments()[1].GetTypeName(namingStrategy, namespaceType);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.BaseType == typeof(Array))
             {
-                var name = type.GetElementType().GetTypeName(namespaceType);
+                var name = type.GetElementType().GetTypeName(namingStrategy, namespaceType);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsArrayType())
             {
-                var name = type.GetGenericArguments()[0].GetTypeName(namespaceType);
+                var name = type.GetGenericArguments()[0].GetTypeName(namingStrategy, namespaceType);
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
@@ -597,8 +615,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the list of names of the sub type of the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the list of names of the sub type of the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiSubTypeNames(this Type type)
+        public static string GetOpenApiSubTypeNames(
+            this Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
             if (!type.IsGenericType)
             {
@@ -608,15 +629,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var types = type.GetGenericArguments().ToList();
             if (types.Count == 1)
             {
-                return types[0].GetOpenApiGenericRootName();
+                return types[0].GetOpenApiGenericRootName(namingStrategy, namespaceType);
             }
 
             var names = (string)null;
             for (var i = 0; i < types.Count - 1; i++)
             {
-                names += $"{types[i].GetOpenApiGenericRootName()}, ";
+                names += $"{types[i].GetOpenApiGenericRootName(namingStrategy, namespaceType)}, ";
             }
-            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
+            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName(namingStrategy, namespaceType)}";
 
             return names;
         }
@@ -624,17 +645,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         private static string GetCollectionTypeName(
             this Type type, string replaceKey, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
+            var @namespace = type.GetNamespaceName(namingStrategy);
             var typeName = type.Name;
-            var subTypeName = type.GetOpenApiSubTypeName(namingStrategy);
+            var subTypeName = type.GetOpenApiSubTypeName(namingStrategy, namespaceType);
             var hasBracket = typeName.EndsWith("[]");
 
             switch (namespaceType)
             {
                 case OpenApiNamespaceType.FullName when hasBracket:
-                    return $"{type.Namespace}.{replaceKey}_{subTypeName}";
+                    return $"{@namespace}.{replaceKey}_{subTypeName}";
 
                 case OpenApiNamespaceType.FullName:
-                    return $"{type.Namespace}.{typeName.Split('`')[0]}_{subTypeName}";
+                    return $"{@namespace}.{typeName.Split('`')[0]}_{subTypeName}";
 
                 case OpenApiNamespaceType.ShortName when hasBracket:
                     return $"{replaceKey}_{subTypeName}";
@@ -651,12 +673,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Get type name depend on <see cref="OpenApiNamespaceType"/>
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the type name by <see cref="OpenApiNamespaceType"/></returns>
-        public static string GetTypeName(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetTypeName(this Type type, NamingStrategy namingStrategy = null, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
-            var shortName = type.Name;
-            var fullName = $"{type.Namespace}.{shortName}";
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
+            var @namespace = type.GetNamespaceName(namingStrategy);
+            var shortName = namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
+            var fullName = $"{@namespace}.{shortName}";
 
             switch (namespaceType)
             {
@@ -673,17 +702,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Get type name depend on <see cref="OpenApiNamespaceType"/>
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="namespaceType"><see cref="OpenApiNamespaceType"/> value.</param>
         /// <returns>Returns the type name by <see cref="OpenApiNamespaceType"/></returns>
-        public static string GetPropertyName(this Type type, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
+        public static string GetPropertyName(this Type type, NamingStrategy namingStrategy, OpenApiNamespaceType namespaceType = OpenApiNamespaceType.ShortName)
         {
-            var typeName = type.GetTypeName(namespaceType);
+            var typeName = type.GetTypeName(namingStrategy, namespaceType);
 
             if (type.IsGenericType)
             {
                 return $"{typeName.Split('`').First()}" +
                        $"_" +
-                       $"{string.Join("_", type.GenericTypeArguments.Select(a => a.GetTypeName(namespaceType)))}";
+                       $"{string.Join("_", type.GenericTypeArguments.Select(a => a.GetTypeName(namingStrategy, namespaceType)))}";
             }
 
             return typeName;
@@ -743,6 +773,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             return true;
+        }
+
+        private static string GetNamespaceName(this Type type, NamingStrategy namingStrategy)
+        {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
+            var @namespace = string.Join(
+                ".",
+                type.Namespace
+                    .Split('.')
+                    .Select(w => namingStrategy.GetPropertyName(w, hasSpecifiedName: false)));
+
+            return @namespace;
+
         }
 
         private static bool IsArrayType(this Type type)
