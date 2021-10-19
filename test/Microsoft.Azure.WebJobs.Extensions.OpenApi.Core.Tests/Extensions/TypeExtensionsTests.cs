@@ -171,6 +171,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             result.Should().Be(expected);
         }
 
+        [DataTestMethod]
+        [DataRow(typeof(Exception), true)]
+        [DataRow(typeof(NullReferenceException), true)]
+        [DataRow(typeof(StackOverflowException), true)]
+        [DataRow(typeof(AggregateException), true)]
+        [DataRow(typeof(ArgumentException), true)]
+        [DataRow(typeof(object), false)]
+        public void Given_Type_When_IsExceptionType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.IsOpenApiException(type);
+
+            result.Should().Be(expected);
+        }
+
         [TestMethod]
         public void Given_Null_When_HasInterface_Invoked_Then_It_Should_Return_False()
         {
