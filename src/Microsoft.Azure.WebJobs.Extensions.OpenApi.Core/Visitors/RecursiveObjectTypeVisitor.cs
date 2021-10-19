@@ -17,6 +17,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class RecursiveObjectTypeVisitor : TypeVisitor
     {
+        private readonly HashSet<string> _noAddedKeys = new HashSet<string>
+        {
+            "OBJECT",
+            "JTOKEN",
+            "JOBJECT",
+            "JARRAY",
+        };
+
         /// <inheritdoc />
         public RecursiveObjectTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
@@ -27,35 +35,39 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.HasRecursiveProperty();
+
             if (type == typeof(Guid))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTime))
+            else if (type == typeof(DateTime))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTimeOffset))
+            else if (type == typeof(DateTimeOffset))
             {
                 isVisitable = false;
             }
-            if (type == typeof(Type))
+            else if (type == typeof(Type))
             {
                 isVisitable = false;
             }
-            if (type.IsOpenApiNullable())
+            else if (type.IsOpenApiNullable())
             {
                 isVisitable = false;
             }
-            if (type.IsUnflaggedEnumType())
+            else if (type.IsUnflaggedEnumType())
             {
                 isVisitable = false;
             }
-            if (type.IsJObjectType())
+            else if (type.IsJObjectType())
             {
                 isVisitable = false;
             }
-
+            else if (type.IsOpenApiException())
+            {
+                return false;
+            }
 
             return isVisitable;
         }
@@ -205,7 +217,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
-            foreach (var schema in schemasToBeAdded.Where(p => p.Key != "jObject" && p.Key != "jToken"))
+            foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))
             {
                 if (instance.RootSchemas.ContainsKey(schema.Key))
                 {

@@ -77,6 +77,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            else if (type.IsOpenApiException())
+            {
+                isVisitable = false;
+            }
 
             return isVisitable;
         }
