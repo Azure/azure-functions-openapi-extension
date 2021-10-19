@@ -81,6 +81,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
         public void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern)
         {
             var href = new List<string>();
