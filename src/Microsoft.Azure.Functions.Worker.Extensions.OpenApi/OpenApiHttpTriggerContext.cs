@@ -92,7 +92,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             {
                 if (this._uiOptions.IsNullOrDefault())
                 {
-                    this._uiOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
+                    string HRefPattern = @"href\s*=\s*(?:[""'](?<1>[^""']*)[""']|(?<1>\S+))";
+                    this._uiOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly, HRefPattern);
                 }
 
                 return this._uiOptions;

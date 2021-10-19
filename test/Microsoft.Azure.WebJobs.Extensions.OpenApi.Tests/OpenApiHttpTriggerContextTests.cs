@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -100,6 +101,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
 
             options.CustomStylesheetPath.Should().Be("dist.custom.css");
             options.CustomJavaScriptPath.Should().Be("dist.custom.js");
+            options.CustomFaviconMetaTags.SingleOrDefault(p => p.Contains("dist.favicon-16x16.png")).Should().NotBeNull();
+            options.CustomFaviconMetaTags.SingleOrDefault(p => p.Contains("dist.favicon-32x32.png")).Should().NotBeNull();
         }
 
         [TestMethod]

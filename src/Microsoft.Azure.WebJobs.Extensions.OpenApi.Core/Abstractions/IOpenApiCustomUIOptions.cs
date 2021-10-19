@@ -18,6 +18,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         string CustomJavaScriptPath { get; }
 
+
         /// <summary>
         /// Gets metaTags for Favicon for custom UI.
         /// </summary>
@@ -40,5 +41,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <returns>The Favicon meta tags for custom UI.</returns>
         Task<IEnumerable<string>> GetFaviconMetaTagsAsync();
+
+        /// <summary>
+        ///  Gets the favicon href to be rendered on the page.
+        /// </summary>
+        /// <param name="metatags"></param>
+        /// <param name="hrefPattern"></param>
+        void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern);
     }
 }

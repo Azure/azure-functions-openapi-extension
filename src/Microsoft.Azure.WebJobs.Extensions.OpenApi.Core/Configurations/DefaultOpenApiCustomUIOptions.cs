@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -18,21 +19,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
     {
         private static readonly HttpClient http = new HttpClient();
 
-        private static readonly List<string> faviconPaths = new List<string>()
+        private readonly Assembly _assembly;
+
+        private static IEnumerable<string> _faviconPaths = new List<string>()
         {
-            "dist.favicon-16x16.png",
             "dist.favicon-32x32.png",
+            "dist.favicon-16x16.png"
         };
 
-        private readonly Assembly _assembly;
-        
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOpenApiCustomUIOptions"/> class.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         public DefaultOpenApiCustomUIOptions(Assembly assembly)
         {
-            this._assembly = assembly.ThrowIfNullOrDefault();
+            this._assembly = assembly.ThrowIfNullOrDefault();        
         }
 
         /// <inheritdoc/>
@@ -52,10 +53,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual async Task<IEnumerable<string>> GetFaviconMetaTagsAsync()
         {
             var metaTags = new List<string>();
-            foreach(var faviconMetaTag in this.CustomFaviconMetaTags)
-            {
-                metaTags.Add(await this.ResolveFaviconMetaTagAsync(faviconMetaTag).ConfigureAwait(false));
-            }
+            (this.CustomFaviconMetaTags as List<string>).ForEach(async x =>
+                metaTags.Add(await this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false))
+            );
             return metaTags;
         }
 
@@ -81,15 +81,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return await this.ReadFromStream(this.CustomJavaScriptPath).ConfigureAwait(false);
         }
 
+        public void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern)
+        {
+            var href = new List<string>();
+            (metatags as List<string>).ForEach(x => href.Add(Regex.Match(x, hrefPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1)).Groups[1].Value));
+            _faviconPaths = href;
+        }
+
         private async Task<string> ResolveFaviconMetaTagAsync(string metatag)
         {
-            var faviconPath = faviconPaths.SingleOrDefault(p => metatag.Contains(p));
-            if (faviconPath.IsNullOrWhiteSpace())
+            var faviconPath = _faviconPaths.SingleOrDefault(p => metatag.Contains(p));
+            if (Uri.TryCreate(faviconPath, UriKind.Absolute, out var faviconUri))
             {
                 return metatag;
             }
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{faviconPath}"))
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{faviconPath}") ?? this._assembly.GetManifestResourceStream($"{this._assembly.GetName().Name}.{faviconPath}"))
             using (var memoryStream = new MemoryStream())
             {
                 if (stream.IsNullOrDefault())
@@ -97,7 +104,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                     return metatag;
                 }
                 await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
-                metatag = metatag.Replace(faviconPath, string.Format(@"data:image/png;base64, {0}", Convert.ToBase64String(memoryStream.ToArray())));
+                metatag = metatag.Replace(faviconPath, string.Format("data:image/{0};base64,{1}", (Path.GetExtension(faviconPath)?? "png").Replace(".",""), Convert.ToBase64String(memoryStream.ToArray())));
             }
             return metatag;
         }

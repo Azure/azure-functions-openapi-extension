@@ -92,7 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             {
                 if (this._uiOptions.IsNullOrDefault())
                 {
-                    this._uiOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly);
+                    var HRefPattern = @"href\s*=\s*(?:[""'](?<1>[^""']*)[""']|(?<1>[^>\s]+))";
+                    this._uiOptions = OpenApiCustomUIResolver.Resolve(this.ApplicationAssembly, HRefPattern);
                 }
 
                 return this._uiOptions;

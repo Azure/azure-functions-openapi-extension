@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -18,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// </summary>
         /// <param name="assembly">The executing assembly instance.</param>
         /// <returns>Returns the <see cref="IOpenApiCustomUIOptions"/> instance resolved.</returns>
-        public static IOpenApiCustomUIOptions Resolve(Assembly assembly)
+        public static IOpenApiCustomUIOptions Resolve(Assembly assembly, string hRefPattern)
         {
             var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiCustomUIOptions", ignoreCase: true).IsNullOrDefault() == false);
@@ -27,9 +28,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
                 return new DefaultOpenApiCustomUIOptions(assembly);
             }
 
-            var options = Activator.CreateInstance(type, assembly);
+            var options = Activator.CreateInstance(type, assembly) as IOpenApiCustomUIOptions;
+            options.GetFaviconPaths(options.CustomFaviconMetaTags, hRefPattern);
 
-            return options as IOpenApiCustomUIOptions;
+            return options;
         }
     }
 }

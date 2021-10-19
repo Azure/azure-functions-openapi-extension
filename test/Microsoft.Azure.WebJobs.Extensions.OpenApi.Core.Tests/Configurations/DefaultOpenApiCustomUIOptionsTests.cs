@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using FluentAssertions;
@@ -52,18 +54,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow("*data:image/png;base64*", "dist.favicon-32x32.png", "dist.favicon-16x16.png")]
-        public async Task Given_Type_When_GetFaviconAsync_Invoked_Then_It_Should_Return_ResultAsync(string expected, string defaultFavicon_32, string defaultFavicon_16)
+        [DataRow("dist.favicon-32x32.png")]
+        [DataRow("dist.favicon-16x16.png")]
+        public async Task Given_Type_When_GetFaviconAsync_Invoked_Then_It_Should_Return_ResultAsync(string defaultFavicon)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetAssembly(typeof(DefaultOpenApiCustomUIOptions));
             var options = new DefaultOpenApiCustomUIOptions(assembly);
 
             var result = await options.GetFaviconMetaTagsAsync().ConfigureAwait(false);
+            var expected = default(string);
 
-            (result as List<string>)[0].Should().Match(expected);
-            (result as List<string>)[0].Should().NotMatch(defaultFavicon_32);
-            (result as List<string>)[1].Should().Match(expected);
-            (result as List<string>)[1].Should().NotMatch(defaultFavicon_16);
+            using (var stream = assembly.GetManifestResourceStream($"{typeof(SwaggerUI).Namespace}.{defaultFavicon}"))
+            using (var memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
+                expected = Convert.ToBase64String(memoryStream.ToArray());
+            }
+
+            result.SingleOrDefault(p => p.Contains(expected)).Should().NotBeNull();
         }
 
         [TestMethod]
@@ -80,7 +88,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public async Task Given_File_When_GetJavaScriptAsync_Invoked_Then_It_Should_Return_Result()
         {
-
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeFileCustomUIOptions(assembly);
 
@@ -103,7 +110,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public async Task Given_Url_When_GetJavaScriptAsync_Invoked_Then_It_Should_Return_Result()
         {
-
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
 
@@ -113,17 +119,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow("<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-16x16.png\" sizes=\"16x16\" />"
-               , "<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-32x32.png\" sizes=\"32x32\" />")]
-        public async Task Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result(string expectedFavicon_16, string expectedFavicon_32)
+        [DataRow("<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-16x16.png\" sizes=\"16x16\" />")]
+        [DataRow("<link rel=\"icon\" type=\"image/png\" href=\"https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/dist/favicon-32x32.png\" sizes=\"32x32\" />")]
+        public async Task Given_Url_When_GetFaviconAsync_Invoked_Then_It_Should_Return_Result(string expectedFavicon)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var options = new FakeUriCustomUIOptions(assembly);
 
             var result = await options.GetFaviconMetaTagsAsync().ConfigureAwait(false);
 
-            (result as List<string>)[0].Should().Be(expectedFavicon_16);
-            (result as List<string>)[1].Should().Be(expectedFavicon_32);
+            result.SingleOrDefault(p => p.Contains(expectedFavicon)).Should().NotBeNull();
         }
     }
 }

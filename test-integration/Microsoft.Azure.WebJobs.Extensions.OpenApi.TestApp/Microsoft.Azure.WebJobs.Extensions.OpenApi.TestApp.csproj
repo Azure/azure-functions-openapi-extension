@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,6 +7,11 @@
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="dist\fake-favicon-16x16.png" />
+    <EmbeddedResource Include="dist\fake-favicon-32x32.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
