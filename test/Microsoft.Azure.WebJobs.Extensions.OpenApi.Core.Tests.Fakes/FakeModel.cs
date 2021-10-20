@@ -17,7 +17,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         /// <summary>
         /// Gets or sets the value 2.
         /// </summary>
-        [JsonProperty("anotherFakeProperty", Required = Required.Always)]
+        [JsonProperty("anotherJsonFakeProperty", Required = Required.Always)]
         public string FakeProperty2 { get; set; }
 
         [JsonProperty(Required = Required.Default)]
@@ -27,7 +27,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         public string FakePropertyNoAnnotation { get; set; }
 
         [DataMember(Name = "anotherDataMemberFakeProperty")]
-        public string DataMemberFakeProperty { get; set; } 
+        public string FakeProperty3 { get; set; }
+
+        [DataMember(Name = "dataMemberFakeProperty")]
+        [JsonProperty("jsonFakeProperty")]
+        public string FakeProperty4 { get; set; }
 
         public object FakeObject { get; set; }
 

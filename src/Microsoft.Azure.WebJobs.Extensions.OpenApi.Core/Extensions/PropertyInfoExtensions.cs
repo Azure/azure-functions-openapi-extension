@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.Serialization;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -39,7 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="element"><see cref="PropertyInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        /// <returns>Returns the name from <see cref="JsonPropertyAttribute"/> or <see cref="DataMemberAttribute"/> instance.</returns>
+        /// <returns>Returns the name from <see cref="JsonPropertyAttribute"/> or <see cref="DataMemberAttribute"/> instance. If both <see cref="JsonPropertyAttribute"/> and <see cref="DataMemberAttribute"/> are declared, <see cref="JsonPropertyAttribute"/> takes precedence.</returns>
         public static string GetJsonPropertyName(this PropertyInfo element, NamingStrategy namingStrategy = null)
         {
             if (namingStrategy.IsNullOrDefault())

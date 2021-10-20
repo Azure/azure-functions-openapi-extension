@@ -32,7 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         public void Given_Property_When_GetJsonPropertyName_Invoked_Then_It_Should_Return_JsonPropertyName()
         {
             var name = "FakeProperty2";
-            var jsonPropertyName = "anotherFakeProperty";
+            var jsonPropertyName = "anotherJsonFakeProperty";
             var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
             var namingStrategy = new DefaultNamingStrategy();
 
@@ -42,16 +42,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [TestMethod]
-        public void Given_Property_When_GetDataMemberName_Invoked_Then_It_Should_Return_DataMemberName()
+        public void Given_Property_When_GetJsonPropertyName_Invoked_Then_It_Should_Return_DataMemberName()
         {
-            var name = "DataMemberFakeProperty";
-            var jsonPropertyName = "anotherDataMemberFakeProperty";
+            var name = "FakeProperty3";
+            var dataMemberPropertyName = "anotherDataMemberFakeProperty";
+
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().Be(dataMemberPropertyName);
+        }
+
+        [TestMethod]
+        public void Given_BothProperties_When_GetJsonPropertyName_Invoked_Then_It_Should_Return_JsonPropertyName()
+        {
+            var name = "FakeProperty4";
+            var jsonPropertyName = "jsonFakeProperty";
+            var dataMemberPropertyName = "dataMemberFakeProperty";
+
             var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
             var namingStrategy = new DefaultNamingStrategy();
 
             var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
 
             result.Should().Be(jsonPropertyName);
+            result.Should().NotBe(dataMemberPropertyName);
         }
 
         [TestMethod]

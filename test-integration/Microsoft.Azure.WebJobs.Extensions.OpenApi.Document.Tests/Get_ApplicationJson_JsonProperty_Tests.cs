@@ -67,11 +67,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jsonPropertyObjectModel", "object", "memBer1", "string", null)]
+        [DataRow("jsonPropertyObjectModel", "object", "Member1", "string", null)]
         [DataRow("jsonPropertyObjectModel", "object", "MEMBER2", "integer", "int32")]
-        [DataRow("jsonPropertyObjectModel", "object", "MeMBer3", "string", "date-time")]
-        [DataRow("jsonPropertyObjectModel", "object", "member4", "boolean", null)]
-        [DataRow("jsonPropertyObjectModel", "object", "MembeR5", "number", "double")]
+        [DataRow("jsonPropertyObjectModel", "object", "mEmbER3", "string", "date-time")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
