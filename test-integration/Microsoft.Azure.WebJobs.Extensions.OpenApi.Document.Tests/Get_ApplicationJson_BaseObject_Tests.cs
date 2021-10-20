@@ -75,12 +75,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
         }
 
-        [TestMethod]
-        public void Given_OpenApiDocument_Then_It_Should_Return_Null()
-        {
-            var @object = this._doc["components"]["schemas"]["object"];
+        // [TestMethod]
+        // public void Given_OpenApiDocument_Then_It_Should_Return_Null()
+        // {
+        //     var @object = this._doc["components"]["schemas"]["object"];
 
-            @object.Should().BeNull();
-        }
+        //     @object.Should().BeNull();
+        // }
     }
 }
