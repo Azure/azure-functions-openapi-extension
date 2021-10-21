@@ -159,7 +159,7 @@ http://localhost:7071/api/swagger/ui?tag=admin
 http://localhost:7071/api/swagger.json?tag=admin
 ```
 
-The `tag`  parameter accepts a commma separated list of tags. Any function with any tag passed on the `tag` parameter will be selected.
+The `tag` parameter accepts a commma separated list of tags. Any function with any tag passed on the `tag` parameter will be selected.
 If you only want to show the API endpoints related to `product` or `option` tag, add `tag=product,option` to the querystring:
 
 ```
