@@ -12,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 {
     [TestClass]
     [TestCategory(Constants.TestCategory)]
-    public class Get_ApplicationJson_BaseObject_Tests
+    public class Get_ApplicationJson_JsonProperty_Tests
     {
         private static HttpClient http = new HttpClient();
 
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-baseobject", "get", "200")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,8 +44,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "baseObjectModel")]
-        public void Given_OpenApiDocument_Then_It_Should_Not_Return_ReferenceSchema(string path, string operationType, string responseCode, string contentType, string reference)
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json", "jsonPropertyObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
@@ -55,32 +55,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectValue", true)]
-        [DataRow("baseObjectModel", "nonObjectValue", false)]
-        [DataRow("baseObjectModel", "subObjectValue", false)]
-        [DataRow("baseSubObjectModel", "baseSubObjectValue", true)]
-        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName, bool isBaseObject)
+        [DataRow("jsonPropertyObjectModel", "object")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
 
-            var type = schemas?[@ref]?["properties"]?[propName]?["type"]?.Value<string>() ;
+            var schema = schemas[@ref];
 
-            if (isBaseObject)
-            {
-                type.Should().Be("object");
-            }
-            else
-            {
-                type.Should().NotBe("object");
-            }
+            schema.Should().NotBeNull();
+            schema.Value<string>("type").Should().Be(refType);
         }
 
-        // [TestMethod]
-        // public void Given_OpenApiDocument_Then_It_Should_Return_Null()
-        // {
-        //     var @object = this._doc["components"]["schemas"]["object"];
+        [DataTestMethod]
+        [DataRow("jsonPropertyObjectModel", "object", "Member1", "string", null)]
+        [DataRow("jsonPropertyObjectModel", "object", "MEMBER2", "integer", "int32")]
+        [DataRow("jsonPropertyObjectModel", "object", "mEmbER3", "string", "date-time")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat)
+        {
+            var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
-        //     @object.Should().BeNull();
-        // }
+            var value = properties[propertyName];
+
+            value.Should().NotBeNull();
+            value.Value<string>("type").Should().Be(propertyType);
+            value.Value<string>("format").Should().Be(propertyFormat);
+        }
     }
 }

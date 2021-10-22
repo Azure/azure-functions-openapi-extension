@@ -67,9 +67,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/post-applicationjson-nullableboolean", "post", "text/plain", "boolean", true)]
-        [DataRow("/post-applicationjson-nullableuint16", "post", "text/plain", "integer", true)]
-        [DataRow("/post-applicationjson-nullableuint32", "post", "text/plain", "integer", true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, bool nullable)
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_Boolean(string path, string operationType, string contentType, string propertyType, bool nullable)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
@@ -81,6 +79,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("/post-applicationjson-nullableuint16", "post", "text/plain", "integer", "int32",true)]
+        [DataRow("/post-applicationjson-nullableuint32", "post", "text/plain", "integer", "int32",true)]
         [DataRow("/post-applicationjson-nullableuint64", "post", "text/plain", "integer", "int64", true)]
         [DataRow("/post-applicationjson-nullableint16", "post", "text/plain", "integer", "int32", true)]
         [DataRow("/post-applicationjson-nullableint32", "post", "text/plain", "integer", "int32", true)]
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/post-applicationjson-nullabledecimal", "post", "text/plain", "number", "double", true)]
         [DataRow("/post-applicationjson-nullabledatetime", "post", "text/plain", "string", "date-time", true)]
         [DataRow("/post-applicationjson-nullabledatetimeoffset", "post", "text/plain", "string", "date-time", true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema_WithFormat(string path, string operationType, string contentType, string propertyType, string propertyFormat, bool nullable)
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat, bool nullable)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
 
@@ -178,9 +178,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("nullableObjectModel", "booleanValue", "boolean", true)]
-        [DataRow("nullableObjectModel", "uInt16Value", "integer", true)]
-        [DataRow("nullableObjectModel", "uInt32Value", "integer", true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, bool nullable)
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty_Boolean(string @ref, string propertyName, string propertyType, bool nullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -192,16 +190,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("nullableObjectModel", "uInt64Value", "integer", "int64",  true)]
+        [DataRow("nullableObjectModel", "uInt16Value", "integer", "int32", true)]
+        [DataRow("nullableObjectModel", "uInt32Value", "integer", "int32", true)]
+        [DataRow("nullableObjectModel", "uInt64Value", "integer", "int64", true)]
         [DataRow("nullableObjectModel", "int16Value", "integer", "int32",  true)]
         [DataRow("nullableObjectModel", "int32Value", "integer", "int32",  true)]
         [DataRow("nullableObjectModel", "int64Value", "integer", "int64",  true)]
         [DataRow("nullableObjectModel", "singleValue", "number", "float",  true)]
-        [DataRow("nullableObjectModel", "doubleValue", "number", "double",  true)]
-        [DataRow("nullableObjectModel", "decimalValue", "number", "double",  true)]
-        [DataRow("nullableObjectModel", "dateTimeValue", "string", "date-time",  true)]
-        [DataRow("nullableObjectModel", "dateTimeOffsetValue", "string", "date-time",  true)]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty_WithFormat(string @ref, string propertyName, string propertyType, string propertyFormat, bool nullable)
+        [DataRow("nullableObjectModel", "doubleValue", "number", "double", true)]
+        [DataRow("nullableObjectModel", "decimalValue", "number", "double", true)]
+        [DataRow("nullableObjectModel", "dateTimeValue", "string", "date-time", true)]
+        [DataRow("nullableObjectModel", "dateTimeOffsetValue", "string", "date-time", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat, bool nullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
