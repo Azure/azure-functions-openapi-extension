@@ -68,7 +68,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
                 };
 
-                bindings.Add(RenderSwaggerDocumentKey, renderOpenApiDocument);
+                bindings.Add(RenderOpenApiDocumentKey, renderOpenApiDocument);
 
                 var renderOAuth2Redirect = new HttpBindingMetadata()
                 {
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
                 };
 
-                bindings.Add(RenderSwaggerDocumentKey, renderOAuth2Redirect);
+                bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
             }
 
             if (!this._settings.HideSwaggerUI)
