@@ -46,7 +46,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         ///  Gets the favicon href to be rendered on the page.
         /// </summary>
         /// <param name="metatags"></param>
-        /// <param name="hrefPattern"></param>
-        void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern);
+        void GetFaviconPaths(IEnumerable<string> metatags);
     }
 }

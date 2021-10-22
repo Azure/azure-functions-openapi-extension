@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using HtmlAgilityPack;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
@@ -52,11 +51,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc/>
         public virtual async Task<IEnumerable<string>> GetFaviconMetaTagsAsync()
         {
-            var metaTags = new List<string>();
-            (this.CustomFaviconMetaTags as List<string>).ForEach(async x =>
-                metaTags.Add(await this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false))
-            );
-            return metaTags;
+            this.GetFaviconPaths(this.CustomFaviconMetaTags);
+
+           var metaTags = (this.CustomFaviconMetaTags.Select(
+               x => this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false).GetAwaiter().GetResult()
+            )).ToList();
+
+            return metaTags as IEnumerable<string>;
         }
 
         /// <inheritdoc/>
@@ -82,11 +83,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <inheritdoc/>
-        public void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern)
+        public void GetFaviconPaths(IEnumerable<string> metatags)
         {
-            var href = new List<string>();
-            (metatags as List<string>).ForEach(x => href.Add(Regex.Match(x, hrefPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1)).Groups[1].Value));
-            _faviconPaths = href;
+            var tags = new HtmlDocument();
+            tags.LoadHtml(string.Join("\r\n", metatags));
+
+            _faviconPaths = from HtmlNode node in 
+                                tags.DocumentNode.SelectNodes("link")
+                            select node.Attributes["href"].Value;
         }
 
         private async Task<string> ResolveFaviconMetaTagAsync(string metatag)
