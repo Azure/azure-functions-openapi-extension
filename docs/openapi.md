@@ -141,20 +141,30 @@ public static async Task<IActionResult> MyFunction2(...)
 {
     ...
 }
-```
 
-If you only want to only show the admin API endpoints, add `filter=admin` to the querystring:
-
-```
-http://localhost:7071/api/swagger/ui?filter=admin
-http://localhost:7071/api/swagger.json?filter=admin
-```
-
-If you want to only show the product related API endpoints, add `filter=product` to the querystring:
+[FunctionName("MyOptionFunction1")]
+[OpenApiOperation(operationId: ..., tags: new[] { "option" })]
+...
+public static async Task<IActionResult> MyOptionFunction1(...)
+{
+    ...
+}
 
 ```
-http://localhost:7071/api/swagger/ui?filter=product
-http://localhost:7071/api/swagger.json?filter=product
+
+If you only want to only show the admin API endpoints, add `tag=admin` to the querystring:
+
+```
+http://localhost:7071/api/swagger/ui?tag=admin
+http://localhost:7071/api/swagger.json?tag=admin
+```
+
+The `tag` parameter accepts a commma separated list of tags. Any function with any tag passed on the `tag` parameter will be selected.
+If you only want to show the API endpoints related to `product` or `option` tag, add `tag=product,option` to the querystring:
+
+```
+http://localhost:7071/api/swagger/ui?tag=product,option
+http://localhost:7071/api/swagger.json?tag=product,option
 ```
 
 
