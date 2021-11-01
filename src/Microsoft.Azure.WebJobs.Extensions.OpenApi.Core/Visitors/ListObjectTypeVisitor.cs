@@ -73,6 +73,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             var items = subAcceptor.Schemas.First().Value;
 
+            // Forces to remove the title value from the items attribute.
+            items.Title = null;
+
             // Adds the reference to the schema for the underlying type.
             if (this.IsReferential(underlyingType))
             {
