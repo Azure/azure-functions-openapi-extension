@@ -139,8 +139,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                                 .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)
                                 .Distinct()
                                 .Where(p => !p.IsSimpleType())
-                                .Where(p => p != typeof(JObject))
-                                .Where(p => p != typeof(JToken))
+                                .Where(p => p.IsReferentialType())
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 .ToList();
 
@@ -155,6 +154,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             var union = schemas.Concat(rootSchemas.Where(p => !schemas.Keys.Contains(p.Key)))
                                .Distinct()
+                               .Where(p => p.Key.ToUpperInvariant() != "OBJECT")
                                .OrderBy(p => p.Key)
                                .ToDictionary(p => p.Key,
                                              p =>
