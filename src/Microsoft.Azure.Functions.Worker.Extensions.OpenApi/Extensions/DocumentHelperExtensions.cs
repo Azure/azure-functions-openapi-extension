@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
         public static List<MethodInfo> GetHttpTriggerMethods(this IDocumentHelper helper, Assembly assembly, IEnumerable<string> tags = null)
         {
-            var methods = assembly.GetLoadableTypes()
+            var methods = assembly.GetLoadableTypes(includeReferenced: true)
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
