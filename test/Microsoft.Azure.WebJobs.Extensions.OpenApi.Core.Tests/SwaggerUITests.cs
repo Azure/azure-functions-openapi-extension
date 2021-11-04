@@ -117,10 +117,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         }
 
         [DataTestMethod]
-        [DataRow("http", "localhost", "api", "api")]
-        [DataRow("https", "localhost", "api/", "api")]
-        [DataRow("http", "localhost", "api/prod", "api/prod")]
-        [DataRow("https", "localhost", "api/prod/", "api/prod")]
+        [DataRow("http", "localhost", "api", "/api")]
+        [DataRow("https", "localhost", "api/", "/api")]
+        [DataRow("http", "localhost", "api/prod", "/api/prod")]
+        [DataRow("https", "localhost", "api/prod/", "/api/prod")]
         public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_SwaggerUIApiPrefix(string scheme, string host, string routePrefix, string expected)
         {
             var req = new Mock<IHttpRequestDataObject>();
