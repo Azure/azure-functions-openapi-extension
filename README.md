@@ -45,6 +45,22 @@ Here are the other sample apps directly using the NuGet packages (external repos
 This library supports Azure Functions V2 and onwards. If you still want to get your v1 app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
 
 
+## Known Issues ##
+
+Due to the Azure Functions Runtime limitation, sometimes some of .dll files are removed while publishing the function app. In this case, try the following workaround with your function app `.csproj` file.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  ...
+  <PropertyGroup>
+    ...
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+  </PropertyGroup>
+  ...
+</Project>
+```
+
+
 ## Issues? ##
 
 While using this library, if you find any issue, please raise an issue on the [Issue](https://github.com/Azure/azure-functions-openapi-extension/issues) page.
