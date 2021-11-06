@@ -324,6 +324,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return new OpenApiInteger((int) @default);
             }
 
+            if (typeof(T) == typeof(byte))
+            {
+                return new OpenApiInteger(Convert.ToInt32(@default));
+            }
+
             if (typeof(T) == typeof(long))
             {
                 return new OpenApiLong((long) @default);
