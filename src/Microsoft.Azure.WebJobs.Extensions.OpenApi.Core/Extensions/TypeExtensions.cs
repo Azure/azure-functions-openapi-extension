@@ -395,7 +395,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             if (isList)
             {
                 var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
-                ;
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
