@@ -27,11 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-            var a = type.HasJsonConverterAttribute<StringEnumConverter>();
-            if (a)
-            {
-                
-            }
+    
             var isVisitable = this.IsVisitable(type, TypeCode.Byte) &&
                               type.IsUnflaggedEnumType() &&
                               !type.HasJsonConverterAttribute<StringEnumConverter>() &&
