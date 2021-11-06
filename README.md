@@ -47,6 +47,8 @@ This library supports Azure Functions V2 and onwards. If you still want to get y
 
 ## Known Issues ##
 
+### Missing .dll Files ###
+
 Due to the Azure Functions Runtime limitation, sometimes some of .dll files are removed while publishing the function app. In this case, try the following workaround with your function app `.csproj` file.
 
 ```xml
@@ -59,6 +61,15 @@ Due to the Azure Functions Runtime limitation, sometimes some of .dll files are 
   ...
 </Project>
 ```
+
+### Empty Swagger UI When Deployed through Azure Pipelines ###
+
+* Workaround: #306
+
+
+### Swagger UI Error When Empty Project Referenced ###
+
+* Workaround: #302
 
 
 ## Issues? ##
