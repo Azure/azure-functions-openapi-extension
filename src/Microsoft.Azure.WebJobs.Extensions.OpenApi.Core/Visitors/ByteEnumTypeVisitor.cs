@@ -96,7 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.ParameterVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiInt32Collection();
+            var enums = type.ToOpenApiIntegerCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.PayloadVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiInt32Collection();
+            var enums = type.ToOpenApiIntegerCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();
