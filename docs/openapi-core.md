@@ -816,26 +816,36 @@ Properties decorated with the `MaxLengthAttribute` class impacts on either `Open
 * If `OpenApiSchema.Type` is NOT `array`: `OpenApiSchema.MaxLength`
 
 
+## Supported System.Runtime.Serialization Decorators ##
+
+Some attribute classes from [System.Runtime.Serialization](https://docs.microsoft.com/dotnet/api/system.runtime.serialization) are supported for payload definition.
+
+
+### `DataMemberAttribute` ###
+
+Properties decorated with `DataMemberAttribute` attribute class will use `DataMember.Name` value instead of their property names.
+
+
 ## Supported Json.NET Decorators ##
 
 Those attribute classes from [Json.NET](https://www.newtonsoft.com/json) are supported for payload definitions.
 
 
-### `JsonIgnore` ###
+### `JsonIgnoreAttribute` ###
 
-Properties decorated with the `JsonIgnore` attribute class will not be included in the response.
-
-
-### `JsonProperty` ###
-
-Properties decorated with `JsonProperty` attribute class will use `JsonProperty.Name` value instead of their property names. In addition to this, if `JsonProperty.Required` property has `Required.Always` or `Required.DisallowNull`, the property will be recognised as the `required` field.
+Properties decorated with the `JsonIgnoreAttribute` attribute class will not be included in the response.
 
 
-### `JsonRequired` ###
+### `JsonPropertyAttribute` ###
 
-Properties decorated with `JsonRequired` attribute class will be recognised as the `required` field.
+Properties decorated with `JsonPropertyAttribute` attribute class will use `JsonProperty.Name` value instead of their property names. In addition to this, if `JsonProperty.Required` property has `Required.Always` or `Required.DisallowNull`, the property will be recognised as the `required` field.
 
 
-### `JsonConverter` ###
+### `JsonRequiredAttribute` ###
+
+Properties decorated with `JsonRequiredAttribute` attribute class will be recognised as the `required` field.
+
+
+### `JsonConverterAttribute` ###
 
 Enums types decorated with `[JsonConverter(typeof(StringEnumConverter))]` will appear in the document with their string names (names mangled based on default property naming standard).
