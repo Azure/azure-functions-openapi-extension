@@ -10,23 +10,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
     public static class AssemblyExtensions
     {
         /// <summary>
-        /// Loads the <see cref="Assembly"/>'s <see cref="Type"/>s that can be loaded ignoring others.
+        /// Loads the <see cref="Assembly"/>'s <see cref="Type"/>s that can be loaded ignoring others (includes referenced assemblies).
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
-        /// <param name="includeReferenced">Set to true to load <see cref="Type"/>s from referenced assemblies too</param>
         /// <returns>Returns the list of <see cref="Type"/>s that can be loaded.</returns>
-        public static Type[] GetLoadableTypes(this Assembly assembly, bool includeReferenced = false)
+        public static Type[] GetLoadableTypes(this Assembly assembly)
         {
             try
             {
-                return includeReferenced
-                    ? assembly.GetTypes()
-                        .Union(assembly
-                            .GetReferencedAssemblies()
-                            .SelectMany(x => Assembly.Load(x).GetTypes()))
-                        .Distinct()
-                        .ToArray()
-                    : assembly.GetTypes();
+                return assembly.GetTypes()
+                    .Union(assembly
+                        .GetReferencedAssemblies()
+                        .Where(x => !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi"))
+                        .SelectMany(x => Assembly.Load(x).GetTypes()))
+                    .Distinct()
+                    .ToArray();
             }
             catch (ReflectionTypeLoadException exception)
             {
