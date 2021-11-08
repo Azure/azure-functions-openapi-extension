@@ -3,4 +3,4 @@
 
 // using Microsoft.Azure.Functions.Worker.Extensions.Abstractions;
 
-// [assembly: ExtensionInformation("Microsoft.Azure.WebJobs.Extensions.OpenApi", "0.7.2-preview")]
+// [assembly: ExtensionInformation("Microsoft.Azure.WebJobs.Extensions.OpenApi", "1.0.0")]
