@@ -64,12 +64,12 @@ Due to the Azure Functions Runtime limitation, sometimes some of .dll files are 
 
 ### Empty Swagger UI When Deployed through Azure Pipelines ###
 
-* Workaround: #306
+* Workaround: [#306](https://github.com/Azure/azure-functions-openapi-extension/issues/306)
 
 
 ### Swagger UI Error When Empty Project Referenced ###
 
-* Workaround: #302
+* Workaround: [#302](https://github.com/Azure/azure-functions-openapi-extension/issues/302#issuecomment-961791941)
 
 
 ## Issues? ##
