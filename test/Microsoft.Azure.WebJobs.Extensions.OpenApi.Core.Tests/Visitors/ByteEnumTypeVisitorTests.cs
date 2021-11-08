@@ -78,7 +78,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeByteEnum));
-            var enums = enumType.ToOpenApiIntegerCollection();
+            var enums = enumType.ToOpenApiByteCollection();
 
             this._visitor.Visit(acceptor, type, this._strategy);
 
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("integer", "int32", typeof(FakeByteEnum))]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat, Type enumType)
         {
-            var enums = enumType.ToOpenApiIntegerCollection();
+            var enums = enumType.ToOpenApiByteCollection();
 
             var result = this._visitor.ParameterVisit(typeof(FakeByteEnum), this._strategy);
 
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("integer", "int32", typeof(FakeByteEnum))]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat, Type enumType)
         {
-            var enums = enumType.ToOpenApiIntegerCollection();
+            var enums = enumType.ToOpenApiByteCollection();
 
             var result = this._visitor.PayloadVisit(typeof(FakeByteEnum), this._strategy);
 

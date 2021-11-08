@@ -49,7 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Adds enum values to the schema.
-            var enums = type.Value.ToOpenApiIntegerCollection();
+            var enums = type.Value.ToOpenApiByteCollection();
 
             var schema = new OpenApiSchema()
             {
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.ParameterVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiIntegerCollection();
+            var enums = type.ToOpenApiByteCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schema = this.PayloadVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiIntegerCollection();
+            var enums = type.ToOpenApiByteCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();

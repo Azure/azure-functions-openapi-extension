@@ -239,6 +239,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum values of <see cref="byte"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum values of <see cref="byte"/>.</returns>
+        public static List<IOpenApiAny> ToOpenApiByteCollection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetValues(type).Cast<byte>();
+
+            return names.Select(p => (IOpenApiAny)new OpenApiInteger((int)p))
+                        .ToList();
+        }
+
+        /// <summary>
         /// Converts the given <see cref="Type"/> instance to the list of underlying enum value.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
@@ -272,12 +290,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                              .ToList();
             }
 
-            if (type.GetEnumUnderlyingType() == typeof(byte))
-            {
-                return values.Cast<byte>()
-                    .Select(p => (IOpenApiAny)new OpenApiInteger((int)p))
-                    .ToList();
-            }
 
             return null;
         }
