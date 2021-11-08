@@ -21,7 +21,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return assembly.GetTypes()
                     .Union(assembly
                         .GetReferencedAssemblies()
-                        .Where(x => !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi"))
+                        .Where(x =>
+                            !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi") &&
+                            !x.FullName.StartsWith("Microsoft.Azure.Functions.Worker.Extensions.OpenApi"))
                         .SelectMany(x => Assembly.Load(x).GetTypes()))
                     .Distinct()
                     .ToArray();
