@@ -24,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(true, 3)]
+        [DataRow(true, 2)]
         [DataRow(false, 4)]
         public async Task Given_HideSwaggerUI_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideSwaggerUI, int expected)
         {
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(true, 1)]
+        [DataRow(true, 0)]
         [DataRow(false, 4)]
         public async Task Given_HideDocument_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideDocument, int expected)
         {

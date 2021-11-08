@@ -70,26 +70,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
                 bindings.Add(RenderOpenApiDocumentKey, renderOpenApiDocument);
 
-                var renderOAuth2Redirect = new HttpBindingMetadata()
+                if (!this._settings.HideSwaggerUI)
                 {
-                    Methods = new List<string>() { HttpMethods.Get },
-                    Route = "oauth2-redirect.html",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                };
+                    var renderOAuth2Redirect = new HttpBindingMetadata()
+                    {
+                        Methods = new List<string>() { HttpMethods.Get },
+                        Route = "oauth2-redirect.html",
+                        AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
+                    };
 
-                bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
-            }
+                    bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
 
-            if (!this._settings.HideSwaggerUI)
-            {
-                var renderSwaggerUI = new HttpBindingMetadata()
-                {
-                    Methods = new List<string>() { HttpMethods.Get },
-                    Route = "swagger/ui",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                };
+                    var renderSwaggerUI = new HttpBindingMetadata()
+                    {
+                        Methods = new List<string>() { HttpMethods.Get },
+                        Route = "swagger/ui",
+                        AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
+                    };
 
-                bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);
+                    bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);
+                }
             }
 
             return bindings;
@@ -104,15 +104,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 list.AddRange(new[]
                 {
                     this.GetFunctionMetadata(RenderSwaggerDocumentKey),
-                    this.GetFunctionMetadata(RenderOpenApiDocumentKey),
-                    this.GetFunctionMetadata(RenderOAuth2RedirectKey)
+                    this.GetFunctionMetadata(RenderOpenApiDocumentKey)
                 });
-            };
 
-            if (!this._settings.HideSwaggerUI)
-            {
-                list.Add(this.GetFunctionMetadata(RenderSwaggerUIKey));
-            }
+                if (!this._settings.HideSwaggerUI)
+                {
+                    list.AddRange(new[]
+                    {
+                        this.GetFunctionMetadata(RenderSwaggerUIKey),
+                        this.GetFunctionMetadata(RenderOAuth2RedirectKey)
+                    });
+                }
+            };
 
             return list;
         }
