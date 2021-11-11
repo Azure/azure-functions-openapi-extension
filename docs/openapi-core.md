@@ -815,6 +815,9 @@ Properties decorated with the `MaxLengthAttribute` class impacts on either `Open
 * If `OpenApiSchema.Type` is `array`: `OpenApiSchema.MaxItems`
 * If `OpenApiSchema.Type` is NOT `array`: `OpenApiSchema.MaxLength`
 
+### `RequiredAttribute` ###
+
+Properties decorated with the `RequiredAttribute` class impacts on the `OpenApiSchema.Required` value of parent schema. In addition to this, if `RequiredAttribute.AllowEmptyString` is `false` and the property is of type `string`, the `OpenApiSchema.MinLength` will be set to 1, if a larger value has not already been set.
 
 ## Supported System.Runtime.Serialization Decorators ##
 
