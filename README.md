@@ -7,7 +7,7 @@
 
 ## Getting Started ##
 
-* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly. It's currently in preview.
+* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly.
   * [**Microsoft.Azure.Functions.Worker.Extensions.OpenApi**](docs/openapi-out-of-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
@@ -64,12 +64,12 @@ Due to the Azure Functions Runtime limitation, sometimes some of .dll files are 
 
 ### Empty Swagger UI When Deployed through Azure Pipelines ###
 
-* Workaround: #306
+* Workaround: [#306](https://github.com/Azure/azure-functions-openapi-extension/issues/306)
 
 
 ### Swagger UI Error When Empty Project Referenced ###
 
-* Workaround: #302
+* Workaround: [#302](https://github.com/Azure/azure-functions-openapi-extension/issues/302#issuecomment-961791941)
 
 
 ## Issues? ##

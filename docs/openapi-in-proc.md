@@ -25,7 +25,7 @@ While using this library, if you find any issue, please raise a ticket on the [I
 
 ## Getting Started ##
 
-For detailed getting started document, find this [Enable OpenAPI Endpoints on Azure Functions (Preview) &ndash; In-Process Model](enable-open-api-endpoints-in-proc.md) page.
+For detailed getting started document, find this [Enable OpenAPI Endpoints on Azure Functions &ndash; In-Process Model](enable-open-api-endpoints-in-proc.md) page.
 
 
 ## Advanced Configuration in General ##

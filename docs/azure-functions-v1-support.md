@@ -64,8 +64,6 @@ To enable OpenAPI metadata, you will need to install a NuGet package, [Microsoft
 dotnet add package Microsoft.Azure.WebJobs.Extensions.OpenApi
 ```
 
-> This extension is currently in preview.
-
 Add attribute classes on top of the `FunctionName(...)` decorator.
 
 ```csharp
