@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -63,7 +62,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
             {
                 queries = new Dictionary<string, StringValues>();
             }
-
+            
             return new QueryCollection(queries);
         }
 
