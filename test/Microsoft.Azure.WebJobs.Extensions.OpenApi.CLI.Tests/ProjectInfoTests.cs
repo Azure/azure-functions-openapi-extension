@@ -12,6 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests
         [TestMethod]
         public void Given_Null_Parameters_When_Instantiated_Then_It_Should_Throw_Exception()
         {
+            int hihi;
             Action action = () => new ProjectInfo(null, null, null);
             action.Should().Throw<ArgumentNullException>();
 
