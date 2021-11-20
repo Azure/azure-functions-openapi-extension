@@ -1,5 +1,5 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-
+int hihi;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
     public class DummyModel
