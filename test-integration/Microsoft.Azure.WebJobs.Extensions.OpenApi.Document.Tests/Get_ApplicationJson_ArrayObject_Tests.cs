@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
     public class Get_ApplicationJson_ArrayObject_Tests
     {
         private static HttpClient http = new HttpClient();
-        var test = 0;
+        private static int var = 0;
         private JObject _doc;
 
         [TestInitialize]
