@@ -3,7 +3,7 @@
 ## Acknowledgement ##
 
 * [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v3.44.0](https://github.com/swagger-api/swagger-ui/releases/tag/v3.44.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
-
+.
 
 ## Getting Started ##
 
