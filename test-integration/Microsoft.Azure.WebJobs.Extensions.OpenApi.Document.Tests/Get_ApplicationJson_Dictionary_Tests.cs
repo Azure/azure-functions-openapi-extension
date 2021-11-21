@@ -29,9 +29,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary")]
-        [DataRow("/get-applicationjson-dictionary-i")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly")]
-        [DataRow("/get-applicationjson-dictionary-key")]
+        [DataRow("/get-applicationjson-dictionary-idictionary")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Path(string path)
         {
             var paths = this._doc["paths"];
@@ -41,9 +41,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary", "get")]
-        [DataRow("/get-applicationjson-dictionary-i", "get")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly", "get")]
-        [DataRow("/get-applicationjson-dictionary-key", "get")]
+        [DataRow("/get-applicationjson-dictionary-idictionary", "get")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary", "get")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair", "get")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationType(string path, string operationType)
         {
             var pathItem = this._doc["paths"][path];
@@ -53,9 +53,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary", "get", "200")]
-        [DataRow("/get-applicationjson-dictionary-i", "get", "200")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly", "get", "200")]
-        [DataRow("/get-applicationjson-dictionary-key", "get", "200")]
+        [DataRow("/get-applicationjson-dictionary-idictionary", "get", "200")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary", "get", "200")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -65,9 +65,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json")]
-        [DataRow("/get-applicationjson-dictionary-i", "get", "200", "application/json")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly", "get", "200", "application/json")]
-        [DataRow("/get-applicationjson-dictionary-key", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-dictionary-idictionary", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -77,9 +77,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json", "object")]
-        [DataRow("/get-applicationjson-dictionary-i", "get", "200", "application/json","object")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly", "get", "200", "application/json",  "object")]
-        [DataRow("/get-applicationjson-dictionary-key", "get", "200", "application/json", "object")]
+        [DataRow("/get-applicationjson-dictionary-idictionary", "get", "200", "application/json","object")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary", "get", "200", "application/json",  "object")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair", "get", "200", "application/json", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchemaType(string path, string operationType, string responseCode, string contentType, string itemType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -92,9 +92,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
         [DataTestMethod]
         [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json", "object", "string")]
-        [DataRow("/get-applicationjson-dictionary-i", "get", "200", "application/json", "object", "integer")]
-        [DataRow("/get-applicationjson-dictionary-ireadonly", "get", "200", "application/json", "object", "number")]
-        [DataRow("/get-applicationjson-dictionary-key", "get", "200", "application/json", "object", "boolean")]
+        [DataRow("/get-applicationjson-dictionary-idictionary", "get", "200", "application/json", "object", "integer")]
+        [DataRow("/get-applicationjson-dictionary-ireadonlydictionary", "get", "200", "application/json", "object", "number")]
+        [DataRow("/get-applicationjson-dictionary-keyvaluepair", "get", "200", "application/json", "object", "boolean")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchemaPropertiesType(string path, string operationType, string responseCode, string contentType, string dataType, string itemType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
