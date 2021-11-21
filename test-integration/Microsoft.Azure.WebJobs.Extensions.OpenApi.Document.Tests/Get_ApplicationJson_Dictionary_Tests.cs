@@ -83,9 +83,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchemaType(string path, string operationType, string responseCode, string contentType, string itemType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
-
             var schema = content[contentType]["schema"];
+
             var type = schema["type"];
+
             type.Value<string>().Should().Be(itemType);
         }
 
@@ -97,9 +98,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchemaPropertiesType(string path, string operationType, string responseCode, string contentType, string dataType, string itemType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
-
             var schema = content[contentType]["schema"];
-            var additionaltype =schema["additionalProperties"]["type"];
+
+            var additionaltype = schema["additionalProperties"]["type"];
+
             additionaltype.Value<string>().Should().Be(itemType);
         }
 
