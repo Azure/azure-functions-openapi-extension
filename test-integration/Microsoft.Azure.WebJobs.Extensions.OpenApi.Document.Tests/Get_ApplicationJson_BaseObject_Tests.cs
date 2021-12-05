@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -55,32 +56,64 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectValue", true)]
-        [DataRow("baseObjectModel", "nonObjectValue", false)]
-        [DataRow("baseObjectModel", "subObjectValue", false)]
-        [DataRow("baseSubObjectModel", "baseSubObjectValue", true)]
-        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName, bool isBaseObject)
+        [DataRow("baseObjectModel", "baseObjectValue")]
+        [DataRow("baseSubObjectModel", "baseSubObjectValue")]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_TypeOf_Object(string @ref, string propName)
         {
             var schemas = this._doc["components"]["schemas"];
 
             var type = schemas?[@ref]?["properties"]?[propName]?["type"]?.Value<string>() ;
 
-            if (isBaseObject)
-            {
-                type.Should().Be("object");
-            }
-            else
-            {
-                type.Should().NotBe("object");
-            }
+            type.Should().Be("object");
         }
 
-        // [TestMethod]
-        // public void Given_OpenApiDocument_Then_It_Should_Return_Null()
-        // {
-        //     var @object = this._doc["components"]["schemas"]["object"];
+        [DataTestMethod]
+        [DataRow("baseObjectModel", "nonObjectValue")]
+        [DataRow("baseObjectModel", "subObjectValue")]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Not_Return_Expected_TypeOf_Object(string @ref, string propName)
+        {
+            var schemas = this._doc["components"]["schemas"];
 
-        //     @object.Should().BeNull();
-        // }
+            var type = schemas?[@ref]?["properties"]?[propName]?["type"]?.Value<string>() ;
+
+            type.Should().NotBe("object");
+        }
+
+        [DataTestMethod]
+        [DataRow("baseObjectModel", "baseObjectList", "array")]
+        [DataRow("baseObjectModel", "baseObjectDictionary", "object")]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName, string listType)
+        {
+            var schemas = this._doc["components"]["schemas"];
+
+            var type = schemas?[@ref]?["properties"]?[propName]?["type"]?.Value<string>();
+
+            type.Should().Be(listType);
+        }
+
+        [DataTestMethod]
+        [DataRow("baseObjectModel", "baseObjectList", "items", "object")]
+        [DataRow("baseObjectModel", "baseObjectDictionary", "additionalProperties", "object")]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_SubType(string @ref, string propName, string attrName, string subType)
+        {
+            var schemas = this._doc["components"]["schemas"];
+
+            var property = schemas?[@ref]?["properties"]?[propName];
+            var attr = property[attrName];
+
+            attr["type"].Value<string>().Should().Be(subType);
+        }
+
+        [DataTestMethod]
+        [DataRow("baseObjectModel", "baseObjectList", "items")]
+        [DataRow("baseObjectModel", "baseObjectDictionary", "additionalProperties")]
+        public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Null_Title(string @ref, string propName, string attr)
+        {
+            var schemas = this._doc["components"]["schemas"];
+
+            var title = schemas?[@ref]?["properties"]?[propName]?[attr]?["title"]?.Value<string>();
+
+            title.Should().BeNull();
+        }
     }
 }

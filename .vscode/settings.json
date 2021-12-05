@@ -17,5 +17,11 @@
   "azureFunctions.projectRuntime": "~3",
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.preDeployTask": "publish",
-  "azureFunctions.showTargetFrameworkWarning": false
+  "azureFunctions.showTargetFrameworkWarning": false,
+  "markdownlint.config": {
+    "MD028": false,
+    "MD025": {
+      "front_matter_title": ""
+    }
+  }
 }

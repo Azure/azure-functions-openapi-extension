@@ -68,7 +68,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             {
                 this._baseUrl = baseUrl;
 
-                absolutePath = new Uri(this._baseUrl).AbsolutePath.Trim('/');
+                absolutePath = new Uri(this._baseUrl).AbsolutePath.TrimEnd('/');
                 this._swaggerUiApiPrefix = absolutePath;
 
                 return this;
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             this._baseUrl = servers.First().Url;
 
-            absolutePath = new Uri(this._baseUrl).AbsolutePath.Trim('/');
+            absolutePath = new Uri(this._baseUrl).AbsolutePath.TrimEnd('/');
             this._swaggerUiApiPrefix = absolutePath;
 
             return this;
