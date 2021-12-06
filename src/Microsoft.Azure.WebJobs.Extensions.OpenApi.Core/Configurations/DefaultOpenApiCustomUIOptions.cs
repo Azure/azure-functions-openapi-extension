@@ -52,11 +52,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc/>
         public virtual async Task<IEnumerable<string>> GetFaviconMetaTagsAsync()
         {
-            var metaTags = new List<string>();
-            (this.CustomFaviconMetaTags as List<string>).ForEach(async x =>
-                metaTags.Add(await this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false))
-            );
-            return metaTags;
+            var metaTags = (this.CustomFaviconMetaTags.Select(
+                x => this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false).GetAwaiter().GetResult()
+             )).ToList();
+
+            return metaTags as IEnumerable<string>;
         }
 
         /// <inheritdoc/>
@@ -83,9 +83,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc/>
         public void GetFaviconPaths(IEnumerable<string> metatags, string hrefPattern)
-        {
-            var href = new List<string>();
-            (metatags as List<string>).ForEach(x => href.Add(Regex.Match(x, hrefPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1)).Groups[1].Value));
+        {    
+            var href = (metatags as List<string>).Select(x => Regex.Match(x, hrefPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1)).Groups[1].Value);
             _faviconPaths = href;
         }
 

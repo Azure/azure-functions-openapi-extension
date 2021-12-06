@@ -19,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// </summary>
         /// <param name="assembly">The executing assembly instance.</param>
         /// <returns>Returns the <see cref="IOpenApiCustomUIOptions"/> instance resolved.</returns>
-        public static IOpenApiCustomUIOptions Resolve(Assembly assembly, string hRefPattern)
+        public static IOpenApiCustomUIOptions Resolve(Assembly assembly)
         {
             var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiCustomUIOptions", ignoreCase: true).IsNullOrDefault() == false);
@@ -29,6 +29,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
             }
 
             var options = Activator.CreateInstance(type, assembly) as IOpenApiCustomUIOptions;
+
+            var hRefPattern = @"href\s*=\s*(?:[""'](?<1>[^""']*)[""']|(?<1>[^>\s]+))";
             options.GetFaviconPaths(options.CustomFaviconMetaTags, hRefPattern);
 
             return options;
