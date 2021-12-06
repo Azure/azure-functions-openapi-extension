@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -87,30 +86,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-nullableboolean", "get", "200", "text/plain", "boolean", "True")]
-        [DataRow("/get-textplain-nullableuint16", "get", "200", "text/plain", "integer", "True")]
-        [DataRow("/get-textplain-nullableuint32", "get", "200", "text/plain", "integer", "True")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string dataType, string isNullableType)
+        [DataRow("/get-textplain-nullableboolean", "get", "200", "text/plain", "boolean", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_Boolean(string path, string operationType, string responseCode, string contentType, string dataType, bool nullable)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
             var schema = content[contentType]["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
-            schema.Value<string>("nullable").Should().Be(isNullableType);
+            schema.Value<bool>("nullable").Should().Be(nullable);
         }
 
         [DataTestMethod]
-        [DataRow("/get-textplain-nullableuint64", "get", "200", "text/plain", "integer", "int64", "True")]
-        [DataRow("/get-textplain-nullableint16", "get", "200", "text/plain", "integer", "int32", "True")]
-        [DataRow("/get-textplain-nullableint32", "get", "200", "text/plain", "integer", "int32", "True")]
-        [DataRow("/get-textplain-nullableint64", "get", "200", "text/plain", "integer", "int64", "True")]
-        [DataRow("/get-textplain-nullablesingle", "get", "200", "text/plain", "number", "float", "True")]
-        [DataRow("/get-textplain-nullabledouble", "get", "200", "text/plain", "number", "double", "True")]
-        [DataRow("/get-textplain-nullabledecimal", "get", "200", "text/plain", "number", "double", "True")]
-        [DataRow("/get-textplain-nullabledatetime", "get", "200", "text/plain", "string", "date-time", "True")]
-        [DataRow("/get-textplain-nullabledatetimeoffset", "get", "200", "text/plain", "string", "date-time", "True")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema_WithFormat(string path, string operationType, string responseCode, string contentType, string dataType, string dataFormat, string isNullableType)
+        [DataRow("/get-textplain-nullableuint16", "get", "200", "text/plain", "integer", "int32", true)]
+        [DataRow("/get-textplain-nullableuint32", "get", "200", "text/plain", "integer", "int32", true)]
+        [DataRow("/get-textplain-nullableuint64", "get", "200", "text/plain", "integer", "int64", true)]
+        [DataRow("/get-textplain-nullableint16", "get", "200", "text/plain", "integer", "int32", true)]
+        [DataRow("/get-textplain-nullableint32", "get", "200", "text/plain", "integer", "int32", true)]
+        [DataRow("/get-textplain-nullableint64", "get", "200", "text/plain", "integer", "int64", true)]
+        [DataRow("/get-textplain-nullablesingle", "get", "200", "text/plain", "number", "float", true)]
+        [DataRow("/get-textplain-nullabledouble", "get", "200", "text/plain", "number", "double", true)]
+        [DataRow("/get-textplain-nullabledecimal", "get", "200", "text/plain", "number", "double", true)]
+        [DataRow("/get-textplain-nullabledatetime", "get", "200", "text/plain", "string", "date-time", true)]
+        [DataRow("/get-textplain-nullabledatetimeoffset", "get", "200", "text/plain", "string", "date-time", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string dataType, string dataFormat, bool nullable)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
 
@@ -118,7 +117,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             schema.Value<string>("type").Should().Be(dataType);
             schema.Value<string>("format").Should().Be(dataFormat);
-            schema.Value<string>("nullable").Should().Be(isNullableType);
+            schema.Value<bool>("nullable").Should().Be(nullable);
         }
     }
 }

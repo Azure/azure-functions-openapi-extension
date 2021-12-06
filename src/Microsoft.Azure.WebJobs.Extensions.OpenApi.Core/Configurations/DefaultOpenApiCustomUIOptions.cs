@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using HtmlAgilityPack;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                 x => this.ResolveFaviconMetaTagAsync(x).ConfigureAwait(false).GetAwaiter().GetResult()
              )).ToList();
 
-            return metaTags as IEnumerable<string>;
+            return metaTags;
         }
 
         /// <inheritdoc/>

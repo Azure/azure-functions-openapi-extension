@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionary", "get", "200")]
+        [DataRow("/get-applicationjson-dictionaryobject", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-dictionaryobject", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionary", "get", "200", "application/json", "dictionaryObjectModel")]
+        [DataRow("/get-applicationjson-dictionaryobject", "get", "200", "application/json", "dictionaryObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,9 +55,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("dictionaryObjectModel", "object", "objectValue", "object", "object")]
         [DataRow("dictionaryObjectModel", "object", "booleanValue", "object", "boolean")]
         [DataRow("dictionaryObjectModel", "object", "stringValue", "object", "string")]
-        [DataRow("dictionaryObjectModel", "object", "floatValue", "object", "number")]
+        [DataRow("dictionaryObjectModel", "object", "int32Value", "object", "integer")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType, string propertyName, string propertyType, string itemType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -70,10 +71,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel", "integerObjectValue", "object", "integerObjectModel")]
+        [DataRow("dictionaryObjectModel", "objectObjectValue", "object", "objectObjectModel")]
+        [DataRow("dictionaryObjectModel", "booleanObjectValue", "object", "booleanObjectModel")]
         [DataRow("dictionaryObjectModel", "stringObjectValue", "object", "stringObjectModel")]
-        [DataRow("dictionaryObjectModel", "int32ArrayValue", "object", "list_int32")]
+        [DataRow("dictionaryObjectModel", "integerObjectValue", "object", "integerObjectModel")]
+        [DataRow("dictionaryObjectModel", "objectArrayValue", "object", "list_object")]
+        [DataRow("dictionaryObjectModel", "booleanArrayValue", "object", "list_boolean")]
         [DataRow("dictionaryObjectModel", "stringArrayValue", "object", "list_string")]
+        [DataRow("dictionaryObjectModel", "int32ArrayValue", "object", "list_int32")]
 
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemRef)
         {
@@ -88,8 +93,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("list_int32", "array")]
+        [DataRow("list_object", "array")]
+        [DataRow("list_boolean", "array")]
         [DataRow("list_string", "array")]
+        [DataRow("list_int32", "array")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentReferenceSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -101,8 +108,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("list_int32", "array", "integer")]
+        [DataRow("list_object", "array", "object")]
+        [DataRow("list_boolean", "array", "bool")]
         [DataRow("list_string", "array", "string")]
+        [DataRow("list_int32", "array", "integer")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentReferenceSchema(string @ref, string refType, string itemType)
         {
             var items = this._doc["components"]["schemas"][@ref];

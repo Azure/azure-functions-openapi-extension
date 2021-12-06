@@ -1,4 +1,4 @@
-# Enable OpenAPI Endpoints on Azure Functions (Preview) &ndash; Out-of-Process Model #
+# Enable OpenAPI Endpoints on Azure Functions &ndash; Out-of-Process Model #
 
 [OpenAPI metadata][openapi] supports in Azure Functions is now available with this extension, [Azure Functions OpenAPI Extension (Out-of-Process Worker)][az func openapi extension]. With this extension, you can directly let your API endpoints be discoverable.
 
@@ -67,11 +67,8 @@ http://localhost:7071/api/MyHttpTrigger
 To enable OpenAPI document, you will need to install a NuGet package, [Microsoft.Azure.Functions.Worker.Extensions.OpenApi][az func openapi extension].
 
 ```bash
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi --prerelease
+dotnet add package Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 ```
-
-> [!NOTE]
-> This extension is currently in preview.
 
 With [Visual Studio Code][vs code], open your HTTP trigger, `MyHttpTrigger.cs`, to enable the OpenAPI metadata, and add attribute classes on top of the `Function(...)` decorator.
 
@@ -230,7 +227,7 @@ You have got an Azure Functions app with OpenAPI metadata enabled. In the next a
 
 * [Configuring OpenAPI Document and Swagger UI Permission and Visibility][docs ui configuration]
 * [Customising OpenAPI Document and Swagger UI][docs ui customisation]
-* [Enable OpenAPI Endpoints on Azure Functions (Preview) &ndash; In-Process Model][docs in-proc]
+* [Enable OpenAPI Endpoints on Azure Functions &ndash; In-Process Model][docs in-proc]
 * [Support Azure Functions v1 with OpenAPI Extension][docs v1 support]
 * [Integrating OpenAPI-enabled Azure Functions to Azure API Management][docs apim]
 <!-- * [Integrating OpenAPI-enabled Azure Functions to Power Platform][docs powerplatform] -->

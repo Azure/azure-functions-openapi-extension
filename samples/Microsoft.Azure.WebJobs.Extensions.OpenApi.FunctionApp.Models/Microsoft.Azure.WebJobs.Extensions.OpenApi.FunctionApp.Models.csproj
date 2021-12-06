@@ -8,7 +8,7 @@
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!-- <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="0.8.1-preview" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="1.0.0" />
   </ItemGroup> -->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 

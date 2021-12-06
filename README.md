@@ -7,7 +7,7 @@
 
 ## Getting Started ##
 
-* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger (Preview)**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly. It's currently in preview.
+* [**Enable OpenAPI documents to your Azure Functions HTTP Trigger**](docs/enable-open-api-endpoints.md): This document shows how to enable OpenAPI extension on your Azure Functions applications and render Swagger UI, and OpenAPI v2 and v3 documents on-the-fly.
   * [**Microsoft.Azure.Functions.Worker.Extensions.OpenApi**](docs/openapi-out-of-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
@@ -43,6 +43,33 @@ Here are the other sample apps directly using the NuGet packages (external repos
 ## Azure Functions V1 Support ##
 
 This library supports Azure Functions V2 and onwards. If you still want to get your v1 app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
+
+
+## Known Issues ##
+
+### Missing .dll Files ###
+
+Due to the Azure Functions Runtime limitation, sometimes some of .dll files are removed while publishing the function app. In this case, try the following workaround with your function app `.csproj` file.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  ...
+  <PropertyGroup>
+    ...
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+  </PropertyGroup>
+  ...
+</Project>
+```
+
+### Empty Swagger UI When Deployed through Azure Pipelines ###
+
+* Workaround: [#306](https://github.com/Azure/azure-functions-openapi-extension/issues/306)
+
+
+### Swagger UI Error When Empty Project Referenced ###
+
+* Workaround: [#302](https://github.com/Azure/azure-functions-openapi-extension/issues/302#issuecomment-961791941)
 
 
 ## Issues? ##

@@ -53,7 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         }
 
         [FunctionName(nameof(Post_ApplicationJson_UInt16Object))]
-        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_UInt16Object), tags: new[] { "uint16value" })]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_UInt16Object), tags: new[] { "integer" })]
         [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ushort), Required = true, Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_UInt16Object(

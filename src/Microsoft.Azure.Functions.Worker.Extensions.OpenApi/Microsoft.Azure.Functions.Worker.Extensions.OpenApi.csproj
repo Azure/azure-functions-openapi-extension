@@ -17,8 +17,8 @@
     <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi</RootNamespace>
 
     <!--Version information-->
-    <!-- <VersionPrefix>0.7.2</VersionPrefix>
-    <VersionSuffix>-preview</VersionSuffix> -->
+    <!-- <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix> -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
