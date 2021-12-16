@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <AssemblyName>azfuncopenapi</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI</RootNamespace>
