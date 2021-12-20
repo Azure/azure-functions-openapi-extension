@@ -105,7 +105,7 @@ There's a chance if you want to force the Swagger UI to render either HTTP or HT
 > **NOTE**: If your Azure Functions app is running on the [Linux Dedicated Plan](https://docs.microsoft.com/azure/azure-functions/dedicated-plan?WT.mc_id=github-0000-juyoo), consider this configuration.
 
 
-## Swaggrer UI Endpoints Filtering ##
+## Swagger UI Endpoints Filtering ##
 
 You may want to selectively display endpoints on the Swagger UI and OpenAPI documents. In this case, you can use the tags to filter which endpoints you want to show. For example, you've got endpoints like:
 
