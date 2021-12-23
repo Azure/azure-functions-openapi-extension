@@ -63,7 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             if (options.IsNullOrDefault())
             {
                 this._baseUrl = baseUrl;
-                this._swaggerUiApiPrefix = prefix;
+                this._swaggerUiApiPrefix = prefix.TrimEnd('/');
                 return this;
             }
 
