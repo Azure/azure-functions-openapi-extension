@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -71,6 +72,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument Build(Assembly assembly, OpenApiVersionType version = OpenApiVersionType.V2);
+
+        /// <summary>
+        /// Applies the given <see cref="DocumentFilterCollection"/> to the <see cref="IDocument"/>.
+        /// </summary>
+        /// <param name="collection"><see cref="DocumentFilterCollection"/> instance.</param>
+        /// <returns></returns>
+        IDocument ApplyDocumentFilters(DocumentFilterCollection collection);
 
         /// <summary>
         /// Renders OpenAPI document.

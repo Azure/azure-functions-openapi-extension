@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 
@@ -144,5 +145,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="key">Environment variables key to look for.</param>
         /// <returns>Returns the API key for endpoints.</returns>
         string GetSwaggerAuthKey(string key = "OpenApi__ApiKey");
+
+        /// <summary>
+        /// Returns the <see cref="DocumentFilterCollection"/> containing the configured <see cref="IDocumentFilter"/> instances.
+        /// </summary>
+        /// <returns>Returns the <see cref="DocumentFilterCollection"/> instance.</returns>
+        DocumentFilterCollection GetDocumentFilterCollection();
     }
 }
