@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -10,7 +10,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
     public static class AssemblyExtensions
     {
         /// <summary>
-        /// Loads the <see cref="Assembly"/>'s <see cref="Type"/>s that can be loaded ignoring others.
+        /// Loads the <see cref="Assembly"/>'s <see cref="Type"/>s that can be loaded ignoring others (includes referenced assemblies).
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         /// <returns>Returns the list of <see cref="Type"/>s that can be loaded.</returns>
@@ -18,7 +18,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         {
             try
             {
-                return assembly.GetTypes();
+                return assembly.GetTypes()
+                    .Union(assembly
+                        .GetReferencedAssemblies()
+                        .Where(x =>
+                            !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi") &&
+                            !x.FullName.StartsWith("Microsoft.Azure.Functions.Worker.Extensions.OpenApi"))
+                        .SelectMany(x => Assembly.Load(x).GetTypes()))
+                    .Distinct()
+                    .ToArray();
             }
             catch (ReflectionTypeLoadException exception)
             {
