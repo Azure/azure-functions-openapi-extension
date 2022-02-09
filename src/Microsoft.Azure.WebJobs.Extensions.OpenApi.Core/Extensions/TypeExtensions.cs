@@ -239,6 +239,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum values of <see cref="byte"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum values of <see cref="byte"/>.</returns>
+        public static List<IOpenApiAny> ToOpenApiByteCollection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetValues(type).Cast<byte>();
+
+            return names.Select(p => (IOpenApiAny)new OpenApiInteger((int)p))
+                        .ToList();
+        }
+
+        /// <summary>
         /// Converts the given <see cref="Type"/> instance to the list of underlying enum value.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
@@ -271,6 +289,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                              .Select(p => (IOpenApiAny)new OpenApiLong(p))
                              .ToList();
             }
+
 
             return null;
         }
@@ -380,14 +399,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 namingStrategy = new DefaultNamingStrategy();
             }
 
-            if(isDictionary)
+            if (isDictionary)
             {
                 var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
-            if(isList)
+            if (isList)
             {
-                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy): type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);;
+                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 

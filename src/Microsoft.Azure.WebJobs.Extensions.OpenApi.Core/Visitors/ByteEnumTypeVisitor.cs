@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
+
     /// <summary>
-    /// This represents the type visitor for <see cref="string"/> type enum.
+    /// This represents the type visitor for <see cref="byte"/> type enum.
     /// </summary>
-    public class StringEnumTypeVisitor : TypeVisitor
+    public class ByteEnumTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
-        public StringEnumTypeVisitor(VisitorCollection visitorCollection)
+        public ByteEnumTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
         {
         }
@@ -27,9 +27,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-            var isVisitable = (this.IsVisitable(type, TypeCode.Int16) || this.IsVisitable(type, TypeCode.Int32) || this.IsVisitable(type, TypeCode.Int64) || this.IsVisitable(type, TypeCode.Byte)) &&
+    
+            var isVisitable = this.IsVisitable(type, TypeCode.Byte) &&
                               type.IsUnflaggedEnumType() &&
-                              type.HasJsonConverterAttribute<StringEnumConverter>()
+                              !type.HasJsonConverterAttribute<StringEnumConverter>() &&
+                              Enum.GetUnderlyingType(type) == typeof(byte)
                               ;
 
             return isVisitable;
@@ -47,12 +49,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Adds enum values to the schema.
-            var enums = type.Value.ToOpenApiStringCollection();
+            var enums = type.Value.ToOpenApiByteCollection();
 
             var schema = new OpenApiSchema()
             {
-                Type = "string",
-                Format = null,
+                Type = "integer",
+                Format = "int32",
                 Enum = enums,
                 Default = enums.First()
             };
@@ -64,7 +66,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 if (!attr.IsNullOrDefault())
                 {
                     schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
-                    schema.Default = this.GetOpenApiPropertyDefault<string>(attr as OpenApiPropertyAttribute);
+                    schema.Default = this.GetOpenApiPropertyDefault<byte>(attr as OpenApiPropertyAttribute);
                     schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                 }
 
@@ -91,10 +93,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
+            var schema = this.ParameterVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiStringCollection(namingStrategy);
+            var enums = type.ToOpenApiByteCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();
@@ -113,10 +115,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            var schema = this.PayloadVisit(dataType: "string", dataFormat: null);
+            var schema = this.PayloadVisit(dataType: "integer", dataFormat: "int32");
 
             // Adds enum values to the schema.
-            var enums = type.ToOpenApiStringCollection(namingStrategy);
+            var enums = type.ToOpenApiByteCollection();
 
             schema.Enum = enums;
             schema.Default = enums.First();
