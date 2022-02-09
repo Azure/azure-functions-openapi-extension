@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -198,6 +199,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             foreach (var attribute in jsonRequiredAttributes)
             {
                 var attributeName = namingStrategy.GetPropertyName(attribute.Key, hasSpecifiedName: false);
+                if (instance.Schemas[schemaName].Required.Contains(attributeName))
+                {
+                    continue;
+                }
+
+                instance.Schemas[schemaName].Required.Add(attributeName);
+            }
+
+            var requiredPropertyNames = properties.Where(p => !p.Value.GetCustomAttribute<RequiredAttribute>(inherit: false).IsNullOrDefault())
+                                               .Select(p => p.Key);
+            foreach (var propertyName in requiredPropertyNames)
+            {
+                var attributeName = namingStrategy.GetPropertyName(propertyName, hasSpecifiedName: false);
                 if (instance.Schemas[schemaName].Required.Contains(attributeName))
                 {
                     continue;
