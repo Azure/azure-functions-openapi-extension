@@ -32,11 +32,6 @@ jobs:
       run: |
         npm install -g azure-functions-core-tools@3 --unsafe-perm true
 
-    - name: Setup .NET SDK 2.1 LTS
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '2.1.x'
-
     - name: Setup .NET SDK 3.1 LTS
       uses: actions/setup-dotnet@v1
       with:
@@ -46,6 +41,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.x'
+
+    - name: Setup .NET SDK 6 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
 
     # - name: Add MSBuild to PATH
     #   uses: microsoft/setup-msbuild@v1.0.0

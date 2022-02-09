@@ -3,11 +3,6 @@ parameters:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK 2.1 LTS'
-  inputs:
-    version: '2.1.x'
-
-- task: UseDotNet@2
   displayName: 'Install .NET Core SDK 3.1 LTS'
   inputs:
     version: '3.1.x'
@@ -16,6 +11,11 @@ steps:
   displayName: 'Install .NET SDK 5'
   inputs:
     version: '5.x'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK 6 LTS'
+  inputs:
+    version: '6.x'
 
 - task: DotNetCoreCLI@2
   displayName: '.NET Restore'
