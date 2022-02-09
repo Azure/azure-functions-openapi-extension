@@ -91,8 +91,23 @@ jobs:
     #     dotnet test . -c Debug
     #     cd $rootDir
 
-    - name: Run integration tests (Non-Windows)
-      if: matrix.os != 'windows-latest'
+    # - name: Run integration tests (Non-Windows)
+    #   if: matrix.os != 'windows-latest'
+    #   shell: pwsh
+    #   run: |
+    #     dir
+
+    #     $rootDir = $pwd.Path
+
+    #     cd ./test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
+    #     Start-Process -NoNewWindow func @("start","--verbose","false")
+    #     Start-Sleep -s 60
+
+    #     cd $rootDir/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
+    #     dotnet test . -c Debug
+    #     cd $rootDir
+
+    - name: Run integration tests
       shell: pwsh
       run: |
         dir
