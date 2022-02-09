@@ -86,6 +86,16 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
 
 > **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.
 
+You can also configure the hostname without having to start with the fully-qualified domain name. Here's an example:
+
+```json
+{
+  "Values": {
+    "OpenApi__HostNames": "/api"
+  }
+}
+```
+
 
 ### Force HTTP or HTTPS for Swagger UI ###
 
