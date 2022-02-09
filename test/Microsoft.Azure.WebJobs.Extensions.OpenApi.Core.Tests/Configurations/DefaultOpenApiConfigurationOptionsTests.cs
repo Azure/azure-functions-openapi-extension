@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.Servers.Should().HaveCount(0);
 
             options.OpenApiVersion.Should().Be(OpenApiVersionType.V2);
-            options.IncludeRequestingHostName.Should().BeFalse();
+            options.ExcludeRequestingHost.Should().BeFalse();
         }
 
         [DataTestMethod]
@@ -96,7 +96,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             var options = new DefaultOpenApiConfigurationOptions();
 
-            options.IncludeRequestingHostName.Should().Be(expected);
+            options.ExcludeRequestingHost.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow("true", true)]
+        [DataRow("false", false)]
+        public void Given_ExcludeRequestingHost_When_Instantiated_Then_Property_Should_Return_Value(string excludeRequestingHost, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", excludeRequestingHost);
+
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            options.ExcludeRequestingHost.Should().Be(expected);
         }
 
         [DataTestMethod]

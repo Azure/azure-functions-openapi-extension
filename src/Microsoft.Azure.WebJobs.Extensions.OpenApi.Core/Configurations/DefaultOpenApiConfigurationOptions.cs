@@ -19,6 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string OpenApiHostNamesKey = "OpenApi__HostNames";
         private const string OpenApiVersionKey = "OpenApi__Version";
         private const string FunctionsRuntimeEnvironmentKey = "AZURE_FUNCTIONS_ENVIRONMENT";
+        private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
 
@@ -36,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual OpenApiVersionType OpenApiVersion { get; set; } = GetOpenApiVersion();
 
         /// <inheritdoc />
-        public virtual bool IncludeRequestingHostName { get; set; } = IsFunctionsRuntimeEnvironmentDevelopment();
+        public virtual bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
 
         /// <inheritdoc />
         public bool ForceHttp { get; set; } = IsHttpForced();
@@ -102,12 +103,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <summary>
-        /// Checks whether the current Azure Functions runtime environment is "Development" or not.
+        /// Checks whether to exclude the requesting host as the server URL or not.
         /// </summary>
-        /// <returns>Returns <c>True</c>, if the current Azure Functions runtime environment is "Development"; otherwise returns <c>False</c></returns>
-        protected static bool IsFunctionsRuntimeEnvironmentDevelopment()
+        /// <returns>Returns <c>True</c>, if the requesting host is excluded; otherwise returns <c>False</c></returns>
+        protected static bool IsRequestingHostExcluded()
         {
-            var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
+            var requestingHostExcluded = bool.TryParse(Environment.GetEnvironmentVariable(ExcludeRequestingHostKey), out var result) ? result : (bool?)null;
+            if (requestingHostExcluded.HasValue)
+            {
+                return requestingHostExcluded.Value;
+            }
+
+            var development = IsFunctionsRuntimeEnvironmentDevelopment();
 
             return development;
         }
@@ -118,9 +125,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns <c>True</c>, if HTTP is forced; otherwise returns <c>False</c>.</returns>
         protected static bool IsHttpForced()
         {
-            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpKey), out var result) ? result : false;;
+            var forceHttp = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpKey), out var result) ? result : false;
 
-            return development;
+            return forceHttp;
         }
 
         /// <summary>
@@ -129,9 +136,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns <c>True</c>, if HTTPS is forced; otherwise returns <c>False</c>.</returns>
         protected static bool IsHttpsForced()
         {
-            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpsKey), out var result) ? result : false;;
+            var forceHttps = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpsKey), out var result) ? result : false;
 
-            return development;
+            return forceHttps;
         }
 
         private static OpenApiVersionType DefaultOpenApiVersion()
@@ -147,6 +154,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private static string DefaultOpenApiDocTitle()
         {
             return "OpenAPI Document on Azure Functions";
+        }
+
+        private static bool IsFunctionsRuntimeEnvironmentDevelopment()
+        {
+            var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
+
+            return development;
         }
     }
 }

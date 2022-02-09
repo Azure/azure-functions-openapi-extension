@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
 
         /// <inheritdoc />
-        public bool IncludeRequestingHostName { get; set; }
+        public bool ExcludeRequestingHost { get; set; }
 
         /// <inheritdoc />
         public bool ForceHttp { get; set; }
