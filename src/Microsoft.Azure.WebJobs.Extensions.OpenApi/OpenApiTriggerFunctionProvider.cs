@@ -50,46 +50,48 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var bindings = new Dictionary<string, HttpBindingMetadata>();
 
-            if (!this._settings.HideDocument)
+            if (this._settings.HideDocument)
             {
-                var renderSwaggerDocument = new HttpBindingMetadata()
+                return bindings;
+            }
+
+            var renderSwaggerDocument = new HttpBindingMetadata()
+            {
+                Methods = new List<string>() { HttpMethods.Get },
+                Route = "swagger.{extension}",
+                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+            };
+
+            bindings.Add(RenderSwaggerDocumentKey, renderSwaggerDocument);
+
+            var renderOpenApiDocument = new HttpBindingMetadata()
+            {
+                Methods = new List<string>() { HttpMethods.Get },
+                Route = "openapi/{version}.{extension}",
+                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+            };
+
+            bindings.Add(RenderOpenApiDocumentKey, renderOpenApiDocument);
+
+            if (!this._settings.HideSwaggerUI)
+            {
+                var renderOAuth2Redirect = new HttpBindingMetadata()
                 {
                     Methods = new List<string>() { HttpMethods.Get },
-                    Route = "swagger.{extension}",
-                    AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+                    Route = "oauth2-redirect.html",
+                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
                 };
 
-                bindings.Add(RenderSwaggerDocumentKey, renderSwaggerDocument);
+                bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
 
-                var renderOpenApiDocument = new HttpBindingMetadata()
+                var renderSwaggerUI = new HttpBindingMetadata()
                 {
                     Methods = new List<string>() { HttpMethods.Get },
-                    Route = "openapi/{version}.{extension}",
-                    AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+                    Route = "swagger/ui",
+                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
                 };
 
-                bindings.Add(RenderOpenApiDocumentKey, renderOpenApiDocument);
-
-                if (!this._settings.HideSwaggerUI)
-                {
-                    var renderOAuth2Redirect = new HttpBindingMetadata()
-                    {
-                        Methods = new List<string>() { HttpMethods.Get },
-                        Route = "oauth2-redirect.html",
-                        AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                    };
-
-                    bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
-
-                    var renderSwaggerUI = new HttpBindingMetadata()
-                    {
-                        Methods = new List<string>() { HttpMethods.Get },
-                        Route = "swagger/ui",
-                        AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
-                    };
-
-                    bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);
-                }
+                bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);
             }
 
             return bindings;
@@ -99,23 +101,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         {
             var list = new List<FunctionMetadata>();
 
-            if (!this._settings.HideDocument)
+            if (this._settings.HideDocument)
+            {
+                return list;
+            };
+
+            list.AddRange(new[]
+            {
+                this.GetFunctionMetadata(RenderSwaggerDocumentKey),
+                this.GetFunctionMetadata(RenderOpenApiDocumentKey)
+            });
+
+            if (!this._settings.HideSwaggerUI)
             {
                 list.AddRange(new[]
                 {
-                    this.GetFunctionMetadata(RenderSwaggerDocumentKey),
-                    this.GetFunctionMetadata(RenderOpenApiDocumentKey)
+                    this.GetFunctionMetadata(RenderSwaggerUIKey),
+                    this.GetFunctionMetadata(RenderOAuth2RedirectKey)
                 });
-
-                if (!this._settings.HideSwaggerUI)
-                {
-                    list.AddRange(new[]
-                    {
-                        this.GetFunctionMetadata(RenderSwaggerUIKey),
-                        this.GetFunctionMetadata(RenderOAuth2RedirectKey)
-                    });
-                }
-            };
+            }
 
             return list;
         }
