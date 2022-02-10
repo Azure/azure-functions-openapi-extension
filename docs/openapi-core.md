@@ -675,7 +675,7 @@ public class MyResponse
 
 ### `OpenApiPropertyAttribute` ###
 
-This decorator provides model properties with description.
+This decorator provides model properties with description, default value, nullable flag and deprecated flag.
 
 ```csharp
 public class MyModel
@@ -685,6 +685,9 @@ public class MyModel
 
     [OpenApiProperty(Nullable = true, Default = "Hello World", Description = "The text value")]
     public string Text { get; set; }
+
+    [OpenApiProperty(Default = "Deprecated", Description = "The deprecated text value", Deprecated = true)]
+    public string Value { get; set; }
 }
 
 // This will result in:
@@ -702,6 +705,12 @@ public class MyModel
 //       "nullable": true,
 //       "description": "The text value",
 //       "default": "Hello World"
+//     },
+//     "value": {
+//       "type": "string",
+//       "description": "The deprecated text value",
+//       "default": "Deprecated",
+//       "deprecated": true
 //     }
 //   }
 // }
@@ -713,6 +722,7 @@ public class MyModel
 * `Nullable`: defines a value indicating whether the property is nullable or not. This value takes precedence regardless the property itself is nullable value type or not.
 * `Default`: defines the default value of the property.
 * `Description`: defines the description of the property.
+* `Deprecated`: defines a value indicating whether the property is deprecated or not.
 
 
 ### `DisplayAttribute` ###
@@ -815,9 +825,11 @@ Properties decorated with the `MaxLengthAttribute` class impacts on either `Open
 * If `OpenApiSchema.Type` is `array`: `OpenApiSchema.MaxItems`
 * If `OpenApiSchema.Type` is NOT `array`: `OpenApiSchema.MaxLength`
 
+
 ### `RequiredAttribute` ###
 
 Properties decorated with the `RequiredAttribute` class impacts on the `OpenApiSchema.Required` value of parent schema. In addition to this, if `RequiredAttribute.AllowEmptyString` is `false` and the property is of type `string`, the `OpenApiSchema.MinLength` will be set to 1, if a larger value has not already been set.
+
 
 ## Supported System.Runtime.Serialization Decorators ##
 
