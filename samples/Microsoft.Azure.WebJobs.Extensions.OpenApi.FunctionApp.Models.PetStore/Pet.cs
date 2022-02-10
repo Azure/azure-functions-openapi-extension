@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 using Newtonsoft.Json;
 
@@ -12,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the pet ID.
         /// </summary>
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the category.
@@ -22,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        [JsonRequired]
+        [Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -39,6 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the <see cref="PetStatus"/> value.
         /// </summary>
-        public PetStatus? Status { get; set; }
+        [OpenApiProperty(Description = "pet status in the store")]
+        public PetStatus Status { get; set; }
     }
 }

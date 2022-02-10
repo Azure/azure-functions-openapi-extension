@@ -1,3 +1,5 @@
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
@@ -8,7 +10,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the user ID.
         /// </summary>
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the username.
@@ -43,6 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the user status value.
         /// </summary>
-        public int? UserStatus { get; set; }
+        [OpenApiProperty(Description = "User Status")]
+        public int UserStatus { get; set; }
     }
 }

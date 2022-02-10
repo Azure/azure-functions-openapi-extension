@@ -1,5 +1,7 @@
 using System;
 
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
 {
     /// <summary>
@@ -10,31 +12,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the order ID.
         /// </summary>
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the pet ID.
         /// </summary>
-        public long? PetId { get; set; }
+        public long PetId { get; set; }
 
         /// <summary>
         /// Gets or sets the quantity.
         /// </summary>
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
 
         /// <summary>
         /// Gets or seets the date/time shipped.
         /// </summary>
-        public DateTime? ShipDate { get; set; }
+        public DateTime ShipDate { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="OrderStatus"/> value.
         /// </summary>
-        public OrderStatus? Status { get; set; }
+        [OpenApiProperty(Description = "Order Status")]
+        public OrderStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating whether the order is complete or not.
         /// </summary>
-        public bool? Complete { get; set; }
+        [OpenApiProperty(Default = false)]
+        public bool Complete { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
         /// <summary>
         /// Gets or sets the tag ID.
         /// </summary>
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
