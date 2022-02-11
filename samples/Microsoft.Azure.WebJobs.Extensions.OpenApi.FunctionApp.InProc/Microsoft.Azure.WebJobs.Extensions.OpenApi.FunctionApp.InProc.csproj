@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+  <!--<ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.1.0" />
+  </ItemGroup>-->
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />
+  </ItemGroup>
+
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Azure.WebJobs.Extensions.OpenApi\Microsoft.Azure.WebJobs.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj" />
+  </ItemGroup>
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- Uncomment this block if you want to use custom UI -->
+   <!--<ItemGroup>
+    <EmbeddedResource Include="dist\my-custom.css" />
+    <EmbeddedResource Include="dist\my-custom.js" />
+  </ItemGroup>--> 
+  <!-- Uncomment this block if you want to use custom UI -->
+
+</Project>

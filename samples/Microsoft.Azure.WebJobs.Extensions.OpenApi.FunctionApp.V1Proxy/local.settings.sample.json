@@ -1,9 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-
-    "V1_FUNCTION_APP_HOST": "<AZURE_FUNCTION_APP_V1_HOST>.azurewebsites.net"
-  }
-}
