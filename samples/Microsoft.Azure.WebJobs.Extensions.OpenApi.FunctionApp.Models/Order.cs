@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
     /// <summary>
     /// This represents the model entity for order of Swagger Pet Store.

@@ -24,12 +24,9 @@
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj" />
   </ItemGroup>
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
-
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Update="host.json">

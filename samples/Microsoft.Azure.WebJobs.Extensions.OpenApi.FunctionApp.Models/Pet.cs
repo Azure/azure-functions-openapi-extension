@@ -5,7 +5,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models
 {
     /// <summary>
     /// This represents the model entity for pet of Swagger Pet Store.
