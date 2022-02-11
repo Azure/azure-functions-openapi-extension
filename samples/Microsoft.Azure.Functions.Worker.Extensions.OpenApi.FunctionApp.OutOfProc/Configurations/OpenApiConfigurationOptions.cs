@@ -10,14 +10,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
     {
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
-            Version = "3.0.0",
-            Title = "OpenAPI Sample on Azure Functions on Isolated Worker",
-            Description = "A sample API that runs on Azure Functions using OpenAPI specification, running on the isolated worker environment.",
+            Version = GetOpenApiDocVersion(),
+            Title = GetOpenApiDocTitle(),
+            Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {
-                Name = "Contoso",
-                Email = "azfunc-openapi@contoso.com",
+                Name = "Enquiry",
+                Email = "azfunc-openapi@microsoft.com",
                 Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
             },
             License = new OpenApiLicense()
@@ -27,6 +27,6 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
             }
         };
 
-        public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
+        public override OpenApiVersionType OpenApiVersion { get; set; } = GetOpenApiVersion();
     }
 }

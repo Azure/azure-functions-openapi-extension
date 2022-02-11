@@ -15,12 +15,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configur
         {
             Version = GetOpenApiDocVersion(),
             Title = GetOpenApiDocTitle(),
-            Description = "This is a sample server Petstore server. You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/). For this sample, you can use the api key `special-key` to test the authorization filters.",
+            Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {
-                Name = "Contoso",
-                Email = "azfunc-openapi@contoso.com",
+                Name = "Enquiry",
+                Email = "azfunc-openapi@microsoft.com",
                 Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
             },
             License = new OpenApiLicense()

@@ -1,12 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+
+using AutoFixture;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.SecurityFlows;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.PetStore;
 using Microsoft.Extensions.Logging;
@@ -17,10 +22,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     public class PetHttpTrigger
     {
         private readonly ILogger<PetHttpTrigger> _logger;
+        private readonly Fixture _fixture;
 
-        public PetHttpTrigger(ILogger<PetHttpTrigger> log)
+        public PetHttpTrigger(ILogger<PetHttpTrigger> log, Fixture fixture)
         {
-            _logger = log;
+            this._logger = log.ThrowIfNullOrDefault();
+            this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
         [FunctionName(nameof(PetHttpTrigger.UpdatePet))]
@@ -31,10 +38,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid ID supplied", Description = "Invalid ID supplied")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Pet not found", Description = "Pet not found")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.MethodNotAllowed, Summary = "Validation exception", Description = "Validation exception")]
-        public static async Task<IActionResult> UpdatePet(
+        public async Task<IActionResult> UpdatePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "PUT", Route = "pet")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            return await Task.FromResult(new OkObjectResult(this._fixture.Create<Pet>())).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.AddPet))]
@@ -43,10 +50,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Pet), Required = true, Description = "Pet object that needs to be added to the store")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Pet), Summary = "New pet details added", Description = "New pet details added")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.MethodNotAllowed, Summary = "Invalid input", Description = "Invalid input")]
-        public static async Task<IActionResult> AddPet(
+        public async Task<IActionResult> AddPet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            return await Task.FromResult(new OkObjectResult(this._fixture.Create<Pet>())).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.FindByStatus))]
@@ -55,10 +62,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiParameter(name: "status", In = ParameterLocation.Query, Required = true, Type = typeof(List<PetStatus>), Explode = true, Summary = "Pet status value", Description = "Status values that need to be considered for filter", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Pet>), Summary = "successful operation", Description = "successful operation")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid status value", Description = "Invalid status value")]
-        public static async Task<IActionResult> FindByStatus(
+        public async Task<IActionResult> FindByStatus(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByStatus")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var status = req.Query["status"]
+                            .Select(p =>
+                            {
+                                var converted = Enum.TryParse<PetStatus>(p, ignoreCase: true, out var result) ? result : PetStatus.Available;
+                                return converted;
+                            })
+                            .ToList();
+            var pets = this._fixture.Create<List<Pet>>().Where(p => status.Contains(p.Status));
+
+            return await Task.FromResult(new OkObjectResult(pets)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.FindByTags))]
@@ -67,10 +83,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiParameter(name: "tags", In = ParameterLocation.Query, Required = true, Type = typeof(List<string>), Explode = true, Summary = "Tags to filter by", Description = "Tags to filter by", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Pet>), Summary = "successful operation", Description = "successful operation")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid tag value", Description = "Invalid tag value")]
-        public static async Task<IActionResult> FindByTags(
+        public async Task<IActionResult> FindByTags(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByTags")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var tags = req.Query["tags"]
+                          .Select(p =>
+                          {
+                              var tag = this._fixture.Build<Tag>().With(q => q.Name, p).Create();
+                              return tag;
+                          })
+                          .ToList();
+            var pets = this._fixture.Create<List<Pet>>()
+                           .Select(p =>
+                           {
+                               p.Tags = tags;
+                               return p;
+                           });
+
+            return await Task.FromResult(new OkObjectResult(pets)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.GetPetById))]
@@ -80,10 +110,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Pet), Summary = "successful operation", Description = "successful operation")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid ID supplied", Description = "Invalid ID supplied")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Pet not found", Description = "Pet not found")]
-        public static async Task<IActionResult> GetPetById(
+        public async Task<IActionResult> GetPetById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
+
+            return await Task.FromResult(new OkObjectResult(pet)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.UpdatePetWithForm))]
@@ -93,10 +125,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiRequestBody(contentType: "application/x-www-form-urlencoded", bodyType: typeof(PetUrlForm), Required = true, Description = "Pet object that needs to be added to the store")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Pet), Summary = "successful operation", Description = "successful operation")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.MethodNotAllowed, Summary = "Invalid input", Description = "Invalid input")]
-        public static async Task<IActionResult> UpdatePetWithForm(
+        public async Task<IActionResult> UpdatePetWithForm(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
+
+            return await Task.FromResult(new OkObjectResult(pet)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(PetHttpTrigger.DeletePet))]
@@ -107,7 +141,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, Summary = "successful operation", Description = "successful operation")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid ID supplied", Description = "Invalid ID supplied")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Pet not found", Description = "Pet not found")]
-        public static async Task<IActionResult> DeletePet(
+        public async Task<IActionResult> DeletePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "DELETE", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
             return await Task.FromResult(new OkResult()).ConfigureAwait(false);
@@ -119,10 +153,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         [OpenApiParameter(name: "petId", In = ParameterLocation.Path, Required = true, Type = typeof(long), Summary = "ID of pet to update", Description = "ID of pet to update", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiRequestBody(contentType: "multipart/form-data", bodyType: typeof(PetFormData))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ApiResponse), Summary = "successful operation", Description = "successful operation")]
-        public static async Task<IActionResult> UploadFile(
+        public async Task<IActionResult> UploadFile(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}/uploadImage")] HttpRequest req, long petId)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            return await Task.FromResult(new OkObjectResult(this._fixture.Create<ApiResponse>())).ConfigureAwait(false);
         }
     }
 }

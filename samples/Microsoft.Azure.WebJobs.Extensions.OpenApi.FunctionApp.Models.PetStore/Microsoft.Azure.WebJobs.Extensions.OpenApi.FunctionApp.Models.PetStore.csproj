@@ -13,6 +13,7 @@
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.17.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 

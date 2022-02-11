@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
+using AutoFixture;
 
-using Microsoft.Azure.Functions.Worker.Configuration;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc
@@ -11,7 +11,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public static void Main()
         {
             var host = new HostBuilder()
-                .ConfigureFunctionsWorkerDefaults()
+                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureOpenApi()
+                .ConfigureServices(services => services.AddSingleton<Fixture>())
                 .Build();
 
             host.Run();
