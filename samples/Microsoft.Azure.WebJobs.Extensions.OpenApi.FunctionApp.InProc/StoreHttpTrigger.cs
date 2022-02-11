@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
+using AutoFixture;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -16,10 +19,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     public class StoreHttpTrigger
     {
         private readonly ILogger<StoreHttpTrigger> _logger;
+        private readonly Fixture _fixture;
 
-        public StoreHttpTrigger(ILogger<StoreHttpTrigger> log)
+        public StoreHttpTrigger(ILogger<StoreHttpTrigger> log, Fixture fixture)
         {
-            _logger = log;
+            this._logger = log.ThrowIfNullOrDefault();
+            this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
         [FunctionName(nameof(StoreHttpTrigger.GetInventory))]
@@ -29,7 +34,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> GetInventory(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "store/inventory")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var result = this._fixture.Create<Dictionary<string, int>>();
+
+            return await Task.FromResult(new OkObjectResult(result)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(StoreHttpTrigger.PlaceOrder))]
@@ -40,7 +47,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> PlaceOrder(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "store/order")] HttpRequest req)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            return await Task.FromResult(new OkObjectResult(this._fixture.Create<Order>())).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(StoreHttpTrigger.GetOrderById))]
@@ -52,7 +59,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> GetOrderById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "store/order/{orderId}")] HttpRequest req, long orderId)
         {
-            return await Task.FromResult(new OkResult()).ConfigureAwait(false);
+            var order = this._fixture.Build<Order>().With(p => p.Id, orderId).Create();
+
+            return await Task.FromResult(new OkObjectResult(order)).ConfigureAwait(false);
         }
 
         [FunctionName(nameof(StoreHttpTrigger.DeleteOrder))]
