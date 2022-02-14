@@ -31,6 +31,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         public static List<MethodInfo> GetHttpTriggerMethods(this IDocumentHelper helper, Assembly assembly, IEnumerable<string> tags = null)
         {
             var methods = assembly.GetLoadableTypes()
+                                  .Union(assembly.GetTypesFromReferencedFunctionApps())
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
