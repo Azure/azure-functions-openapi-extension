@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
@@ -14,7 +15,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
 
         public PingHttpTrigger(ILogger<PingHttpTrigger> log)
         {
-            _logger = log;
+            this._logger = log.ThrowIfNullOrDefault();
         }
 
         [Function(nameof(PingHttpTrigger.Ping))]
