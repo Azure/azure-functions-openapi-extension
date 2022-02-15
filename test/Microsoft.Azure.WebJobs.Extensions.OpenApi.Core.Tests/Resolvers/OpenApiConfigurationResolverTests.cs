@@ -39,5 +39,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Resolvers
 
             result.Should().BeOfType<DefaultOpenApiConfigurationOptions>();
         }
+
+        // NOTE: this abstract class is referenced via the OpenApiConfigurationResolver.Resolve method (and will be ignored)
+        public abstract class TestOpenApiConfigurationOptionsBase : DefaultOpenApiConfigurationOptions
+        {
+        }
     }
 }
