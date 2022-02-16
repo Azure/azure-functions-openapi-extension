@@ -102,5 +102,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
 
             return await Task.FromResult(new OkObjectResult(user)).ConfigureAwait(false);
         }
+
+        [FunctionName(nameof(UserHttpTrigger.GetGroup))]
+        [OpenApiOperation(operationId: "getGroup", tags: new[] { "user" }, Summary = "Gets group by user name", Description = "This gets group by user name.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GroupModel), Summary = "successful operation", Description = "successful operation")]
+        public async Task<IActionResult> GetGroup(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "groups")] HttpRequest req)
+        {
+            var group = this._fixture.Create<GroupModel>();
+
+            return await Task.FromResult(new OkObjectResult(group)).ConfigureAwait(false);
+        }
     }
 }
