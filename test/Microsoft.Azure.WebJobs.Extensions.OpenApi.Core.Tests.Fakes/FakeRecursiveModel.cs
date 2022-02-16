@@ -11,5 +11,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         public string StringValue { get; set; }
 
         public FakeRecursiveModel RecursiveValue { get; set; }
+
+        public FakeOtherClassModel FirstValue { get; set; }
+
+        public FakeOtherClassModel SecondValue { get; set; }
     }
 }
