@@ -21,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         private const string ContentTypeJson = "application/json";
         private const string ContentTypeYaml = "text/vnd.yaml";
 
-        private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
+        private static readonly IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.

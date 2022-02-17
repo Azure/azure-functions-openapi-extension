@@ -23,5 +23,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the description.
         /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the deprecated flag.
+        /// </summary>
+        public virtual bool Deprecated { get; set; }
     }
 }

@@ -51,6 +51,25 @@ If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won
 > **NOTE**: The default value for `OpenApi__HideSwaggerUI` is `false`.
 
 
+### Configure OpenAPI Document Visibility ###
+
+> **NOTE**: Currently, the out-of-process worker model doesn't support hiding OpenAPI document. The following configurations are only applicable to the in-process worker extension.
+
+You may want to only enable the OpenAPI document page during the development time, and disable the page when publishing it to Azure. You can configure an environment variable to enable/disable the OpenAPI document page. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__HideDocument": "false"
+  }
+}
+```
+
+If you set the `OpenApi__HideDocument` value to `true`, the OpenAPI page won't be showing up, and you will see the 404 error. Make sure that, if you set the `OpenApi__HideDocument` value to `true`, it won't show the Swagger UI page either, regardless the `OpenApi__HideSwaggerUI` value is `true` or `false`.
+
+> **NOTE**: The default value for `OpenApi__HideDocument` is `false`.
+
+
 ### Configure OpenAPI Information ###
 
 As a default, the OpenAPI document automatically generated provides a minimum set of information like:
@@ -86,6 +105,16 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
 
 > **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.
 
+You can also configure the hostname without having to start with the fully-qualified domain name. Here's an example:
+
+```json
+{
+  "Values": {
+    "OpenApi__HostNames": "/api"
+  }
+}
+```
+
 
 ### Force HTTP or HTTPS for Swagger UI ###
 
@@ -105,7 +134,7 @@ There's a chance if you want to force the Swagger UI to render either HTTP or HT
 > **NOTE**: If your Azure Functions app is running on the [Linux Dedicated Plan](https://docs.microsoft.com/azure/azure-functions/dedicated-plan?WT.mc_id=github-0000-juyoo), consider this configuration.
 
 
-## Swaggrer UI Endpoints Filtering ##
+## Swagger UI Endpoints Filtering ##
 
 You may want to selectively display endpoints on the Swagger UI and OpenAPI documents. In this case, you can use the tags to filter which endpoints you want to show. For example, you've got endpoints like:
 

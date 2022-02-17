@@ -12,9 +12,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         }
 
         public override string CustomStylesheetPath { get; } =
-            "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.css";
+            "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc/dist/my-custom.css";
 
         public override string CustomJavaScriptPath { get; } =
-            "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.js";
+            "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc/dist/my-custom.js";
     }
 }

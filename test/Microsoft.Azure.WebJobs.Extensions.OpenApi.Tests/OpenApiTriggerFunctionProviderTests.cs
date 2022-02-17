@@ -24,12 +24,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(true, 3)]
+        [DataRow(true, 2)]
         [DataRow(false, 4)]
         public async Task Given_HideSwaggerUI_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideSwaggerUI, int expected)
         {
             var settings = new Mock<OpenApiSettings>();
             settings.SetupGet(p => p.HideSwaggerUI).Returns(hideSwaggerUI);
+
+            var provider = new OpenApiTriggerFunctionProvider(settings.Object);
+
+            var result = await provider.GetFunctionMetadataAsync().ConfigureAwait(false);
+
+            result.Should().HaveCount(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(true, 0)]
+        [DataRow(false, 4)]
+        public async Task Given_HideDocument_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideDocument, int expected)
+        {
+            var settings = new Mock<OpenApiSettings>();
+            settings.SetupGet(p => p.HideDocument).Returns(hideDocument);
 
             var provider = new OpenApiTriggerFunctionProvider(settings.Object);
 
@@ -51,6 +66,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
 
             var settings = new Mock<OpenApiSettings>();
             settings.SetupGet(p => p.HideSwaggerUI).Returns(false);
+            settings.SetupGet(p => p.HideDocument).Returns(false);
             settings.SetupGet(p => p.AuthLevel).Returns(authLevelSettings.Object);
 
             var provider = new OpenApiTriggerFunctionProvider(settings.Object);

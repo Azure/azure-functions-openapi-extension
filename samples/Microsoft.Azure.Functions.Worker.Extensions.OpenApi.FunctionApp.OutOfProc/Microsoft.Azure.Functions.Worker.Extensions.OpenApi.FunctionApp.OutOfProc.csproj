@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+  <!--<ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.1.0" />
+  </ItemGroup>-->
+  <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.3.0" OutputItemType="Analyzer" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.6.0" />
+  </ItemGroup>
+
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Ping\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Ping.csproj" />
+    <ProjectReference Include="..\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models\Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Models.csproj" />
+  </ItemGroup>
+  <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
+
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

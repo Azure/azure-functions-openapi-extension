@@ -260,5 +260,98 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Extensions
             schema.MinLength.Should().Be(10);
             schema.MaxLength.Should().Be(15);
         }
+
+        [TestMethod]
+        public void Given_RequiredAttribute_WithStringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RequiredAttribute()
+                {
+                    AllowEmptyStrings = false
+                },
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Given_RequiredAttribute_WithMinLength_WithStringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+                MinLength = 5,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RequiredAttribute()
+                {
+                    AllowEmptyStrings = false
+                },
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().Be(5);
+        }
+
+        [TestMethod]
+        public void Given_RequiredAttributeAllowEmptyStrings_WithStringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "string",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RequiredAttribute()
+                {
+                    AllowEmptyStrings = true
+                },
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void Given_RequiredAttribute_NoStringType_When_ApplyValidationAttributes_Invoked_Then_It_Should_Return_Result()
+        {
+            var schema = new OpenApiSchema
+            {
+                Type = "object",
+                Format = null,
+                Items = null,
+            };
+
+            var attributes = new List<ValidationAttribute>()
+            {
+                new RequiredAttribute()
+                {
+                    AllowEmptyStrings = false
+                },
+            };
+
+            schema.ApplyValidationAttributes(attributes);
+
+            schema.MinLength.Should().BeNull();
+        }
     }
 }
