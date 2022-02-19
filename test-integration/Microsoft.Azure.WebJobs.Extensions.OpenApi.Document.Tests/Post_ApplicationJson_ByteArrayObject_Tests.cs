@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBody(string path, string operationType)
         {
             var requestBody = this._doc["paths"][path][operationType]["requestBody"];
-          
+
             requestBody.Should().NotBeNull();
         }
 
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-bytearray", "post", "application/octet-stream", "string", "base64")]
+        [DataRow("/post-applicationjson-bytearray", "post", "application/octet-stream", "string", "binary")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationRequestBodyContentTypeSchema(string path, string operationType, string contentType, string propertyType, string propertyFormat)
         {
             var content = this._doc["paths"][path][operationType]["requestBody"]["content"];
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("byteArrayObjectModel", "byteArrayValue", "string", "base64")]
+        [DataRow("byteArrayObjectModel", "byteArrayValue", "string", "binary")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "base64", attributes: attributes);
+            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "binary", attributes: attributes);
         }
 
         /// <inheritdoc />
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.ParameterVisit(dataType: "string", dataFormat: "base64");
+            return this.ParameterVisit(dataType: "string", dataFormat: "binary");
         }
 
         /// <inheritdoc />
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.PayloadVisit(dataType: "string", dataFormat: "base64");
+            return this.PayloadVisit(dataType: "string", dataFormat: "binary");
         }
     }
 }
