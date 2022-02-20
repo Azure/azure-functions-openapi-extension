@@ -11,7 +11,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi.Models;
 
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
