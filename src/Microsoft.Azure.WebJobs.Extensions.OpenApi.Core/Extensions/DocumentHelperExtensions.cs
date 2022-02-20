@@ -146,7 +146,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
-        /// <param name="version">OpenAPI spec version.</param>
+        /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
         public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version)
         {
