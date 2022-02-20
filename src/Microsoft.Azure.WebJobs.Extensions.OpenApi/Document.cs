@@ -268,10 +268,4 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             return serialised;
         }
     }
-
-    public class ParameterFormDataIn
-    {
-        [JsonProperty("in")]
-        public string In { get; set; }
-    }
 }
