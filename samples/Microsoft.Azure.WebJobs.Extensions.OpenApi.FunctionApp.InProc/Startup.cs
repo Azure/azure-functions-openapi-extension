@@ -11,7 +11,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddSingleton<Fixture>();
+            var fixture = new Fixture();
+            builder.Services.AddSingleton(fixture);
         }
     }
 }

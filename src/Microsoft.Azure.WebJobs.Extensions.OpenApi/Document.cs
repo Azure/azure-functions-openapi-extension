@@ -11,6 +11,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
@@ -38,7 +40,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public Document(OpenApiDocument openApiDocument)
         {
             this.OpenApiDocument = openApiDocument;
-
         }
 
         /// <inheritdoc />
@@ -168,7 +169,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 }
 
                 operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
+                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection, version);
                 operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
                 operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
 
@@ -203,12 +204,47 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         private string Render(OpenApiSpecVersion version, OpenApiFormat format)
         {
+            var jserialised = default(string);
             using (var sw = new StringWriter())
             {
-                this.OpenApiDocument.Serialise(sw, version, format);
-
-                return sw.ToString();
+                this.OpenApiDocument.Serialise(sw, version, OpenApiFormat.Json);
+                jserialised = sw.ToString();
             }
+
+            var yserialised = default(string);
+            using (var sw = new StringWriter())
+            {
+                this.OpenApiDocument.Serialise(sw, version, OpenApiFormat.Yaml);
+                yserialised = sw.ToString();
+            }
+
+            if (version != OpenApiSpecVersion.OpenApi2_0)
+            {
+                return format == OpenApiFormat.Json ? jserialised : yserialised;
+            }
+
+            if (format == OpenApiFormat.Json)
+            {
+                var jo = JsonConvert.DeserializeObject<JObject>(jserialised);
+                var jts = jo.DescendantsAndSelf()
+                            .Where(p => p.Type == JTokenType.Property && (p as JProperty).Name == "parameters")
+                            .SelectMany(p => p.Values<JArray>().SelectMany(q => q.Children<JObject>()))
+                            .Where(p => p.Value<string>("description") != null)
+                            .Where(p => p.Value<string>("description").Contains("[formData]"))
+                            .ToList();
+                foreach (var jt in jts)
+                {
+                    jt["in"] = "formData";
+                    jt["description"] = jt.Value<string>("description").Replace("[formData]", string.Empty);
+                }
+
+                jserialised = JsonConvert.SerializeObject(jo, Formatting.Indented);
+            }
+            else
+            {
+            }
+
+            return format == OpenApiFormat.Json ? jserialised : yserialised;
         }
     }
 }
