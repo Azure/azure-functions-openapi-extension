@@ -290,7 +290,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                              .ToList();
             }
 
-
             return null;
         }
 
@@ -536,7 +535,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             return name;
         }
-
 
         /// <summary>
         /// Gets the sub type of the given <see cref="Type"/>.

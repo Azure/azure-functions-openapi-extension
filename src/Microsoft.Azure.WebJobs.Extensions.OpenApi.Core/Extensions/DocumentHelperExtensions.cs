@@ -146,13 +146,68 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
+        /// <param name="version">OpenAPI spec version.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
+
+            // This is the interim solution to resolve:
+            // https://github.com/Azure/azure-functions-openapi-extension/issues/365
+            //
+            // It will be removed when the following issue is resolved:
+            // https://github.com/microsoft/OpenAPI.NET/issues/747
+            if (version == OpenApiVersionType.V3)
+            {
+                return parameters;
+            }
+
+            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
+            if (!attributes.Any())
+            {
+                return parameters;
+            }
+
+            var contents = attributes.Where(p => p.Deprecated == false)
+                                     .Where(p => p.ContentType == "application/x-www-form-urlencoded" || p.ContentType == "multipart/form-data")
+                                     .Select(p => p.ToOpenApiMediaType(namingStrategy, collection, version));
+            if (!contents.Any())
+            {
+                return parameters;
+            }
+
+            var @ref = contents.First().Schema.Reference;
+            var schemas = helper.GetOpenApiSchemas(new[] { element }.ToList(), namingStrategy, collection);
+            var schema = schemas.SingleOrDefault(p => p.Key == @ref.Id);
+            if (schema.IsNullOrDefault())
+            {
+                return parameters;
+            }
+
+            var properties = schema.Value.Properties;
+            foreach (var property in properties)
+            {
+                var value = property.Value;
+                if ((value.Type == "string" && value.Format == "binary") || (value.Type == "string" && value.Format == "base64"))
+                {
+                    value.Type = "file";
+                    value.Format = null;
+                }
+
+                var parameter = new OpenApiParameter()
+                {
+                    Name = property.Key,
+                    Description = $"[formData]{value.Description}",
+                    Required = bool.TryParse($"{value.Required}", out var result) ? result : false,
+                    Deprecated = value.Deprecated,
+                    Schema = value,
+                };
+
+                parameters.Add(parameter);
+            }
 
             // // TODO: Should this be forcibly provided?
             // // This needs to be provided separately.
