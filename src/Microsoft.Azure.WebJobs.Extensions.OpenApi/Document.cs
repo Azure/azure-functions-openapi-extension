@@ -208,6 +208,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         private string Render(OpenApiSpecVersion version, OpenApiFormat format)
         {
+            //var serialised = default(string);
+            //using (var sw = new StringWriter())
+            //{
+            //    this.OpenApiDocument.Serialise(sw, version, format);
+            //    serialised = sw.ToString();
+            //}
+
+            //return serialised;
+
+            // This is the interim solution to resolve:
+            // https://github.com/Azure/azure-functions-openapi-extension/issues/365
+            //
+            // It will be removed when the following issue is resolved:
+            // https://github.com/microsoft/OpenAPI.NET/issues/747
             var jserialised = default(string);
             using (var sw = new StringWriter())
             {

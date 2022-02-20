@@ -155,7 +155,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
 
-            // These lines below will be removed when the OpenAPI.NET reflects the issue:
+            // This is the interim solution to resolve:
+            // https://github.com/Azure/azure-functions-openapi-extension/issues/365
+            //
+            // It will be removed when the following issue is resolved:
             // https://github.com/microsoft/OpenAPI.NET/issues/747
             if (version == OpenApiVersionType.V3)
             {
@@ -205,8 +208,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
                 parameters.Add(parameter);
             }
-            // These lines above will be removed when the OpenAPI.NET reflects the issue:
-            // https://github.com/microsoft/OpenAPI.NET/issues/747
 
             // // TODO: Should this be forcibly provided?
             // // This needs to be provided separately.
