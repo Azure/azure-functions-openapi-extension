@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,8 +13,11 @@ using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+
+using YamlDotNet.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
@@ -223,28 +227,37 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 return format == OpenApiFormat.Json ? jserialised : yserialised;
             }
 
+            var jo = JsonConvert.DeserializeObject<JObject>(jserialised);
+            var jts = jo.DescendantsAndSelf()
+                        .Where(p => p.Type == JTokenType.Property && (p as JProperty).Name == "parameters")
+                        .SelectMany(p => p.Values<JArray>().SelectMany(q => q.Children<JObject>()))
+                        .Where(p => p.Value<string>("in") == null)
+                        .Where(p => p.Value<string>("description") != null)
+                        .Where(p => p.Value<string>("description").Contains("[formData]"))
+                        .ToList();
+            foreach (var jt in jts)
+            {
+                jt["in"] = "formData";
+                jt["description"] = jt.Value<string>("description").Replace("[formData]", string.Empty);
+            }
+
+            var serialised = JsonConvert.SerializeObject(jo, Formatting.Indented);
             if (format == OpenApiFormat.Json)
             {
-                var jo = JsonConvert.DeserializeObject<JObject>(jserialised);
-                var jts = jo.DescendantsAndSelf()
-                            .Where(p => p.Type == JTokenType.Property && (p as JProperty).Name == "parameters")
-                            .SelectMany(p => p.Values<JArray>().SelectMany(q => q.Children<JObject>()))
-                            .Where(p => p.Value<string>("description") != null)
-                            .Where(p => p.Value<string>("description").Contains("[formData]"))
-                            .ToList();
-                foreach (var jt in jts)
-                {
-                    jt["in"] = "formData";
-                    jt["description"] = jt.Value<string>("description").Replace("[formData]", string.Empty);
-                }
-
-                jserialised = JsonConvert.SerializeObject(jo, Formatting.Indented);
-            }
-            else
-            {
+                return serialised;
             }
 
-            return format == OpenApiFormat.Json ? jserialised : yserialised;
+            var converter = new ExpandoObjectConverter();
+            var deserialised = JsonConvert.DeserializeObject<ExpandoObject>(serialised, converter);
+            serialised = new SerializerBuilder().Build().Serialize(deserialised);
+
+            return serialised;
         }
+    }
+
+    public class ParameterFormDataIn
+    {
+        [JsonProperty("in")]
+        public string In { get; set; }
     }
 }
