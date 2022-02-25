@@ -435,6 +435,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
                     continue;
                 }
+
+                if (attribute is RequiredAttribute requiredAttribute)
+                {
+                    ApplyRequiredAttribute(schema, requiredAttribute);
+
+                    continue;
+                }
             }
         }
 
@@ -509,6 +516,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         {
             schema.MinLength = stringLengthAttribute.MinimumLength;
             schema.MaxLength = stringLengthAttribute.MaximumLength;
+        }
+
+        private static void ApplyRequiredAttribute(OpenApiSchema schema, RequiredAttribute requiredAttribute)
+        {
+            if (schema.Type == "string" && !requiredAttribute.AllowEmptyStrings && !IsMinLenghtSet(schema))
+            {
+                schema.MinLength = 1;
+            }
+        }
+
+        private static bool IsMinLenghtSet(OpenApiSchema schema)
+        {
+            return schema.MinLength != null && schema.MinLength > 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes

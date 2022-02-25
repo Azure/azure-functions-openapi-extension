@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
 
   <ItemGroup>

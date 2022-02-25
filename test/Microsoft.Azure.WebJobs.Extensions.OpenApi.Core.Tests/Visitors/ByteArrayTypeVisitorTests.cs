@@ -70,7 +70,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("string", "base64", "hello")]
+        [DataRow("string", "binary", "hello")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat, string name)
         {
             var acceptor = new OpenApiSchemaAcceptor();
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("string", "base64")]
+        [DataRow("string", "binary")]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var result = this._visitor.ParameterVisit(typeof(byte[]), this._strategy);
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("string", "base64")]
+        [DataRow("string", "binary")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var result = this._visitor.PayloadVisit(typeof(byte[]), this._strategy);

@@ -1,4 +1,9 @@
-# Azure Functions OpenAPI Extension [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) #
+# Azure Functions OpenAPI Extension #
+
+| Out-of-Proc Worker | In-Proc Wroker |
+| :----------------: | :------------: |
+| [![](https://img.shields.io/nuget/dt/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) | [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) |
+
 
 ## Acknowledgement ##
 
@@ -14,35 +19,19 @@
 * [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
-* [**Shortening Swagger UI Page URL with `proxies.json`**](docs/shortening-swagger-ui-page-url.md): This document shows how to shorten both Swagger UI page URL and `swagger.json` document URL, using `proxies.json`.
 
 
 ## Sample Azure Function Apps with OpenAPI Document Enabled ##
 
 Here are sample apps using the project references:
 
-* [Function App v1 proxy](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V1Proxy)
-* [Function App v2 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static)
-* [Function App v2 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC)
-* [Function App v3 static](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static)
-* [Function App v3 IoC](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC)
-* [Function App v3 .NET 5](samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5)
-
-Here are the other sample apps directly using the NuGet packages (external repository):
-
-* [Function App v3 with IoC Container](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/NetCoreApp31.FunctionApp.IoC)
-* [Function App v3 with Static](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/NetCoreApp31.FunctionApp.Static)
-* [Function App .NET 5 with IoC Container](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net50.FunctionApp.IoC)
-* [Function App .NET 5 with Static](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net50.FunctionApp.Static)
-* [Function App .NET 6 with IoC Container (in-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.InProc.IoC)
-* [Function App .NET 6 with Static (in-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.InProc.Static)
-* [Function App .NET 6 with IoC Container (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.IoC)
-* [Function App .NET 6 with Static (out-of-proc)](https://github.com/justinyoo/azfunc-openapi-dotnet/tree/main/Net60.FunctionApp.OutOfProc.Static)
+* [Function App out-of-proc worker](samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc)
+* [Function App in-proc worker](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc)
 
 
 ## Azure Functions V1 Support ##
 
-This library supports Azure Functions V2 and onwards. If you still want to get your v1 app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
+This library supports Azure Functions V3 and onwards. If you still want to get your v1 and v2 runtime app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
 
 
 ## Known Issues ##

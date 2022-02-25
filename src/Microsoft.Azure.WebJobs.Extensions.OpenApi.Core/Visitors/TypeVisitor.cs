@@ -152,6 +152,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         schema.Default = this.GetOpenApiPropertyDefault(attr as OpenApiPropertyAttribute);
                     }
                     schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
+                    schema.Deprecated = this.GetOpenApiPropertyDeprecated(attr as OpenApiPropertyAttribute);
                 }
 
                 attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
@@ -324,6 +325,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return new OpenApiInteger((int) @default);
             }
 
+            if (typeof(T) == typeof(byte))
+            {
+                return new OpenApiInteger(Convert.ToInt32(@default));
+            }
+
             if (typeof(T) == typeof(long))
             {
                 return new OpenApiLong((long) @default);
@@ -362,6 +368,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         protected string GetOpenApiPropertyDescription(OpenApiPropertyAttribute attr)
         {
             return attr.Description;
+        }
+
+
+        /// <summary>
+        /// Gets the property deprecated.
+        /// </summary>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the property deprecated.</returns>
+        protected bool GetOpenApiPropertyDeprecated(OpenApiPropertyAttribute attr)
+        {
+            return attr.Deprecated;
         }
     }
 }
