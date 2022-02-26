@@ -2,18 +2,12 @@ using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Filters;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Configurations
 {
     public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     {
-        public OpenApiConfigurationOptions()
-        {
-            this.AddDocumentFilter<VersionPrefixDocumentFilter>();
-        }
-
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = GetOpenApiDocVersion(),

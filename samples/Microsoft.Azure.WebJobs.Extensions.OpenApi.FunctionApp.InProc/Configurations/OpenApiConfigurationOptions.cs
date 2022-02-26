@@ -3,7 +3,6 @@ using System.Net;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.Filters;
 using Microsoft.OpenApi.Models;
 
 using static System.Net.Mime.MediaTypeNames;
@@ -12,11 +11,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configur
 {
     public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     {
-        public OpenApiConfigurationOptions()
-        {
-            this.AddDocumentFilter<VersionPrefixDocumentFilter>();
-        }
-
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = GetOpenApiDocVersion(),
