@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         {
             foreach (var filter in collection.DocumentFilters)
             {
-                filter.Apply(this.OpenApiDocument, this._req);
+                filter.Apply(this._req, this.OpenApiDocument);
             }
 
             return this;
