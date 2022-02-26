@@ -200,7 +200,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument ApplyDocumentFilters(DocumentFilterCollection collection)
         {
-            foreach (var filter in collection.DocumentFilters)
+            foreach (var filter in collection.ThrowIfNullOrDefault().DocumentFilters)
             {
                 filter.Apply(this._req, this.OpenApiDocument);
             }
