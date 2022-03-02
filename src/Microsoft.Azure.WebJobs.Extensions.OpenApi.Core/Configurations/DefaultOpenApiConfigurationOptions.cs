@@ -137,15 +137,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return development;
         }
 
-        /// <summary>
-        /// Adds an instance of the given <see cref="IDocumentFilter"/> type.
-        /// </summary>
-        /// <typeparam name="T">Type of <see cref="IDocumentFilter"/>.</typeparam>
-        protected void AddDocumentFilter<T>() where T : IDocumentFilter, new()
-        {
-            this.DocumentFilters.Add(new T());
-        }
-
         private static OpenApiVersionType DefaultOpenApiVersion()
         {
             return OpenApiVersionType.V2;

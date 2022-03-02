@@ -44,5 +44,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the list of <see cref="IDocumentFilter"/> instances.
         /// </summary>
         List<IDocumentFilter> DocumentFilters { get; set; }
-}
+    }
 }

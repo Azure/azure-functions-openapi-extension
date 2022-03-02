@@ -22,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
 
         public OpenApiConfigurationOptions()
         {
-            this.AddDocumentFilter<RewriteDescriptionDocumentFilter>();
+            this.DocumentFilters.Add(new RewriteDescriptionDocumentFilter());
         }
 
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
