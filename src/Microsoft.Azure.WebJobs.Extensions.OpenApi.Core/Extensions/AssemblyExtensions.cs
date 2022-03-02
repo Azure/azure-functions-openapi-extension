@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,22 +20,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <returns>Returns the list of <see cref="Type"/>s that can be loaded.</returns>
         public static Type[] GetLoadableTypes(this Assembly assembly)
         {
+            List<Type> types;
             try
             {
-                return assembly.GetTypes()
-                    .Union(assembly
-                        .GetReferencedAssemblies()
-                        .Where(x =>
-                            !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi") &&
-                            !x.FullName.StartsWith("Microsoft.Azure.Functions.Worker.Extensions.OpenApi"))
-                        .SelectMany(x => Assembly.Load(x).GetTypes()))
-                    .Distinct()
-                    .ToArray();
+                types = assembly.GetTypes().ToList();
             }
             catch (ReflectionTypeLoadException exception)
             {
-                return exception.Types.Where(t => t != null).ToArray();
+                types = exception.Types.Where(t => t != null).ToList();
             }
+            var assemblies = assembly
+                    .GetReferencedAssemblies()
+                    .Where(x =>
+                        !x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi") &&
+                        !x.FullName.StartsWith("Microsoft.Azure.Functions.Worker.Extensions.OpenApi"))
+                    .ToList();
+            foreach (var a in assemblies)
+            {
+                try
+                {
+                    types.AddRange(Assembly.Load(a).GetTypes());
+                }
+                catch (ReflectionTypeLoadException exception)
+                {
+                    types.AddRange(exception.Types.Where(t => t != null));
+                }
+            }
+            return types.Distinct().ToArray();
         }
 
         /// <summary>
