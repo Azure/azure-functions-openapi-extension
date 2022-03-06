@@ -18,7 +18,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Service
             // Arrange
             var apiBaseUrl = "http://test.function.com/";
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var compiledDllPath = $"{path}/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.dll";
+            var compiledDllPath = $"{path}/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.dll";
             var hostJsonPath = $"{path}/host.json";
             var httpSettings = hostJsonPath.SetHostSettings();
             var openApiInfo = compiledDllPath.SetOpenApiInfo();

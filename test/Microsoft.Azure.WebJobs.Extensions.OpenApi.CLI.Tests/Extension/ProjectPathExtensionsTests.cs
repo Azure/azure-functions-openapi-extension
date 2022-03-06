@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extension
 
             var directory = Assembly.GetExecutingAssembly().Location;
             var solutionDirectory = Directory.GetParent(directory).Parent.Parent.Parent.Parent.Parent.FullName;
-            this._projectPath = $"{solutionDirectory}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5";
+            this._projectPath = $"{solutionDirectory}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc";
             this._configuration = this._isDebug ? "Debug" : "Release";
             this._target = "net6.0";
             this._compiledPath = $"{this._projectPath}{ProjectPathExtensions.DirectorySeparator}bin{ProjectPathExtensions.DirectorySeparator}{this._configuration}{ProjectPathExtensions.DirectorySeparator}{this._target}";
@@ -65,7 +65,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extension
         public void GetProjectDllFileName()
         {
             // Arrange
-            var csprojFileName = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.csproj";
+            var csprojFileName = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.csproj";
+
 
             // Act
             var result = this._projectPath.GetProjectDllFileName(csprojFileName);
@@ -91,7 +92,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extension
         public void GetProjectCompiledDllPath()
         {
             // Arrange
-            var dllFileName = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.dll";
+            var dllFileName = "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.dll";
 
             // Act
             var result = this._compiledPath.GetProjectCompiledDllPath(dllFileName);

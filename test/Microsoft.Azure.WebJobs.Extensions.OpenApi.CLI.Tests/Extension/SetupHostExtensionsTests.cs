@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extension
         {
             // Arrange
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var compiledDllPath = $"{path}/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5.dll";
+            var compiledDllPath = $"{path}/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.dll";
 
             // Act
             var result = compiledDllPath.SetOpenApiInfo();

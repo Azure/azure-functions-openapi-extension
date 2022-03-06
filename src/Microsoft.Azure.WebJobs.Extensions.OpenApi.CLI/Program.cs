@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI
         public static void Main(string[] args)
         {
             CoconaApp
-                .Create()
+                .CreateHostBuilder()
                 .ConfigureServices(services =>
                 {
                     services.ConfigureInternalServices();

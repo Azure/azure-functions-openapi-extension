@@ -4,14 +4,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <AssemblyName>azfuncopenapi</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona" Version="1.6.0" />
+    <PackageReference Include="Cocona" Version="2.0.3" />
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.5" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
