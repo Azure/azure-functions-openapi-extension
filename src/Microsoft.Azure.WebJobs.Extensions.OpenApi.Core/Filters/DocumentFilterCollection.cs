@@ -13,6 +13,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentFilterCollection"/> class.
         /// </summary>
+        public DocumentFilterCollection()
+        {
+            this.DocumentFilters = new List<IDocumentFilter>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentFilterCollection"/> class.
+        /// </summary>
         /// <param name="documentFilters">List of <see cref="IDocumentFilter"/> instances.</param>
         public DocumentFilterCollection(List<IDocumentFilter> documentFilters)
         {
@@ -22,6 +30,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters
         /// <summary>
         /// Gets the list of <see cref="IDocumentFilter"/> instances.
         /// </summary>
-        public List<IDocumentFilter> DocumentFilters { get; set; }
+        public List<IDocumentFilter> DocumentFilters { get; }
     }
 }
