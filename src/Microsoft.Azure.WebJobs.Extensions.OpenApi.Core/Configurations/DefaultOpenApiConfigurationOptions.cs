@@ -40,10 +40,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
 
         /// <inheritdoc />
-        public bool ForceHttp { get; set; } = IsHttpForced();
+        public virtual bool ForceHttp { get; set; } = IsHttpForced();
 
         /// <inheritdoc />
-        public bool ForceHttps { get; set; } = IsHttpsForced();
+        public virtual bool ForceHttps { get; set; } = IsHttpsForced();
+
+        /// <inheritdoc />
+        public virtual List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
 
         /// <summary>
         /// Gets the OpenAPI document version.

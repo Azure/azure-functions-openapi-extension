@@ -11,6 +11,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
@@ -237,6 +238,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             var value = Environment.GetEnvironmentVariable(key);
 
             return value ?? string.Empty;
+        }
+
+        /// <inheritdoc />
+        public virtual DocumentFilterCollection GetDocumentFilterCollection()
+        {
+            var collection = new DocumentFilterCollection(this.OpenApiConfigurationOptions.DocumentFilters);
+
+            return collection;
         }
 
         private string GetRuntimePath(string functionAppDirectory, bool appendBin)

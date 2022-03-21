@@ -11,6 +11,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations
         public virtual bool HideSwaggerUI { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating whether to hide the document pages or not.
+        /// </summary>
+        public virtual bool HideDocument { get; set; }
+
+        /// <summary>
         /// Gets or sets the API key to access to OpenAPI document.
         /// </summary>
         public virtual string ApiKey { get; set; }

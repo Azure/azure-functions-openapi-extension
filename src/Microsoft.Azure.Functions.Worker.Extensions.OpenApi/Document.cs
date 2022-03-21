@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,11 +8,17 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
+using YamlDotNet.Serialization;
 
 using GenericExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.GenericExtensions;
 using HttpRequestDataObjectExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.HttpRequestDataObjectExtensions;
@@ -172,7 +179,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                 }
 
                 operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
+                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection, version);
                 operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
                 operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
 
@@ -196,6 +203,17 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public IDocument ApplyDocumentFilters(DocumentFilterCollection collection)
+        {
+            foreach (var filter in GenericExtensions.ThrowIfNullOrDefault(collection).DocumentFilters)
+            {
+                filter.Apply(this._req, this.OpenApiDocument);
+            }
+
+            return this;
+        }
+
+        /// <inheritdoc />
         public async Task<string> RenderAsync(OpenApiSpecVersion version, OpenApiFormat format)
         {
             var result = await Task.Factory
@@ -207,12 +225,64 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
         private string Render(OpenApiSpecVersion version, OpenApiFormat format)
         {
+            //var serialised = default(string);
+            //using (var sw = new StringWriter())
+            //{
+            //    OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, format);
+            //    serialised = sw.ToString();
+            //}
+
+            //return serialised;
+
+            // This is the interim solution to resolve:
+            // https://github.com/Azure/azure-functions-openapi-extension/issues/365
+            //
+            // It will be removed when the following issue is resolved:
+            // https://github.com/microsoft/OpenAPI.NET/issues/747
+            var jserialised = default(string);
             using (var sw = new StringWriter())
             {
-                OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, format);
-
-                return sw.ToString();
+                OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, OpenApiFormat.Json);
+                jserialised = sw.ToString();
             }
+
+            var yserialised = default(string);
+            using (var sw = new StringWriter())
+            {
+                OpenApiDocumentExtensions.Serialise(this.OpenApiDocument, sw, version, OpenApiFormat.Yaml);
+                yserialised = sw.ToString();
+            }
+
+            if (version != OpenApiSpecVersion.OpenApi2_0)
+            {
+                return format == OpenApiFormat.Json ? jserialised : yserialised;
+            }
+
+            var jo = JsonConvert.DeserializeObject<JObject>(jserialised);
+            var jts = jo.DescendantsAndSelf()
+                        .Where(p => p.Type == JTokenType.Property && (p as JProperty).Name == "parameters")
+                        .SelectMany(p => p.Values<JArray>().SelectMany(q => q.Children<JObject>()))
+                        .Where(p => p.Value<string>("in") == null)
+                        .Where(p => p.Value<string>("description") != null)
+                        .Where(p => p.Value<string>("description").Contains("[formData]"))
+                        .ToList();
+            foreach (var jt in jts)
+            {
+                jt["in"] = "formData";
+                jt["description"] = jt.Value<string>("description").Replace("[formData]", string.Empty);
+            }
+
+            var serialised = JsonConvert.SerializeObject(jo, Formatting.Indented);
+            if (format == OpenApiFormat.Json)
+            {
+                return serialised;
+            }
+
+            var converter = new ExpandoObjectConverter();
+            var deserialised = JsonConvert.DeserializeObject<ExpandoObject>(serialised, converter);
+            serialised = new SerializerBuilder().Build().Serialize(deserialised);
+
+            return serialised;
         }
     }
 }

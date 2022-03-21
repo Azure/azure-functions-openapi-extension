@@ -211,7 +211,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             var requiredPropertyNames = properties.Where(p => !p.Value.GetCustomAttribute<RequiredAttribute>(inherit: false).IsNullOrDefault())
-                                               .Select(p => p.Key);
+                                                  .Select(p => p.Key);
             foreach (var propertyName in requiredPropertyNames)
             {
                 var attributeName = namingStrategy.GetPropertyName(propertyName, hasSpecifiedName: false);
@@ -229,6 +229,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var schemasToBeAdded = subAcceptor.Schemas
                                               .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.IsOpenApiSchemaObject())
+                                              .GroupBy(p => p.Value.Title)
+                                              .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
             foreach (var schema in schemasToBeAdded.Where(p => !this._noAddedKeys.Contains(p.Key.ToUpperInvariant())))

@@ -51,6 +51,25 @@ If you set the `OpenApi__HideSwaggerUI` value to `true`, the Swagger UI page won
 > **NOTE**: The default value for `OpenApi__HideSwaggerUI` is `false`.
 
 
+### Configure OpenAPI Document Visibility ###
+
+> **NOTE**: Currently, the out-of-process worker model doesn't support hiding OpenAPI document. The following configurations are only applicable to the in-process worker extension.
+
+You may want to only enable the OpenAPI document page during the development time, and disable the page when publishing it to Azure. You can configure an environment variable to enable/disable the OpenAPI document page. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__HideDocument": "false"
+  }
+}
+```
+
+If you set the `OpenApi__HideDocument` value to `true`, the OpenAPI page won't be showing up, and you will see the 404 error. Make sure that, if you set the `OpenApi__HideDocument` value to `true`, it won't show the Swagger UI page either, regardless the `OpenApi__HideSwaggerUI` value is `true` or `false`.
+
+> **NOTE**: The default value for `OpenApi__HideDocument` is `false`.
+
+
 ### Configure OpenAPI Information ###
 
 As a default, the OpenAPI document automatically generated provides a minimum set of information like:
@@ -85,6 +104,16 @@ There's a chance that you want to expose the UI and OpenAPI document through [Az
 ```
 
 > **NOTE**: This multiple hostnames support feature only works with OpenAPI 3.x, not OpenAPI 2.x.
+
+You can also configure the hostname without having to start with the fully-qualified domain name. Here's an example:
+
+```json
+{
+  "Values": {
+    "OpenApi__HostNames": "/api"
+  }
+}
+```
 
 
 ### Force HTTP or HTTPS for Swagger UI ###
@@ -167,6 +196,36 @@ http://localhost:7071/api/swagger/ui?tag=product,option
 http://localhost:7071/api/swagger.json?tag=product,option
 ```
 
+## Modifying Swagger and OpenAPI documents ##
+
+If the generated document needs to be modified in more complex ways, you can use an `IDocumentFilter` that can modify the Swagger and 
+OpenAPI documents just before it is rendered to the client. To register such a filter you must create a class that inherits from the 
+`DefaultOpenApiConfigurationOptions` class and add your `IDocumentFilter` to its `DocumentFilters` list:
+
+```csharp
+
+public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
+{
+    public OpenApiConfigurationOptions()
+    {
+        this.DocumentFilters.Add(new ExampleDocumentFilter());
+    }
+}
+
+```
+
+This code adds the `ExampleDocumentFilter` class to the list of document filters. Within a document filter you access to an `IHttpRequestDataObject` 
+object, which contains request data like the current host and scheme, and to the `OpenApiDocument` object which contains all the generated documentation.
+
+```csharp
+public class ExampleDocumentFilter : IDocumentFilter
+{
+    public void Apply(IHttpRequestDataObject request, OpenApiDocument document)
+    {
+        
+    }
+}
+```
 
 ## Further Authentication and Authorisation ##
 

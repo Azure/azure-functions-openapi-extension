@@ -34,5 +34,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public bool ForceHttps { get; set; }
+
+        /// <inheritdoc />
+        public List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
     }
 }

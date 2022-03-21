@@ -1,0 +1,110 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+    - main
+    - dev
+    - release/*
+    - feature/*
+    - hotfix/*
+    - v2
+    - v3
+
+jobs:
+  build_and_test:
+    name: Build and test
+    strategy:
+      matrix:
+        os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Setup node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Setup Azure Functions Core Tools
+      shell: pwsh
+      run: |
+        npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+    - name: Setup .NET SDK 3.1 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Setup .NET SDK 5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.x'
+
+    - name: Setup .NET SDK 6 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
+
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Clear NuGet local cache
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        dotnet nuget locals all --clear
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
+
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet build . -c Debug -v minimal
+
+    - name: Run unit tests
+      shell: pwsh
+      run: |
+        dir
+        dotnet test . -c Debug --filter:"TestCategory!=Integration"
+
+    - name: Run integration tests (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        dir
+
+        $rootDir = $pwd.Path
+        $func = $(Get-Command func).Source.Replace(".ps1", ".cmd")
+
+        cd ./test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
+        Start-Process -NoNewWindow "$func" @("start","--verbose","false")
+        Start-Sleep -s 60
+
+        cd $rootDir/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
+        dotnet test . -c Debug
+        cd $rootDir
+
+    - name: Run integration tests (Non-Windows)
+      if: matrix.os != 'windows-latest'
+      shell: pwsh
+      run: |
+        dir
+
+        $rootDir = $pwd.Path
+
+        cd ./test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
+        Start-Process -NoNewWindow func @("start","--verbose","false")
+        Start-Sleep -s 60
+
+        cd $rootDir/test-integration/Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
+        dotnet test . -c Debug
+        cd $rootDir

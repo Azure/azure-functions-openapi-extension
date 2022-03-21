@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -6,6 +6,8 @@ using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using AssemblyExtensions = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions.AssemblyExtensions;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 {
@@ -29,6 +31,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             // Assert
             types.Should().HaveCount(1);
             types[0].Name.Should().Be("LoadableType");
+        }
+
+        [TestMethod]
+        public void Given_Assembly_When_GetTypesFromReferencedFunctionApps_Invoked_Then_It_Should_Return_Result()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var types = AssemblyExtensions.GetTypesFromReferencedFunctionApps(assembly);
+
+            types.Length.Should().BeGreaterThan(0);
         }
 
         private static void BuildType(ModuleBuilder moduleBuilder, string name, bool isLoadable)

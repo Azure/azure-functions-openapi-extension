@@ -9,19 +9,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
     public class OpenApiPropertyAttributeTests
     {
         [DataTestMethod]
-        [DataRow(true, 1, "hello world")]
-        public void Given_Value_Property_Should_Return_Value(bool nullable, object @default, string description)
+        [DataRow(true, 1, "hello world", false)]
+        public void Given_Value_Property_Should_Return_Value(bool nullable, object @default, string description, bool deprecated)
         {
             var attribute = new OpenApiPropertyAttribute()
             {
                 Nullable  = nullable,
                 Default = @default,
-                Description = description
+                Description = description,
+                Deprecated = deprecated
             };
 
             attribute.Nullable.Should().Be(nullable);
             attribute.Default.Should().Be(@default);
             attribute.Description.Should().Be(description);
+            attribute.Deprecated.Should().Be(deprecated);
         }
     }
 }

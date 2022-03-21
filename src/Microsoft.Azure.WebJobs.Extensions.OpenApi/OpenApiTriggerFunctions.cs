@@ -21,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         private const string ContentTypeJson = "application/json";
         private const string ContentTypeYaml = "text/vnd.yaml";
 
-        private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
+        private static readonly IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
@@ -63,6 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
+                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
                                       .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
@@ -135,6 +136,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
+                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
