@@ -223,5 +223,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             result.Should().BeOfType<bool>();
             ((bool)result).Should().Be(expected);
         }
+
+        public void Given_Type_When_Instantiated_Then_It_Should_Return_EmptyListOfDocumentFilters()
+        {
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            options.DocumentFilters.Should().NotBeNull();
+            options.DocumentFilters.Should().BeEmpty();
+        }
     }
 }
