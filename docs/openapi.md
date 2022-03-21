@@ -196,6 +196,36 @@ http://localhost:7071/api/swagger/ui?tag=product,option
 http://localhost:7071/api/swagger.json?tag=product,option
 ```
 
+## Modifying Swagger and OpenAPI documents ##
+
+If the generated document needs to be modified in more complex ways, you can use an `IDocumentFilter` that can modify the Swagger and 
+OpenAPI documents just before it is rendered to the client. To register such a filter you must create a class that inherits from the 
+`DefaultOpenApiConfigurationOptions` class and add your `IDocumentFilter` to its `DocumentFilters` list:
+
+```csharp
+
+public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
+{
+    public OpenApiConfigurationOptions()
+    {
+        this.DocumentFilters.Add(new ExampleDocumentFilter());
+    }
+}
+
+```
+
+This code adds the `ExampleDocumentFilter` class to the list of document filters. Within a document filter you access to an `IHttpRequestDataObject` 
+object, which contains request data like the current host and scheme, and to the `OpenApiDocument` object which contains all the generated documentation.
+
+```csharp
+public class ExampleDocumentFilter : IDocumentFilter
+{
+    public void Apply(IHttpRequestDataObject request, OpenApiDocument document)
+    {
+        
+    }
+}
+```
 
 ## Further Authentication and Authorisation ##
 

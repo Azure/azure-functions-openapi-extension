@@ -64,6 +64,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions
                                    .AddNamingStrategy(this._context.NamingStrategy)
                                    .AddVisitors(this._context.GetVisitorCollection())
                                    .Build(this._context.ApplicationAssembly, this._context.OpenApiConfigurationOptions.OpenApiVersion)
+                                   .ApplyDocumentFilters(this._context.GetDocumentFilterCollection())
                                    .RenderAsync(this._context.GetOpenApiSpecVersion(this._context.OpenApiConfigurationOptions.OpenApiVersion), this._context.GetOpenApiFormat(extension))
                                    .ConfigureAwait(false);
 
@@ -123,6 +124,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions
                                    .AddNamingStrategy(this._context.NamingStrategy)
                                    .AddVisitors(this._context.GetVisitorCollection())
                                    .Build(this._context.ApplicationAssembly, this._context.GetOpenApiVersionType(version))
+                                   .ApplyDocumentFilters(this._context.GetDocumentFilterCollection())
                                    .RenderAsync(this._context.GetOpenApiSpecVersion(version), this._context.GetOpenApiFormat(extension))
                                    .ConfigureAwait(false);
 

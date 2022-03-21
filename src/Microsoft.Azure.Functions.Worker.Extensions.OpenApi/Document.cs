@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -197,6 +198,17 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             //                                                 .Where(p => !p.IsNullOrDefault())
             //                                                 .Distinct(new OpenApiSecurityRequirementComparer())
             //                                                 .ToList();
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IDocument ApplyDocumentFilters(DocumentFilterCollection collection)
+        {
+            foreach (var filter in GenericExtensions.ThrowIfNullOrDefault(collection).DocumentFilters)
+            {
+                filter.Apply(this._req, this.OpenApiDocument);
+            }
 
             return this;
         }

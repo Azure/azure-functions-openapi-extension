@@ -44,6 +44,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public bool ForceHttps { get; set; } = IsHttpsForced();
 
+        /// <inheritdoc />
+        public List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
+
         /// <summary>
         /// Gets the OpenAPI document version.
         /// </summary>
@@ -118,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns <c>True</c>, if HTTP is forced; otherwise returns <c>False</c>.</returns>
         protected static bool IsHttpForced()
         {
-            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpKey), out var result) ? result : false;;
+            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpKey), out var result) ? result : false;
 
             return development;
         }
@@ -129,7 +132,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns <c>True</c>, if HTTPS is forced; otherwise returns <c>False</c>.</returns>
         protected static bool IsHttpsForced()
         {
-            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpsKey), out var result) ? result : false;;
+            var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpsKey), out var result) ? result : false;
 
             return development;
         }
