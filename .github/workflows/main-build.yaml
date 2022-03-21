@@ -8,6 +8,8 @@ on:
     - release/*
     - feature/*
     - hotfix/*
+    - v2
+    - v3
 
 jobs:
   build_and_test:
