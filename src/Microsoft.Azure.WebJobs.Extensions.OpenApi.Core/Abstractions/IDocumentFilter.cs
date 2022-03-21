@@ -10,8 +10,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// This method is invoked after the <see cref="IDocument"/> has been built and just before it is rendered and returned to the client.
         /// </summary>
-        /// <param name="request">The HTTP request.</param>
-        /// <param name="document">The generated document.</param>
-        void Apply(IHttpRequestDataObject request, OpenApiDocument document);
+        /// <param name="req"><see cref="IHttpRequestDataObject"/> instance.</param>
+        /// <param name="document"><see cref="OpenApiDocument"/> instance.</param>
+        void Apply(IHttpRequestDataObject req, OpenApiDocument document);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -15,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
     public class AssemblyExtensionsTests
     {
         [TestMethod]
-        public void Given_Assembly_With_Unloadable_Types_When_GetLoadableTypes_Invoked_Then_It_Should_Return_Loadable_Types()
+        public void Given_Assembly_With_Unloadable_Types_When_GetLoadableTypes_Invoked_Then_It_Should_Return_Loadable_Types_And_Referenced_Types()
         {
             // Arrange
             var assemblyName = new AssemblyName("AssemblyWithUnloadableTypes");
@@ -29,8 +30,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var types = assembly.GetLoadableTypes();
 
             // Assert
-            types.Should().HaveCount(1);
-            types[0].Name.Should().Be("LoadableType");
+            types.Should().HaveCountGreaterThan(2);
+            types.Any(t => t.Name == "LoadableType").Should().BeTrue();
+            types.Any(t => t.Name == "UnloadableType").Should().BeFalse();
+            //Other referenced types should be loaded too
+            types.Any(t => t.FullName == "System.String").Should().BeTrue();
         }
 
         [TestMethod]

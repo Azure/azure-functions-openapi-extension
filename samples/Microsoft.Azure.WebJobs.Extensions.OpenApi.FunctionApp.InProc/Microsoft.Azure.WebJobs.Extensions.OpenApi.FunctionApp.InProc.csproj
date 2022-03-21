@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,7 +10,7 @@
 
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
   <!--<ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.2.0" />
   </ItemGroup>-->
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
