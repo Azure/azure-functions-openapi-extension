@@ -117,9 +117,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
                 return requestingHostExcluded.Value;
             }
 
-            var development = IsFunctionsRuntimeEnvironmentDevelopment();
+            var exclude = IsFunctionsRuntimeEnvironmentDevelopment() == false;
 
-            return development;
+            return exclude;
         }
 
         /// <summary>
