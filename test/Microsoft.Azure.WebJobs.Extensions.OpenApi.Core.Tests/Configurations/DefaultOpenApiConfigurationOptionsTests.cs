@@ -17,6 +17,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
         {
+            Environment.SetEnvironmentVariable("OpenApi__DocVersion", null);
+            Environment.SetEnvironmentVariable("OpenApi__DocTitle", null);
+            Environment.SetEnvironmentVariable("OpenApi__HostNames", null);
+            Environment.SetEnvironmentVariable("OpenApi__Version", null);
+            Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", null);
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.Info.Should().NotBeNull();
@@ -28,6 +37,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             options.OpenApiVersion.Should().Be(OpenApiVersionType.V2);
             options.ExcludeRequestingHost.Should().BeFalse();
+            options.ForceHttp.Should().BeFalse();
+            options.ForceHttps.Should().BeFalse();
         }
 
         [DataTestMethod]
@@ -88,8 +99,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow("Development", true)]
-        [DataRow("Production", false)]
+        [DataRow("Development", false)]
+        [DataRow("Production", true)]
         public void Given_Environment_When_Instantiated_Then_Property_Should_Return_Value(string environment, bool expected)
         {
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", environment);
@@ -205,9 +216,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataRow("false", false)]
         [DataRow("", false)]
         [DataRow(null, false)]
-        public void Given_EnvironmentVariable_When_IsHttpForced_Invoked_Then_It_Should_Return_Result(string forceHttps, bool expected)
+        public void Given_EnvironmentVariable_When_IsHttpForced_Invoked_Then_It_Should_Return_Result(string forceHttp, bool expected)
         {
-            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttps);
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttp);
 
             var options = new DefaultOpenApiConfigurationOptions();
             var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpForced", BindingFlags.NonPublic | BindingFlags.Static);
