@@ -25,9 +25,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 types = assembly.GetTypes().ToList();
             }
-            catch (ReflectionTypeLoadException exception)
+            catch (ReflectionTypeLoadException ex)
             {
-                types = exception.Types.Where(t => t != null).ToList();
+                types = ex.Types.Where(t => t != null).ToList();
             }
 
             var assemblies = assembly
@@ -41,9 +41,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 {
                     types.AddRange(Assembly.Load(asmbly).GetTypes());
                 }
-                catch (ReflectionTypeLoadException exception)
+                catch (ReflectionTypeLoadException ex)
                 {
-                    types.AddRange(exception.Types.Where(t => t != null));
+                    types.AddRange(ex.Types.Where(t => t != null));
                 }
             }
 
