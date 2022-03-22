@@ -166,12 +166,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var swaggerUrl = $"{this._baseUrl.TrimEnd('/')}/{endpoint}";
 
             var queries = this._req.Query.ToDictionary(p => p.Key, p => p.Value);
+            if (string.IsNullOrEmpty(authKey))
+            {
+                authKey = queries.TryGetValue("code", out var queryCodeValue) ? (string)queryCodeValue : null;
+            }
             if (this.IsAuthKeyRequired(authLevel, authKey))
             {
-                if (!queries.ContainsKey("code"))
-                {
-                    queries.Add("code", new StringValues(authKey));
-                }
+                queries["code"] = new StringValues(authKey);
             }
 
             if (queries.Any())
