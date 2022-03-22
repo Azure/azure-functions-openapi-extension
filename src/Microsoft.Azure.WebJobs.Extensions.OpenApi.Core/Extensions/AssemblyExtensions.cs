@@ -25,9 +25,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             {
                 types = assembly.GetTypes().ToList();
             }
-            catch (ReflectionTypeLoadException exception)
+            catch (ReflectionTypeLoadException ex)
             {
-                types = exception.Types.Where(t => t != null).ToList();
+                types = ex.Types.Where(t => t != null).ToList();
             }
 
             var assemblies = assembly
@@ -41,9 +41,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 {
                     types.AddRange(Assembly.Load(asmbly).GetTypes());
                 }
-                catch (ReflectionTypeLoadException exception)
+                catch (ReflectionTypeLoadException ex)
                 {
-                    types.AddRange(exception.Types.Where(t => t != null));
+                    types.AddRange(ex.Types.Where(t => t != null));
                 }
             }
 
@@ -59,12 +59,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         {
             var directory = Path.GetDirectoryName(assembly.Location);
             var dlls = Directory.GetFiles(directory, "*.dll");
-            var types = dlls.Select(p => Assembly.LoadFile(p))
-                            .SelectMany(p => p.GetTypes()
-                                              .Where(q => q.GetMethods()
-                                                           .Any(r => r.ExistsCustomAttribute<OpenApiOperationAttribute>())
-                                               )
-                             ).ToArray();
+
+            var assemblies = dlls.Select(p =>
+                                  {
+                                      var asmbly = default(Assembly);
+                                      try
+                                      {
+                                          asmbly = Assembly.LoadFrom(p);
+                                      }
+                                      catch { }
+
+                                      return asmbly;
+                                  })
+                                 .Where(p => p != null);
+
+            var types = assemblies
+                            .SelectMany(p =>
+                             {
+                                 var ts = default(IEnumerable<Type>);
+                                 try
+                                 {
+                                     ts = p.GetTypes();
+                                 }
+                                 catch (ReflectionTypeLoadException ex)
+                                 {
+                                     ts = ex.Types.Where(q => q != null);
+                                 }
+
+                                 return ts.Where(q => q.GetMethods()
+                                                       .Any(r => r.ExistsCustomAttribute<OpenApiOperationAttribute>())
+                                           );
+                             })
+                            .ToArray();
 
             return types;
         }
