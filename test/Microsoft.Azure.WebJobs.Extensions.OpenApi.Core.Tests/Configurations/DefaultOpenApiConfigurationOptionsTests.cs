@@ -36,7 +36,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.Servers.Should().HaveCount(0);
 
             options.OpenApiVersion.Should().Be(OpenApiVersionType.V2);
-            options.IncludeRequestingHostName.Should().BeTrue();
             options.ExcludeRequestingHost.Should().BeFalse();
             options.ForceHttp.Should().BeFalse();
             options.ForceHttps.Should().BeFalse();
