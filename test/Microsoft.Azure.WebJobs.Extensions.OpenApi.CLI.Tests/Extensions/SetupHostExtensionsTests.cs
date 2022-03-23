@@ -1,10 +1,10 @@
 using System.IO;
 using System.Reflection;
 using FluentAssertions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extension
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Extensions
 {
     [TestClass]
     public class SetupHostExtensionsTests

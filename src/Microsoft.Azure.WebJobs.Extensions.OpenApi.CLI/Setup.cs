@@ -1,5 +1,5 @@
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI

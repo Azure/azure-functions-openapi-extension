@@ -1,6 +1,6 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Model;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions
 {
     public interface ICustomApiMockCreator
     {

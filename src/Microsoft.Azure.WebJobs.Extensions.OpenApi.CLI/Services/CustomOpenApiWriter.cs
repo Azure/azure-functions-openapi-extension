@@ -1,12 +1,12 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services
 {
     public class CustomOpenApiWriter : ICustomOpenApiWriter
     {

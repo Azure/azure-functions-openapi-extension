@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions
 {
     public static class ProjectPathExtensions
     {

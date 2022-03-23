@@ -2,12 +2,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Service
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Services
 {
     [TestClass]
     public class CustomOpenApiCreatorTests
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Service
             var hostJsonPath = $"{path}/host.json";
             var httpSettings = hostJsonPath.SetHostSettings();
             var openApiInfo = compiledDllPath.SetOpenApiInfo();
-            var openApiVersionType = OpenApiVersionType.V3;
+            var openApiVersionType = OpenApiVersionType.V2;
             var openApiFormatType = OpenApiFormatType.Json;
 
             var service = this.SetupSut();

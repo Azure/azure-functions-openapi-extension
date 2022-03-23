@@ -2,10 +2,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using FluentAssertions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Service
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Services
 {
     [TestClass]
     public class CustomApiMockCreatorTests

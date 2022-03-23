@@ -2,13 +2,13 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Service
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Tests.Services
 {
     [TestClass]
     public class CustomOpenApiWriterTests

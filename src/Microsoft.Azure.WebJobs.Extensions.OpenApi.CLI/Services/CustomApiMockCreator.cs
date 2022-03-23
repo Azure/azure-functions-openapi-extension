@@ -1,9 +1,9 @@
 using System;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Model;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services
 {
     public class CustomApiMockCreator : ICustomApiMockCreator
     {

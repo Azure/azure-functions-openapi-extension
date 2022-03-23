@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions
 {
     public static class SetupHostExtensions
     {

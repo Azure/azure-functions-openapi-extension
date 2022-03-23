@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
@@ -12,7 +12,7 @@ using Microsoft.OpenApi.Models;
 using Moq;
 using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Impl
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Services
 {
     public class CustomOpenApiCreator : ICustomOpenApiCreator
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Cocona;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extension;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Service.Interface;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.ConsoleApp
