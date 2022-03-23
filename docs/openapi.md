@@ -116,6 +116,19 @@ You can also configure the hostname without having to start with the fully-quali
 ```
 
 
+### Exclude App's URL from Hostname ###
+
+In addition to setting the custom host names by settings the `OpenApi__HostNames`, you can exclude the currently hosted apps URL from the host names. This option is handy when you integrate the function app with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=github-0000-juyoo) or load balancing services like [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/front-door-overview?WT.mc_id=github-0000-juyoo). If you inherit the `DefaultOpenApiConfigurationOptions` class, you can configure an environment variable to add them. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
+
+```json
+{
+  "Values": {
+    "OpenApi__ExcludeRequestingHost": "true"
+  }
+}
+```
+
+
 ### Force HTTP or HTTPS for Swagger UI ###
 
 There's a chance if you want to force the Swagger UI to render either HTTP or HTTPS. If you inherit the `DefaultOpenApiConfigurationOptions` class, you can configure environment variables to add them. Here's the sample `local.settings.json` file. The other values are omitted for brevity.
@@ -320,9 +333,9 @@ if (!auth.IsNullOrDefault())
 
 // Out-Of-Process Worker
 var auth = await this._context
-                        .SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
-                        .AuthorizeAsync(request)
-                        .ConfigureAwait(false);
+                     .SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
+                     .AuthorizeAsync(request)
+                     .ConfigureAwait(false);
 if (!auth.IsNullOrDefault())
 {
     response = req.CreateResponse(auth.StatusCode);

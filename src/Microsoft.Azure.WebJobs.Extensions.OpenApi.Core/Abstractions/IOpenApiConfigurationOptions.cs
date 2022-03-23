@@ -26,9 +26,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         OpenApiVersionType OpenApiVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the value indicating whether to include the requesting hostname or not.
+        /// Gets or sets the value indicating whether to exclude the requesting host or not.
         /// </summary>
-        bool IncludeRequestingHostName { get; set; }
+        bool ExcludeRequestingHost { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating whether to force the HTTP protocol or not.

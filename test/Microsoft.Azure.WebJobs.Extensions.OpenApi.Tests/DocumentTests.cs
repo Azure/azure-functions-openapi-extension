@@ -155,7 +155,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             var servers = new List<OpenApiServer>() { new OpenApiServer() { Url = server } };
             var options = new Mock<IOpenApiConfigurationOptions>();
             options.SetupGet(p => p.Servers).Returns(servers);
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(true);
+            options.SetupGet(p => p.ExcludeRequestingHost).Returns(false);
 
             var result = doc.InitialiseDocument()
                             .AddServer(req.Object, routePrefix, options.Object);
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             var servers = new List<OpenApiServer>() { new OpenApiServer() { Url = server } };
             var options = new Mock<IOpenApiConfigurationOptions>();
             options.SetupGet(p => p.Servers).Returns(servers);
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(false);
+            options.SetupGet(p => p.ExcludeRequestingHost).Returns(true);
 
             var result = doc.InitialiseDocument()
                             .AddServer(req.Object, routePrefix, options.Object);
@@ -443,9 +443,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(true, "localhost", "localhost")]
-        [DataRow(false, "fabrikam.com", "contoso.com")]
-        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result(bool includeRequestingHostName, string host, string expected)
+        [DataRow(false, "localhost", "localhost")]
+        [DataRow(true, "fabrikam.com", "contoso.com")]
+        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result(bool excludeRequestingHost, string host, string expected)
         {
             var helper = new Mock<IDocumentHelper>();
 
@@ -457,7 +457,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             req.SetupGet(p => p.Host).Returns(new HostString(host));
 
             var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(includeRequestingHostName);
+            options.SetupGet(p => p.ExcludeRequestingHost).Returns(excludeRequestingHost);
             options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>() { new OpenApiServer() { Url = $"{scheme}://contoso.com/{routePrefix}" } });
 
             var doc = new Document(helper.Object);

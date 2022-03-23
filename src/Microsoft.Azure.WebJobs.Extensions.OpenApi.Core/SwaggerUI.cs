@@ -77,7 +77,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 servers.Insert(0, server);
             }
 
-            if (options.IncludeRequestingHostName
+            if (options.ExcludeRequestingHost == false
                 && !servers.Any(p => p.Url.TrimEnd('/') == baseUrl.TrimEnd('/')))
             {
                 servers.Insert(0, server);

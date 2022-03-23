@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                 servers.Insert(0, server);
             }
 
-            if (options.IncludeRequestingHostName
+            if (options.ExcludeRequestingHost == false
                 && !servers.Any(p => p.Url.TrimEnd('/') == baseUrl.TrimEnd('/')))
             {
                 servers.Insert(0, server);
