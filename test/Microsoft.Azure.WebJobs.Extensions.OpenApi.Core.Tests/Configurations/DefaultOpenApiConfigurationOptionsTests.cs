@@ -17,6 +17,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
         {
+            Environment.SetEnvironmentVariable("OpenApi__DocVersion", null);
+            Environment.SetEnvironmentVariable("OpenApi__DocTitle", null);
+            Environment.SetEnvironmentVariable("OpenApi__HostNames", null);
+            Environment.SetEnvironmentVariable("OpenApi__Version", null);
+            Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.Info.Should().NotBeNull();
@@ -27,7 +35,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.Servers.Should().HaveCount(0);
 
             options.OpenApiVersion.Should().Be(OpenApiVersionType.V2);
-            options.IncludeRequestingHostName.Should().BeFalse();
+            options.IncludeRequestingHostName.Should().BeTrue();
+            options.ForceHttp.Should().BeFalse();
+            options.ForceHttps.Should().BeFalse();
         }
 
         [DataTestMethod]
@@ -222,6 +232,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             result.Should().BeOfType<bool>();
             ((bool)result).Should().Be(expected);
+        }
+
+        public void Given_Type_When_Instantiated_Then_It_Should_Return_EmptyListOfDocumentFilters()
+        {
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            options.DocumentFilters.Should().NotBeNull();
+            options.DocumentFilters.Should().BeEmpty();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.DocumentFilters;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
@@ -18,6 +19,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
         public const string LicenseName = "MIT";
         public const string LicenseUrl = "http://opensource.org/licenses/MIT";
         public const OpenApiVersionType OpenApiSpecVersion = OpenApiVersionType.V3;
+
+        public OpenApiConfigurationOptions()
+        {
+            this.DocumentFilters.Add(new RewriteDescriptionDocumentFilter());
+        }
 
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {

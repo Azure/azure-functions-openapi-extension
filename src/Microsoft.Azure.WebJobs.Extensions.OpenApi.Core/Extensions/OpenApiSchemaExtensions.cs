@@ -520,13 +520,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
         private static void ApplyRequiredAttribute(OpenApiSchema schema, RequiredAttribute requiredAttribute)
         {
-            if (schema.Type == "string" && !requiredAttribute.AllowEmptyStrings && !IsMinLenghtSet(schema))
+            if (schema.Type == "string" && !requiredAttribute.AllowEmptyStrings && !IsMinLengthSet(schema))
             {
                 schema.MinLength = 1;
             }
         }
 
-        private static bool IsMinLenghtSet(OpenApiSchema schema)
+        private static bool IsMinLengthSet(OpenApiSchema schema)
         {
             return schema.MinLength != null && schema.MinLength > 0;
         }

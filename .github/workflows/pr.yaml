@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
     - main
+    - v2
+    - v3
 
 jobs:
   build_and_test:

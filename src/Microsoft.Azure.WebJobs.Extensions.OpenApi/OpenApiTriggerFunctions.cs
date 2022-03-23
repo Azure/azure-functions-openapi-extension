@@ -63,6 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
+                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
                                       .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
@@ -135,6 +136,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                                       .AddNamingStrategy(context.NamingStrategy)
                                       .AddVisitors(context.GetVisitorCollection())
                                       .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
+                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 

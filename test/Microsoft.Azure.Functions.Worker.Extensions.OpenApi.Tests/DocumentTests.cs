@@ -8,6 +8,7 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -352,6 +353,33 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             field.GetValue(result).Should().NotBeNull();
             field.GetValue(result).Should().BeOfType<VisitorCollection>();
+        }
+
+        [TestMethod]
+        public void Given_Null_When_ApplyDocumentFilters_Invoked_Then_It_Should_Throw_Exception()
+        {
+            var helper = new Mock<IDocumentHelper>();
+            var doc = new Document(helper.Object);
+
+            Action action = () => doc.ApplyDocumentFilters(null);
+
+            action.Should().Throw<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void Given_That_When_ApplyDocumentFilters_Invoked_Then_It_Should_Invoke_Each_Filter()
+        {
+            var documentFilter = new Mock<IDocumentFilter>();
+            var collection = new DocumentFilterCollection(new List<IDocumentFilter> { documentFilter.Object });
+            var openApiDocument = new OpenApiDocument();
+            var doc = new Document(openApiDocument);
+
+            var req = new Mock<IHttpRequestDataObject>();
+
+            doc.AddServer(req.Object, "");
+            doc.ApplyDocumentFilters(collection);
+
+            documentFilter.Verify(x => x.Apply(req.Object, openApiDocument), Times.Once());
         }
 
         [TestMethod]
