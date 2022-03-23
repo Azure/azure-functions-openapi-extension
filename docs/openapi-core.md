@@ -122,6 +122,31 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 > * If no base URL is declared, the Azure Functions app's URL will be added as a default.
 > * The OpenAPI v2 (Swagger) document only shows the the first server name on both UI and document, while the OpenAPI v3 document shows the first server name on the UI and all server names on the document.
 
+If you want to exclude the current hosting URL from the list of base URLs, declare the `OpenApi__ExcludeRequestingHost` value to `true`. Then, the hosted app's URL will be excluded from the document.
+
+Alternatively, the `ExcludeRequestingHost` property like:
+
+```csharp
+public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+{
+    ...
+
+    public virtual bool ExcludeRequestingHost { get; set; } = true;
+
+    ...
+}
+```
+
+> **NOTE**:
+> If you set this `ExcludeRequestingHost` value to `true`, your host app's URL will be excluded. In this case, the Swagger UI page will be displayed with an error, but the document itself will be rendered properly. The same goes to your locally running function app.
+> 
+> Here's the example. Assuming that your app is hosted on "https://contoso.azurewebsites.net" and has app settings like:
+> 
+> * `OpenApi__HostNames`: "https://contoso.azure-api.net/api"
+> * `OpenApi__ExcludeRequestingHost`: "true"
+> 
+> Then, your app can't render the Swagger UI, but can render the OpenAPI document with those two host names directly on your function app, "https://contoso.azurewebsites.net". However, because the custom hostname indicates [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=github-0000-juyoo), you can see the Swagger UI page through [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=github-0000-juyoo).
+
 
 ### Overriding OpenAPI Version ###
 
@@ -191,6 +216,8 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
         new OpenApiServer() { Url = "https://contoso.com/api/" },
         new OpenApiServer() { Url = "https://fabrikam.com/api/" },
     };
+
+    public override bool ExcludeRequestingHost { get; set; } = false;
 
     public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
 
