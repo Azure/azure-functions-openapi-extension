@@ -28,10 +28,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.CLI.ConsoleApp
             string apibaseurl = "localhost",
             [Option('c', Description = "Configuration. Default is 'Debug'")]
             string configuration = "Debug",
-            [Option('t', Description = "Target framework. Default is 'net5.0'")]
-            string target = "net5.0",
-            [Option('v', Description = "OpenAPI spec version. Value can be either 'v2' or 'v3'. Default is 'v3'")]
-            OpenApiVersionType version = OpenApiVersionType.V3,
+            [Option('t', Description = "Target framework. Default is 'net6.0'")]
+            string target = "net6.0",
+            [Option('v', Description = "OpenAPI spec version. Value can be either 'v2' or 'v3'. Default is 'v2'")]
+            OpenApiVersionType version = OpenApiVersionType.V2,
             [Option('f', Description = "OpenAPI output format. Value can be either 'json' or 'yaml'. Default is 'json'")]
             OpenApiFormatType format = OpenApiFormatType.Json,
             [Option('o', Description = "Generated OpenAPI output location. Default is 'output'")]
