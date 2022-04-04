@@ -122,11 +122,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         }
 
         [DataTestMethod]
-        [DataRow("http", "localhost", "api", "/api")]
-        [DataRow("https", "localhost", "api/", "/api")]
-        [DataRow("http", "localhost", "api/prod", "/api/prod")]
-        [DataRow("https", "localhost", "api/prod/", "/api/prod")]
-        public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_SwaggerUIApiPrefix(string scheme, string host, string routePrefix, string expected)
+        [DataRow("http", "localhost", "api", false, "/api")]
+        [DataRow("https", "localhost", "api/", false, "/api")]
+        [DataRow("http", "localhost", "api/prod", false, "/api/prod")]
+        [DataRow("https", "localhost", "api/prod/", false, "/api/prod")]
+        [DataRow("http", "localhost", null, false, "")]
+        [DataRow("https", "localhost", null, false, "")]
+        [DataRow("http", "localhost", "api", true, "/api")]
+        [DataRow("https", "localhost", "api/", true, "/api")]
+        [DataRow("http", "localhost", "api/prod", true, "/api/prod")]
+        [DataRow("https", "localhost", "api/prod/", true, "/api/prod")]
+        [DataRow("http", "localhost", null, true, "")]
+        [DataRow("https", "localhost", null, true, "")]
+        public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_SwaggerUIApiPrefix(string scheme, string host, string routePrefix, bool optionsSet, string expected)
         {
             var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
@@ -135,8 +143,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             req.SetupGet(p => p.Host).Returns(hostString);
 
             var ui = new SwaggerUI();
-
-            ui.AddServer(req.Object, routePrefix, null);
+            var options = new Mock<IOpenApiConfigurationOptions>();
+            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>());
+            ui.AddServer(req.Object, routePrefix, optionsSet ? options.Object: null);
 
             var fi = ui.GetType().GetField("_swaggerUiApiPrefix", BindingFlags.Instance | BindingFlags.NonPublic);
 
