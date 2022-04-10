@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.OpenApiInfo
             var servers = this._doc.Servers;
 
             servers.Count.Should().Be(3);
-            servers[0].Url.Should().Be("http://localhost:7071/api");
+            servers[0].Url.Should().Be("https://localhost:7071/api");
             servers[1].Url.Should().Be("https://contoso.com/api");
             servers[2].Url.Should().Be("https://fabrikam.com/api");
         }
