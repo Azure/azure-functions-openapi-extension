@@ -43,6 +43,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
                 Url = new Uri(LicenseUrl),
             }
         };
-        
     }
 }
