@@ -43,7 +43,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
                 Url = new Uri(LicenseUrl),
             }
         };
+        
 
-        public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiSpecVersion;
+        // public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiSpecVersion;
     }
 }
