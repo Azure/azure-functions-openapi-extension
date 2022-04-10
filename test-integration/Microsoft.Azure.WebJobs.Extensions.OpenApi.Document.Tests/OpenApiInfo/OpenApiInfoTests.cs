@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -97,6 +98,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.OpenApiInfo
             var license = this._doc.Info.License;
 
             license.Url.AbsoluteUri.Should().Be(OpenApiInfoConfigs.LicenseUrl);
+        }
+
+        [TestMethod]
+        public void Given_OpenApiDocument_When_Servers_Given_Then_It_Should_Return_Result()
+        {
+            var servers = this._doc.Servers;
+            
+            servers.Count.Should().Be(3);
+            servers[0].Url.Should().Be("http://localhost:7071/api");
+            servers[1].Url.Should().Be("https://contoso.com/api");
+            servers[2].Url.Should().Be("https://fabrikam.com/api");
         }
     }
 }
