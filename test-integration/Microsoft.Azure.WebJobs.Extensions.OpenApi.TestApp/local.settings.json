@@ -2,9 +2,9 @@
     "IsEncrypted": false,
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-        // "OpenApi__Version":"v3"
+         "OpenApi__Version":"v3"
 
         
     }

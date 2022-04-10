@@ -44,7 +44,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Configurations
             }
         };
         
-
-        // public override OpenApiVersionType OpenApiVersion { get; set; } = OpenApiSpecVersion;
     }
 }
