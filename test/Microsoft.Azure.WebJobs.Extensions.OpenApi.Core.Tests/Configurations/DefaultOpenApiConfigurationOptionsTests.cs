@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using FluentAssertions;
@@ -68,17 +69,43 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow(null, 0)]
-        [DataRow("", 0)]
-        [DataRow("https://localhost", 1)]
-        [DataRow("https://localhost,https://loremipsum", 2)]
-        public void Given_HostNames_When_Instantiated_Then_Property_Should_Return_Value(string hostnames, int expected)
+        [DataRow(0, null)]
+        [DataRow(0, "")]
+        [DataRow(1, "https://localhost")]
+        [DataRow(2, "https://localhost", "https://loremipsum")]
+        [DataRow(2, "https://localhost", " https://loremipsum")]
+        [DataRow(1, "https://localhost ", " ")]
+        public void Given_HostNames_When_Instantiated_Then_Property_Should_Return_Value_Count(int expected, params string[] hostnames)
         {
-            Environment.SetEnvironmentVariable("OpenApi__HostNames", hostnames);
+            Environment.SetEnvironmentVariable("OpenApi__HostNames", string.Join(",", hostnames));
 
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.Servers.Should().HaveCount(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("https://localhost")]
+        [DataRow("https://localhost", "https://loremipsum")]
+        [DataRow("https://localhost", " https://loremipsum")]
+        [DataRow("https://localhost ", " ")]
+        public void Given_HostNames_When_Instantiated_Then_Property_Should_Return_Value(params string[] hostnames)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__HostNames", string.Join(",", hostnames));
+
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            var expectedHostnames = hostnames
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .Select((s, i) => (i, s.Trim()));
+
+            foreach (var (index, hostname) in expectedHostnames)
+            {
+                options.Servers[index].Url.Should().Be(hostname);
+            }
         }
 
         [DataTestMethod]
