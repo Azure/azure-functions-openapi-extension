@@ -84,7 +84,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
             var hostnames = collection.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                                       .Where(h => !string.IsNullOrWhiteSpace(h))
-                                      .Select(p => new OpenApiServer() { Url = p?.Trim() });
+                                      .Select(p => new OpenApiServer() { Url = p.Trim() });
 
             servers.AddRange(hostnames);
 
