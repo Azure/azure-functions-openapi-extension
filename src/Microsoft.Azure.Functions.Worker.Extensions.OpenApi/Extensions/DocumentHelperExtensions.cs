@@ -21,6 +21,27 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
     /// </summary>
     public static class DocumentHelperExtensions
     {
+
+        /// <summary>
+        /// Distinct by defined property
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="keySelector"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        {
+            var seenKeys = new HashSet<TKey>();
+            foreach (var element in source)
+            {
+                if (seenKeys.Add(keySelector(element)))
+                {
+                    yield return element;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the list of HTTP triggers.
         /// </summary>
@@ -32,6 +53,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         {
             var methods = assembly.GetLoadableTypes()
                                   .Union(assembly.GetTypesFromReferencedFunctionApps())
+                                  .DistinctBy(x => x.FullName)
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
