@@ -82,7 +82,28 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             schemas["FakeGenericModel_FakeOtherClassModel"].Properties.Should().ContainKey("Value");
             schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("FirstName");
             schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("LastName");
+        }
 
+        [TestMethod]
+        public void GetOpenApiSchemas_Result_Should_Contain_No_Overlapping_OpenApiReferences()
+        {
+            var namingStrategy = new DefaultNamingStrategy();
+            var filter = new RouteConstraintFilter();
+            var acceptor = new OpenApiSchemaAcceptor();
+            var documentHelper = new DocumentHelper(filter, acceptor);
+            var visitorCollection = VisitorCollection.CreateInstance();
+
+            var methods = typeof(FakeFunctionsWithOverlappingModel.OverlappingClass1).GetMethods()
+                .Concat(typeof(FakeFunctionsWithOverlappingModel.OverlappingClass2).GetMethods()).ToList();
+
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection);
+
+            schemas.Should().NotBeNull();
+            schemas.Count.Should().Be(1);
+
+            schemas.Where(x => x.Key == "FakeInternalModel").Count().Should().Be(1);
+
+            schemas["FakeInternalModel"].Type.Should().Be("object");
         }
     }
 }
