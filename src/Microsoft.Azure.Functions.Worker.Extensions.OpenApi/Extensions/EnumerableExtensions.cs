@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TKey"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        public static IEnumerable<TSource> DistinctByProperty<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             var seenKeys = new HashSet<TKey>();
             foreach (var element in source)

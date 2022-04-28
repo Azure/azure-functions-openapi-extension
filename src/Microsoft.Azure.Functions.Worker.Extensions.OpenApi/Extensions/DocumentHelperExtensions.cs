@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         {
             var methods = assembly.GetLoadableTypes()
                                   .Union(assembly.GetTypesFromReferencedFunctionApps())
-                                  .DistinctBy(x => x.FullName)
+                                  .DistinctByProperty(x => x.FullName)
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
