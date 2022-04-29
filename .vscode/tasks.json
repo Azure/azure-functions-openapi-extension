@@ -77,19 +77,42 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "type": "func",
-      "dependsOn": "build",
+      "label": "build sample",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
       "options": {
-        // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.V3Net5/bin/Debug/net5.0"
-        // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Proxy/bin/Debug/netcoreapp3.1"
-        // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2IoC/bin/Debug/netcoreapp2.1"
-        // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V2Static/bin/Debug/netcoreapp2.1"
-        // "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3IoC/bin/Debug/netcoreapp3.1"
-        "cwd": "${workspaceFolder}/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/bin/Debug/netcoreapp3.1"
+        "cwd": "${workspaceFolder}/samples/${input:pickSample}"
       },
-      "command": "host start",
+      "type": "process",
+      // "dependsOn": "clean",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "start sample",
+      "type": "shell",
+      "dependsOn": "build sample",
+      "options": {
+        "cwd": "${workspaceFolder}/samples/${input:pickSample}/bin/Debug/net6.0"
+      },
+      "command": "func host start",
       "isBackground": true,
       "problemMatcher": "$func-dotnet-watch"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "pickSample",
+      "type": "pickString",
+      "description": "Choose which sample project to start",
+      "options": [
+        "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc",
+        "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Ping",
+        "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc"
+      ]
     }
   ]
 }
