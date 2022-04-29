@@ -145,7 +145,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
 
-            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiReferenceId(p.IsOpenApiDictionary(), p.IsOpenApiArray(), namingStrategy), p => p);
+            var acceptorTypes = new Dictionary<string, Type>();
+            foreach (var type in types)
+            {
+                var openApiReferenceId = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), namingStrategy);
+                if (!acceptorTypes.ContainsKey(openApiReferenceId))
+                {
+                    acceptorTypes.Add(openApiReferenceId, type);
+                }
+            }
+
+            this._acceptor.Types = acceptorTypes;
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 
