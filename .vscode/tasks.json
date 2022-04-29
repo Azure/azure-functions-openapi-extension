@@ -88,7 +88,7 @@
         "cwd": "${workspaceFolder}/samples/${input:pickSample}"
       },
       "type": "process",
-      // "dependsOn": "clean",
+      "dependsOn": "clean",
       "problemMatcher": "$msCompile"
     },
     {
@@ -96,7 +96,7 @@
       "type": "shell",
       "dependsOn": "build sample",
       "options": {
-        "cwd": "${workspaceFolder}/samples/${input:pickSample}/bin/Debug/net6.0"
+        "cwd": "${workspaceFolder}/samples/${input:pickSample}/bin/Debug/${input:pickVersion}",
       },
       "command": "func host start",
       "isBackground": true,
@@ -110,8 +110,17 @@
       "description": "Choose which sample project to start",
       "options": [
         "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc",
-        "Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Ping",
         "Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc"
+      ]
+    },
+    {
+      "id": "pickVersion",
+      "type": "pickString",
+      "description": "Choose which .NET version to start",
+      "options": [
+        "net6.0",
+        "net5.0",
+        "netcoreapp3.1"
       ]
     }
   ]
