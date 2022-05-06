@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_ApplicationAssemblyWithGivenType(Type type)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var assembly = (await context.SetApplicationAssemblyAsync(location, false))
                                          .ApplicationAssembly;
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_With_Referenced_Project_When_Initiated_Then_It_Should_Return_ApplicationAssemblyOfRootAssembly()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var assembly = (await context.SetApplicationAssemblyAsync(location, false))
                                          .ApplicationAssembly;
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_NotReturn_ApplicationAssemblyWithGivenType(Type type)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var assembly = (await context.SetApplicationAssemblyAsync(location, false))
                                          .ApplicationAssembly;
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_PackageAssembly()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var assembly = (await context.SetApplicationAssemblyAsync(location, false))
                                          .PackageAssembly;
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_OpenApiConfigurationOptions()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var options = (await context.SetApplicationAssemblyAsync(location, false))
                                         .OpenApiConfigurationOptions;
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_OpenApiCustomUIOptions()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var options = (await context.SetApplicationAssemblyAsync(location, false))
                                         .OpenApiCustomUIOptions;
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_HttpSettings()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var settings = (await context.SetApplicationAssemblyAsync(location, false))
                                          .HttpSettings;
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             var req = new Mock<IHttpRequestDataObject>();
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var result = await context.SetApplicationAssemblyAsync(location, false)
                                       .AuthorizeAsync(req.Object);
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_GetOpenApiSpecVersion_Invoked_Then_It_Should_Return_Result(string version, OpenApiSpecVersion expected)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var result = (await context.SetApplicationAssemblyAsync(location, false))
                                        .GetOpenApiSpecVersion(version);
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Type_When_GetOpenApiSpecVersion_Invoked_Then_It_Should_Return_Result(string format, OpenApiFormat expected)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
+            var context = new OpenApiHttpTriggerContext(null);
 
             var result = (await context.SetApplicationAssemblyAsync(location, false))
                                        .GetOpenApiFormat(format);
