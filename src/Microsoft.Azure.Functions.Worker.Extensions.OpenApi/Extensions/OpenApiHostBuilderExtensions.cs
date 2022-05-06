@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -21,6 +22,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
             {
                 services.AddSingleton<IOpenApiHttpTriggerContext, OpenApiHttpTriggerContext>();
                 services.AddSingleton<IOpenApiTriggerFunction, OpenApiTriggerFunction>();
+                services.AddSingleton<IOpenApiConfigurationOptions, DefaultOpenApiConfigurationOptions>();
                 // services.AddSingleton<DefaultOpenApiHttpTrigger, DefaultOpenApiHttpTrigger>();
             });
 

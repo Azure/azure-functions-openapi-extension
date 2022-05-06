@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
-using System.Reflection;
-
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
 {
@@ -15,17 +14,28 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
     public static class OpenApiConfigurationResolver
     {
         /// <summary>
+        /// Property used to allow for dynamic generation of OpenApiConfigurationOptions
+        /// </summary>
+        public static IOpenApiConfigurationOptions ConfigurationOptions { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance from the given assembly.
         /// </summary>
         /// <param name="assembly">The executing assembly instance.</param>
         /// <returns>Returns the <see cref="IOpenApiConfigurationOptions"/> instance resolved.</returns>
         public static IOpenApiConfigurationOptions Resolve(Assembly assembly)
         {
+            // If we have already dynamically configured the <see cref="IOpenApiConfigurationOptions"/>, then return it
+            if (ConfigurationOptions != null)
+            {
+                return ConfigurationOptions;
+            }
+
             var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false
                                                   && p.IsAbstract == false
                                                   && p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true);
-            if (type.IsNullOrDefault())
+           if (type.IsNullOrDefault())
             {
                 var settings = new DefaultOpenApiConfigurationOptions();
 
