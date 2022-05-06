@@ -51,5 +51,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Resolvers
             result.Should().BeOfType<FakeOpenApiConfigurationOptions>();
             result.GetType().BaseType.Should().Be(typeof(FakeOpenApiConfigurationOptionsBase)); // This verifies the abstract type was considered in the resolution
         }
+
+        [TestMethod]
+        public void Given_ConfigurationOptions_Is_Set_Then_It_Should_Return_Result()
+        {
+            var updatedOpenApiConfig = new DefaultOpenApiConfigurationOptions
+            {
+                Info = new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "A test title"
+                }
+            };
+
+            OpenApiConfigurationResolver.ConfigurationOptions = updatedOpenApiConfig;
+
+            var assembly = Assembly.GetAssembly(typeof(DefaultOpenApiConfigurationOptions));
+
+            var result = OpenApiConfigurationResolver.Resolve(assembly);
+
+            result.Should().BeOfType<DefaultOpenApiConfigurationOptions>();
+            result.Info.Title.Should().Be("A test title");
+        }
     }
 }
