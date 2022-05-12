@@ -260,6 +260,40 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
         }
     }
     ```
+### Dynamically configuring `IOpenApiHttpTriggerAuthorization` at Runtime ###
+
+There may be instances where you want to configure the `IOpenApiHttpTriggerAuthorization` at runtime.
+
+To dynamically modify your authorization at runtime you can use the following examples:
+
+#### In of Proc ####
+
+```csharp
+public override void Configure(IFunctionsHostBuilder builder)
+{
+    var fixture = new Fixture();
+    builder.Services.AddSingleton(fixture);
+    OpenApiConfigurationResolver.ConfigurationOptions = new SampleOpenApiHttpTriggerAuthorization();
+}
+```
+
+#### Out of Proc ####
+
+```csharp
+public static void Main()
+        {
+            var host = new HostBuilder()
+                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureOpenApi()
+                .ConfigureServices(services => services.AddSingleton<Fixture>())
+                .ConfigureServices(services => {
+                    services.AddSingleton<Fixture>();
+                    services.AddSingleton<IOpenApiHttpTriggerAuthorization, SampleOpenApiHttpTriggerAuthorization>();
+                })
+                .Build();
+            host.Run();
+        }
+```
 
 
 ### Use CSS and JavaScript Files from CDN ###

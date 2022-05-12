@@ -36,6 +36,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         private Assembly _appAssembly;
         private IOpenApiConfigurationOptions _configOptions;
         private IOpenApiCustomUIOptions _uiOptions;
+        private IOpenApiHttpTriggerAuthorization _httpTriggerAuthorization;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
@@ -44,6 +45,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
         {
             this._configOptions = configOptions;
+            this._httpTriggerAuthorization = httpTriggerAuthorization;
+
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
             var host = HostJsonResolver.Resolve();
@@ -103,6 +106,20 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        public virtual IOpenApiHttpTriggerAuthorization OpenApiHttpTriggerAuthorization
+        {
+            get
+            {
+                if (this._httpTriggerAuthorization.IsNullOrDefault())
+                {
+                    this._httpTriggerAuthorization = OpenApiHttpTriggerAuthorizationResolver.Resolve(this.ApplicationAssembly);
+                }
+
+                return this._httpTriggerAuthorization;
+            }
+        }
+
+        /// <inheritdoc />
         public virtual HttpSettings HttpSettings { get; }
 
         /// <inheritdoc />
@@ -146,19 +163,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <inheritdoc />
         public virtual async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
         {
-            var result = default(OpenApiAuthorizationResult);
-            var type = this.ApplicationAssembly
-                           .GetLoadableTypes()
-                           .SingleOrDefault(p => p.HasInterface<IOpenApiHttpTriggerAuthorization>());
-            if (type.IsNullOrDefault())
-            {
-                return result;
-            }
-
-            var auth = Activator.CreateInstance(type) as IOpenApiHttpTriggerAuthorization;
-            result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
-
-            return result;
+            return await this.OpenApiHttpTriggerAuthorization.AuthorizeAsync(req).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
