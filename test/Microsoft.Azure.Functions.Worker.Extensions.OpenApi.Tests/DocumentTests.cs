@@ -445,12 +445,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataTestMethod]
         [DataRow(true, "localhost", "localhost")]
         [DataRow(false, "fabrikam.com", "contoso.com")]
-        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result(bool includeRequestingHostName, string host, string expected)
+        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result1(bool includeRequestingHostName, string host, string expected)
         {
             var helper = new Mock<IDocumentHelper>();
 
             var scheme = "https";
             var routePrefix = "api";
+            var url = "http://localhost:7071/api";
+
 
             var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
@@ -464,14 +466,16 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             var result = await doc.InitialiseDocument()
                                   .AddServer(req.Object, routePrefix, options.Object)
-                                  .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
+                                  .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);
+            var uri = new Uri((string)json.servers[0].url);
 
-            ((string)json?.host).Should().BeEquivalentTo(expected);
-            ((string)json?.basePath).Should().BeEquivalentTo($"/{routePrefix}");
-            ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
+
+            ((string)json?.servers[0].url).Should().BeEquivalentTo(url);
         }
+
+
 
         [TestMethod]
         public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
