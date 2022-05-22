@@ -474,7 +474,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [TestMethod]
-        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApi2_0()
+        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApiV2()
         {
             var helper = new Mock<IDocumentHelper>();
 
@@ -501,7 +501,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [TestMethod]
-        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApi3_0()
+        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApiV3()
         {
             var helper = new Mock<IDocumentHelper>();
 
@@ -524,8 +524,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             var uri = new Uri((string)json?.servers[0].url);
 
-            (uri.Scheme).Should().BeEquivalentTo(scheme);
-            (uri.Host).Should().BeEquivalentTo(host);
+            uri.Scheme.Should().BeEquivalentTo(scheme);
+            uri.Host.Should().BeEquivalentTo(host);
         }
 
         [TestMethod]
