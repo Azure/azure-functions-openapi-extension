@@ -448,11 +448,10 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result1(bool includeRequestingHostName, string host, string expected)
         {
             var helper = new Mock<IDocumentHelper>();
-
             var scheme = "https";
             var routePrefix = "api";
-            var url = "http://localhost:7071/api";
 
+            var Url = $"{scheme}://contoso.com/{routePrefix}";
 
             var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
@@ -469,10 +468,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
                                   .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);
-            var uri = new Uri((string)json.servers[0].url);
-
-
-            ((string)json?.servers[0].url).Should().BeEquivalentTo(url);
+            ((object)json?.servers).Should().NotBeNull();
+            if (includeRequestingHostName == false)
+            {
+                var uri = new Uri((string)json?.servers[0].url);
+                uri.AbsoluteUri.Should().BeEquivalentTo(Url);
+            }
+            /*json?.servers.ToArray().Length.Should().BeGreaterThan(0);
+            json?.servers.Should().NotBeNull()*/
         }
 
 
