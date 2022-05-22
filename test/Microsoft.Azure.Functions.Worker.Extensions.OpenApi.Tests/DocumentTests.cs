@@ -528,13 +528,15 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
+        [DataRow("https", "localhost", "api")]
         [DataRow("https", "localhost", "")]
         [DataRow("https", "localhost", null)]
-        public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result_tree(string scheme, string host, string routePrefix)
+        public async Task Given_ServerDetails_When_RenderAsync_Invoked_Then_It_Should_Return_Result(string scheme, string host, string routePrefix)
         {
             var helper = new Mock<IDocumentHelper>();
 
-            var url = $"{scheme}://{host}";
+            var url = $"{scheme}://{host}/{routePrefix}";
+            var uri = new Uri(url);
             var req = new Mock<IHttpRequestDataObject>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
 
@@ -552,7 +554,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             ((string)json?.host).Should().BeEquivalentTo(null);
             ((string)json?.basePath).Should().BeEquivalentTo(null);
             ((string)json?.schemes).Should().BeEquivalentTo(null);
-            ((string)json?.servers[0].url).Should().BeEquivalentTo(url);
+            ((string)json?.servers[0].url).Should().BeEquivalentTo(uri.AbsoluteUri);
         }
     }
 }
