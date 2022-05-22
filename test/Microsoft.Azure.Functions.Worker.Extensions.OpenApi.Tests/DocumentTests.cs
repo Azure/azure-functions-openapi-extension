@@ -522,6 +522,10 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             dynamic json = JObject.Parse(result);
 
+
+            ((object)json?.servers).Should().NotBeNull();
+            ((int)json?.servers.Count).Should().BeGreaterThan(0);
+
             var uri = new Uri((string)json?.servers[0].url);
 
             uri.Scheme.Should().BeEquivalentTo(scheme);
