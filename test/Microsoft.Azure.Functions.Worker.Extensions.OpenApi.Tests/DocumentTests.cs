@@ -474,7 +474,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [TestMethod]
-        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
+        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApiV2()
         {
             var helper = new Mock<IDocumentHelper>();
 
@@ -498,6 +498,38 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             ((string)json?.host).Should().BeEquivalentTo(host);
             ((string)json?.basePath).Should().BeEquivalentTo(null);
             ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
+        }
+
+        [TestMethod]
+        public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result_OpenApiV3()
+        {
+            var helper = new Mock<IDocumentHelper>();
+
+            var scheme = "https";
+            var host = "localhost";
+            string routePrefix = null;
+
+            var url = $"{scheme}://{host}";
+            var req = new Mock<IHttpRequestDataObject>();
+            req.SetupGet(p => p.Scheme).Returns(scheme);
+            req.SetupGet(p => p.Host).Returns(new HostString(host));
+
+            var doc = new Document(helper.Object);
+
+            var result = await doc.InitialiseDocument()
+                                  .AddServer(req.Object, routePrefix)
+                                  .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json);
+
+            dynamic json = JObject.Parse(result);
+
+
+            ((object)json?.servers).Should().NotBeNull();
+            ((int)json?.servers.Count).Should().BeGreaterThan(0);
+
+            var uri = new Uri((string)json?.servers[0].url);
+
+            uri.Scheme.Should().BeEquivalentTo(scheme);
+            uri.Host.Should().BeEquivalentTo(host);
         }
 
         [TestMethod]
