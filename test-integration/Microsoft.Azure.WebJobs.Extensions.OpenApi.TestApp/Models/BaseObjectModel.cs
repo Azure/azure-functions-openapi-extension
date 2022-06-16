@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.ComponentModel;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
@@ -14,5 +18,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
         public BaseSubObjectModel SubObjectValue { get; set; }
         public List<object> BaseObjectList { get; set; }
         public Dictionary<string, object> BaseObjectDictionary { get; set; }
+    [OpenApiProperty(Description = "foo")]
+        public SimpleEnumType SimpleEnumValue1 { get; set; }
+    [OpenApiProperty(Description = "bar")]
+        public SimpleEnumType SimpleEnumValue2 { get; set; }
     }
-}
+    [Description("enum definition description")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum SimpleEnumType
+    {
+    [Description("value 1 definition description")]
+        Simple,
+    [Description("value 2 definition description")]
+        TitleCase,
+        Values
+    }
+    [Description("enum definition description")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum SimpleEnumType2
+    {
+        [Description("value 1 definition description")]
+        Simple,
+        [Description("value 2 definition description")]
+        TitleCase,
+        Values
+    }
+    public class BaseObjectModel2
+    {
+        public string BaseObjectValue { get; set; }
+    }
+    }

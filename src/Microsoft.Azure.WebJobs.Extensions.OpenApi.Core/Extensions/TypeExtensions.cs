@@ -112,7 +112,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsUnflaggedEnumType())
             {
-                isReferential = false;
+                isReferential = true;
             }
 
             if (type.IsJObjectType())

@@ -132,12 +132,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
+            var enumRequestParams = elements.SelectMany(p => p.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false))
+                .Select(p => p.Type).Where(t => t.IsUnflaggedEnumType());
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
-            var types = requests.Union(responses)
+            var types = requests.Union(responses).Union(enumRequestParams)
                                 .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)
                                 .Distinct()
-                                .Where(p => !p.IsSimpleType())
+                                .Where(p => p.IsUnflaggedEnumType() || !p.IsSimpleType())
                                 .Where(p => p.IsReferentialType())
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 .ToList();
@@ -161,7 +163,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
             this._acceptor.Accept(collection, namingStrategy);
 
-            var union = schemas.Concat(rootSchemas.Where(p => !schemas.Keys.Contains(p.Key)))
+            var union = rootSchemas.Concat(schemas.Where(p => !rootSchemas.Keys.Contains(p.Key)))
                                .Distinct()
                                .Where(p => p.Key.ToUpperInvariant() != "OBJECT")
                                .OrderBy(p => p.Key)

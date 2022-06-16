@@ -169,5 +169,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
+
+        [FunctionName(nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_BaseObject))]
+        [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NullableObject_HttpTrigger.Post_ApplicationJson_BaseObject), tags: new[] { "nullable" })]
+        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(BaseObjectModel2), Required = true, Description = "Base Object Model")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NullableObjectModel), Description = "The OK response")]
+        public static async Task<IActionResult> Post_ApplicationJson_BaseObject(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-baseobject")] HttpRequest req,
+            ILogger log)
+        {
+            var result = new OkResult();
+
+            return await Task.FromResult(result).ConfigureAwait(false);
+        }
     }
 }

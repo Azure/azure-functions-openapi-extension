@@ -2,14 +2,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.Serialization;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.OpenApiInfo
-{
+{    
     [TestClass]
     [TestCategory(Constants.TestCategory)]
     public class OpenApiInfoTests
@@ -22,8 +22,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests.OpenApiInfo
         [TestInitialize]
         public async Task Init()
         {
-            this._json = await http.GetStringAsync(Constants.OpenApiDocEndpoint).ConfigureAwait(false);
-            this._doc = JsonConvert.DeserializeObject<OpenApiDocument>(this._json);
+            this._json = await http.GetStringAsync(Constants.OpenApiDocEndpoint).ConfigureAwait(false);            
+            this._doc = JsonConvert.DeserializeObject<OpenApiDocument>(this._json, new OpenApiAnyConverter());        
         }
 
         [TestMethod]
