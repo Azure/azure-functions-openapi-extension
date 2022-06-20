@@ -32,8 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         [OpenApiParameter(name: "booleanParameter", In = ParameterLocation.Query, Required = true, Example = typeof(BooleanParameterExample), Type = typeof(bool), Description = "The **boolean** parameter")]
         [OpenApiParameter(name: "guidParameter", In = ParameterLocation.Query, Required = true, Example = typeof(GuidParameterExample), Type = typeof(Guid), Description = "The **guid** parameter")]
         [OpenApiParameter(name: "byteArrayParameter", In = ParameterLocation.Query, Required = true, Example = typeof(ByteArrayParameterExample), Type = typeof(byte[]), Description = "The **byteArray** parameter")]
-        [OpenApiParameter(name: "simpleEnumParameter", In = ParameterLocation.Query, Required = true, Type = typeof(SimpleEnumType2), Description = "The **SimpleEnumType** parameter")]
-        [OpenApiParameter(name: "simpleEnumListParameter", In = ParameterLocation.Query, Required = true, Explode =false, Type = typeof(List<SimpleEnumType>), Description = "The **SimpleEnumType List** parameter")]
+        [OpenApiParameter(name: "simpleEnumParameter", In = ParameterLocation.Query, Required = true, Example = typeof(SimpleEnumTypeParameterExample), Type = typeof(SimpleEnumType), Description = "The **SimpleEnumType** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_Query_ParameterExamples(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-query-parameter-examples")] HttpRequest req,

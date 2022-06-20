@@ -81,19 +81,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var enums = enumType.ToOpenApiStringCollection();
 
             this._visitor.Visit(acceptor, type, this._strategy);
-
             acceptor.Schemas.Should().ContainKey(name);
-            acceptor.Schemas[name].Type.Should().Be(dataType);
-            acceptor.Schemas[name].Format.Should().Be(dataFormat);
+            acceptor.Schemas[name].Reference.Should().NotBeNull();
+            var rootKey = acceptor.Schemas[name].Reference.Id;
+            acceptor.RootSchemas.Should().ContainKey(rootKey);
+            var rootSchema = acceptor.RootSchemas[rootKey];
+            rootSchema.Type.Should().Be(dataType);
+            rootSchema.Format.Should().Be(dataFormat);
 
             for (var i = 0; i < acceptor.Schemas[name].Enum.Count; i++)
             {
-                var @enum = acceptor.Schemas[name].Enum[i];
+                var @enum = rootSchema.Enum[i];
                 @enum.Should().BeOfType<OpenApiString>();
                 (@enum as OpenApiString).Value.Should().Be((enums[i] as OpenApiString).Value);
             }
 
-            (acceptor.Schemas[name].Default as OpenApiString).Value.Should().Be((enums.First() as OpenApiString).Value);
+            (rootSchema.Default as OpenApiString).Value.Should().Be((enums.First() as OpenApiString).Value);
         }
 
         [DataTestMethod]
@@ -102,13 +105,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeStringEnum));
+            var enums = type.Value.ToOpenApiStringCollection();
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
 
-            acceptor.Schemas[name].Nullable.Should().Be(false);
-            acceptor.Schemas[name].Default.Should().BeNull();
-            acceptor.Schemas[name].Description.Should().Be(description);
+            acceptor.Schemas[name].Reference.Should().NotBeNull();
+            var rootSchema = acceptor.RootSchemas[acceptor.Schemas[name].Reference.Id];
+            rootSchema.Nullable.Should().Be(false);
+            rootSchema.Description.Should().Be(description);
+            (rootSchema.Default as OpenApiString).Value.Should().Be(FakeStringEnum.StringValue1.ToDisplayName());
         }
 
         [DataTestMethod]
@@ -116,17 +122,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("hello", false, "lorem ipsum")]
         public void Given_OpenApiPropertyAttribute_With_Default_When_Visit_Invoked_Then_It_Should_Return_Result(string name, bool nullable, string description)
         {
-            var @default = FakeStringEnum.StringValue1;
+            var @default = FakeStringEnum.StringValue2;
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeStringEnum));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Default = @default, Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
-
-            acceptor.Schemas[name].Nullable.Should().Be(nullable);
-            acceptor.Schemas[name].Default.Should().NotBeNull();
-            (acceptor.Schemas[name].Default as OpenApiString).Value.Should().Be(@default.ToDisplayName());
-            acceptor.Schemas[name].Description.Should().Be(description);
+            acceptor.Schemas[name].Reference.Should().NotBeNull();
+            var rootSchema = acceptor.RootSchemas[acceptor.Schemas[name].Reference.Id];
+            // Only the OpenApiProperty description attribute defined on this first usage of this enum type is used.
+            // Other OpenApiProperty attributes that are usage-dependant, such as Nullablility or Default, are currently ignored
+            // until allOf is implemented
+            // (issue https://github.com/Azure/azure-functions-openapi-extension/issues/200#issuecomment-1157298955 )
+            rootSchema.Nullable.Should().Be(false);
+            (rootSchema.Default as OpenApiString).Value.Should().Be(default(FakeStringEnum).ToDisplayName());
+            rootSchema.Description.Should().Be(description);
         }
 
         [DataTestMethod]
@@ -139,10 +149,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
-
-            acceptor.Schemas[name].Nullable.Should().Be(nullable);
-            acceptor.Schemas[name].Default.Should().BeNull();
-            acceptor.Schemas[name].Description.Should().Be(description);
+            acceptor.Schemas[name].Reference.Should().NotBeNull();
+            var rootSchema = acceptor.RootSchemas[acceptor.Schemas[name].Reference.Id];
+            // Only the OpenApiProperty description attribute defined on this first usage of this enum type is used.
+            // Other OpenApiProperty attributes that are usage-dependant, such as Nullablility or Default, are currently ignored
+            // until allOf is implemented
+            // (issue https://github.com/Azure/azure-functions-openapi-extension/issues/200#issuecomment-1157298955 )
+            rootSchema.Nullable.Should().Be(false);
+            (rootSchema.Default as OpenApiString).Value.Should().Be(default(FakeLongEnum).ToDisplayName());
+            rootSchema.Description.Should().Be(description);
         }
 
         [DataTestMethod]
@@ -156,10 +171,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            acceptor.Schemas[name].Reference.Should().NotBeNull();
+            var rootSchema = acceptor.RootSchemas[acceptor.Schemas[name].Reference.Id];
 
-            acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
-            acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
-            (acceptor.Schemas[name].Extensions["x-ms-visibility"] as OpenApiString).Value.Should().Be(visibility.ToDisplayName(this._strategy));
+            rootSchema.Extensions.Should().ContainKey("x-ms-visibility");
+            rootSchema.Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
+            (rootSchema.Extensions["x-ms-visibility"] as OpenApiString).Value.Should().Be(visibility.ToDisplayName(this._strategy));
         }
 
         [DataTestMethod]

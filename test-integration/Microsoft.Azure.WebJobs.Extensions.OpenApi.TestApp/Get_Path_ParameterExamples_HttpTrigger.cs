@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
         [OpenApiParameter(name: "dateTimeOffsetParameter", In = ParameterLocation.Path, Required = true, Example = typeof(DateTimeOffsetParameterExample), Type = typeof(DateTimeOffset), Description = "The **dateTimeOffset** parameter")]
         [OpenApiParameter(name: "booleanParameter", In = ParameterLocation.Path, Required = true, Example = typeof(BooleanParameterExample), Type = typeof(bool), Description = "The **boolean** parameter")]
         [OpenApiParameter(name: "guidParameter", In = ParameterLocation.Path, Required = true, Example = typeof(GuidParameterExample), Type = typeof(Guid), Description = "The **guid** parameter")]
-        [OpenApiParameter(name: "simpleEnumParameter", In = ParameterLocation.Path, Required = true, Type = typeof(SimpleEnumType), Description = "The **SimpleEnumType** parameter")]
+        [OpenApiParameter(name: "simpleEnumParameter", In = ParameterLocation.Path, Required = true, Example = typeof(SimpleEnumTypeParameterExample), Type = typeof(SimpleEnumType), Description = "The **SimpleEnumType** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_Path_ParameterExamples(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-path-parameter-examples")] HttpRequest req,

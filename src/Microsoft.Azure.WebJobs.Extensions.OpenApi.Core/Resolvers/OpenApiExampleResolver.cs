@@ -63,7 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
             var resolver = new DefaultContractResolver() { NamingStrategy = namingStrategy ?? new DefaultNamingStrategy() };
             settings.ContractResolver = resolver;
 
-            var openApiExampleValue = OpenApiExampleFactory.CreateInstance<T>(instance,settings);
+            var openApiExampleValue = OpenApiExampleFactory.CreateInstance<T>(instance,settings, namingStrategy);
             var example = new OpenApiExample()
             {
                 Summary = summary,

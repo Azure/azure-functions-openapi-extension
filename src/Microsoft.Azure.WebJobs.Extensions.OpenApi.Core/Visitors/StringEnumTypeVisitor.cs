@@ -36,29 +36,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             return isVisitable;
         }
-        private void EnsureRootRefSchema(OpenApiSchemaAcceptor acceptor, Type type, NamingStrategy namingStrategy)
+        private string GetEnumTypeDescription(Type type)
         {
-            var title = namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
-            if (!acceptor.RootSchemas.ContainsKey(title))
+            
+            var descriptions = type.GetCustomAttributes(false).OfType<DescriptionAttribute>().Select(d => d.Description).ToList();
+            foreach (var enumValue in type.GetEnumValues())
             {
-                // Adds enum values to the schema.
-                var enums = type.ToOpenApiStringCollection();
-                var refSchema = new OpenApiSchema()
-                {
-                    Type = "string",
-                    Format = null,
-                    Enum = enums,
-                    Default = enums.First()
-                };
-                var descriptions = type.GetCustomAttributes(false).OfType<DescriptionAttribute>().Select(d => d.Description).ToList();
-                foreach (var enumValue in type.GetEnumValues())
-                {
-                    descriptions.AddRange(type.GetMember(enumValue.ToString()).SelectMany(t => t.GetCustomAttributes(false)).OfType<DescriptionAttribute>().Select(d => $"{enumValue}: {d.Description}"));
-                }
-                if (descriptions.Any())
-                    refSchema.Description = string.Join("\n", descriptions);
-                acceptor.RootSchemas.Add(title, refSchema);
+                descriptions.AddRange(type.GetMember(enumValue.ToString()).SelectMany(t => t.GetCustomAttributes(false)).OfType<DescriptionAttribute>().Select(d => $"{enumValue}: {d.Description}"));
             }
+            if (descriptions.Any())
+            {
+                return string.Join("\n", descriptions);
+            }
+            return null;
+                
         }
 
         /// <inheritdoc />
@@ -74,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
             if (!instance.RootSchemas.ContainsKey(title))
             {
-                // Adds enum values to the schema.
+                // Adds enum values to the root schema.
                 var enums = type.Value.ToOpenApiStringCollection();
                 var refSchema = new OpenApiSchema()
                 {
@@ -83,48 +74,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     Enum = enums,
                     Default = enums.First()
                 };
-                var descriptions = type.Value.GetCustomAttributes(false).OfType<DescriptionAttribute>().Select(d=>d.Description).ToList();
-                foreach(var enumValue in type.Value.GetEnumValues())
+
+                // Adds the extra properties.
+                // Add only the OpenApiProperty description attribute defined on this first usage of this enum type.
+                // OpenApiProperty attributes defined on subsequent usages will be ignored
+                // (issue https://github.com/Azure/azure-functions-openapi-extension/issues/200#issuecomment-1157298955 )
+                if (attributes.Any())
                 {
-                    descriptions.AddRange(type.Value.GetMember(enumValue.ToString()).SelectMany(t => t.GetCustomAttributes(false)).OfType<DescriptionAttribute>().Select(d => $"{enumValue}: {d.Description}"));
+                    Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
+                    if (!attr.IsNullOrDefault())
+                    {
+                        refSchema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
+                    }
+
+                    attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
+                    if (!attr.IsNullOrDefault())
+                    {
+                        var extension = new OpenApiString((attr as OpenApiSchemaVisibilityAttribute).Visibility.ToDisplayName());
+
+                        refSchema.Extensions.Add("x-ms-visibility", extension);
+                    }
                 }
-                if(descriptions.Any())
-                    refSchema.Description = string.Join("\n", descriptions);
+
                 instance.RootSchemas.Add(title, refSchema);
             }
             var schema = new OpenApiSchema
             {
-               // AllOf = new List<OpenApiSchema> {
-                 //   new OpenApiSchema{
                     Reference = new OpenApiReference()
                     {
                         Type = ReferenceType.Schema,
                         Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
                     }
-                   // },
-                //}
             };
-
-            // Adds the extra properties.
-            if (attributes.Any())
-            {
-                Attribute attr = attributes.OfType<OpenApiPropertyAttribute>().SingleOrDefault();
-                if (!attr.IsNullOrDefault())
-                {
-                    schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
-                    schema.Default = this.GetOpenApiPropertyDefault<string>(attr as OpenApiPropertyAttribute);
-                    schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
-                    schema.Deprecated = this.GetOpenApiPropertyDeprecated(attr as OpenApiPropertyAttribute);
-                }
-
-                attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
-                if (!attr.IsNullOrDefault())
-                {
-                    var extension = new OpenApiString((attr as OpenApiSchemaVisibilityAttribute).Visibility.ToDisplayName());
-
-                    schema.Extensions.Add("x-ms-visibility", extension);
-                }
-            }
 
             instance.Schemas.Add(name, schema);
         }
@@ -140,28 +121,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            //TODO: oas v2 does not support reusable enums in url params. We need to know the version.
-            var version = OpenApiVersionType.V2;
-            if (version == OpenApiVersionType.V2)
-            {
-                var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
+            var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
 
-                // Adds enum values to the schema.
-                var enums = type.ToOpenApiStringCollection(namingStrategy);
+            // Adds enum values to the schema.
+            var enums = type.ToOpenApiStringCollection(namingStrategy);
 
-                schema.Enum = enums;
-                schema.Default = enums.First();
+            schema.Enum = enums;
+            schema.Default = enums.First();
 
-                return schema;
-            }
-            return new OpenApiSchema
-            {
-                Reference = new OpenApiReference()
-                {
-                    Type = ReferenceType.Schema,
-                    Id = type.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-                }
-            };
+            return schema;
+           
         }
 
         /// <inheritdoc />
@@ -175,28 +144,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            //TODO: oas v2 does not support reusable enums in Payload. We need to know the version.
-            var version = OpenApiVersionType.V3;
-            if (version == OpenApiVersionType.V2)
-            {
-                var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
+            var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
 
-                // Adds enum values to the schema.
-                var enums = type.ToOpenApiStringCollection(namingStrategy);
+            // Adds enum values to the schema.
+            var enums = type.ToOpenApiStringCollection(namingStrategy);
 
-                schema.Enum = enums;
-                schema.Default = enums.First();
+            schema.Enum = enums;
+            schema.Default = enums.First();
 
-                return schema;
-            }
-            return new OpenApiSchema
-            {
-                Reference = new OpenApiReference()
-                {
-                    Type = ReferenceType.Schema,
-                    Id = type.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-                }
-            };
+            return schema;
         }
     }
 }

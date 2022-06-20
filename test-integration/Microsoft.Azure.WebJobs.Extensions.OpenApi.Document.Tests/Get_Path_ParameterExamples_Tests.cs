@@ -59,6 +59,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-path-parameter-examples", "get", "dateTimeOffsetParameter", "path", true)]
         [DataRow("/get-path-parameter-examples", "get", "booleanParameter", "path", true)]
         [DataRow("/get-path-parameter-examples", "get", "guidParameter", "path", true)]
+        [DataRow("/get-path-parameter-examples", "get", "simpleEnumParameter", "path", true)]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameter(string path, string operationType, string name, string @in, bool required)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
@@ -84,6 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-path-parameter-examples", "get", "dateTimeOffsetParameter", "string")]
         [DataRow("/get-path-parameter-examples", "get", "booleanParameter", "boolean")]
         [DataRow("/get-path-parameter-examples", "get", "guidParameter", "string")]
+        [DataRow("/get-path-parameter-examples", "get", "simpleEnumParameter", "string")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
@@ -254,6 +256,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataTestMethod]
         [DataRow("/get-path-parameter-examples", "get", "guidParameter", "guidValue1", "74be27de-1e4e-49d9-b579-fe0b331d3642")]
         public void Given_OpenApiDocument_GuidType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName, string exampleValue)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var examples = parameter["examples"];
+
+            examples[exampleName]["value"].Value<string>().Should().Be(exampleValue);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-path-parameter-examples", "get", "simpleEnumParameter", "simpleEnumTypeValue1", "titleCase")]
+        public void Given_OpenApiDocument_SimpleEnumType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName, string exampleValue)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
             var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);

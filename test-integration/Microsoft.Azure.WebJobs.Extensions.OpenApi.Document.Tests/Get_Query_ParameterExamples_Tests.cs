@@ -60,6 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-query-parameter-examples", "get", "booleanParameter", "query", true)]
         [DataRow("/get-query-parameter-examples", "get", "guidParameter", "query", true)]
         [DataRow("/get-query-parameter-examples", "get", "byteArrayParameter", "query", true)]
+        [DataRow("/get-query-parameter-examples", "get", "simpleEnumParameter", "query", true)]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameter(string path, string operationType, string name, string @in, bool required)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
@@ -86,6 +87,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-query-parameter-examples", "get", "booleanParameter", "boolean")]
         [DataRow("/get-query-parameter-examples", "get", "guidParameter", "string")]
         [DataRow("/get-query-parameter-examples", "get", "byteArrayParameter", "string")]
+        [DataRow("/get-query-parameter-examples", "get", "simpleEnumParameter", "string")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationParameterSchema(string path, string operationType, string name, string dataType)
         {
             var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
@@ -276,6 +278,35 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
 
             examples[exampleName1]["value"].Value<string>().Should().Be(exampleValue1);
             examples[exampleName2]["value"].Value<string>().Should().Be(exampleValue2);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-query-parameter-examples", "get", "simpleEnumParameter", "simple", "titleCase", "values")]
+        public void Given_OpenApiDocument_SimpleEnumType_Then_It_Should_Return_EnumValues(string path, string operationType, string name, params string[] values)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var schema = parameter["schema"];
+            // In OAS v2, enum query/url params must be inline. v3 supports using $ref.
+            // (we currently have the same logic for v2 and v3, but ideally v3 should be using $ref instead)
+            for(var i = 0; i < values.Length; i++)
+            {
+                schema["enum"][i].Value<string>().Should().Be(values[i]);
+            }
+
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-query-parameter-examples", "get", "simpleEnumParameter", "simpleEnumTypeValue1", "titleCase")]
+        public void Given_OpenApiDocument_SimpleEnumType_Then_It_Should_Return_OperationParameterExamples(string path, string operationType, string name, string exampleName1, string exampleValue1)
+        {
+            var parameters = this._doc["paths"][path][operationType]["parameters"].Children();
+            var parameter = parameters.SingleOrDefault(p => p["name"].Value<string>() == name);
+
+            var examples = parameter["examples"];
+
+            examples[exampleName1]["value"].Value<string>().Should().Be(exampleValue1);
         }
 
         [DataTestMethod]

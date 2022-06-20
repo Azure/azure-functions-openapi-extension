@@ -1,8 +1,9 @@
 using System;
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 {
@@ -17,13 +18,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         /// <param name="instance">instance.</param>
         /// <param name="settings"><see cref="JsonSerializerSettings"/>settings.</param>
         /// <returns><see cref="IOpenApiAny"/> instance.</returns>
-        public static IOpenApiAny CreateInstance<T>(T instance, JsonSerializerSettings settings)
+        public static IOpenApiAny CreateInstance<T>(T instance, JsonSerializerSettings settings, NamingStrategy namingStrategy)
         {
             Type type = typeof(T);
             var @enum = Type.GetTypeCode(type);
             var openApiExampleValue = default(IOpenApiAny);
-
-            switch (@enum)
+            if (type.IsUnflaggedEnumType())
+            {
+                openApiExampleValue = new OpenApiString((instance as Enum).ToDisplayName(namingStrategy));
+            }
+            else switch (@enum)
             {
                 case TypeCode.Int16:
                     openApiExampleValue = new OpenApiInteger(Convert.ToInt16(instance));
