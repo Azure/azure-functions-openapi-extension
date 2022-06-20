@@ -36,21 +36,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             return isVisitable;
         }
-        private string GetEnumTypeDescription(Type type)
-        {
-            
-            var descriptions = type.GetCustomAttributes(false).OfType<DescriptionAttribute>().Select(d => d.Description).ToList();
-            foreach (var enumValue in type.GetEnumValues())
-            {
-                descriptions.AddRange(type.GetMember(enumValue.ToString()).SelectMany(t => t.GetCustomAttributes(false)).OfType<DescriptionAttribute>().Select(d => $"{enumValue}: {d.Description}"));
-            }
-            if (descriptions.Any())
-            {
-                return string.Join("\n", descriptions);
-            }
-            return null;
-                
-        }
 
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
@@ -144,7 +129,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
+            var schema = this.PayloadVisit(dataType: "string", dataFormat: null);
 
             // Adds enum values to the schema.
             var enums = type.ToOpenApiStringCollection(namingStrategy);
