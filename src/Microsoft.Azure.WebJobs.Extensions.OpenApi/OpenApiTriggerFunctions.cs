@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// <summary>
     /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
-    public class OpenApiTriggerFunctions//Provider
+    public class OpenApiTriggerFunctions
     {
         private const string ContentTypeText = "text/plain";
         private const string ContentTypeHtml = "text/html";
