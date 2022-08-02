@@ -213,17 +213,17 @@ public override void Configure(IFunctionsHostBuilder builder)
     builder.Services.AddSingleton(fixture);
 
     // Example: If you want to change the configuration during startup of your function you can use the following code:
-
-    var test = new OpenApiConfigurationOptions()
+    services.AddSingleton<IOpenApiConfigurationOptions>(x =>
     {
-        Info = new Microsoft.OpenApi.Models.OpenApiInfo
+        return new OpenApiConfigurationOptions()
         {
-            Title = "A dynamic title generated at runtime",
-            Description = "Dynamic Open API information at runtime"
-        }
-    };
-
-    OpenApiConfigurationResolver.ConfigurationOptions = test;
+            Info = new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "A dynamic title generated at runtime",
+                Description = "Dynamic Open API information at runtime"
+            }
+        };
+    });
 }
 ```
 
@@ -240,7 +240,6 @@ public static void Main()
                     services.AddSingleton<Fixture>();
 
                     // Example: If you want to change the configuration during startup of your function you can use the following code:
-
                     services.AddSingleton<IOpenApiConfigurationOptions>(x =>
                     {
                         return new OpenApiConfigurationOptions()
