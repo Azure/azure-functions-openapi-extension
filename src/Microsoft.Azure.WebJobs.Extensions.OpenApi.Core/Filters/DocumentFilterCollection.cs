@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters
 {
@@ -13,18 +12,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentFilterCollection"/> class.
         /// </summary>
-        public DocumentFilterCollection()
-        {
-            this.DocumentFilters = new List<IDocumentFilter>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DocumentFilterCollection"/> class.
-        /// </summary>
         /// <param name="documentFilters">List of <see cref="IDocumentFilter"/> instances.</param>
-        public DocumentFilterCollection(List<IDocumentFilter> documentFilters)
+        public DocumentFilterCollection(List<IDocumentFilter> documentFilters = null)
         {
-            this.DocumentFilters = documentFilters.ThrowIfNullOrDefault();
+            this.DocumentFilters = documentFilters ?? new List<IDocumentFilter>();
         }
 
         /// <summary>

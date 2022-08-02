@@ -282,6 +282,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var runtimes = dependencyManifests
                 .Select(manifest => manifest.Targets[manifest.RuntimeTarget.Name].First())
+                .Where(manifest => manifest.Value.Dependencies != null)
                 .Select(target => new
                 {
                     Name = target.Key.Split('/').First(),
