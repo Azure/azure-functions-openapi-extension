@@ -10,6 +10,7 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
