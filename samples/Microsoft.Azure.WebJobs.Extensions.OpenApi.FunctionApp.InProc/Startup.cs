@@ -2,8 +2,6 @@ using AutoFixture;
 
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,16 +18,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
 
             // Example: If you want to change the configuration during startup of your function you can use the following code:
 
-            //var test = new OpenApiConfigurationOptions()
+            //builder.Services.AddSingleton<IOpenApiConfigurationOptions>((_) =>
             //{
-            //    Info = new Microsoft.OpenApi.Models.OpenApiInfo
+            //    return new OpenApiConfigurationOptions()
             //    {
-            //        Title = "A dynamic title generated at runtime",
-            //        Description = "Dynamic Open API information at runtime"
-            //    }
-            //};
-
-            //OpenApiConfigurationResolver.ConfigurationOptions = test;
+            //        Info = new Microsoft.OpenApi.Models.OpenApiInfo
+            //        {
+            //            Title = "A dynamic title generated at runtime",
+            //            Description = "Dynamic Open API information at runtime"
+            //        }
+            //    };
+            //});
         }
     }
 }
