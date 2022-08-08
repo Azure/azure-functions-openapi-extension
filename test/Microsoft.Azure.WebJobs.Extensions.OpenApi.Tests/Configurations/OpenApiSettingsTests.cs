@@ -50,7 +50,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
         [DataRow("1.0.0", "1.0.0")]
         public void Given_DocVersion_When_Instantiated_Then_It_Should_Return_Result(string version, string expected)
         {
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
         [DataRow("hello", "hello")]
         public void Given_DocTitle_When_Instantiated_Then_It_Should_Return_Result(string title, string expected)
         {
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
         [DataRow("world", "world")]
         public void Given_DocDescription_When_Instantiated_Then_It_Should_Return_Result(string description, string expected)
         {
@@ -92,7 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
+        [DataRow("https://contoso", "https://contoso")]
         [DataRow("https://contoso, https://fabrikam", "https://contoso, https://fabrikam")]
         public void Given_HostNames_When_Instantiated_Then_It_Should_Return_Result(string hostnames, string expected)
         {
@@ -166,7 +167,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
         [DataRow("lorem", "lorem")]
         public void Given_ApiKey_When_Instantiated_Then_It_Should_Return_Result(string apiKey, string expected)
         {
@@ -226,7 +227,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", "")]
+        [DataRow("", null)]
         [DataRow("lorem", "lorem")]
         public void Given_BackendProxyUrl_When_Instantiated_Then_It_Should_Return_Result(string url, string expected)
         {
@@ -237,36 +238,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
 
             settings.BackendProxyUrl.Should().Be(expected);
         }
-
-        //[DataTestMethod]
-        //[DataRow("true", true, "false", false, "lorem", "Function", AuthorizationLevel.Function, "Anonymous", AuthorizationLevel.Anonymous, "http://localhost:7071", "https://contoso.com/api/")]
-        //[DataRow("false", false, "false", false, "ipsum", "Anonymous", AuthorizationLevel.Anonymous, "Function", AuthorizationLevel.Function, "http://contoso", "https://fabrikam.com/api/")]
-        //[DataRow("false", false, "true", true, "ipsum", "Anonymous", AuthorizationLevel.Anonymous, "Function", AuthorizationLevel.Function, "http://contoso", "https://fabrikam.com/api/")]
-        //public void Given_EnvironmentVariables_When_Instantiated_Then_It_Should_Return_Result(string hideSwaggerUI, bool expectedHideSwaggerUI,
-        //                                                                                      string hideDocument, bool expectedHideDocument,
-        //                                                                                      string apiKey,
-        //                                                                                      string authLevelDoc, AuthorizationLevel expectedAuthLevelDoc,
-        //                                                                                      string authLevelUI, AuthorizationLevel expectedAuthLevelUI,
-        //                                                                                      string proxyUrl, string hostnames)
-        //{
-        //    Environment.SetEnvironmentVariable("OpenApi__HideSwaggerUI", hideSwaggerUI);
-        //    Environment.SetEnvironmentVariable("OpenApi__HideDocument", hideDocument);
-        //    Environment.SetEnvironmentVariable("OpenApi__ApiKey", apiKey);
-        //    Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", authLevelDoc);
-        //    Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", authLevelUI);
-        //    Environment.SetEnvironmentVariable("OpenApi__BackendProxyUrl", proxyUrl);
-        //    Environment.SetEnvironmentVariable("OpenApi__HostNames", hostnames);
-
-        //    var config = ConfigurationResolver.Resolve();
-        //    var settings = config.Get<OpenApiSettings>("OpenApi");
-
-        //    settings.HideSwaggerUI.Should().Be(expectedHideSwaggerUI);
-        //    settings.HideDocument.Should().Be(expectedHideDocument);
-        //    settings.ApiKey.Should().Be(apiKey);
-        //    settings.AuthLevel.Document.Should().Be(expectedAuthLevelDoc);
-        //    settings.AuthLevel.UI.Should().Be(expectedAuthLevelUI);
-        //    settings.BackendProxyUrl.Should().Be(proxyUrl);
-        //    settings.HostNames.Should().Be(hostnames);
-        //}
     }
 }

@@ -30,6 +30,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
         {
+            Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
+
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.Info.Should().NotBeNull();
