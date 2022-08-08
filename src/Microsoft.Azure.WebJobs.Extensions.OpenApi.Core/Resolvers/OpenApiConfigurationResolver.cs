@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
@@ -23,12 +25,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
             var type = assembly.GetLoadableTypes()
                                .SingleOrDefault(p => p.GetInterface("IOpenApiConfigurationOptions", ignoreCase: true).IsNullOrDefault() == false
                                                   && p.IsAbstract == false
-                                                  && p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true);
-           if (type.IsNullOrDefault())
+                                                  && p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true
+                                                  && p.GetCustomAttribute<OpenApiConfigurationOptionsIgnoreAttribute>(inherit: false).IsNullOrDefault() == true);
+            if (type.IsNullOrDefault())
             {
-                var settings = new DefaultOpenApiConfigurationOptions();
-
-                return settings;
+                return new DefaultOpenApiConfigurationOptions();
             }
 
             var options = Activator.CreateInstance(type);

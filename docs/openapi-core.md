@@ -66,7 +66,7 @@ If the above conditions are met, add the following key to your `local.settings.j
 To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     public OpenApiInfo Info { get; set; } = new OpenApiInfo()
     {
@@ -102,7 +102,7 @@ It's often required for the API app to have more than one base URL, with differe
 Alternatively, add `OpenApiServer` details to the `Servers` property like:
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -127,7 +127,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 The default version of OpenAPI document rendered is V2 (AKA Swagger). However, you can override the default rendering behaviour by implementing the `OpenApiVersion` property.
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -145,7 +145,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 If you want to force either HTTP or HTTPS, configure the following properties on the `IOpenApiConfigurationOptions` interface.
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -198,65 +198,14 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
 }
 ```
 
-### Dynamically configuring `IOpenApiConfigurationOptions` at Runtime ###
 
-There may be instances where you want to configure the `IOpenApiConfigurationOptions` at runtime.
+### Injecting `OpenApiConfigurationOptions` during Startup ###
 
-To dynamically modify your configuration options at runtime you can use the following examples:
+You may want to inject the `OpenApiConfigurationOptions` instance during startup:
 
-#### In of Proc ####
+* [in-proc worker](./openapi-in-proc.md#injecting-openapiconfigurationoptions-during-startup)
+* [out-of-proc worker](./openapi-out-of-proc.md#injecting-openapiconfigurationoptions-during-startup)
 
-```csharp
-public override void Configure(IFunctionsHostBuilder builder)
-{
-    var fixture = new Fixture();
-    builder.Services.AddSingleton(fixture);
-
-    // Example: If you want to change the configuration during startup of your function you can use the following code:
-    services.AddSingleton<IOpenApiConfigurationOptions>(x =>
-    {
-        return new OpenApiConfigurationOptions()
-        {
-            Info = new Microsoft.OpenApi.Models.OpenApiInfo
-            {
-                Title = "A dynamic title generated at runtime",
-                Description = "Dynamic Open API information at runtime"
-            }
-        };
-    });
-}
-```
-
-#### Out of Proc ####
-
-```csharp
-public static void Main()
-        {
-            var host = new HostBuilder()
-                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
-                .ConfigureServices(services => services.AddSingleton<Fixture>())
-                .ConfigureServices(services => {
-                    services.AddSingleton<Fixture>();
-
-                    // Example: If you want to change the configuration during startup of your function you can use the following code:
-                    services.AddSingleton<IOpenApiConfigurationOptions>(x =>
-                    {
-                        return new OpenApiConfigurationOptions()
-                        {
-                            Info = new Microsoft.OpenApi.Models.OpenApiInfo
-                            {
-                                Title = "A dynamic title generated at runtime",
-                                Description = "Dynamic Open API information at runtime"
-                            }
-                        };
-                    });
-                })
-                .Build();
-
-            host.Run();
-        }
-```
 
 ## Swagger UI Customisation ##
 

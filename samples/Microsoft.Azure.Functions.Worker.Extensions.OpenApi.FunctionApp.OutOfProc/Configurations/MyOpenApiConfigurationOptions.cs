@@ -1,17 +1,18 @@
 using System;
+
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configurations
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Configurations
 {
-    public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
+    public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     {
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = GetOpenApiDocVersion(),
             Title = GetOpenApiDocTitle(),
-            Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
+            Description = GetOpenApiDocDescription(),
             TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
             Contact = new OpenApiContact()
             {

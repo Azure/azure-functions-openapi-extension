@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
@@ -23,13 +24,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
         /// </summary>
+        /// <param name="openApiContext"><see cref="OpenApiHttpTriggerContext"/> instance.</param>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
         /// <param name="ctx"><see cref="ExecutionContext"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerDocument([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, string extension, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderSwaggerDocument(
+            [OpenApiHttpTriggerContext] OpenApiHttpTriggerContext openApiContext,
+            HttpRequest req, string extension, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation($"swagger.{extension} was requested.");
 
@@ -38,7 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                var auth = await openApiContext.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
                                         .AuthorizeAsync(request)
                                         .ConfigureAwait(false);
                 if (!auth.IsNullOrDefault())
@@ -53,21 +57,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     return content;
                 }
 
-                result = await context.Document
+                result = await openApiContext.Document
                                       .InitialiseDocument()
-                                      .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
-                                      .AddNamingStrategy(context.NamingStrategy)
-                                      .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly, context.OpenApiConfigurationOptions.OpenApiVersion)
-                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
-                                      .RenderAsync(context.GetOpenApiSpecVersion(context.OpenApiConfigurationOptions.OpenApiVersion), context.GetOpenApiFormat(extension))
+                                      .AddMetadata(openApiContext.OpenApiConfigurationOptions.Info)
+                                      .AddServer(request, openApiContext.HttpSettings.RoutePrefix, openApiContext.OpenApiConfigurationOptions)
+                                      .AddNamingStrategy(openApiContext.NamingStrategy)
+                                      .AddVisitors(openApiContext.GetVisitorCollection())
+                                      .Build(openApiContext.ApplicationAssembly, openApiContext.OpenApiConfigurationOptions.OpenApiVersion)
+                                      .ApplyDocumentFilters(openApiContext.GetDocumentFilterCollection())
+                                      .RenderAsync(openApiContext.GetOpenApiSpecVersion(openApiContext.OpenApiConfigurationOptions.OpenApiVersion), openApiContext.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = context.GetOpenApiFormat(extension).GetContentType(),
+                    ContentType = openApiContext.GetOpenApiFormat(extension).GetContentType(),
                     StatusCode = (int)HttpStatusCode.OK,
                 };
             }
@@ -76,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 log.LogError(ex.Message);
 
                 result = ex.Message;
-                if (context.IsDevelopment)
+                if (openApiContext.IsDevelopment)
                 {
                     result += "\r\n\r\n";
                     result += ex.StackTrace;
@@ -95,6 +99,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
         /// </summary>
+        /// <param name="openApiContext"><see cref="OpenApiHttpTriggerContext"/> instance.</param>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="version">OpenAPI document spec version. This MUST be either "v2" or "v3".</param>
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
@@ -102,7 +107,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderOpenApiDocument([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, string version, string extension, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderOpenApiDocument(
+            [OpenApiHttpTriggerContext] OpenApiHttpTriggerContext openApiContext,
+            HttpRequest req, string version, string extension, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation($"{version}.{extension} was requested.");
 
@@ -111,7 +118,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                var auth = await openApiContext.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
                                         .AuthorizeAsync(request)
                                         .ConfigureAwait(false);
                 if (!auth.IsNullOrDefault())
@@ -126,21 +133,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     return content;
                 }
 
-                result = await context.Document
+                result = await openApiContext.Document
                                       .InitialiseDocument()
-                                      .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
-                                      .AddNamingStrategy(context.NamingStrategy)
-                                      .AddVisitors(context.GetVisitorCollection())
-                                      .Build(context.ApplicationAssembly, context.GetOpenApiVersionType(version))
-                                      .ApplyDocumentFilters(context.GetDocumentFilterCollection())
-                                      .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
+                                      .AddMetadata(openApiContext.OpenApiConfigurationOptions.Info)
+                                      .AddServer(new HttpRequestObject(req), openApiContext.HttpSettings.RoutePrefix, openApiContext.OpenApiConfigurationOptions)
+                                      .AddNamingStrategy(openApiContext.NamingStrategy)
+                                      .AddVisitors(openApiContext.GetVisitorCollection())
+                                      .Build(openApiContext.ApplicationAssembly, openApiContext.GetOpenApiVersionType(version))
+                                      .ApplyDocumentFilters(openApiContext.GetDocumentFilterCollection())
+                                      .RenderAsync(openApiContext.GetOpenApiSpecVersion(version), openApiContext.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
 
                 content = new ContentResult()
                 {
                     Content = result,
-                    ContentType = context.GetOpenApiFormat(extension).GetContentType(),
+                    ContentType = openApiContext.GetOpenApiFormat(extension).GetContentType(),
                     StatusCode = (int)HttpStatusCode.OK,
                 };
             }
@@ -149,7 +156,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 log.LogError(ex.Message);
 
                 result = ex.Message;
-                if (context.IsDevelopment)
+                if (openApiContext.IsDevelopment)
                 {
                     result += "\r\n\r\n";
                     result += ex.StackTrace;
@@ -168,12 +175,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Invokes the HTTP trigger endpoint to render Swagger UI in HTML.
         /// </summary>
+        /// <param name="openApiContext"><see cref="OpenApiHttpTriggerContext"/> instance.</param>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="ctx"><see cref="ExecutionContext"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Swagger UI in HTML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerUI([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderSwaggerUI(
+            [OpenApiHttpTriggerContext] OpenApiHttpTriggerContext openApiContext,
+            HttpRequest req, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation("SwaggerUI page was requested.");
 
@@ -182,7 +192,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                var auth = await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                var auth = await openApiContext.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
                                         .AuthorizeAsync(request)
                                         .ConfigureAwait(false);
                 if (!auth.IsNullOrDefault())
@@ -197,11 +207,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                     return content;
                 }
 
-                result = await context.SwaggerUI
-                                      .AddMetadata(context.OpenApiConfigurationOptions.Info)
-                                      .AddServer(new HttpRequestObject(req), context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
-                                      .BuildAsync(context.PackageAssembly, context.OpenApiCustomUIOptions)
-                                      .RenderAsync("swagger.json", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
+                result = await openApiContext.SwaggerUI
+                                      .AddMetadata(openApiContext.OpenApiConfigurationOptions.Info)
+                                      .AddServer(new HttpRequestObject(req), openApiContext.HttpSettings.RoutePrefix, openApiContext.OpenApiConfigurationOptions)
+                                      .BuildAsync(openApiContext.PackageAssembly, openApiContext.OpenApiCustomUIOptions)
+                                      .RenderAsync("swagger.json", openApiContext.GetDocumentAuthLevel(), openApiContext.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
                 content = new ContentResult()
@@ -216,7 +226,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 log.LogError(ex.Message);
 
                 result = ex.Message;
-                if (context.IsDevelopment)
+                if (openApiContext.IsDevelopment)
                 {
                     result += "\r\n\r\n";
                     result += ex.StackTrace;
@@ -235,12 +245,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Invokes the HTTP trigger endpoint to render oauth2-redirect.html.
         /// </summary>
+        /// <param name="openApiContext"><see cref="OpenApiHttpTriggerContext"/> instance.</param>
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
         /// <param name="ctx"><see cref="ExecutionContext"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>oauth2-redirect.html.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderOAuth2Redirect([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderOAuth2Redirect(
+            [OpenApiHttpTriggerContext] OpenApiHttpTriggerContext openApiContext,
+            HttpRequest req, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation("The oauth2-redirect.html page was requested.");
 
@@ -249,13 +262,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             var content = default(ContentResult);
             try
             {
-                await context.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
+                await openApiContext.SetApplicationAssemblyAsync(ctx.FunctionAppDirectory)
                              .ConfigureAwait(false);
 
-                result = await context.SwaggerUI
-                                      .AddServer(request, context.HttpSettings.RoutePrefix, context.OpenApiConfigurationOptions)
-                                      .BuildOAuth2RedirectAsync(context.PackageAssembly)
-                                      .RenderOAuth2RedirectAsync("oauth2-redirect.html", context.GetDocumentAuthLevel(), context.GetSwaggerAuthKey())
+                result = await openApiContext.SwaggerUI
+                                      .AddServer(request, openApiContext.HttpSettings.RoutePrefix, openApiContext.OpenApiConfigurationOptions)
+                                      .BuildOAuth2RedirectAsync(openApiContext.PackageAssembly)
+                                      .RenderOAuth2RedirectAsync("oauth2-redirect.html", openApiContext.GetDocumentAuthLevel(), openApiContext.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
                 content = new ContentResult()
@@ -270,7 +283,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 log.LogError(ex.Message);
 
                 result = ex.Message;
-                if (context.IsDevelopment)
+                if (openApiContext.IsDevelopment)
                 {
                     result += "\r\n\r\n";
                     result += ex.StackTrace;

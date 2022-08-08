@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using FluentAssertions;
 
@@ -15,16 +14,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
     [TestClass]
     public class DefaultOpenApiConfigurationOptionsTests
     {
-        [TestMethod]
-        public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
+        [TestCleanup]
+        public void Cleanup()
         {
             Environment.SetEnvironmentVariable("OpenApi__DocVersion", null);
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", null);
+            Environment.SetEnvironmentVariable("OpenApi__DocDescription", null);
             Environment.SetEnvironmentVariable("OpenApi__HostNames", null);
             Environment.SetEnvironmentVariable("OpenApi__Version", null);
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+        }
+
+        [TestMethod]
+        public void Given_Type_When_Instantiated_Then_Properties_Should_Return_Value()
+        {
+            Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
 
             var options = new DefaultOpenApiConfigurationOptions();
 
@@ -66,6 +72,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.Info.Title.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, "This is the OpenAPI Document on Azure Functions")]
+        [DataRow("", "This is the OpenAPI Document on Azure Functions")]
+        [DataRow("hello world", "hello world")]
+        public void Given_OpenApiDocDescription_When_Instantiated_Then_Property_Should_Return_Value(string description, string expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__DocDescription", description);
+
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            options.Info.Description.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -145,10 +164,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__DocVersion", version);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("GetOpenApiDocVersion", BindingFlags.NonPublic | BindingFlags.Static);
-
-            var result = method.Invoke(options, null);
+            var result = DefaultOpenApiConfigurationOptions.GetOpenApiDocVersion();
 
             result.Should().BeOfType<string>();
             (result as string).Should().Be(expected);
@@ -162,10 +178,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", title);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("GetOpenApiDocTitle", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = DefaultOpenApiConfigurationOptions.GetOpenApiDocTitle();
 
-            var result = method.Invoke(options, null);
+            result.Should().BeOfType<string>();
+            (result as string).Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, "This is the OpenAPI Document on Azure Functions")]
+        [DataRow("", "This is the OpenAPI Document on Azure Functions")]
+        [DataRow("hello world", "hello world")]
+        public void Given_OpenApiDocDescription_When_Instantiated_Then_Property_Should_Return_Result(string description, string expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__DocDescription", description);
+
+            var result = DefaultOpenApiConfigurationOptions.GetOpenApiDocDescription();
 
             result.Should().BeOfType<string>();
             (result as string).Should().Be(expected);
@@ -180,10 +207,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__HostNames", hostnames);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("GetHostNames", BindingFlags.NonPublic | BindingFlags.Static);
-
-            var result = method.Invoke(options, null);
+            var result = DefaultOpenApiConfigurationOptions.GetHostNames();
 
             result.Should().BeOfType<List<OpenApiServer>>();
             (result as List<OpenApiServer>).Should().HaveCount(expected);
@@ -200,13 +224,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__Version", version);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("GetOpenApiVersion", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = DefaultOpenApiConfigurationOptions.GetOpenApiVersion();
 
-            var result = method.Invoke(options, null);
-
-            result.Should().BeOfType<OpenApiVersionType>();
-            ((OpenApiVersionType)result).Should().Be(expected);
+            result.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -216,13 +236,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", environment);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsFunctionsRuntimeEnvironmentDevelopment", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = DefaultOpenApiConfigurationOptions.IsFunctionsRuntimeEnvironmentDevelopment();
 
-            var result = method.Invoke(options, null);
-
-            result.Should().BeOfType<bool>();
-            ((bool)result).Should().Be(expected);
+            result.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -234,13 +250,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttps);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpForced", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = DefaultOpenApiConfigurationOptions.IsHttpForced();
 
-            var result = method.Invoke(options, null);
-
-            result.Should().BeOfType<bool>();
-            ((bool)result).Should().Be(expected);
+            result.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -252,13 +264,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         {
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", forceHttps);
 
-            var options = new DefaultOpenApiConfigurationOptions();
-            var method = typeof(DefaultOpenApiConfigurationOptions).GetMethod("IsHttpsForced", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = DefaultOpenApiConfigurationOptions.IsHttpsForced();
 
-            var result = method.Invoke(options, null);
-
-            result.Should().BeOfType<bool>();
-            ((bool)result).Should().Be(expected);
+            result.Should().Be(expected);
         }
 
         public void Given_Type_When_Instantiated_Then_It_Should_Return_EmptyListOfDocumentFilters()
