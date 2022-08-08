@@ -40,6 +40,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
+        /// <param name="configOptions"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
         {
             this._configOptions = configOptions;

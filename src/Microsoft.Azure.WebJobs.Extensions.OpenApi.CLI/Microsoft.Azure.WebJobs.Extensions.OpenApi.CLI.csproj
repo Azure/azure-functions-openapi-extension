@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="1.4.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.33" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.25" />
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />

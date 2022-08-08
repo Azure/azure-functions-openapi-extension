@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 using Newtonsoft.Json;
@@ -8,16 +5,16 @@ using Newtonsoft.Json;
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
-    /// This represents the metadata entity for OpenApiHttpTrigger context binding.
+    /// This represents the metadata entity for OpenAPI HTTP Trigger context binding.
     /// </summary>
     public class OpenApiHttpTriggerContextBindingMetadata
     {
         /// <summary>
-        /// Gets or sets the name of the binding parameter. Default value is <c>context</c>.
+        /// Gets or sets the name of the binding parameter. Default value is <c>openApiContext</c>.
         /// </summary>
         [JsonRequired]
         [JsonProperty("name")]
-        public virtual string Name { get; set; } = "context";
+        public virtual string Name { get; set; } = "openApiContext";
 
         /// <summary>
         /// Gets or sets the binding type. Default value is <c>openApiHttpTriggerContext</c>.
