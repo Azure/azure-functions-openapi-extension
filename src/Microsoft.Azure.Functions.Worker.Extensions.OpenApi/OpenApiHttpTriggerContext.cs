@@ -40,8 +40,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
-        public OpenApiHttpTriggerContext()
+        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
         {
+            this._configOptions = configOptions;
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
             var host = HostJsonResolver.Resolve();

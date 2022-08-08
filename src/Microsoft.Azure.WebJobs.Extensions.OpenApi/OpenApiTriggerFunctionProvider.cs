@@ -17,12 +17,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// <summary>
     /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
-    public partial class OpenApiTriggerFunctionProvider : IFunctionProvider
+    public class OpenApiTriggerFunctionProvider : IFunctionProvider
     {
-        private const string RenderSwaggerDocumentKey = "RenderSwaggerDocument";
-        private const string RenderOpenApiDocumentKey = "RenderOpenApiDocument";
-        private const string RenderSwaggerUIKey = "RenderSwaggerUI";
-        private const string RenderOAuth2RedirectKey = "RenderOAuth2Redirect";
+        private const string RenderSwaggerDocumentKey = nameof(OpenApiTriggerFunctions.RenderSwaggerDocument);
+        private const string RenderOpenApiDocumentKey = nameof(OpenApiTriggerFunctions.RenderOpenApiDocument);
+        private const string RenderSwaggerUIKey = nameof(OpenApiTriggerFunctions.RenderSwaggerUI);
+        private const string RenderOAuth2RedirectKey = nameof(OpenApiTriggerFunctions.RenderOAuth2Redirect);
 
         private readonly OpenApiSettings _settings;
         private readonly Dictionary<string, HttpBindingMetadata> _bindings;
@@ -133,15 +133,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 Name = functionName,
                 FunctionDirectory = null,
                 ScriptFile = $"assembly:{assembly.FullName}",
-                EntryPoint = $"{assembly.GetName().Name}.{typeof(OpenApiTriggerFunctionProvider).Name}.{functionName}",
+                EntryPoint = $"{assembly.GetName().Name}.{typeof(OpenApiTriggerFunctions).Name}.{functionName}",
                 Language = "DotNetAssembly"
             };
 
-            var jo = JObject.FromObject(this._bindings[functionName]);
-            var binding = BindingMetadata.Create(jo);
-            functionMetadata.Bindings.Add(binding);
+            AddBindingMetadata(functionMetadata, this._bindings[functionName]);
+            AddBindingMetadata(functionMetadata, new OpenApiHttpTriggerContextBindingMetadata());
 
             return functionMetadata;
+        }
+
+        private static void AddBindingMetadata(FunctionMetadata functionMetadata, object bindingInfo)
+        {
+            var jsonObject = JObject.FromObject(bindingInfo);
+            var bindingMetadata = BindingMetadata.Create(jsonObject);
+            functionMetadata.Bindings.Add(bindingMetadata);
         }
     }
 }

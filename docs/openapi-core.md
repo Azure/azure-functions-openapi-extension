@@ -93,7 +93,6 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 }
 ```
 
-
 ### Overriding Base URLs ###
 
 It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), declare the `OpenApi__HostNames` value with comma delimited base URLs. Then, it will automatically sets up your base URLs.
@@ -197,6 +196,66 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     // Consider Linux Dedicated Plan only.
     public override bool ForceHttps { get; set; } = true;
 }
+```
+
+### Dynamically configuring `IOpenApiConfigurationOptions` at Runtime ###
+
+There may be instances where you want to configure the `IOpenApiConfigurationOptions` at runtime.
+
+To dynamically modify your configuration options at runtime you can use the following examples:
+
+#### In of Proc ####
+
+```csharp
+public override void Configure(IFunctionsHostBuilder builder)
+{
+    var fixture = new Fixture();
+    builder.Services.AddSingleton(fixture);
+
+    // Example: If you want to change the configuration during startup of your function you can use the following code:
+    services.AddSingleton<IOpenApiConfigurationOptions>(x =>
+    {
+        return new OpenApiConfigurationOptions()
+        {
+            Info = new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "A dynamic title generated at runtime",
+                Description = "Dynamic Open API information at runtime"
+            }
+        };
+    });
+}
+```
+
+#### Out of Proc ####
+
+```csharp
+public static void Main()
+        {
+            var host = new HostBuilder()
+                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureOpenApi()
+                .ConfigureServices(services => services.AddSingleton<Fixture>())
+                .ConfigureServices(services => {
+                    services.AddSingleton<Fixture>();
+
+                    // Example: If you want to change the configuration during startup of your function you can use the following code:
+                    services.AddSingleton<IOpenApiConfigurationOptions>(x =>
+                    {
+                        return new OpenApiConfigurationOptions()
+                        {
+                            Info = new Microsoft.OpenApi.Models.OpenApiInfo
+                            {
+                                Title = "A dynamic title generated at runtime",
+                                Description = "Dynamic Open API information at runtime"
+                            }
+                        };
+                    });
+                })
+                .Build();
+
+            host.Run();
+        }
 ```
 
 ## Swagger UI Customisation ##

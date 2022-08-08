@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
@@ -14,14 +13,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// <summary>
     /// This represents the function provider entity for OpenAPI HTTP triggers.
     /// </summary>
-    public partial class OpenApiTriggerFunctionProvider
+    public class OpenApiTriggerFunctions
     {
         private const string ContentTypeText = "text/plain";
         private const string ContentTypeHtml = "text/html";
         private const string ContentTypeJson = "application/json";
         private const string ContentTypeYaml = "text/vnd.yaml";
-
-        private static readonly IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get OpenAPI document.
@@ -32,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerDocument(HttpRequest req, string extension, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderSwaggerDocument([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, string extension, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation($"swagger.{extension} was requested.");
 
@@ -105,7 +102,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>OpenAPI document in a format of either JSON or YAML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderOpenApiDocument(HttpRequest req, string version, string extension, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderOpenApiDocument([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, string version, string extension, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation($"{version}.{extension} was requested.");
 
@@ -176,7 +173,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Swagger UI in HTML.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerUI(HttpRequest req, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderSwaggerUI([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation("SwaggerUI page was requested.");
 
@@ -243,7 +240,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>oauth2-redirect.html.</returns>
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderOAuth2Redirect(HttpRequest req, ExecutionContext ctx, ILogger log)
+        public static async Task<IActionResult> RenderOAuth2Redirect([OpenApiHttpTriggerContext] OpenApiHttpTriggerContext context, HttpRequest req, ExecutionContext ctx, ILogger log)
         {
             log.LogInformation("The oauth2-redirect.html page was requested.");
 

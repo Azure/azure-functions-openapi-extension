@@ -9,6 +9,7 @@ using FluentAssertions;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi;
@@ -99,6 +100,29 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
                                         .OpenApiConfigurationOptions;
 
             options.Info.Version.Should().Be("1.0.0");
+            options.Servers.Count.Should().Be(0);
+        }
+
+        [TestMethod]
+        public async Task Given_CustomType_When_Initiated_Then_It_Should_Return_CustomOpenApiConfigurationOptions()
+        {
+            var customConfigurationOptions = new DefaultOpenApiConfigurationOptions
+            {
+                Info = new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "A test title",
+                    Version = "2.0.0"
+                }
+            };
+
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext(customConfigurationOptions);
+
+            var options = (await context.SetApplicationAssemblyAsync(location, false))
+                                        .OpenApiConfigurationOptions;
+
+            options.Info.Version.Should().Be("2.0.0");
+            options.Info.Title.Should().Be("A test title");
             options.Servers.Count.Should().Be(0);
         }
 
