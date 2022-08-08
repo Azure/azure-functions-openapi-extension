@@ -40,19 +40,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Resolvers
 
             result.Should().BeOfType<DefaultOpenApiHttpTriggerAuthorization>();
         }
-
-        [TestMethod]
-        public void Given_HttpTriggerAuthorization_Is_Set_Then_It_Should_Return_Result()
-        {
-            var triggerAuth = new FakeOpenApiHttpTriggerAuthorization();
-
-            OpenApiHttpTriggerAuthorizationResolver.HttpTriggerAuthorization = triggerAuth;
-
-            var assembly = Assembly.GetAssembly(typeof(DefaultOpenApiHttpTriggerAuthorization));
-
-            var result = OpenApiHttpTriggerAuthorizationResolver.Resolve(assembly);
-
-            result.Should().BeOfType<FakeOpenApiHttpTriggerAuthorization>();
-        }
     }
 }

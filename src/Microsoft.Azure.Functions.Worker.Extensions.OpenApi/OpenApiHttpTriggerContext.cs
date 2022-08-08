@@ -42,7 +42,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
         /// <param name="configOptions"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
-        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
+        /// <param name="httpTriggerAuthorization"><see cref="IOpenApiHttpTriggerAuthorization"/> instance.</param>
+        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiHttpTriggerAuthorization httpTriggerAuthorization = null)
         {
             this._configOptions = configOptions;
             this._httpTriggerAuthorization = httpTriggerAuthorization;
