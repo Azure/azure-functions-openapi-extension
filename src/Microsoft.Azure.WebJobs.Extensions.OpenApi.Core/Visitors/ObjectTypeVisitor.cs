@@ -20,6 +20,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class ObjectTypeVisitor : TypeVisitor
     {
+        private readonly Dictionary<Type, OpenApiSchemaAcceptor> visitedTypes = new Dictionary<Type, OpenApiSchemaAcceptor>();
+
         private readonly HashSet<Type> _noVisitableTypes = new HashSet<Type>
         {
             typeof(Guid),
@@ -118,7 +120,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            this.ProcessProperties(instance, name, properties, namingStrategy);
+            // Get subAcceptor
+            OpenApiSchemaAcceptor subAcceptor;
+            if (!this.visitedTypes.ContainsKey(type.Value))
+            {
+                subAcceptor = new OpenApiSchemaAcceptor
+                {
+                    Properties = properties,
+                    RootSchemas = instance.RootSchemas,
+                    Schemas = new Dictionary<string, OpenApiSchema>(),
+                };
+                this.visitedTypes.Add(type.Value, subAcceptor);
+                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+            }
+            else
+            {
+                subAcceptor = this.visitedTypes[type.Value];
+            }
+
+            this.ProcessProperties(instance, subAcceptor, name, properties, namingStrategy);
 
             // Adds the reference.
             var reference = new OpenApiReference()
@@ -172,19 +192,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
-        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
+        private void ProcessProperties(IOpenApiSchemaAcceptor instance, IOpenApiSchemaAcceptor subAcceptor, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
         {
-            var schemas = new Dictionary<string, OpenApiSchema>();
-
-            var subAcceptor = new OpenApiSchemaAcceptor()
-            {
-                Properties = properties,
-                RootSchemas = instance.RootSchemas,
-                Schemas = schemas,
-            };
-
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
-
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())
                                                    .Select(p => new KeyValuePair<string, JsonPropertyAttribute>(p.Key, p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false)))
@@ -239,17 +248,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
                 instance.RootSchemas.Add(schema.Key, schema.Value);
             }
-
-            // Removes title of each property.
-            var subSchemas = instance.Schemas[schemaName].Properties;
-            subSchemas = subSchemas.Select(p =>
-                                    {
-                                        p.Value.Title = null;
-                                        return new KeyValuePair<string, OpenApiSchema>(p.Key, p.Value);
-                                    })
-                                   .ToDictionary(p => p.Key, p => p.Value);
-
-            instance.Schemas[schemaName].Properties = subSchemas;
         }
 
         private IOpenApiAny GetExample(Type type, NamingStrategy namingStrategy = null)
