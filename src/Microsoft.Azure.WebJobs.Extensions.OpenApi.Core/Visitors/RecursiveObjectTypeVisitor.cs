@@ -18,8 +18,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
     /// </summary>
     public class RecursiveObjectTypeVisitor : TypeVisitor
     {
-        private readonly Dictionary<Type, OpenApiSchemaAcceptor> visitedTypes = new Dictionary<Type, OpenApiSchemaAcceptor>();
-
         private readonly HashSet<string> _noAddedKeys = new HashSet<string>
         {
             "OBJECT",
@@ -78,8 +76,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            Console.WriteLine($"Recu {type.Value.FullName}");
-
             var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
             var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
 
@@ -106,25 +102,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                  .Where(p => p.PropertyType != type.Value)
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            // Get subAcceptor
-            OpenApiSchemaAcceptor subAcceptor;
-            if (!this.visitedTypes.ContainsKey(type.Value))
-            {
-                subAcceptor = new OpenApiSchemaAcceptor
-                {
-                    Properties = properties,
-                    RootSchemas = instance.RootSchemas,
-                    Schemas = new Dictionary<string, OpenApiSchema>(),
-                };
-                this.visitedTypes.Add(type.Value, subAcceptor);
-                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
-            }
-            else
-            {
-                subAcceptor = this.visitedTypes[type.Value];
-            }
-
-            this.ProcessProperties(instance, subAcceptor, name, properties, namingStrategy);
+            this.ProcessProperties(instance, name, properties, namingStrategy);
 
             // Processes recursive properties
             var recursiveProperties = type.Value
@@ -197,8 +175,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
-        private void ProcessProperties(IOpenApiSchemaAcceptor instance, IOpenApiSchemaAcceptor subAcceptor, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
+        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
         {
+            var schemas = new Dictionary<string, OpenApiSchema>();
+
+            var subAcceptor = new OpenApiSchemaAcceptor()
+            {
+                Properties = properties,
+                RootSchemas = instance.RootSchemas,
+                Schemas = schemas,
+            };
+
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())
                                                    .Select(p => new KeyValuePair<string, JsonPropertyAttribute>(p.Key, p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false)))
