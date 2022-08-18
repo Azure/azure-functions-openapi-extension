@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
@@ -21,7 +22,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         public static IOpenApiHttpTriggerAuthorization Resolve(Assembly assembly)
         {
             var type = assembly.GetLoadableTypes()
-                               .SingleOrDefault(p => p.GetInterface("IOpenApiHttpTriggerAuthorization", ignoreCase: true).IsNullOrDefault() == false);
+                        .SingleOrDefault(p =>   p.GetInterface(nameof(IOpenApiHttpTriggerAuthorization), ignoreCase: true).IsNullOrDefault() == false
+                                            &&  p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true
+                                            &&  p.GetCustomAttribute<OpenApiHttpTriggerAuthorizationIgnoreAttribute>(inherit: false).IsNullOrDefault() == true);
 
             if (type.IsNullOrDefault())
             {
