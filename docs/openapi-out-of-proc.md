@@ -84,3 +84,33 @@ namespace MyFunctionApp
     }
 }
 ```
+
+### Injecting `OpenApiHttpTriggerAuthorization` during Startup ###
+
+You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup, through the `Program.cs` class. Here's the example:
+
+```csharp
+namespace MyFunctionApp
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            var host = new HostBuilder()
+                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureOpenApi()
+                /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
+                .ConfigureServices(services =>
+                {
+                    services.AddSingleton<IOpenApiHttpTriggerAuthorization, MyOpenApiHttpTriggerAuthorization>();
+                })
+                /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
+                .Build();
+
+            host.Run();
+        }
+    }
+}
+```
+
+
