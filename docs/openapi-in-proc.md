@@ -31,3 +31,97 @@ For detailed getting started document, find this [Enable OpenAPI Endpoints on Az
 ## Advanced Configuration in General ##
 
 If you look for the advanced configurations in general, please find the document, [Advanced Configurations for OpenAPI Extension](./openapi.md)
+
+
+### Injecting `OpenApiConfigurationOptions` during Startup ###
+
+You may want to inject the `OpenApiConfigurationOptions` instance during startup, through the `Startup.cs` class. Here's the example:
+
+```csharp
+[assembly: FunctionsStartup(typeof(MyFunctionApp.Startup))]
+namespace MyFunctionApp
+{
+    public class Startup : FunctionsStartup
+    {
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
+            builder.Services.AddSingleton<IOpenApiConfigurationOptions>(_ =>
+                            {
+                                var options = new OpenApiConfigurationOptions()
+                                {
+                                    Info = new OpenApiInfo()
+                                    {
+                                        Version = "1.0.0",
+                                        Title = "Swagger Petstore",
+                                        Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
+                                        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
+                                        Contact = new OpenApiContact()
+                                        {
+                                            Name = "Enquiry",
+                                            Email = "azfunc-openapi@microsoft.com",
+                                            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
+                                        },
+                                        License = new OpenApiLicense()
+                                        {
+                                            Name = "MIT",
+                                            Url = new Uri("http://opensource.org/licenses/MIT"),
+                                        }
+                                    },
+                                    Servers = DefaultOpenApiConfigurationOptions.GetHostNames(),
+                                    OpenApiVersion = OpenApiVersionType.V2,
+                                    IncludeRequestingHostName = true,
+                                    ForceHttps = false,
+                                    ForceHttp = false,
+                                };
+
+                                return options;
+                            });
+            /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
+        }
+    }
+}
+```
+
+### Injecting `OpenApiHttpTriggerAuthorization` during Startup ###
+
+You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup, through the `Startup.cs` class. Here's the example:
+
+```csharp
+[assembly: FunctionsStartup(typeof(MyFunctionApp.Startup))]
+namespace MyFunctionApp
+{
+    public class Startup : FunctionsStartup
+    {
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
+            builder.Services.AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
+                            {
+                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
+                                {
+                                    var result = default(OpenApiAuthorizationResult);
+
+                                    var authtoken = (string)req.Headers["Authorization"];
+                                    if (authtoken.IsNullOrWhiteSpace())
+                                    {
+                                        result = new OpenApiAuthorizationResult()
+                                        {
+                                            StatusCode = HttpStatusCode.Unauthorized,
+                                            ContentType = "text/plain",
+                                            Payload = "Unauthorized",
+                                        };
+
+                                        return await Task.FromResult(result).ConfigureAwait(false);
+                                    }
+
+                                    return await Task.FromResult(result).ConfigureAwait(false);
+                                });
+
+                                return auth;
+                            });
+            /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
+        }
+    }
+}
+```

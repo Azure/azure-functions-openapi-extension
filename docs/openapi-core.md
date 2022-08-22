@@ -66,7 +66,7 @@ If the above conditions are met, add the following key to your `local.settings.j
 To generate an OpenAPI document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. ***It's totally optional***, but if you want, you can implement the `IOpenApiConfigurationOptions` interface within your Azure Functions project to provide OpenAPI metadata like below:
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     public OpenApiInfo Info { get; set; } = new OpenApiInfo()
     {
@@ -93,7 +93,6 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 }
 ```
 
-
 ### Overriding Base URLs ###
 
 It's often required for the API app to have more than one base URL, with different hostname. To have [additional server URL information](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject), declare the `OpenApi__HostNames` value with comma delimited base URLs. Then, it will automatically sets up your base URLs.
@@ -103,7 +102,7 @@ It's often required for the API app to have more than one base URL, with differe
 Alternatively, add `OpenApiServer` details to the `Servers` property like:
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -153,7 +152,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 The default version of OpenAPI document rendered is V2 (AKA Swagger). However, you can override the default rendering behaviour by implementing the `OpenApiVersion` property.
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -171,7 +170,7 @@ public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
 If you want to force either HTTP or HTTPS, configure the following properties on the `IOpenApiConfigurationOptions` interface.
 
 ```csharp
-public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
+public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 {
     ...
 
@@ -225,6 +224,15 @@ public class MyOpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     public override bool ForceHttps { get; set; } = true;
 }
 ```
+
+
+### Injecting `OpenApiConfigurationOptions` during Startup ###
+
+You may want to inject the `OpenApiConfigurationOptions` instance during startup:
+
+* [in-proc worker](./openapi-in-proc.md#injecting-openapiconfigurationoptions-during-startup)
+* [out-of-proc worker](./openapi-out-of-proc.md#injecting-openapiconfigurationoptions-during-startup)
+
 
 ## Swagger UI Customisation ##
 

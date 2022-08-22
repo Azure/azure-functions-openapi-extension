@@ -682,6 +682,44 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return true;
         }
 
+        /// <summary>
+        /// Checks whether the given type has the given attribute type or not.
+        /// </summary>
+        /// <typeparam name="T">Type of attribute.</typeparam>
+        /// <param name="type">Any type.</param>
+        /// <returns>Returns <c>True</c>, if the given type has the given attribute type; otherwise returns <c>False</c>.</returns>
+        public static bool HasCustomAttribute<T>(this Type type) where T : Attribute
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return HasCustomAttribute(type, typeof(T));
+        }
+
+        /// <summary>
+        /// Checks whether the given type has the given attribute type or not.
+        /// </summary>
+        /// <param name="type">Any type.</param>
+        /// <param name="attributeType">Any attribute type.</param>
+        /// <returns>Returns <c>True</c>, if the given type has the given attribute type; otherwise returns <c>False</c>.</returns>
+        public static bool HasCustomAttribute(this Type type, Type attributeType)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            var attribute = type.GetCustomAttribute(attributeType, inherit: false);
+            if (attribute.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool IsArrayType(this Type type)
         {
             var isArrayType = type.Name.Equals("String", StringComparison.InvariantCultureIgnoreCase) == false &&
