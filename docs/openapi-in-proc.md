@@ -47,36 +47,36 @@ namespace MyFunctionApp
         {
             /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
             builder.Services.AddSingleton<IOpenApiConfigurationOptions>(_ =>
-            {
-                var options = new OpenApiConfigurationOptions()
-                {
-                    Info = new OpenApiInfo()
-                    {
-                        Version = "1.0.0",
-                        Title = "Swagger Petstore",
-                        Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
-                        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
-                        Contact = new OpenApiContact()
-                        {
-                            Name = "Enquiry",
-                            Email = "azfunc-openapi@microsoft.com",
-                            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
-                        },
-                        License = new OpenApiLicense()
-                        {
-                            Name = "MIT",
-                            Url = new Uri("http://opensource.org/licenses/MIT"),
-                        }
-                    },
-                    Servers = DefaultOpenApiConfigurationOptions.GetHostNames(),
-                    OpenApiVersion = OpenApiVersionType.V2,
-                    IncludeRequestingHostName = true,
-                    ForceHttps = false,
-                    ForceHttp = false,
-                };
+                            {
+                                var options = new OpenApiConfigurationOptions()
+                                {
+                                    Info = new OpenApiInfo()
+                                    {
+                                        Version = "1.0.0",
+                                        Title = "Swagger Petstore",
+                                        Description = "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
+                                        TermsOfService = new Uri("https://github.com/Azure/azure-functions-openapi-extension"),
+                                        Contact = new OpenApiContact()
+                                        {
+                                            Name = "Enquiry",
+                                            Email = "azfunc-openapi@microsoft.com",
+                                            Url = new Uri("https://github.com/Azure/azure-functions-openapi-extension/issues"),
+                                        },
+                                        License = new OpenApiLicense()
+                                        {
+                                            Name = "MIT",
+                                            Url = new Uri("http://opensource.org/licenses/MIT"),
+                                        }
+                                    },
+                                    Servers = DefaultOpenApiConfigurationOptions.GetHostNames(),
+                                    OpenApiVersion = OpenApiVersionType.V2,
+                                    IncludeRequestingHostName = true,
+                                    ForceHttps = false,
+                                    ForceHttp = false,
+                                };
 
-                return options;
-            });
+                                return options;
+                            });
             /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
         }
     }
@@ -96,7 +96,30 @@ namespace MyFunctionApp
         public override void Configure(IFunctionsHostBuilder builder)
         {
             /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
-            builder.Services.AddSingleton<IOpenApiHttpTriggerAuthorization, MyOpenApiHttpTriggerAuthorization>();
+            builder.Services.AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
+                            {
+                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
+                                {
+                                    var result = default(OpenApiAuthorizationResult);
+
+                                    var authtoken = (string)req.Headers["Authorization"];
+                                    if (authtoken.IsNullOrWhiteSpace())
+                                    {
+                                        result = new OpenApiAuthorizationResult()
+                                        {
+                                            StatusCode = HttpStatusCode.Unauthorized,
+                                            ContentType = "text/plain",
+                                            Payload = "Unauthorized",
+                                        };
+
+                                        return await Task.FromResult(result).ConfigureAwait(false);
+                                    }
+
+                                    return await Task.FromResult(result).ConfigureAwait(false);
+                                });
+
+                                return auth;
+                            });
             /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
         }
     }

@@ -1,11 +1,11 @@
 using System;
+using System.Threading.Tasks;
 
 using AutoFixture;
 
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -49,8 +49,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
 
                                 return options;
                             })
-                            .AddSingleton<IOpenApiHttpTriggerAuthorization, MyOpenApiHttpTriggerAuthorization>();
+                            .AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
+                            {
+                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
+                                {
+                                    var result = default(OpenApiAuthorizationResult);
 
+                                    // ⬇️⬇️⬇️ Add your custom authorisation logic ⬇️⬇️⬇️
+                                    //
+                                    // CUSTOM AUTHORISATION LOGIC
+                                    //
+                                    // ⬆️⬆️⬆️ Add your custom authorisation logic ⬆️⬆️⬆️
+
+                                    return await Task.FromResult(result).ConfigureAwait(false);
+                                });
+
+                                return auth;
+                            })
+                            ;
         }
     }
 }

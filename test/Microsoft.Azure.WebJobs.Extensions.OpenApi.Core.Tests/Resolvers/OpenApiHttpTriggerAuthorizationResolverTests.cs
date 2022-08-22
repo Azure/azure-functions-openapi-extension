@@ -34,11 +34,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Resolvers
         [TestMethod]
         public void Given_Assembly_When_Resolve_Invoked_Then_It_Should_Return_Result()
         {
-            var assembly = Assembly.GetAssembly(typeof(DefaultOpenApiHttpTriggerAuthorization));
+            var assembly = Assembly.GetAssembly(typeof(FakeOpenApiHttpTriggerAuthorization));
 
             var result = OpenApiHttpTriggerAuthorizationResolver.Resolve(assembly);
 
-            result.Should().BeOfType<DefaultOpenApiHttpTriggerAuthorization>();
+            result.Should().BeOfType<FakeOpenApiHttpTriggerAuthorization>();
         }
     }
 }

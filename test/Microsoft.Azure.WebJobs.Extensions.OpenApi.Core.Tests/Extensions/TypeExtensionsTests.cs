@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -217,6 +217,42 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         public void Given_Type_When_HasInterface_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = TypeExtensions.HasInterface(type, "IOpenApiCustomResponseHeader");
+
+            result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void Given_Null_When_HasCustomAttribute_Invoked_Then_It_Should_Return_False()
+        {
+            var result = TypeExtensions.HasCustomAttribute<OpenApiConfigurationOptionsIgnoreAttribute>(null);
+            result.Should().BeFalse();
+
+            result = TypeExtensions.HasCustomAttribute(null, typeof(OpenApiConfigurationOptionsIgnoreAttribute));
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Given_Invalid_TypeReference_When_HasCustomAttribute_Invoked_Then_It_Should_Return_Result()
+        {
+            var result = TypeExtensions.HasCustomAttribute<OpenApiConfigurationOptionsIgnoreAttribute>(typeof(FakeModel));
+
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Given_Valid_TypeReference_When_HasCustomAttribute_Invoked_Then_It_Should_Return_Result()
+        {
+            var result = TypeExtensions.HasCustomAttribute<OpenApiConfigurationOptionsIgnoreAttribute>(typeof(FakeOpenApiConfigurationOptionsBase));
+
+            result.Should().BeTrue();
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(FakeOpenApiConfigurationOptions), false)]
+        [DataRow(typeof(FakeOpenApiConfigurationOptionsBase), true)]
+        public void Given_Type_When_HasCustomAttribute_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.HasCustomAttribute(type, typeof(OpenApiConfigurationOptionsIgnoreAttribute));
 
             result.Should().Be(expected);
         }

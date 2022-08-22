@@ -14,6 +14,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configur
         public override async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
         {
             var result = default(OpenApiAuthorizationResult);
+
+            /* // ⬇️⬇️⬇️ This is a sample custom authorisation logic ⬇️⬇️⬇️
             var authtoken = (string)req.Headers["Authorization"];
             if (authtoken.IsNullOrWhiteSpace())
             {
@@ -51,6 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc.Configur
 
                 return await Task.FromResult(result).ConfigureAwait(false);
             }
+            // ⬆️⬆️⬆️ This is a sample custom authorisation logic ⬆️⬆️⬆️ */
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
