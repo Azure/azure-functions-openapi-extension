@@ -22,9 +22,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         public static IOpenApiHttpTriggerAuthorization Resolve(Assembly assembly)
         {
             var type = assembly.GetLoadableTypes()
-                        .SingleOrDefault(p =>   p.GetInterface(nameof(IOpenApiHttpTriggerAuthorization), ignoreCase: true).IsNullOrDefault() == false
-                                            &&  p.GetCustomAttribute<ObsoleteAttribute>(inherit: false).IsNullOrDefault() == true
-                                            &&  p.GetCustomAttribute<OpenApiHttpTriggerAuthorizationIgnoreAttribute>(inherit: false).IsNullOrDefault() == true);
+                               .SingleOrDefault(p => p.HasInterface<IOpenApiHttpTriggerAuthorization>() == true
+                                                  && p.HasCustomAttribute<ObsoleteAttribute>() == false
+                                                  && p.HasCustomAttribute<OpenApiHttpTriggerAuthorizationIgnoreAttribute>() == false);
 
             if (type.IsNullOrDefault())
             {

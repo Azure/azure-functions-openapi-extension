@@ -102,7 +102,30 @@ namespace MyFunctionApp
                 /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
                 .ConfigureServices(services =>
                 {
-                    services.AddSingleton<IOpenApiHttpTriggerAuthorization, MyOpenApiHttpTriggerAuthorization>();
+                    services.AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
+                            {
+                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
+                                {
+                                    var result = default(OpenApiAuthorizationResult);
+
+                                    var authtoken = (string)req.Headers["Authorization"];
+                                    if (authtoken.IsNullOrWhiteSpace())
+                                    {
+                                        result = new OpenApiAuthorizationResult()
+                                        {
+                                            StatusCode = HttpStatusCode.Unauthorized,
+                                            ContentType = "text/plain",
+                                            Payload = "Unauthorized",
+                                        };
+
+                                        return await Task.FromResult(result).ConfigureAwait(false);
+                                    }
+
+                                    return await Task.FromResult(result).ConfigureAwait(false);
+                                });
+
+                                return auth;
+                            });
                 })
                 /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
                 .Build();
