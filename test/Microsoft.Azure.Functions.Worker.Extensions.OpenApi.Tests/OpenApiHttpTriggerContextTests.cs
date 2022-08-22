@@ -12,6 +12,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -209,7 +210,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             var req = new Mock<IHttpRequestDataObject>();
-            var context = new OpenApiHttpTriggerContext();
+
+            var res = new OpenApiAuthorizationResult()
+            {
+                StatusCode = FakeOpenApiHttpTriggerAuthorization.StatusCode,
+                ContentType = FakeOpenApiHttpTriggerAuthorization.ContentType,
+                Payload = FakeOpenApiHttpTriggerAuthorization.Payload,
+            };
+
+            var auth = new Mock<IOpenApiHttpTriggerAuthorization>();
+            auth.Setup(p => p.AuthorizeAsync(It.IsAny<IHttpRequestDataObject>())).ReturnsAsync(res);
+
+            var options = new Mock<IOpenApiConfigurationOptions>();
+            options.SetupGet(p => p.Security).Returns(auth.Object);
+
+            var context = new OpenApiHttpTriggerContext(options.Object);
 
             var result = await context.SetApplicationAssemblyAsync(location, false)
                                       .AuthorizeAsync(req.Object);

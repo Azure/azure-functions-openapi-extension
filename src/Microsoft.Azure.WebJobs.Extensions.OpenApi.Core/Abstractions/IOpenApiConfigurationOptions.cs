@@ -44,5 +44,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the list of <see cref="IDocumentFilter"/> instances.
         /// </summary>
         List<IDocumentFilter> DocumentFilters { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IOpenApiHttpTriggerAuthorization"/> instance for Swagger endpoints.
+        /// </summary>
+        IOpenApiHttpTriggerAuthorization Security { get; set; }
     }
 }

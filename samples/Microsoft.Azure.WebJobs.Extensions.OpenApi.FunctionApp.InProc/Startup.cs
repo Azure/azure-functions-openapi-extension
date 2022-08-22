@@ -45,26 +45,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
                                     ExcludeRequestingHost = DefaultOpenApiConfigurationOptions.IsRequestingHostExcluded(),
                                     ForceHttps = DefaultOpenApiConfigurationOptions.IsHttpsForced(),
                                     ForceHttp = DefaultOpenApiConfigurationOptions.IsHttpForced(),
+                                    Security = new OpenApiHttpTriggerAuthorization(async req =>
+                                    {
+                                        var result = default(OpenApiAuthorizationResult);
+
+                                        // ⬇️⬇️⬇️ Add your custom authorisation logic ⬇️⬇️⬇️
+                                        //
+                                        // CUSTOM AUTHORISATION LOGIC
+                                        //
+                                        // ⬆️⬆️⬆️ Add your custom authorisation logic ⬆️⬆️⬆️
+
+                                        return await Task.FromResult(result).ConfigureAwait(false);
+                                    }),
                                 };
 
                                 return options;
-                            })
-                            .AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
-                            {
-                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
-                                {
-                                    var result = default(OpenApiAuthorizationResult);
-
-                                    // ⬇️⬇️⬇️ Add your custom authorisation logic ⬇️⬇️⬇️
-                                    //
-                                    // CUSTOM AUTHORISATION LOGIC
-                                    //
-                                    // ⬆️⬆️⬆️ Add your custom authorisation logic ⬆️⬆️⬆️
-
-                                    return await Task.FromResult(result).ConfigureAwait(false);
-                                });
-
-                                return auth;
                             })
                             ;
         }
