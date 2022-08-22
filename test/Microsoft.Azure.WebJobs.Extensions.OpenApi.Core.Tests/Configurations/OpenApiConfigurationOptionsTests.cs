@@ -29,6 +29,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
             options.DocumentFilters.Should().NotBeNull();
             options.DocumentFilters.Should().HaveCount(0);
+
+            options.Security.Should().NotBeNull();
+            options.Security.Should().BeOfType<OpenApiHttpTriggerAuthorization>();
         }
     }
 }

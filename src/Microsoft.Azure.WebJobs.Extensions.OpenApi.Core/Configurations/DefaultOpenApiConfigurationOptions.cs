@@ -52,6 +52,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public override List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
 
+        /// <inheritdoc />
+        public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+
         /// <summary>
         /// Gets the OpenAPI document version.
         /// </summary>

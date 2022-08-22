@@ -282,12 +282,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             result.Should().Be(expected);
         }
 
+        [TestMethod]
         public void Given_Type_When_Instantiated_Then_It_Should_Return_EmptyListOfDocumentFilters()
         {
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.DocumentFilters.Should().NotBeNull();
             options.DocumentFilters.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void Given_Type_When_Instantiated_Then_It_Should_Return_DefaultOpenApiHttpTriggerAuthorization()
+        {
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            options.Security.Should().NotBeNull();
+            options.Security.Should().BeOfType<DefaultOpenApiHttpTriggerAuthorization>();
         }
     }
 }

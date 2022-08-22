@@ -73,52 +73,28 @@ namespace MyFunctionApp
                                     IncludeRequestingHostName = true,
                                     ForceHttps = false,
                                     ForceHttp = false,
+                                    Security = new OpenApiHttpTriggerAuthorization(req =>
+                                    {
+                                        var result = default(OpenApiAuthorizationResult);
+
+                                        var authtoken = (string)req.Headers["Authorization"];
+                                        if (authtoken.IsNullOrWhiteSpace())
+                                        {
+                                            result = new OpenApiAuthorizationResult()
+                                            {
+                                                StatusCode = HttpStatusCode.Unauthorized,
+                                                ContentType = "text/plain",
+                                                Payload = "Unauthorized",
+                                            };
+
+                                            return Task.FromResult(result);
+                                        }
+
+                                        return Task.FromResult(result);
+                                    }),
                                 };
 
                                 return options;
-                            });
-            /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
-        }
-    }
-}
-```
-
-### Injecting `OpenApiHttpTriggerAuthorization` during Startup ###
-
-You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup, through the `Startup.cs` class. Here's the example:
-
-```csharp
-[assembly: FunctionsStartup(typeof(MyFunctionApp.Startup))]
-namespace MyFunctionApp
-{
-    public class Startup : FunctionsStartup
-    {
-        public override void Configure(IFunctionsHostBuilder builder)
-        {
-            /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
-            builder.Services.AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
-                            {
-                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
-                                {
-                                    var result = default(OpenApiAuthorizationResult);
-
-                                    var authtoken = (string)req.Headers["Authorization"];
-                                    if (authtoken.IsNullOrWhiteSpace())
-                                    {
-                                        result = new OpenApiAuthorizationResult()
-                                        {
-                                            StatusCode = HttpStatusCode.Unauthorized,
-                                            ContentType = "text/plain",
-                                            Payload = "Unauthorized",
-                                        };
-
-                                        return await Task.FromResult(result).ConfigureAwait(false);
-                                    }
-
-                                    return await Task.FromResult(result).ConfigureAwait(false);
-                                });
-
-                                return auth;
                             });
             /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
         }

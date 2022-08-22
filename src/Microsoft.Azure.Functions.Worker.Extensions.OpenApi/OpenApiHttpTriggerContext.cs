@@ -36,17 +36,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         private Assembly _appAssembly;
         private IOpenApiConfigurationOptions _configOptions;
         private IOpenApiCustomUIOptions _uiOptions;
-        private IOpenApiHttpTriggerAuthorization _httpTriggerAuthorization;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
         /// <param name="configOptions"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
-        /// <param name="httpTriggerAuthorization"><see cref="IOpenApiHttpTriggerAuthorization"/> instance.</param>
-        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiHttpTriggerAuthorization httpTriggerAuthorization = null)
+        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
         {
             this._configOptions = configOptions;
-            this._httpTriggerAuthorization = httpTriggerAuthorization;
 
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
@@ -111,12 +108,12 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         {
             get
             {
-                if (this._httpTriggerAuthorization.IsNullOrDefault())
+                if (this.OpenApiConfigurationOptions.Security.IsNullOrDefault())
                 {
-                    this._httpTriggerAuthorization = OpenApiHttpTriggerAuthorizationResolver.Resolve(this.ApplicationAssembly);
+                    this.OpenApiConfigurationOptions.Security = OpenApiHttpTriggerAuthorizationResolver.Resolve(this.ApplicationAssembly);
                 }
 
-                return this._httpTriggerAuthorization;
+                return this.OpenApiConfigurationOptions.Security;
             }
         }
 
