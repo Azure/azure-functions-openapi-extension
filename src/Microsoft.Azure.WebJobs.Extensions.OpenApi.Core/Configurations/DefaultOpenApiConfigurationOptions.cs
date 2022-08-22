@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public override OpenApiVersionType OpenApiVersion { get; set; } = GetOpenApiVersion();
 
         /// <inheritdoc />
-        public virtual bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
+        public override bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
 
         /// <inheritdoc />
         public override bool ForceHttp { get; set; } = IsHttpForced();
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// Checks whether to exclude the requesting host as the server URL or not.
         /// </summary>
         /// <returns>Returns <c>True</c>, if the requesting host is excluded; otherwise returns <c>False</c></returns>
-        protected static bool IsRequestingHostExcluded()
+        public static bool IsRequestingHostExcluded()
         {
             var requestingHostExcluded = bool.TryParse(Environment.GetEnvironmentVariable(ExcludeRequestingHostKey), out var result) ? result : (bool?)null;
             if (requestingHostExcluded.HasValue)

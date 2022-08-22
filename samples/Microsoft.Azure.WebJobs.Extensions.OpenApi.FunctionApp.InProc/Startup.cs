@@ -42,7 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
                                     },
                                     Servers = DefaultOpenApiConfigurationOptions.GetHostNames(),
                                     OpenApiVersion = DefaultOpenApiConfigurationOptions.GetOpenApiVersion(),
-                                    IncludeRequestingHostName = DefaultOpenApiConfigurationOptions.IsFunctionsRuntimeEnvironmentDevelopment(),
+                                    ExcludeRequestingHost = DefaultOpenApiConfigurationOptions.IsRequestingHostExcluded(),
                                     ForceHttps = DefaultOpenApiConfigurationOptions.IsHttpsForced(),
                                     ForceHttp = DefaultOpenApiConfigurationOptions.IsHttpForced(),
                                 };

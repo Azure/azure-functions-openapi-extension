@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual OpenApiVersionType OpenApiVersion { get; set; }
 
         /// <inheritdoc />
-        public virtual bool IncludeRequestingHostName { get; set; }
+        public virtual bool ExcludeRequestingHost { get; set; }
 
         /// <inheritdoc />
         public virtual bool ForceHttp { get; set; }

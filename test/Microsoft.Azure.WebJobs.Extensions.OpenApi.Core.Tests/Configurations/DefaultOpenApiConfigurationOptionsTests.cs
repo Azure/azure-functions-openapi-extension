@@ -243,13 +243,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow("Development", true)]
-        [DataRow("Production", false)]
+        [DataRow("Development", false)]
+        [DataRow("Production", true)]
         public void Given_EnvironmentVariable_When_IsFunctionsRuntimeEnvironmentDevelopment_Invoked_Then_It_Should_Return_Result(string environment, bool expected)
         {
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", environment);
 
-            var result = DefaultOpenApiConfigurationOptions.IsFunctionsRuntimeEnvironmentDevelopment();
+            var result = DefaultOpenApiConfigurationOptions.IsRequestingHostExcluded();
 
             result.Should().Be(expected);
         }
