@@ -9,7 +9,9 @@ on:
     - feature/*
     - hotfix/*
     - v2
+    - v2-feature/*
     - v3
+    - v3-feature/*
 
 jobs:
   build_and_test:

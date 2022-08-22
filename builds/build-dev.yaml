@@ -8,7 +8,9 @@ trigger:
     - feature/*
     - hotfix/*
     - v2
+    - v2-feature/*
     - v3
+    - v3-feature/*
 
 pr: none
 
