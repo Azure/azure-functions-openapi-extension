@@ -243,7 +243,7 @@ public class DefaultOpenApiHttpTriggerAuthorization : IOpenApiHttpTriggerAuthori
 If you want your own implementation with OAuth2, you may like to do like:
 
 ```csharp
-public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthorization
+public class MyOpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthorization
 {
     public override async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
     {
@@ -298,6 +298,11 @@ public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthoriz
     }
 }
 ```
+
+You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup:
+
+* [in-proc worker](./openapi-in-proc.md#injecting-openapihttptriggerauthorization-during-startup)
+* [out-of-proc worker](./openapi-out-of-proc.md#injecting-openapihttptriggerauthorization-during-startup)
 
 Then, `OpenApiHttpTriggerContext` automatically picks it up and invokes its `AuthorizeAsync(...)` method. The following code shows how your auth results are handled within each Swagger UI and OpenAPI document endpoints.
 
