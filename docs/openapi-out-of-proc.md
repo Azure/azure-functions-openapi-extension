@@ -85,6 +85,72 @@ namespace MyFunctionApp
 }
 ```
 
+
+### Injecting `OpenApiCustomUIOptions` during Startup ###
+
+You may want to inject the `OpenApiCustomUIOptions` instance during startup, through the `Program.cs` class. Here's the example:
+
+```csharp
+namespace MyFunctionApp
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            var host = new HostBuilder()
+                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureOpenApi()
+                /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
+                .ConfigureServices(services =>
+                {
+                    services.AddSingleton<IOpenApiCustomUIOptions>(_ =>
+                            {
+                                var assembly = Assembly.GetExecutingAssembly();
+                                var options = new OpenApiCustomUIOptions(assembly)
+                                {
+                                    CustomStylesheetPath = "https://contoso.com/dist/my-custom.css",
+                                    CustomJavaScriptPath = "https://contoso.com/dist/my-custom.js",
+
+                                    // ⬇️⬇️⬇️ Add your logic to get your custom stylesheet ⬇️⬇️⬇️
+                                    // GetStylesheet = () =>
+                                    // {
+                                    //     var result = string.Empty;
+
+                                    //     //
+                                    //     // CUSTOM LOGIC TO GET STYLESHEET
+                                    //     //
+
+                                    //     return Task.FromResult(result);
+                                    // },
+                                    // ⬆️⬆️⬆️ Add your logic to get your custom stylesheet ⬆️⬆️⬆️
+
+                                    // ⬇️⬇️⬇️ Add your logic to get your custom JavaScript ⬇️⬇️⬇️
+                                    // GetJavaScript = () =>
+                                    // {
+                                    //     var result = string.Empty;
+
+                                    //     //
+                                    //     // CUSTOM LOGIC TO GET JAVASCRIPT
+                                    //     //
+
+                                    //     return Task.FromResult(result);
+                                    // },
+                                    // ⬆️⬆️⬆️ Add your logic to get your custom JavaScript ⬆️⬆️⬆️
+                                };
+
+                                return options;
+                            });
+                })
+                /* ⬆️⬆️⬆️ Add this ⬆️⬆️⬆️ */
+                .Build();
+
+            host.Run();
+        }
+    }
+}
+```
+
+
 ### Injecting `OpenApiHttpTriggerAuthorization` during Startup ###
 
 You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup, through the `Program.cs` class. Here's the example:
@@ -104,7 +170,7 @@ namespace MyFunctionApp
                 {
                     services.AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
                             {
-                                var auth = new OpenApiHttpTriggerAuthorization(async req =>
+                                var auth = new OpenApiHttpTriggerAuthorization(req =>
                                 {
                                     var result = default(OpenApiAuthorizationResult);
 
@@ -118,10 +184,10 @@ namespace MyFunctionApp
                                             Payload = "Unauthorized",
                                         };
 
-                                        return await Task.FromResult(result).ConfigureAwait(false);
+                                        return Task.FromResult(result);
                                     }
 
-                                    return await Task.FromResult(result).ConfigureAwait(false);
+                                    return Task.FromResult(result);
                                 });
 
                                 return auth;

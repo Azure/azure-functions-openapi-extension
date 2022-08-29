@@ -226,18 +226,18 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
 1. You can inherit `DefaultOpenApiCustomUIOptions` to put additional control from your end such as changing the custom CSS and JavaScript file names or change behaviours of handing CSS and JavaScript.
 
     ```csharp
-    public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+    public class MyOpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
     {
-        public OpenApiCustomUIOptions(Assembly assembly)
+        public MyOpenApiCustomUIOptions(Assembly assembly)
             : base(assembly)
         {
         }
 
         // Declare if you want to change the custom CSS file name.
-        public override string CustomStylesheetPath { get; } = "dist.my-custom.css";
+        public override string CustomStylesheetPath { get; set; } = "dist.my-custom.css";
 
         // Declare if you want to change the custom JavaScript file name.
-        public override string CustomJavaScriptPath { get; } = "dist.my-custom.js";
+        public override string CustomJavaScriptPath { get; set; } = "dist.my-custom.js";
 
         // Declare if you want to change the behaviours of handling the custom CSS file.
         public override async Task<string> GetStylesheetAsync()
@@ -267,17 +267,17 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
 Alternatively, you can use both CSS and JavaScript files from CDN, which is from the Internet.
 
 ```csharp
-public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
+public class MyOpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
 {
-    public OpenApiCustomUIOptions(Assembly assembly)
+    public MyOpenApiCustomUIOptions(Assembly assembly)
         : base(assembly)
     {
     }
     // Declare if you want to change the custom CSS file name.
-    public override string CustomStylesheetPath { get; }
+    public override string CustomStylesheetPath { get; set; }
         = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.css";
     // Declare if you want to change the custom JavaScript file name.
-    public override string CustomJavaScriptPath { get; }
+    public override string CustomJavaScriptPath { get; set; }
         = "https://raw.githubusercontent.com/Azure/azure-functions-openapi-extension/main/samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.V3Static/dist/my-custom.js";
     // Declare if you want to change the behaviours of handling the custom CSS file.
     public override async Task<string> GetStylesheetAsync()
@@ -297,6 +297,14 @@ public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions
 ```
 
 Either way, your customised CSS and JavaScript will be applied to the Swagger UI page.
+
+
+### Injecting `OpenApiCustomUIOptions` during Startup ###
+
+You may want to inject the `OpenApiCustomUIOptions` instance during startup:
+
+* [in-proc worker](./openapi-in-proc.md#injecting-openapicustomuioptions-during-startup)
+* [out-of-proc worker](./openapi-out-of-proc.md#injecting-openapicustomuioptions-during-startup)
 
 
 ## OpenAPI Response Header Customisation ##

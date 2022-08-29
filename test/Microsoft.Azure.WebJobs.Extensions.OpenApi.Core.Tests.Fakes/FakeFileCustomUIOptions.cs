@@ -11,8 +11,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         {
         }
 
-        public override string CustomStylesheetPath { get; } = "dist.fake.css";
+        public override string CustomStylesheetPath { get; set; } = "dist.fake.css";
 
-        public override string CustomJavaScriptPath { get; } = "dist.fake.js";
+        public override string CustomJavaScriptPath { get; set; } = "dist.fake.js";
     }
 }

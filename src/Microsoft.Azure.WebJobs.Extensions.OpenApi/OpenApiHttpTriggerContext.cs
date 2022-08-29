@@ -43,10 +43,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// </summary>
         /// <param name="configOptions"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
         /// <param name="httpTriggerAuthorization"><see cref="IOpenApiHttpTriggerAuthorization"/> instance.</param>
-        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiHttpTriggerAuthorization httpTriggerAuthorization = null)
+        /// <param name="uiOptions"><see cref="IOpenApiCustomUIOptions"/> instance.</param>
+        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiHttpTriggerAuthorization httpTriggerAuthorization = null, IOpenApiCustomUIOptions uiOptions = null)
         {
             this._configOptions = configOptions;
             this._httpTriggerAuthorization = httpTriggerAuthorization;
+            this._uiOptions = uiOptions;
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 
             var host = HostJsonResolver.Resolve();
@@ -163,7 +165,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <inheritdoc />
         public virtual async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
         {
-            return await this.OpenApiHttpTriggerAuthorization.AuthorizeAsync(req).ConfigureAwait(false);    
+            return await this.OpenApiHttpTriggerAuthorization.AuthorizeAsync(req).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

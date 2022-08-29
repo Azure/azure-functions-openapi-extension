@@ -127,6 +127,19 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [TestMethod]
+        public async Task Given_Type_When_Initiated_Then_It_Should_Return_OpenApiHttpTriggerAuthorization()
+        {
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext();
+
+            var auth = ((await context.SetApplicationAssemblyAsync(location, false)) as OpenApiHttpTriggerContext)
+                                      .OpenApiHttpTriggerAuthorization;
+
+            auth.Should().NotBeNull();
+            auth.GetType().Name.Should().Be("FakeOpenApiHttpTriggerAuthorization");
+        }
+
+        [TestMethod]
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_OpenApiCustomUIOptions()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
