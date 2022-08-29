@@ -38,4 +38,11 @@
     </None>
   </ItemGroup>
 
+  <!-- Uncomment this block if you want to use custom UI -->
+  <!--<ItemGroup>
+    <EmbeddedResource Include="dist\my-custom.css" />
+    <EmbeddedResource Include="dist\my-custom.js" />
+  </ItemGroup>-->
+  <!-- Uncomment this block if you want to use custom UI -->
+
 </Project>
