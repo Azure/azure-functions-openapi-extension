@@ -47,9 +47,9 @@ steps:
   uses: azure-functions-openapi-extension/actions/build-openapi@v1
   with:
     functionAppPath: 'bin/Debug/net6.0'
-    requestUri: 'http://localhost:7071/api/swagger.json'
+    requestUri: 'http://localhost:7071/api/openapi/v3.json'
     documentPath: 'generated'
-    documentName: 'swagger.json'
+    documentName: 'openapi.json'
     delay: '10'
     isRemote: 'false'
 
@@ -58,6 +58,7 @@ steps:
     run: |
       echo "Generated Document: ${{ steps.oai.outputs.generated }}"
 
-      Get-Content -Path ${{ steps.oai.outputs.generated }}
+      $json = Get-Content -Path ${{ steps.oai.outputs.generated }} | ConvertFrom-Json
+      $result = $json.openapi -eq "3.0.1"
+      echo "Check result: $result"
 ```
-

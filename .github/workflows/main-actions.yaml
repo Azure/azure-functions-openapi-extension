@@ -51,6 +51,5 @@ jobs:
         echo "Generated Document: ${{ steps.oai.outputs.generated }}"
 
         $json = Get-Content -Path ${{ steps.oai.outputs.generated }} | ConvertFrom-Json
-
         $result = $json.openapi -eq "3.0.1"
-        echo $result
+        echo "Check result: $result"
