@@ -31,13 +31,11 @@ jobs:
     - name: Restore NuGet packages
       shell: pwsh
       run: |
-        dir
         dotnet restore .
 
     - name: Build solution
       shell: pwsh
       run: |
-        dir
         dotnet build . -c Debug -v minimal
 
     - name: Generate OpenAPI document
