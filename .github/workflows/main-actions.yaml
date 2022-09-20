@@ -43,10 +43,14 @@ jobs:
       uses: ./actions/build-openapi/
       with:
         functionAppPath: 'samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc/bin/Debug/net6.0'
+        requestUri: 'http://localhost:7071/api/openapi/v3.json'
 
     - name: Check generated OpenAPI document
       shell: pwsh
       run: |
         echo "Generated Document: ${{ steps.oai.outputs.generated }}"
 
-        Get-Content -Path ${{ steps.oai.outputs.generated }}
+        $json = Get-Content -Path ${{ steps.oai.outputs.generated }} | ConvertFrom-Json
+
+        $result = $json.openapi -eq "3.0.1"
+        echo $result
