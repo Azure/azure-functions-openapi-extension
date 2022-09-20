@@ -1,21 +1,21 @@
-name: Build and Test
+name: Build and Test GitHub Actions
 
 on:
   push:
     branches:
     - main
     - dev
-    - release/*
-    - feature/*
-    - hotfix/*
+    - 'release/**'
+    - 'feature/**'
+    - 'hotfix/**'
     - v2
     - v3
     paths:
-    - actions/*
+    - 'actions/**'
 
 jobs:
   build_and_test:
-    name: Build and test
+    name: Build and test GitHub Actions
 
     runs-on: ubuntu-latest
 
