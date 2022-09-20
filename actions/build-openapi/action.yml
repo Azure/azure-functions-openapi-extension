@@ -1,0 +1,54 @@
+name: OpenAPI Generator from Azure Functions
+author: Microsoft
+description: Generates OpenAPI document from Azure Functions app
+
+branding:
+  icon: file-text
+  color: blue
+
+inputs:
+  functionAppPath:
+    description: Path for the compiled Function app
+    required: false
+    default: 'bin/Debug/net6.0'
+  requestUri:
+    description: URI to generate the OpenAPI document
+    required: false
+    default: 'http://localhost:7071/api/swagger.json'
+  documentPath:
+    description: Path to store the generated OpenAPI document
+    required: false
+    default: 'generated'
+  documentName:
+    description: Name of the OpenAPI document
+    required: false
+    default: 'swagger.json'
+  delay:
+    description: Delay in seconds to start the Function app
+    required: false
+    default: '10'
+  isRemote:
+    description: Value indicating whether the Function app runs remotely or not
+    required: false
+    default: 'false'
+
+outputs:
+  generated:
+    description: Path to the generated OpenAPI document
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+  - -FunctionAppPath
+  - ${{ inputs.functionAppPath }}
+  - -RequestUri
+  - ${{ inputs.requestUri }}
+  - -DocumentPath
+  - ${{ inputs.documentPath }}
+  - -DocumentName
+  - ${{ inputs.documentName }}
+  - -Delay
+  - ${{ inputs.delay }}
+  - -IsRemote
+  - ${{ inputs.isRemote }}

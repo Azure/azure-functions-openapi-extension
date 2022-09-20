@@ -1,0 +1,52 @@
+name: Build and Test GitHub Actions
+
+on:
+  push:
+    branches:
+    - main
+    - dev
+    - 'release/**'
+    - 'feature/**'
+    - 'hotfix/**'
+    - v2
+    - v3
+    paths:
+    - 'actions/**'
+
+jobs:
+  build_and_test:
+    name: Build and test GitHub Actions
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK 6 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dotnet restore .
+
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dotnet build . -c Debug -v minimal
+
+    - name: Generate OpenAPI document
+      id: oai
+      uses: ./actions/build-openapi/
+      with:
+        functionAppPath: 'samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc/bin/Debug/net6.0'
+
+    - name: Check generated OpenAPI document
+      shell: pwsh
+      run: |
+        echo "Generated Document: ${{ steps.oai.outputs.generated }}"
+
+        Get-Content -Path ${{ steps.oai.outputs.generated }}

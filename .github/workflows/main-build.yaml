@@ -5,11 +5,13 @@ on:
     branches:
     - main
     - dev
-    - release/*
-    - feature/*
-    - hotfix/*
+    - 'release/**'
+    - 'feature/**'
+    - 'hotfix/**'
     - v2
     - v3
+    paths-ignore:
+    - 'actions/**'
 
 jobs:
   build_and_test:
