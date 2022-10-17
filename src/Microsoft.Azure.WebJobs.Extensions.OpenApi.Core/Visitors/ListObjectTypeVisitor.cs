@@ -64,6 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 };
                 this.visitedTypes.Add(underlyingType, subAcceptor);
                 subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+
             }
             else
             {
