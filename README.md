@@ -21,6 +21,42 @@
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
 
 
+## GitHub Actions Support ##
+
+If you are using GitHub Actions as your preferred CI/CD pipeline, you can run the GitHub Action into your workflow to automatically generate the OpenAPI document. Find more details at the [Build OpenAPI](./actions/build-openapi/) action page.
+
+Alternatively, you can run either PowerShell script or bash shell script to generate the OpenAPI document within your own CI/CD pipeline other than GitHub Actions. Here are two script files:
+
+* PowerShell: [Get-OpenApiDocument.ps1](./actions/Get-OpenApiDocument.ps1)
+
+    ```powershell
+    ./actions/Get-OpenApiDocument.ps1 `
+        -FunctionAppPath    <function app directory> `
+        -BaseUri            <function app base URI> `
+        -Endpoint           <endpoint for OpenAPI document> `
+        -OutputPath         <output directory for generated OpenAPI document> `
+        -OutputFilename     <OpenAPI document name> `
+        -Delay              <delay in second between run function app and document generation> `
+        -UseWindows         <switch indicating whether to use Windows OS or not>
+    ```
+
+    For more details, run `Get-OpenApiDocument.ps1 -Help`
+
+* Bash shell: [get-openapi-document.sh](./actions/get-openapi-document.sh)
+
+    ```bash
+    ./actions/get-openapi-document.sh \
+        -p|--functionapp-path   <function app directory> \
+        -u|--base-uri           <function app base URI> \
+        -e|--endpoint           <endpoint for OpenAPI document> \
+        -o|--output-path        <output directory for generated OpenAPI document> \
+        -f|--output-filename    <OpenAPI document name> \
+        -d|--delay              <delay in second between run function app and document generation>
+    ```
+
+    For more details, run `get-openapi-document.sh --help`
+
+
 ## Sample Azure Function Apps with OpenAPI Document Enabled ##
 
 Here are sample apps using the project references:
