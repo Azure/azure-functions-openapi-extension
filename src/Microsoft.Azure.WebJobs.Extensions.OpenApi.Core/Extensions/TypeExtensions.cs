@@ -459,7 +459,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsOpenApiArray())
             {
-                underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+                underlyingType = type.GetElementType();
+                if (underlyingType == null)
+                {
+                    if (type.IsNested)
+                    { // Does not work for implemented interfaces
+                        underlyingType = type.BaseType;
+                    }
+                    else
+                    {
+                        underlyingType = type.GetGenericArguments()[0];
+                    }                    
+                }
             }
 
             if (type.IsOpenApiDictionary())
