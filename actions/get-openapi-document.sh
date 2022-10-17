@@ -104,9 +104,9 @@ fi
 curl $request_uri > $filepath
 
 # Stop the function app
-PID=`ps -eaf | grep func | grep -v grep | awk '{print $2}'`
+PID=$(lsof -nP -i4TCP:7071 | grep LISTEN | awk '{print $2}')
 if [[ "" !=  "$PID" ]]; then
-  kill -9 $PID
+    kill -9 $PID
 fi
 
 popd
