@@ -40,7 +40,7 @@ function Show-Usage {
             [-FunctionAppPath <function app directory>] ``
             [-BaseUri <function app base URI>] ``
             [-Endpoint <endpoint for OpenAPI document>] ``
-            [-OutputPath <output directory for generated OpenAPI document> ``
+            [-OutputPath <output directory for generated OpenAPI document>] ``
             [-OutputFilename <OpenAPI document name>] ``
             [-Delay <delay in second between run function app and document generation>] ``
             [-UseWindows] ``
