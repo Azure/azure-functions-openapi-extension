@@ -112,7 +112,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
                                       .OpenApiHttpTriggerAuthorization;
 
             auth.Should().NotBeNull();
-            auth.GetType().Name.Should().Be("FakeOpenApiHttpTriggerAuthorization");
+            auth.GetType().Name.Should().Be("DefaultOpenApiHttpTriggerAuthorization");
         }
 
         [TestMethod]

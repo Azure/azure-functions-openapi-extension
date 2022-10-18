@@ -12,7 +12,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-using Microsoft.Extensions.Options;
+
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +22,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 {
-    [TestClass]
+    [TestClass]
     public class OpenApiHttpTriggerContextTests
     {
         [TestCleanup]
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(typeof(OpenApiHttpTriggerContextTests))]
+        [DataRow(typeof(OpenApiHttpTriggerContextTests))]
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_ApplicationAssemblyWithGivenType(Type type)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             assembly.DefinedTypes.Select(p => p.FullName).Should().Contain(ti.FullName);
         }
 
-        [TestMethod]
+        [TestMethod]
         public async Task Given_Type_With_Referenced_Project_When_Initiated_Then_It_Should_Return_ApplicationAssemblyOfRootAssembly()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow(typeof(IOpenApiHttpTriggerContext))]
         [DataRow(typeof(OpenApiHttpTriggerContext))]
         [DataRow(typeof(OpenApiTriggerFunction))]
-        [DataRow(typeof(ISwaggerUI))]
+        [DataRow(typeof(ISwaggerUI))]
         public async Task Given_Type_When_Initiated_Then_It_Should_NotReturn_ApplicationAssemblyWithGivenType(Type type)
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             assembly.DefinedTypes.Select(p => p.FullName).Should().NotContain(ti.FullName);
         }
 
-        [TestMethod]
+        [TestMethod]
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_PackageAssembly()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             assembly.DefinedTypes.Should().Contain(typeof(ISwaggerUI).GetTypeInfo());
         }
 
-        [TestMethod]
+        [TestMethod]
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_OpenApiConfigurationOptions()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
                                       .OpenApiHttpTriggerAuthorization;
 
             auth.Should().NotBeNull();
-            auth.GetType().Name.Should().Be("FakeOpenApiHttpTriggerAuthorization");
+            auth.GetType().Name.Should().Be("DefaultOpenApiHttpTriggerAuthorization");
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             options.CustomJavaScriptPath.Should().Be("dist.custom.js");
         }
 
-        [TestMethod]
+        [TestMethod]
         public async Task Given_Type_When_Initiated_Then_It_Should_Return_HttpSettings()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
