@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
                 .ConfigureOpenApi()
                 .ConfigureServices(services =>
                 {
-                    services.AddSingleton<Fixture>()
+                    services.AddSingleton<Fixture>(new Fixture())
                             .AddSingleton<IOpenApiConfigurationOptions>(_ =>
                             {
                                 var options = new OpenApiConfigurationOptions()

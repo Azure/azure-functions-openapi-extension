@@ -18,7 +18,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddSingleton<Fixture>()
+            builder.Services.AddSingleton<Fixture>(new Fixture())
                             .AddSingleton<IOpenApiConfigurationOptions>(_ =>
                             {
                                 var options = new OpenApiConfigurationOptions()
