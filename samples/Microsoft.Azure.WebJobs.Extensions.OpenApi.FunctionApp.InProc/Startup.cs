@@ -62,23 +62,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
 
                                 return options;
                             })
-                            .AddSingleton<IOpenApiHttpTriggerAuthorization>(_ =>
-                            {
-                                var auth = new OpenApiHttpTriggerAuthorization(req =>
-                                {
-                                    var result = default(OpenApiAuthorizationResult);
-
-                                    // ⬇️⬇️⬇️ Add your custom authorisation logic ⬇️⬇️⬇️
-                                    //
-                                    // CUSTOM AUTHORISATION LOGIC
-                                    //
-                                    // ⬆️⬆️⬆️ Add your custom authorisation logic ⬆️⬆️⬆️
-
-                                    return Task.FromResult(result);
-                                });
-
-                                return auth;
-                            })
                             .AddSingleton<IOpenApiCustomUIOptions>(_ =>
                             {
                                 var assembly = Assembly.GetExecutingAssembly();
