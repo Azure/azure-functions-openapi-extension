@@ -324,8 +324,7 @@ if (!auth.IsNullOrDefault())
 }
 
 // Out-Of-Process Worker
-var auth = await this._context
-                        .SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
+var auth = await context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
                         .AuthorizeAsync(request)
                         .ConfigureAwait(false);
 if (!auth.IsNullOrDefault())
@@ -337,3 +336,5 @@ if (!auth.IsNullOrDefault())
     return response;
 }
 ```
+
+There are more authN scenarios described in this document, [Securing Azure Functions Endpoints through OpenAPI Auth](./openapi-auth.md). Take a look for more details.
