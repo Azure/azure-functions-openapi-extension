@@ -32,6 +32,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         IOpenApiConfigurationOptions OpenApiConfigurationOptions { get; }
 
+        /*
+         * This needs to be introduced in v2.0.0 as it's a breaking change.
+        /// <summary>
+        /// Gets the <see cref="IOpenApiHttpTriggerAuthorization"/> instance.
+        /// </summary>
+        IOpenApiHttpTriggerAuthorization OpenApiHttpTriggerAuthorization { get; }
+        */
+
         /// <summary>
         /// Gets the <see cref="IOpenApiCustomUIOptions"/> instance.
         /// </summary>

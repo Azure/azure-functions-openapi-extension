@@ -8,14 +8,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
     public interface IOpenApiCustomUIOptions
     {
         /// <summary>
-        /// Gets the filepath for stylesheet for custom UI.
+        /// Gets or sets the filepath or URL for stylesheet for custom UI.
         /// </summary>
-        string CustomStylesheetPath { get; }
+        string CustomStylesheetPath { get; set; }
 
         /// <summary>
-        /// Gets filepath for JavaScript for custom UI.
+        /// Gets or sets filepath or URL for JavaScript for custom UI.
         /// </summary>
-        string CustomJavaScriptPath { get; }
+        string CustomJavaScriptPath { get; set; }
 
         /// <summary>
         /// Gets the stylesheet to be rendered on the page.

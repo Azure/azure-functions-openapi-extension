@@ -35,15 +35,20 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         private string _dllpath;
         private Assembly _appAssembly;
         private IOpenApiConfigurationOptions _configOptions;
+        private IOpenApiHttpTriggerAuthorization _httpTriggerAuthorization;
         private IOpenApiCustomUIOptions _uiOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiHttpTriggerContext"/> class.
         /// </summary>
         /// <param name="configOptions"><see cref="IOpenApiConfigurationOptions"/> instance.</param>
-        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null)
+        /// <param name="httpTriggerAuthorization"><see cref="IOpenApiHttpTriggerAuthorization"/> instance.</param>
+        /// <param name="uiOptions"><see cref="IOpenApiCustomUIOptions"/> instance.</param>
+        public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiHttpTriggerAuthorization httpTriggerAuthorization = null, IOpenApiCustomUIOptions uiOptions = null)
         {
             this._configOptions = configOptions;
+            this._httpTriggerAuthorization = httpTriggerAuthorization;
+            this._uiOptions = uiOptions;
 
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
 

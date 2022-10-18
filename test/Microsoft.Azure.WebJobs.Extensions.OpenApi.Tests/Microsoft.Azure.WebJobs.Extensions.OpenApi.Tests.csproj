@@ -37,7 +37,7 @@
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\FakeDependencyFile.deps.json" Link="\%(Filename)%(Extension)">
+    <None Include="TestData\FakeDependencyFile.deps.json" Link="%(Filename)%(Extension)">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

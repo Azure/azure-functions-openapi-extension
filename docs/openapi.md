@@ -256,7 +256,7 @@ public class DefaultOpenApiHttpTriggerAuthorization : IOpenApiHttpTriggerAuthori
 If you want your own implementation with OAuth2, you may like to do like:
 
 ```csharp
-public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthorization
+public class MyOpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthorization
 {
     public override async Task<OpenApiAuthorizationResult> AuthorizeAsync(IHttpRequestDataObject req)
     {
@@ -312,6 +312,11 @@ public class OpenApiHttpTriggerAuthorization : DefaultOpenApiHttpTriggerAuthoriz
 }
 ```
 
+You may want to inject the `OpenApiHttpTriggerAuthorization` instance during startup:
+
+* [in-proc worker](./openapi-in-proc.md#injecting-openapihttptriggerauthorization-during-startup)
+* [out-of-proc worker](./openapi-out-of-proc.md#injecting-openapihttptriggerauthorization-during-startup)
+
 Then, `OpenApiHttpTriggerContext` automatically picks it up and invokes its `AuthorizeAsync(...)` method. The following code shows how your auth results are handled within each Swagger UI and OpenAPI document endpoints.
 
 ```csharp
@@ -332,10 +337,9 @@ if (!auth.IsNullOrDefault())
 }
 
 // Out-Of-Process Worker
-var auth = await this._context
-                     .SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
-                     .AuthorizeAsync(request)
-                     .ConfigureAwait(false);
+var auth = await context.SetApplicationAssemblyAsync(fi.Directory.FullName, appendBin: false)
+                        .AuthorizeAsync(request)
+                        .ConfigureAwait(false);
 if (!auth.IsNullOrDefault())
 {
     response = req.CreateResponse(auth.StatusCode);
@@ -345,3 +349,5 @@ if (!auth.IsNullOrDefault())
     return response;
 }
 ```
+
+There are more authN scenarios described in this document, [Securing Azure Functions Endpoints through OpenAPI Auth](./openapi-auth.md). Take a look for more details.

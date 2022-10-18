@@ -1,6 +1,6 @@
 # Azure Functions OpenAPI Extension #
 
-| Out-of-Proc Worker | In-Proc Wroker |
+| Out-of-Proc Worker | In-Proc Worker |
 | :----------------: | :------------: |
 | [![](https://img.shields.io/nuget/dt/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) | [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) |
 
@@ -16,9 +16,46 @@
   * [**Microsoft.Azure.Functions.Worker.Extensions.OpenApi**](docs/openapi-out-of-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
+* [**Securing Azure Functions Endpoints through OpenAPI Auth**](docs/openapi-auth.md): This document shows many various scenarios to add authN features including the built-in features and OAuth2 auth flows.
 * [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
+
+
+## GitHub Actions Support ##
+
+If you are using GitHub Actions as your preferred CI/CD pipeline, you can run the GitHub Action into your workflow to automatically generate the OpenAPI document. Find more details at the [Build OpenAPI](./actions/build-openapi/) action page.
+
+Alternatively, you can run either PowerShell script or bash shell script to generate the OpenAPI document within your own CI/CD pipeline other than GitHub Actions. Here are two script files:
+
+* PowerShell: [Get-OpenApiDocument.ps1](./actions/Get-OpenApiDocument.ps1)
+
+    ```powershell
+    ./actions/Get-OpenApiDocument.ps1 `
+        -FunctionAppPath    <function app directory> `
+        -BaseUri            <function app base URI> `
+        -Endpoint           <endpoint for OpenAPI document> `
+        -OutputPath         <output directory for generated OpenAPI document> `
+        -OutputFilename     <OpenAPI document name> `
+        -Delay              <delay in second between run function app and document generation> `
+        -UseWindows         <switch indicating whether to use Windows OS or not>
+    ```
+
+    For more details, run `Get-OpenApiDocument.ps1 -Help`
+
+* Bash shell: [get-openapi-document.sh](./actions/get-openapi-document.sh)
+
+    ```bash
+    ./actions/get-openapi-document.sh \
+        -p|--functionapp-path   <function app directory> \
+        -u|--base-uri           <function app base URI> \
+        -e|--endpoint           <endpoint for OpenAPI document> \
+        -o|--output-path        <output directory for generated OpenAPI document> \
+        -f|--output-filename    <OpenAPI document name> \
+        -d|--delay              <delay in second between run function app and document generation>
+    ```
+
+    For more details, run `get-openapi-document.sh --help`
 
 
 ## Sample Azure Function Apps with OpenAPI Document Enabled ##
