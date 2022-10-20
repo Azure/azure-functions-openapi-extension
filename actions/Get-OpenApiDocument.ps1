@@ -2,7 +2,7 @@
 Param(
     [string]
     [Parameter(Mandatory=$false)]
-    $FunctionAppPath = "bin/Debug/net6.0",
+    $FunctionAppPath = ".",
 
     [string]
     [Parameter(Mandatory=$false)]
@@ -46,13 +46,13 @@ function Show-Usage {
             [-UseWindows] ``
             [-Help]
     Options:
-        -FunctionAppPath    Function app path. It can be the project directory or compiled app directory.
-                            Default: 'bin/Debug/net6.0'
+        -FunctionAppPath    Function app path, relative to the repository root. It can be the project directory or compiled app directory.
+                            Default: '.'
         -BaseUri            Function app base URI.
                             Default: 'http://localhost:7071/api/'
         -Endpoint           OpenAPI document endpoint.
                             Default: 'swagger.json'
-        -OutputPath         Output directory to store the generated OpenAPI document.
+        -OutputPath         Output directory to store the generated OpenAPI document, relative to the repository root.
                             Default: 'generated'
         -OutputFilename     Output filename for the generated OpenAPI document.
                             Default: 'swagger.json'
@@ -78,17 +78,19 @@ if ($UseWindows -eq $true) {
     $func = $func.Replace(".ps1", ".cmd")
 }
 
-pushd $FunctionAppPath
+$currentDirectory = $(pwd).Path
+
+cd "$env:CODESPACE_VSCODE_FOLDER/$FunctionAppPath"
 
 # Run the function app in the background
 Start-Process -NoNewWindow "$func" @("start","--verbose","false")
 Start-Sleep -s $Delay
 
 $requestUri = "$($BaseUri.TrimEnd('/'))/$($Endpoint.TrimStart('/'))"
-$filepath = "$($OutputPath.TrimEnd('/'))/$($OutputFilename.TrimStart('/'))"
+$filepath = "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))/$($OutputFilename.TrimStart('/'))"
 
-if ($(Test-Path -Path "$($OutputPath.TrimEnd('/'))" -PathType Container) -eq $false) {
-    New-Item -Path "$($OutputPath.TrimEnd('/'))" -ItemType Directory
+if ($(Test-Path -Path "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))" -PathType Container) -eq $false) {
+    New-Item -Path "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))" -ItemType Directory
 }
 
 # Download the OpenAPI document
@@ -100,4 +102,4 @@ if ($process -ne $null) {
     Stop-Process -Id $process.Id
 }
 
-popd
+cd $currentDirectory
