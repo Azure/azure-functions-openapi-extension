@@ -41,7 +41,8 @@ $localSettingsJsons = @()
 $csprojs | ForEach-Object {
     $isInProcFunctionApp = $(Get-Content -Path $_.FullName -Raw) -like '*Microsoft.NET.Sdk.Functions*'
     $isOutOfProcFunctionApp = $(Get-Content -Path $_.FullName -Raw) -like '*Microsoft.Azure.Functions.Worker.Sdk*'
-    if ($isInProcFunctionApp -eq $false) -and ($isOutOfProcFunctionApp -eq $false) {
+    $isFunctionApp = ($isInProcFunctionApp -eq $true) -or ($isOutOfProcFunctionApp -eq $true)
+    if ($isFunctionApp -eq $false) {
         return
     }
 
