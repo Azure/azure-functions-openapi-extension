@@ -39,8 +39,9 @@ $csprojs = Get-ChildItem -Path $env:CODESPACE_VSCODE_FOLDER -Filter *.csproj -Re
 # Get local.settings.json files
 $localSettingsJsons = @()
 $csprojs | ForEach-Object {
-    $isFunctionApp = $(Get-Content -Path $_.FullName -Raw) -like '*Microsoft.NET.Sdk.Functions*'
-    if ($isFunctionApp -eq $false) {
+    $isInProcFunctionApp = $(Get-Content -Path $_.FullName -Raw) -like '*Microsoft.NET.Sdk.Functions*'
+    $isOutOfProcFunctionApp = $(Get-Content -Path $_.FullName -Raw) -like '*Microsoft.Azure.Functions.Worker.Sdk*'
+    if ($isInProcFunctionApp -eq $false) -and ($isOutOfProcFunctionApp -eq $false) {
         return
     }
 
