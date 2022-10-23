@@ -28,7 +28,8 @@ function Get-CodespaceUrl {
         [string] $CodespaceName
     )
 
-    $codespaceUrl = "https://$($CodespaceName)-7071.githubpreview.dev/api"
+    # $codespaceUrl = "https://$($CodespaceName)-7071.githubpreview.dev/api"
+    $codespaceUrl = "https://$($CodespaceName)-7071.preview.app.github.dev/api"
 
     return $codespaceUrl
 }
