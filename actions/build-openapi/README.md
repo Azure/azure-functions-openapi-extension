@@ -44,7 +44,7 @@ steps:
 
 - name: Generate OpenAPI document
   id: oai
-  uses: azure-functions-openapi-extension/actions/build-openapi@v1
+  uses: Azure/azure-functions-openapi-extension/actions/build-openapi@v1
   with:
     functionAppPath: 'bin/Debug/net6.0'
     requestUri: 'http://localhost:7071/api/openapi/v3.json'
