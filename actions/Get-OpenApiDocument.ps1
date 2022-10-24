@@ -13,6 +13,14 @@ Param(
     [ValidateSet("swagger.json", "openapi/v2.json", "openapi/v3.json", "swagger.yaml", "openapi/v2.yaml", "openapi/v3.yaml")]
     $Endpoint = "swagger.json",
 
+    [string]
+    [Parameter(Mandatory=$false)]
+    $OutputPath = "generated",
+
+    [string]
+    [Parameter(Mandatory=$false)]
+    $OutputFilename = "swagger.json",
+
     [int]
     [Parameter(Mandatory=$false)]
     $Delay = 30,
@@ -36,6 +44,8 @@ function Show-Usage {
             [-FunctionAppPath <function app directory>] ``
             [-BaseUri <function app base URI>] ``
             [-Endpoint <endpoint for OpenAPI document>] ``
+            [-OutputPath <output directory for generated OpenAPI document>] ``
+            [-OutputFilename <OpenAPI document name>] ``
             [-Delay <delay in second between run function app and document generation>] ``
             [-UseCodespaces] ``
             [-UseWindows] ``
@@ -46,6 +56,10 @@ function Show-Usage {
         -BaseUri            Function app base URI.
                             Default: 'http://localhost:7071/api/'
         -Endpoint           OpenAPI document endpoint.
+                            Default: 'swagger.json'
+        -OutputPath         Output directory to store the generated OpenAPI document, relative to the repository root.
+                            Default: 'generated'
+        -OutputFilename     Output filename for the generated OpenAPI document.
                             Default: 'swagger.json'
         -Delay              Delay in second between the function app run and document generation.
                             Default: 30
@@ -85,7 +99,13 @@ Start-Sleep -s $Delay
 
 # Download the OpenAPI document
 $requestUri = "$($BaseUri.TrimEnd('/'))/$($Endpoint.TrimStart('/'))"
-$openapi = Invoke-RestMethod -Method Get -Uri $requestUri | ConvertTo-Json -Depth 100
+$filepath = "$repositoryRoot/$($OutputPath.TrimEnd('/'))/$($OutputFilename.TrimStart('/'))"
+
+if ($(Test-Path -Path "$repositoryRoot/$($OutputPath.TrimEnd('/'))" -PathType Container) -eq $false) {
+    New-Item -Path "$repositoryRoot/$($OutputPath.TrimEnd('/'))" -ItemType Directory
+}
+
+Invoke-RestMethod -Method Get -Uri $requestUri | ConvertTo-Json -Depth 100 | Out-File -FilePath $filepath -Force
 
 # Stop the function app
 $process = $(get-Process -Name func)
@@ -94,5 +114,3 @@ if ($process -ne $null) {
 }
 
 cd $currentDirectory
-
-$openapi
