@@ -105,7 +105,7 @@ if ($(Test-Path -Path "$repositoryRoot/$($OutputPath.TrimEnd('/'))" -PathType Co
 }
 
 # Download the OpenAPI document
-Invoke-RestMethod -Method Get -Uri $requestUri | ConvertTo-Json -Depth 100 | Out-File -FilePath $filepath -Force
+$openapi = Invoke-RestMethod -Method Get -Uri $requestUri | ConvertTo-Json -Depth 100 # | Out-File -FilePath $filepath -Force
 
 # Stop the function app
 $process = $(get-Process -Name func)
@@ -114,3 +114,5 @@ if ($process -ne $null) {
 }
 
 cd $currentDirectory
+
+$openapi
