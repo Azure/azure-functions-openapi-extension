@@ -11,7 +11,7 @@ All input parameters are optional, and each has its default value.
 * `requestUri`: URI to generate the OpenAPI document. default: `http://localhost:7071/api/swagger.json`
 * `documentPath`: Path to store the generated OpenAPI document. default: `generated`
 * `documentName`: Name of the OpenAPI document. default: `swagger.json`
-* `delay`: Delay in seconds to start the Function app. default: `10`
+* `delay`: Delay in seconds to start the Function app. default: `30`
 * `isRemote`: Value indicating whether the Function app runs remotely or not. default: `false`
 
 
@@ -50,7 +50,7 @@ steps:
     requestUri: 'http://localhost:7071/api/openapi/v3.json'
     documentPath: 'generated'
     documentName: 'openapi.json'
-    delay: '10'
+    delay: '30'
     isRemote: 'false'
 
 - name: Check generated OpenAPI document

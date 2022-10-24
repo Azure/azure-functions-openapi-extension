@@ -26,7 +26,7 @@ inputs:
   delay:
     description: Delay in seconds to start the Function app
     required: false
-    default: '10'
+    default: '30'
   isRemote:
     description: Value indicating whether the Function app runs remotely or not
     required: false
