@@ -18,6 +18,7 @@ function usage() {
                                 Default: 'swagger.json'
         [-d|--delay]            Delay in second between the function app run and document generation.
                                 Default: 30
+        [-c|--use-codespaces]   Switch indicating whether to use GitHub Codespaces or not.
         [-h|--help]             Show this message.
 USAGE
 
@@ -30,6 +31,7 @@ endpoint="swagger.json"
 output_path="generated"
 output_filename="swagger.json"
 delay=30
+repository_root=$GITHUB_WORKSPACE
 
 if [[ $# -eq 0 ]]; then
     functionapp_path="."
@@ -38,6 +40,7 @@ if [[ $# -eq 0 ]]; then
     output_path="generated"
     output_filename="swagger.json"
     delay=30
+    repository_root=$GITHUB_WORKSPACE
 fi
 
 while [[ "$1" != "" ]]; do
@@ -72,6 +75,10 @@ while [[ "$1" != "" ]]; do
         delay=$1
         ;;
 
+    -c | --use_codespaces)
+        repository_root=$CODESPACE_VSCODE_FOLDER
+        ;;
+
     -h | --help)
         usage
         exit 1
@@ -88,7 +95,7 @@ done
 
 current_directory=$(pwd)
 
-cd "$CODESPACE_VSCODE_FOLDER/$functionapp_path"
+cd "$repository_root/$functionapp_path"
 
 # Run the function app in the background
 func start --verbose false &
@@ -96,10 +103,10 @@ func start --verbose false &
 sleep $delay
 
 request_uri="$(echo "$base_uri" | sed 's:/*$::')/$(echo "$endpoint" | sed 's:^/*::')"
-filepath="$CODESPACE_VSCODE_FOLDER/$(echo "$output_path" | sed 's:/*$::')/$(echo "$output_filename" | sed 's:^/*::')"
+filepath="$repository_root/$(echo "$output_path" | sed 's:/*$::')/$(echo "$output_filename" | sed 's:^/*::')"
 
-if [ ! -d "$CODESPACE_VSCODE_FOLDER/$output_path" ]; then
-    mkdir "$CODESPACE_VSCODE_FOLDER/$output_path"
+if [ ! -d "$repository_root/$output_path" ]; then
+    mkdir "$repository_root/$output_path"
 fi
 
 # Download the OpenAPI document

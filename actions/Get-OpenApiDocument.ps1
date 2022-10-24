@@ -27,6 +27,10 @@ Param(
 
     [switch]
     [Parameter(Mandatory=$false)]
+    $UseCodespaces,
+
+    [switch]
+    [Parameter(Mandatory=$false)]
     $UseWindows,
 
     [switch]
@@ -43,6 +47,7 @@ function Show-Usage {
             [-OutputPath <output directory for generated OpenAPI document>] ``
             [-OutputFilename <OpenAPI document name>] ``
             [-Delay <delay in second between run function app and document generation>] ``
+            [-UseCodespaces] ``
             [-UseWindows] ``
             [-Help]
     Options:
@@ -58,7 +63,8 @@ function Show-Usage {
                             Default: 'swagger.json'
         -Delay              Delay in second between the function app run and document generation.
                             Default: 30
-        -UseWindows         Switch that indicates using Windows OS.
+        -UseCodespaces      Switch indicating whether to use GitHub Codespaces or not.
+        -UseWindows         Switch indicating whether to run on Windows OS or not.
         -Help               Show this message.
 "
 
@@ -80,17 +86,22 @@ if ($UseWindows -eq $true) {
 
 $currentDirectory = $(pwd).Path
 
-cd "$env:CODESPACE_VSCODE_FOLDER/$FunctionAppPath"
+$repositoryRoot = $env:GITHUB_WORKSPACE
+if ($UseCodespaces -eq $true) {
+    $repositoryRoot = $env:CODESPACE_VSCODE_FOLDER
+}
+
+cd "$repositoryRoot/$FunctionAppPath"
 
 # Run the function app in the background
 Start-Process -NoNewWindow "$func" @("start","--verbose","false")
 Start-Sleep -s $Delay
 
 $requestUri = "$($BaseUri.TrimEnd('/'))/$($Endpoint.TrimStart('/'))"
-$filepath = "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))/$($OutputFilename.TrimStart('/'))"
+$filepath = "$repositoryRoot/$($OutputPath.TrimEnd('/'))/$($OutputFilename.TrimStart('/'))"
 
-if ($(Test-Path -Path "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))" -PathType Container) -eq $false) {
-    New-Item -Path "$env:CODESPACE_VSCODE_FOLDER/$($OutputPath.TrimEnd('/'))" -ItemType Directory
+if ($(Test-Path -Path "$repositoryRoot/$($OutputPath.TrimEnd('/'))" -PathType Container) -eq $false) {
+    New-Item -Path "$repositoryRoot/$($OutputPath.TrimEnd('/'))" -ItemType Directory
 }
 
 # Download the OpenAPI document
