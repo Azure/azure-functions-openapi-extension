@@ -60,7 +60,12 @@ $csprojs | ForEach-Object {
         return
     }
 
-    @{ IsEncrypted = $false; Values = @{ AzureWebJobsStorage = "UseDevelopmentStorage=true"; FUNCTIONS_WORKER_RUNTIME = "dotnet"; } } | `
+    $localSettingsJson = @{ IsEncrypted = $false; Values = @{ AzureWebJobsStorage = "UseDevelopmentStorage=true"; FUNCTIONS_WORKER_RUNTIME = "dotnet"; } }
+    if ($isOutOfProcFunctionApp -eq $true) {
+        $localSettingsJson.Values.FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
+    }
+
+    $localSettingsJson | `
         ConvertTo-Json -Depth 10 | `
         Out-File -FilePath "$($_.Directory.FullName)/local.settings.json" -Force
     $localSettingsJsons += Get-ChildItem -Path $_.Directory.FullName -Filter local.settings.json
