@@ -148,9 +148,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 {
                     if (dataType != "object")
                     {
-                        schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
                         schema.Default = this.GetOpenApiPropertyDefault(attr as OpenApiPropertyAttribute);
                     }
+                    schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
                     schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                     schema.Deprecated = this.GetOpenApiPropertyDeprecated(attr as OpenApiPropertyAttribute);
                 }
