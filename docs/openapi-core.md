@@ -117,7 +117,7 @@ public class MyOpenApiConfigurationOptions : IOpenApiConfigurationOptions
 ```
 
 > **NOTE**:
-> 
+>
 > * If no base URL is declared, the Azure Functions app's URL will be added as a default.
 > * The OpenAPI v2 (Swagger) document only shows the the first server name on both UI and document, while the OpenAPI v3 document shows the first server name on the UI and all server names on the document.
 
@@ -869,7 +869,7 @@ Properties decorated with the `JsonIgnoreAttribute` attribute class will not be 
 
 ### `JsonPropertyAttribute` ###
 
-Properties decorated with `JsonPropertyAttribute` attribute class will use `JsonProperty.Name` value instead of their property names. In addition to this, if `JsonProperty.Required` property has `Required.Always` or `Required.DisallowNull`, the property will be recognised as the `required` field.
+Properties decorated with `JsonPropertyAttribute` attribute class will use `JsonProperty.Name` value instead of their property names. In addition to this, if `JsonProperty.Required` property has `Required.Always` or `Required.AllowNull`, the property will be recognised as the `required` field.
 
 
 ### `JsonRequiredAttribute` ###
