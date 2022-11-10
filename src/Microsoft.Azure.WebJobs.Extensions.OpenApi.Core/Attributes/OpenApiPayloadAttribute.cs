@@ -1,5 +1,6 @@
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
@@ -12,16 +13,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenApiPayloadAttribute"/> class.
         /// </summary>
-        /// <param name="contentType">Content type.</param>
+        /// <param name="contentType">Content type. This can be a comma seperated list for additional content types.</param>
         /// <param name="bodyType">Type of payload.</param>
         protected OpenApiPayloadAttribute(string contentType, Type bodyType)
         {
             this.ContentType = contentType ?? throw new ArgumentNullException(nameof(contentType));
             this.BodyType = bodyType ?? throw new ArgumentNullException(nameof(bodyType));
+
+            this.ContentTypes = new HashSet<string>(contentType.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
         }
 
         /// <summary>
-        /// Gets the content type.
+        /// Gets the content type. This can be a comma seperated list for additional content types.
         /// </summary>
         public virtual string ContentType { get; }
 
@@ -39,5 +42,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the type of the example. It SHOULD be inheriting the <see cref="OpenApiExample{T}"/> class.
         /// </summary>
         public virtual Type Example { get; set; }
+
+        /// <summary>
+        /// Gets the content types.
+        /// </summary>
+        public virtual IEnumerable<string> ContentTypes { get; private set; }
     }
 }

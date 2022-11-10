@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Initializes a new instance of the <see cref="OpenApiResponseWithBodyAttribute"/> class.
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
-        /// <param name="contentType">Content type.</param>
+        /// <param name="contentType">Content type. This can be a comma seperated list for additional content types.</param>
         /// <param name="bodyType">Type of payload.</param>
         public OpenApiResponseWithBodyAttribute(HttpStatusCode statusCode, string contentType, Type bodyType)
             : base(contentType, bodyType)
