@@ -139,7 +139,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var allProperties = type.IsInterface
                                     ? new[] { type }.Concat(type.GetInterfaces()).SelectMany(i => i.GetProperties())
                                     : type.GetProperties();
-            var properties = allProperties.Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
+            var properties = allProperties.Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>(true));
 
             var retVal = new Dictionary<string, OpenApiSchema>();
             foreach (var property in properties)

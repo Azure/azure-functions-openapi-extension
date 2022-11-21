@@ -634,7 +634,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         public static bool HasRecursiveProperty(this Type type)
         {
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
+                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>(true));
 
             var hasRecursiveType = properties.Select(p => p.PropertyType)
                                              .Any(p => p == type);

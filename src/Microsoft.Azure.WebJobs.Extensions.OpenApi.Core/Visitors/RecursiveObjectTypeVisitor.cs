@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Processes non-recursive properties
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
+                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>(true))
                                  .Where(p => p.PropertyType != type.Value)
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Processes recursive properties
             var recursiveProperties = type.Value
                                           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                          .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
+                                          .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>(true))
                                           .Where(p => p.PropertyType == type.Value)
                                           .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
             var recursiveSchemas = recursiveProperties.ToDictionary(p => p.Key,
