@@ -225,5 +225,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 
             result.Deprecated.Should().Be(deprecated.GetValueOrDefault());
         }
+
+        [TestMethod]
+        public void Given_Value_With_Examples_When_ToOpenApiParameter_Invoked_With_OpenApi_V3_Then_It_Should_Return_Result()
+        {
+            var attribute = new OpenApiParameterAttribute("hello")
+            {
+                Type = typeof(string),
+                Summary = "lorem ipsum",
+                Description = "hello world",
+                Required = true,
+                Example = typeof(FakeStringParameterExample),
+                In = ParameterLocation.Path,
+            };
+
+            var result = OpenApiParameterAttributeExtensions.ToOpenApiParameter(attribute, version: OpenApiVersionType.V3);
+
+            result.Example.Should().BeNull();
+        }
+
     }
 }

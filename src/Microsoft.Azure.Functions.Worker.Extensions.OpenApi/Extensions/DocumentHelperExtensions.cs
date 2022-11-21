@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
-                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection, version))
                                     .ToList();
 
             // This is the interim solution to resolve:
