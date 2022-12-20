@@ -17,13 +17,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
     /// </summary>
     public class OpenApiWebJobsStartup : IWebJobsStartup
     {
-        private const string OpenApiSettingsKey = "OpenApi";
-
         /// <inheritdoc />
         public void Configure(IWebJobsBuilder builder)
         {
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>(OpenApiSettingsKey);
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             builder.Services.AddSingleton(settings);
             builder.Services.AddSingleton<IFunctionProvider, OpenApiTriggerFunctionProvider>();

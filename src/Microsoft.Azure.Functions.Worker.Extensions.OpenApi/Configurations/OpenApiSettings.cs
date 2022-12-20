@@ -1,6 +1,6 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
-namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations
+namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations
 {
     /// <summary>
     /// This represents the environment variable settings entity for OpenAPI document.
