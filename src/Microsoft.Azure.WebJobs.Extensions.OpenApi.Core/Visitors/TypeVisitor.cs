@@ -238,6 +238,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 return new OpenApiDateTime((DateTime) @default);
             }
 
+            if (@default is TimeSpan)
+            {
+                return new OpenApiString(@default.ToString());
+            }
+
             if (@default is DateTimeOffset)
             {
                 return new OpenApiDateTime((DateTimeOffset) @default);

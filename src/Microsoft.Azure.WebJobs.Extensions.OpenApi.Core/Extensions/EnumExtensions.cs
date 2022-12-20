@@ -88,6 +88,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     {
                         return "string";
                     }
+                    else if (type == typeof(TimeSpan))
+                    {
+                        return "string";
+                    }
                     else
                     {
                         return "object";
