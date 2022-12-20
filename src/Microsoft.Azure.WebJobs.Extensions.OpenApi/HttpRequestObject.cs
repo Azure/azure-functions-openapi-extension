@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -23,6 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             this.Host = req.Host;
             this.Headers = req.Headers;
             this.Query = req.Query;
+            this.Identities = req.HttpContext.User.Identities;
             this.Body = req.Body;
         }
 
@@ -36,9 +39,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual IHeaderDictionary Headers { get; }
 
         /// <inheritdoc/>
-        public virtual IQueryCollection Query { get;}
+        public virtual IQueryCollection Query { get; }
 
         /// <inheritdoc/>
-        public virtual Stream Body { get;}
+        /// <remarks>This property has implementation but will appear on the interface from v2.0.0.</remarks>
+        public virtual IEnumerable<ClaimsIdentity> Identities { get; }
+
+        /// <inheritdoc/>
+        public virtual Stream Body { get; }
     }
 }
