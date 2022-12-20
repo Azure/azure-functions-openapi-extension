@@ -8,8 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 {
+    /// <summary>
+    /// This represents the startup entity for OpenAPI endpoints registration
+    /// </summary>
     public class OpenApiWorkerStartup : WorkerExtensionStartup
     {
+        /// <inheritdoc />
         public override void Configure(IFunctionsWorkerApplicationBuilder applicationBuilder)
         {
             applicationBuilder.Services.AddSingleton<IOpenApiHttpTriggerContext, OpenApiHttpTriggerContext>();
