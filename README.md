@@ -26,6 +26,9 @@
 
 If you are using GitHub Actions as your preferred CI/CD pipeline, you can run the GitHub Action into your workflow to automatically generate the OpenAPI document. Find more details at the [Build OpenAPI](./actions/build-openapi/) action page.
 
+
+## Generic CI/CD Pipeline Support ##
+
 Alternatively, you can run either PowerShell script or bash shell script to generate the OpenAPI document within your own CI/CD pipeline other than GitHub Actions. Here are two script files:
 
 * PowerShell: [Get-OpenApiDocument.ps1](./actions/Get-OpenApiDocument.ps1)
@@ -43,6 +46,19 @@ Alternatively, you can run either PowerShell script or bash shell script to gene
 
     For more details, run `Get-OpenApiDocument.ps1 -Help`
 
+    You can also remotely invoke this PowerShell script:
+
+    ```powershell
+    & $([Scriptblock]::Create($(Invoke-RestMethod https://aka.ms/azfunc-openapi/generate-openapi.ps1))) `
+        -FunctionAppPath    <function app directory> `
+        -BaseUri            <function app base URI> `
+        -Endpoint           <endpoint for OpenAPI document> `
+        -OutputPath         <output directory for generated OpenAPI document> `
+        -OutputFilename     <OpenAPI document name> `
+        -Delay              <delay in second between run function app and document generation> `
+        -UseWindows         <switch indicating whether to use Windows OS or not>
+    ```
+
 * Bash shell: [get-openapi-document.sh](./actions/get-openapi-document.sh)
 
     ```bash
@@ -56,6 +72,19 @@ Alternatively, you can run either PowerShell script or bash shell script to gene
     ```
 
     For more details, run `get-openapi-document.sh --help`
+
+    You can also remotely invoke this bash shell script:
+
+    ```bash
+    curl -fsSL https://aka.ms/azfunc-openapi/generate-openapi.sh \
+        | bash -s -- \
+            -p|--functionapp-path   <function app directory> \
+            -u|--base-uri           <function app base URI> \
+            -e|--endpoint           <endpoint for OpenAPI document> \
+            -o|--output-path        <output directory for generated OpenAPI document> \
+            -f|--output-filename    <OpenAPI document name> \
+            -d|--delay              <delay in second between run function app and document generation>
+    ```
 
 
 ## Sample Azure Function Apps with OpenAPI Document Enabled ##

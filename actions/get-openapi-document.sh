@@ -6,38 +6,41 @@ function usage() {
     cat <<USAGE
     Usage: $0 <options>
     Options:
-        [-p|--functionapp-path] Function app path. It can be the project directory or compiled app directory.
-                                Default: 'bin/Debug/net6.0'
+        [-p|--functionapp-path] Function app path, relative to the repository root. It can be the project directory or compiled app directory.
+                                Default: '.'
         [-u|--base-uri]         Base URI of the function app.
                                 Default: 'http://localhost:7071/api/'
         [-e|--endpoint]         OpenAPI document endpoint.
                                 Default: 'swagger.json'
-        [-o|--output-path]      Output directory to store the generated OpenAPI document.
+        [-o|--output-path]      Output directory to store the generated OpenAPI document, relative to the repository root.
                                 Default: 'generated'
         [-f|--output-filename]  Output filename for the generated OpenAPI document.
                                 Default: 'swagger.json'
         [-d|--delay]            Delay in second between the function app run and document generation.
                                 Default: 30
+        [-c|--use-codespaces]   Switch indicating whether to use GitHub Codespaces or not.
         [-h|--help]             Show this message.
 USAGE
 
     exit 1
 }
 
-functionapp_path="bin/Debug/net6.0"
+functionapp_path="."
 base_uri="http://localhost:7071/api/"
 endpoint="swagger.json"
 output_path="generated"
 output_filename="swagger.json"
 delay=30
+repository_root=$GITHUB_WORKSPACE
 
 if [[ $# -eq 0 ]]; then
-    functionapp_path="bin/Debug/net6.0"
+    functionapp_path="."
     base_uri="http://localhost:7071/api/"
     endpoint="swagger.json"
     output_path="generated"
     output_filename="swagger.json"
     delay=30
+    repository_root=$GITHUB_WORKSPACE
 fi
 
 while [[ "$1" != "" ]]; do
@@ -72,6 +75,10 @@ while [[ "$1" != "" ]]; do
         delay=$1
         ;;
 
+    -c | --use_codespaces)
+        repository_root=$CODESPACE_VSCODE_FOLDER
+        ;;
+
     -h | --help)
         usage
         exit 1
@@ -86,7 +93,9 @@ while [[ "$1" != "" ]]; do
     shift
 done
 
-pushd $functionapp_path
+current_directory=$(pwd)
+
+cd "$repository_root/$functionapp_path"
 
 # Run the function app in the background
 func start --verbose false &
@@ -94,10 +103,10 @@ func start --verbose false &
 sleep $delay
 
 request_uri="$(echo "$base_uri" | sed 's:/*$::')/$(echo "$endpoint" | sed 's:^/*::')"
-filepath="$(echo "$output_path" | sed 's:/*$::')/$(echo "$output_filename" | sed 's:^/*::')"
+filepath="$repository_root/$(echo "$output_path" | sed 's:/*$::')/$(echo "$output_filename" | sed 's:^/*::')"
 
-if [ ! -d "$output_path" ]; then
-    mkdir "$output_path"
+if [ ! -d "$repository_root/$output_path" ]; then
+    mkdir "$repository_root/$output_path"
 fi
 
 # Download the OpenAPI document
@@ -109,4 +118,4 @@ if [[ "" !=  "$PID" ]]; then
     kill -9 $PID
 fi
 
-popd
+cd $current_directory

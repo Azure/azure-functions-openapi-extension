@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 
 using Microsoft.AspNetCore.Http;
 
@@ -30,8 +32,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         IQueryCollection Query { get; }
 
         /// <summary>
+        /// Gets the list of <see cref="ClaimsIdentity"/>
+        /// </summary>
+        /// <remarks>This will be added to v2.0.0</remarks>
+        //IEnumerable<ClaimsIdentity> Identities { get; }
+
+        /// <summary>
         /// Gets the request payload stream.
         /// </summary>
-        Stream Body { get;}
+        Stream Body { get; }
     }
 }

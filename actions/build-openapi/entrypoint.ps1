@@ -17,7 +17,7 @@ Param(
 
     [string]
     [Parameter(Mandatory=$false)]
-    $Delay = "10",
+    $Delay = "30",
 
     [string]
     [Parameter(Mandatory=$false)]
