@@ -165,6 +165,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     {
                         return "date-time";
                     }
+                    else if (type == typeof(TimeSpan))
+                    {
+                        return "timespan";
+                    }
                     else
                     {
                         return null;

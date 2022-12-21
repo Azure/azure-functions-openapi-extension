@@ -3,12 +3,15 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 {
+    /// <summary>
+    /// This represents the type visitor for <see cref="TimeSpan"/>.
+    /// </summary>
     public class TimeSpanObjectTypeVisitor : TypeVisitor
     {
+        /// <inheritdoc />
         public TimeSpanObjectTypeVisitor(VisitorCollection visitorCollection) : base(visitorCollection)
         {
         }
@@ -17,6 +20,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
             return this.ParameterVisit(dataType: "string", dataFormat: "timespan");
+        }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type, TypeCode.Object) && type == typeof(TimeSpan);
+
+            return isVisitable;
         }
 
         /// <inheritdoc />
