@@ -1,10 +1,10 @@
 using Microsoft.Azure.Functions.Worker.Core;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi;
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: WorkerExtensionStartup(typeof(OpenApiWorkerStartup))]

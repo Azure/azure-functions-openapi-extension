@@ -2,8 +2,8 @@ using System.Linq;
 
 using FluentAssertions;
 
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Host.Config;
 using Microsoft.Azure.WebJobs.Script.Description;

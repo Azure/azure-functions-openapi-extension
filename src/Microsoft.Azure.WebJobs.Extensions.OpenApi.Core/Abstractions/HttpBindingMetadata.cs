@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 using Newtonsoft.Json;
@@ -52,11 +51,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         public virtual string WebHookType { get; set; }
 
         /// <summary>
-        /// Gets or sets the HTTP endpoint authorisation level. Default value is <cref see="AuthorizationLevel.Function"/>.
+        /// Gets or sets the HTTP endpoint authorisation level. Default value is <cref see="OpenApiAuthLevelType.Function"/>.
         /// </summary>
         [JsonRequired]
         [JsonProperty("authLevel")]
-        public virtual AuthorizationLevel AuthLevel { get; set; } = AuthorizationLevel.Function;
+        public virtual OpenApiAuthLevelType AuthLevel { get; set; } = OpenApiAuthLevelType.Function;
 
         /// <summary>
         /// Gets or sets the list of the HTTP verbs. Default values are <c>GET</c> and <c>POST</c>.
