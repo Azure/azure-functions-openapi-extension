@@ -2,14 +2,14 @@ using System;
 
 using FluentAssertions;
 
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations.AppSettings.Resolvers;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configurations
+namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 {
     [TestClass]
     public class OpenApiSettingsTests
@@ -22,13 +22,12 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", null);
             Environment.SetEnvironmentVariable("OpenApi__DocDescription", null);
             Environment.SetEnvironmentVariable("OpenApi__HostNames", null);
+            Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__HideSwaggerUI", null);
             Environment.SetEnvironmentVariable("OpenApi__HideDocument", null);
             Environment.SetEnvironmentVariable("OpenApi__ApiKey", null);
-            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", null);
-            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", null);
             Environment.SetEnvironmentVariable("OpenApi__BackendProxyUrl", null);
         }
 
@@ -42,7 +41,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__Version", version);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.Version.Should().Be(expected);
         }
@@ -56,7 +55,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__DocVersion", version);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.DocVersion.Should().Be(expected);
         }
@@ -70,7 +69,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__DocTitle", title);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.DocTitle.Should().Be(expected);
         }
@@ -84,7 +83,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__DocDescription", description);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.DocDescription.Should().Be(expected);
         }
@@ -99,9 +98,26 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__HostNames", hostnames);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.HostNames.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow("", null)]
+        [DataRow("true", true)]
+        [DataRow("True", true)]
+        [DataRow("false", false)]
+        [DataRow("False", false)]
+        public void Given_ExcludeRequestingHost_When_Instantiated_Then_It_Should_Return_Result(string excludeRequestingHost, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", excludeRequestingHost);
+
+            var config = ConfigurationResolver.Resolve();
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
+
+            settings.ExcludeRequestingHost.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -114,7 +130,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", https);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.ForceHttps.Should().Be(expected);
         }
@@ -129,7 +145,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", http);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.ForceHttp.Should().Be(expected);
         }
@@ -144,7 +160,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__HideSwaggerUI", hide);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.HideSwaggerUI.Should().Be(expected);
         }
@@ -159,7 +175,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__HideDocument", hide);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.HideDocument.Should().Be(expected);
         }
@@ -173,55 +189,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__ApiKey", apiKey);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.ApiKey.Should().Be(expected);
-        }
-
-        [DataTestMethod]
-        [DataRow(null, null)]
-        [DataRow("", null)]
-        [DataRow("Anonymous", AuthorizationLevel.Anonymous)]
-        [DataRow("anonymous", AuthorizationLevel.Anonymous)]
-        [DataRow("Function", AuthorizationLevel.Function)]
-        [DataRow("function", AuthorizationLevel.Function)]
-        [DataRow("User", AuthorizationLevel.User)]
-        [DataRow("user", AuthorizationLevel.User)]
-        [DataRow("Admin", AuthorizationLevel.Admin)]
-        [DataRow("admin", AuthorizationLevel.Admin)]
-        [DataRow("System", AuthorizationLevel.System)]
-        [DataRow("system", AuthorizationLevel.System)]
-        public void Given_AuthLevelDoc_When_Instantiated_Then_It_Should_Return_Result(string authLevel, AuthorizationLevel? expected)
-        {
-            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", authLevel);
-
-            var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
-
-            settings.AuthLevel.Document.Should().Be(expected);
-        }
-
-        [DataTestMethod]
-        [DataRow(null, null)]
-        [DataRow("", null)]
-        [DataRow("Anonymous", AuthorizationLevel.Anonymous)]
-        [DataRow("anonymous", AuthorizationLevel.Anonymous)]
-        [DataRow("Function", AuthorizationLevel.Function)]
-        [DataRow("function", AuthorizationLevel.Function)]
-        [DataRow("User", AuthorizationLevel.User)]
-        [DataRow("user", AuthorizationLevel.User)]
-        [DataRow("Admin", AuthorizationLevel.Admin)]
-        [DataRow("admin", AuthorizationLevel.Admin)]
-        [DataRow("System", AuthorizationLevel.System)]
-        [DataRow("system", AuthorizationLevel.System)]
-        public void Given_AuthLevelUI_When_Instantiated_Then_It_Should_Return_Result(string authLevel, AuthorizationLevel? expected)
-        {
-            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", authLevel);
-
-            var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
-
-            settings.AuthLevel.UI.Should().Be(expected);
         }
 
         [DataTestMethod]
@@ -233,7 +203,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             Environment.SetEnvironmentVariable("OpenApi__BackendProxyUrl", url);
 
             var config = ConfigurationResolver.Resolve();
-            var settings = config.Get<OpenApiSettings>("OpenApi");
+            var settings = config.Get<OpenApiSettings>(OpenApiSettings.Name);
 
             settings.BackendProxyUrl.Should().Be(expected);
         }

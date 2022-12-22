@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Script.Description;
 
 using Newtonsoft.Json.Linq;
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             {
                 Methods = new List<string>() { HttpMethods.Get },
                 Route = "swagger.{extension}",
-                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+                AuthLevel = this._settings.AuthLevel?.Document ?? OpenApiAuthLevelType.Anonymous,
             };
 
             bindings.Add(RenderSwaggerDocumentKey, renderSwaggerDocument);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
             {
                 Methods = new List<string>() { HttpMethods.Get },
                 Route = "openapi/{version}.{extension}",
-                AuthLevel = this._settings.AuthLevel?.Document ?? AuthorizationLevel.Anonymous,
+                AuthLevel = this._settings.AuthLevel?.Document ?? OpenApiAuthLevelType.Anonymous,
             };
 
             bindings.Add(RenderOpenApiDocumentKey, renderOpenApiDocument);
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 {
                     Methods = new List<string>() { HttpMethods.Get },
                     Route = "oauth2-redirect.html",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
+                    AuthLevel = this._settings.AuthLevel?.UI ?? OpenApiAuthLevelType.Anonymous,
                 };
 
                 bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 {
                     Methods = new List<string>() { HttpMethods.Get },
                     Route = "swagger/ui",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
+                    AuthLevel = this._settings.AuthLevel?.UI ?? OpenApiAuthLevelType.Anonymous,
                 };
 
                 bindings.Add(RenderSwaggerUIKey, renderSwaggerUI);

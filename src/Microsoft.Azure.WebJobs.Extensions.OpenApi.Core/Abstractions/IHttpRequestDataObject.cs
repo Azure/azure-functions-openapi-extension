@@ -34,8 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Gets the list of <see cref="ClaimsIdentity"/>
         /// </summary>
-        /// <remarks>This will be added to v2.0.0</remarks>
-        //IEnumerable<ClaimsIdentity> Identities { get; }
+        IEnumerable<ClaimsIdentity> Identities { get; }
 
         /// <summary>
         /// Gets the request payload stream.

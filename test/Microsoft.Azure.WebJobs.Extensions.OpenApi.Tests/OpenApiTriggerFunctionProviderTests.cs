@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -54,11 +55,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous)]
-        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Function)]
-        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Anonymous)]
-        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Function)]
-        public async Task Given_AuthLevel_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(AuthorizationLevel authLevelDoc, AuthorizationLevel authLevelUI)
+        [DataRow(OpenApiAuthLevelType.Anonymous, OpenApiAuthLevelType.Anonymous)]
+        [DataRow(OpenApiAuthLevelType.Anonymous, OpenApiAuthLevelType.Function)]
+        [DataRow(OpenApiAuthLevelType.Function, OpenApiAuthLevelType.Anonymous)]
+        [DataRow(OpenApiAuthLevelType.Function, OpenApiAuthLevelType.Function)]
+        public async Task Given_AuthLevel_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(OpenApiAuthLevelType authLevelDoc, OpenApiAuthLevelType authLevelUI)
         {
             var authLevelSettings = new Mock<OpenApiAuthLevelSettings>();
             authLevelSettings.SetupGet(p => p.Document).Returns(authLevelDoc);
