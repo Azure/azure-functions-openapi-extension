@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using AutoFixture;
 
-using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Headers;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
