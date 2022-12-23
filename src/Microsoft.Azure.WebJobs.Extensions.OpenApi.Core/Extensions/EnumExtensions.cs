@@ -88,6 +88,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     {
                         return "string";
                     }
+                    else if (type == typeof(TimeSpan))
+                    {
+                        return "string";
+                    }
                     else
                     {
                         return "object";
@@ -160,6 +164,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                     else if (type == typeof(DateTimeOffset))
                     {
                         return "date-time";
+                    }
+                    else if (type == typeof(TimeSpan))
+                    {
+                        return "timespan";
                     }
                     else
                     {

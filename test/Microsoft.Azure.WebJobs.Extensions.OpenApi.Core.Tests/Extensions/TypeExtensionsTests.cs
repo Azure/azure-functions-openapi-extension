@@ -107,6 +107,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(int?), typeof(int))]
         [DataRow(typeof(bool?), typeof(bool))]
         [DataRow(typeof(DateTime?), typeof(DateTime))]
+        [DataRow(typeof(TimeSpan?), typeof(TimeSpan))]
         public void Given_NullableType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
         {
             var result = TypeExtensions.GetUnderlyingType(type);
@@ -129,6 +130,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(List<int?>), typeof(int))]
         [DataRow(typeof(List<bool?>), typeof(bool))]
         [DataRow(typeof(List<DateTime?>), typeof(DateTime))]
+        [DataRow(typeof(List<TimeSpan?>), typeof(TimeSpan))]
         public void Given_NullableListType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
         {
             var result = TypeExtensions.GetUnderlyingType(type);
@@ -151,6 +153,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(Dictionary<string, int?>), typeof(int))]
         [DataRow(typeof(Dictionary<string, bool?>), typeof(bool))]
         [DataRow(typeof(Dictionary<string, DateTime?>), typeof(DateTime))]
+        [DataRow(typeof(Dictionary<string, TimeSpan?>), typeof(TimeSpan))]
         public void Given_NullableDictionaryType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
         {
             var result = TypeExtensions.GetUnderlyingType(type);

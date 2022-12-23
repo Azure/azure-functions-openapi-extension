@@ -180,6 +180,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Abstractions
         }
 
         [TestMethod]
+        [DataRow("timeSpanValue1","06:12:14")]
+        [DataRow("timeSpanValue2", "6.12:14:45")]
+        public void Given_TimeSpanType_When_Instantiated_Then_It_Should_Return_Result(string exampleName, string exampleValue)
+        {
+            var namingStrategy = new DefaultNamingStrategy();
+            var example = new FakeTimeSpanParameterExample();
+
+            var result = example.Build(namingStrategy).Examples;
+
+            result[exampleName].Value.Should().BeOfType<OpenApiString>();
+            (result[exampleName].Value as OpenApiString).Value.Should().Be(exampleValue);
+        }
+
+        [TestMethod]
         [DataRow("guidValue1", "74be27de-1e4e-49d9-b579-fe0b331d3642")]
         public void Given_GuidType_When_Instantiated_Then_It_Should_Return_Result(string exampleName, string exampleValue)
         {

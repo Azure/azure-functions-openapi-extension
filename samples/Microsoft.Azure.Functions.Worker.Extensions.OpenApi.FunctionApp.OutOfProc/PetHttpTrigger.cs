@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using AutoFixture;
 
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.SecurityFlows;
 using Microsoft.Azure.Functions.Worker.Http;
