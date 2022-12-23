@@ -16,8 +16,8 @@
   <!-- Uncomment this block if you want to use NuGet package from https://nuget.org -->
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" OutputItemType="Analyzer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" OutputItemType="Analyzer" />
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
