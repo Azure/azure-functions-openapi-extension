@@ -9,6 +9,7 @@ using AutoFixture;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -22,11 +23,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     public class PetHttpTrigger
     {
         private readonly ILogger<PetHttpTrigger> _logger;
+        private readonly OpenApiSettings _openapi;
         private readonly Fixture _fixture;
 
-        public PetHttpTrigger(ILogger<PetHttpTrigger> log, Fixture fixture)
+        public PetHttpTrigger(ILogger<PetHttpTrigger> log, OpenApiSettings openapi, Fixture fixture)
         {
             this._logger = log.ThrowIfNullOrDefault();
+            this._openapi = openapi.ThrowIfNullOrDefault();
             this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
@@ -41,6 +44,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> UpdatePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "PUT", Route = "pet")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<Pet>())).ConfigureAwait(false);
         }
 
@@ -53,6 +58,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> AddPet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<Pet>())).ConfigureAwait(false);
         }
 
@@ -65,6 +72,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> FindByStatus(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByStatus")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var status = req.Query["status"]
                             .Select(p =>
                             {
@@ -86,6 +95,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> FindByTags(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByTags")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var tags = req.Query["tags"]
                           .Select(p =>
                           {
@@ -113,6 +124,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> GetPetById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
 
             return await Task.FromResult(new OkObjectResult(pet)).ConfigureAwait(false);
@@ -128,6 +141,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> UpdatePetWithForm(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
 
             return await Task.FromResult(new OkObjectResult(pet)).ConfigureAwait(false);
@@ -144,6 +159,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> DeletePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "DELETE", Route = "pet/{petId}")] HttpRequest req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkResult()).ConfigureAwait(false);
         }
 
@@ -156,6 +173,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> UploadFile(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}/uploadImage")] HttpRequest req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<ApiResponse>())).ConfigureAwait(false);
         }
     }
