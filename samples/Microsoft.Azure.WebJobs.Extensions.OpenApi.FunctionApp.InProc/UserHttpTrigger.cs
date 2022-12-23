@@ -8,6 +8,7 @@ using AutoFixture;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -21,11 +22,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
     public class UserHttpTrigger
     {
         private readonly ILogger<UserHttpTrigger> _logger;
+        private readonly OpenApiSettings _openapi;
         private readonly Fixture _fixture;
 
-        public UserHttpTrigger(ILogger<UserHttpTrigger> log, Fixture fixture)
+        public UserHttpTrigger(ILogger<UserHttpTrigger> log, OpenApiSettings openapi, Fixture fixture)
         {
             this._logger = log.ThrowIfNullOrDefault();
+            this._openapi = openapi.ThrowIfNullOrDefault();
             this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
@@ -36,6 +39,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> CreateUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<User>())).ConfigureAwait(false);
         }
 
@@ -46,6 +51,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> CreateUsersWithArrayInput(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user/createWithArray")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<List<User>>())).ConfigureAwait(false);
         }
 
@@ -56,6 +63,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> CreateUsersWithListInput(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user/createWithList")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkObjectResult(this._fixture.Create<List<User>>())).ConfigureAwait(false);
         }
 
@@ -67,6 +76,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> LoginUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/login")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             req.HttpContext.Response.Headers.Add("X-Rate-Limit", this._fixture.Create<int>().ToString());
             req.HttpContext.Response.Headers.Add("X-Expires-After", this._fixture.Create<DateTimeOffset>().ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"));
 
@@ -86,6 +97,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> LogoutUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/logout")] HttpRequest req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             return await Task.FromResult(new OkResult()).ConfigureAwait(false);
         }
 
@@ -98,6 +111,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc
         public async Task<IActionResult> GetUserByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/{username:regex((?!^login$)(^.+$))}")] HttpRequest req, string username)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var user = this._fixture.Build<User>().With(p => p.Username, username).Create();
 
             return await Task.FromResult(new OkObjectResult(user)).ConfigureAwait(false);

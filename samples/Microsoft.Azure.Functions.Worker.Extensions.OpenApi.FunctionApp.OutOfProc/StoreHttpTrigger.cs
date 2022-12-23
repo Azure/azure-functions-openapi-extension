@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using AutoFixture;
 
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
@@ -17,11 +18,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
     public class StoreHttpTrigger
     {
         private readonly ILogger _logger;
+        private readonly OpenApiSettings _openapi;
         private readonly Fixture _fixture;
 
-        public StoreHttpTrigger(ILoggerFactory loggerFactory, Fixture fixture)
+        public StoreHttpTrigger(ILoggerFactory loggerFactory, OpenApiSettings openapi, Fixture fixture)
         {
             this._logger = loggerFactory.ThrowIfNullOrDefault().CreateLogger<PetHttpTrigger>();
+            this._openapi = openapi.ThrowIfNullOrDefault();
             this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
@@ -32,6 +35,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> GetInventory(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "store/inventory")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var result = this._fixture.Create<Dictionary<string, int>>();
@@ -49,6 +54,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> PlaceOrder(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "store/order")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<Order>()).ConfigureAwait(false);
@@ -65,6 +72,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> GetOrderById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "store/order/{orderId}")] HttpRequestData req, long orderId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var order = this._fixture.Build<Order>().With(p => p.Id, orderId).Create();
@@ -82,6 +91,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> DeleteOrder(
             [HttpTrigger(AuthorizationLevel.Anonymous, "DELETE", Route = "store/order/{orderId}")] HttpRequestData req, long orderId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             return await Task.FromResult(response).ConfigureAwait(false);

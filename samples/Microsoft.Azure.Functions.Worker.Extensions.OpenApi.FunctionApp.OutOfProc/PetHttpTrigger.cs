@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using AutoFixture;
 
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.SecurityFlows;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -21,11 +22,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
     public class PetHttpTrigger
     {
         private readonly ILogger _logger;
+        private readonly OpenApiSettings _openapi;
         private readonly Fixture _fixture;
 
-        public PetHttpTrigger(ILoggerFactory loggerFactory, Fixture fixture)
+        public PetHttpTrigger(ILoggerFactory loggerFactory, OpenApiSettings openapi, Fixture fixture)
         {
             this._logger = loggerFactory.ThrowIfNullOrDefault().CreateLogger<PetHttpTrigger>();
+            this._openapi = openapi.ThrowIfNullOrDefault();
             this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
@@ -40,6 +43,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> UpdatePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "PUT", Route = "pet")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<Pet>()).ConfigureAwait(false);
@@ -56,6 +61,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> AddPet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<Pet>()).ConfigureAwait(false);
@@ -72,6 +79,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> FindByStatus(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByStatus")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var status = req.Query("status")
@@ -97,6 +106,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> FindByTags(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/findByTags")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var tags = req.Query("tags")
@@ -128,6 +139,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> GetPetById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "pet/{petId}")] HttpRequestData req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
@@ -147,6 +160,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> UpdatePetWithForm(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}")] HttpRequestData req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var pet = this._fixture.Build<Pet>().With(p => p.Id, petId).Create();
@@ -167,6 +182,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> DeletePet(
             [HttpTrigger(AuthorizationLevel.Anonymous, "DELETE", Route = "pet/{petId}")] HttpRequestData req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             return await Task.FromResult(response).ConfigureAwait(false);
@@ -181,6 +198,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> UploadFile(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "pet/{petId}/uploadImage")] HttpRequestData req, long petId)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<ApiResponse>()).ConfigureAwait(false);

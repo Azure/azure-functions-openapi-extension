@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using AutoFixture;
 
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Configurations;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.Headers;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -19,11 +20,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
     public class UserHttpTrigger
     {
         private readonly ILogger _logger;
+        private readonly OpenApiSettings _openapi;
         private readonly Fixture _fixture;
 
-        public UserHttpTrigger(ILoggerFactory loggerFactory, Fixture fixture)
+        public UserHttpTrigger(ILoggerFactory loggerFactory, OpenApiSettings openapi, Fixture fixture)
         {
             this._logger = loggerFactory.ThrowIfNullOrDefault().CreateLogger<PetHttpTrigger>();
+            this._openapi = openapi.ThrowIfNullOrDefault();
             this._fixture = fixture.ThrowIfNullOrDefault();
         }
 
@@ -34,6 +37,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> CreateUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<User>()).ConfigureAwait(false);
@@ -48,6 +53,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> CreateUsersWithArrayInput(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user/createWithArray")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<List<User>>()).ConfigureAwait(false);
@@ -62,6 +69,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> CreateUsersWithListInput(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "user/createWithList")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             await response.WriteAsJsonAsync(this._fixture.Create<List<User>>()).ConfigureAwait(false);
@@ -77,6 +86,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> LoginUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/login")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
             response.Headers.Add("X-Rate-Limit", this._fixture.Create<int>().ToString());
@@ -93,6 +104,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> LogoutUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/logout")] HttpRequestData req)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             return await Task.FromResult(response).ConfigureAwait(false);
@@ -107,6 +120,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
         public async Task<HttpResponseData> GetUserByName(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "user/{username:regex((?!^login$)(^.+$))}")] HttpRequestData req, string username)
         {
+            this._logger.LogInformation($"document title: {this._openapi.DocTitle}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
 
             var user = this._fixture.Build<User>().With(p => p.Username, username).Create();
