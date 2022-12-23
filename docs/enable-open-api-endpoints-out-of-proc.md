@@ -3,7 +3,7 @@
 [OpenAPI metadata][openapi] supports in Azure Functions is now available with this extension, [Azure Functions OpenAPI Extension (Out-of-Process Worker)][az func openapi extension]. With this extension, you can directly let your API endpoints be discoverable.
 
 > [!IMPORTANT]
-> This extension supports only Azure Functions v3 and onwards. If you want to get your Azure Functions v2 supported, find [this in-process model][docs in-proc]. If you want to get your Azure Functions v1 supported, find [this preview document][az func openapi v1 preview] or [community contribution][az func openapi community].
+> This extension supports both .NET Framework 4.8.x and .NET 7+. If you want to use .NET 6, find [this in-process model][docs in-proc].
 
 [OpenAPI metadata][openapi] allows wide variety of other software and applications to consume an Azure Functions app hosting HTTP APIs. The software and applications include Microsoft products and services like [Power Platform][power platform], [API Management][az apim] and third-party tools like [Postman][postman].
 
@@ -13,10 +13,9 @@
 To get yourself started, you need to have the followings installed on your local machine.
 
 > [!IMPORTANT]
-> This extension is currently available in .NET Core runtime.
+> This extension is currently available in both .NET Framework 4.8.x and .NET 7+ runtime.
 
-* [.NET Core SDK 3.1 LTS][dotnet core sdk]
-* [.NET 5 SDK][dotnet 5 sdk]
+* [.NET 7 SDK STS][dotnet sdk] or [.NET 4.8 SDK][dotnet 48 sdk]
 * [Azure Functions Core Tools][az func core tools]
 * [Visual Studio Code][vs code]
 * [Visual Studio Extensions for Azure Tools][vs code azure tools]
@@ -105,7 +104,6 @@ namespace MyOpenApiFunctionApp
 
             // Add these lines below
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
             // Add these lines above
                 .Build();
 
@@ -251,8 +249,8 @@ You have got an Azure Functions app with OpenAPI metadata enabled. In the next a
 [docs apim]: integrate-with-apim.md
 [docs powerplatform]: integrate-with-powerplatform.md
 
-[dotnet core sdk]: https://dotnet.microsoft.com/download/dotnet-core/3.1?WT.mc_id=dotnet-0000-juyoo
-[dotnet 5 sdk]: https://dotnet.microsoft.com/download/dotnet/5.0?WT.mc_id=dotnet-0000-juyoo
+[dotnet sdk]: https://dotnet.microsoft.com/download/dotnet/7.0?WT.mc_id=dotnet-0000-juyoo
+[dotnet 48 sdk]: https://dotnet.microsoft.com/download/dotnet-framework/net48?WT.mc_id=dotnet-0000-juyoo
 
 [az account free]: https://azure.microsoft.com/free/?WT.mc_id=dotnet-0000-juyoo
 [az account free students]: https://azure.microsoft.com/free/students/?WT.mc_id=dotnet-0000-juyoo
