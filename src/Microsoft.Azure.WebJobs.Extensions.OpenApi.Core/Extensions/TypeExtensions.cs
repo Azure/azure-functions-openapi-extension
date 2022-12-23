@@ -36,6 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 case TypeCode.DateTime:
                 case TypeCode.String:
                 case TypeCode.Object when type == typeof(Guid):
+                case TypeCode.Object when type == typeof(TimeSpan):
                 case TypeCode.Object when type == typeof(DateTime):
                 case TypeCode.Object when type == typeof(DateTimeOffset):
                     return true;
@@ -85,6 +86,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             typeof(Guid),
             typeof(DateTime),
             typeof(DateTimeOffset),
+            typeof(TimeSpan),
             typeof(Uri),
             typeof(object),
         };

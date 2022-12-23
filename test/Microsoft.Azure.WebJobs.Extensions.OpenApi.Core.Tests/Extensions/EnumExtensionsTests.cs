@@ -43,6 +43,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(DateTime), "string")]
         [DataRow(typeof(DateTimeOffset), "string")]
         [DataRow(typeof(Guid), "string")]
+        [DataRow(typeof(TimeSpan), "string")]
         [DataRow(typeof(object), "object")]
         public void Given_TypeCode_ToDataType_Should_Return_Value(Type type, string expected)
         {
@@ -69,6 +70,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(DateTime), "date-time")]
         [DataRow(typeof(DateTimeOffset), "date-time")]
         [DataRow(typeof(Guid), "uuid")]
+        [DataRow(typeof(TimeSpan), "timespan")]
         [DataRow(typeof(object), null)]
         public void Given_TypeCode_ToDataFormat_Should_Return_Value(Type type, string expected)
         {
