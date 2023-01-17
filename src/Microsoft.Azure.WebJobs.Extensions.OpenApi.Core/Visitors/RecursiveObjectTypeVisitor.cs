@@ -45,6 +45,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            else if (type == typeof(TimeSpan))
+            {
+                isVisitable = false;
+            }
             else if (type == typeof(DateTimeOffset))
             {
                 isVisitable = false;

@@ -17,25 +17,17 @@
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.OpenApi</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|netcoreapp2.1'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|netcoreapp3.1'">
-    <DocumentationFile>bin\Debug\netcoreapp3.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|netcoreapp2.1'">
-    <DocumentationFile>bin\Release\netcoreapp2.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|netcoreapp3.1'">
-    <DocumentationFile>bin\Release\netcoreapp3.1\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Script.Abstractions" Version="1.0.0-preview" />
-    <PackageReference Include="YamlDotNet" Version="11.2.1" />
+    <PackageReference Include="YamlDotNet" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>

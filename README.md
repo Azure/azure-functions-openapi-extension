@@ -8,6 +8,7 @@
 ## Acknowledgement ##
 
 * [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v3.44.0](https://github.com/swagger-api/swagger-ui/releases/tag/v3.44.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
+* This extension supports the OpenAPI spec version of [v2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) and [v3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md).
 
 
 ## Getting Started ##
@@ -17,9 +18,10 @@
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi**](docs/openapi-in-proc.md)
   * [**Microsoft.Azure.WebJobs.Extensions.OpenApi.Core**](docs/openapi-core.md)
 * [**Securing Azure Functions Endpoints through OpenAPI Auth**](docs/openapi-auth.md): This document shows many various scenarios to add authN features including the built-in features and OAuth2 auth flows.
-* [**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.
+* ~~[**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.~~
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
+* [**Generic CI/CD Pipeline Support](./docs/generic-cicd-pipeline-support.md): This document shows how to generate the OpenAPI document within a CI/CD pipeline, using either PowerShell or bash shell script.
 
 
 ## GitHub Actions Support ##
@@ -27,64 +29,14 @@
 If you are using GitHub Actions as your preferred CI/CD pipeline, you can run the GitHub Action into your workflow to automatically generate the OpenAPI document. Find more details at the [Build OpenAPI](./actions/build-openapi/) action page.
 
 
-## Generic CI/CD Pipeline Support ##
+## GitHub Codespaces Support ##
 
-Alternatively, you can run either PowerShell script or bash shell script to generate the OpenAPI document within your own CI/CD pipeline other than GitHub Actions. Here are two script files:
+If you want to run your Azure Functions app on GitHub Codespaces, you might want to accommodate `local.settings.json`. The following PowerShell script may help you for the accommodation:
 
-* PowerShell: [Get-OpenApiDocument.ps1](./actions/Get-OpenApiDocument.ps1)
-
-    ```powershell
-    ./actions/Get-OpenApiDocument.ps1 `
-        -FunctionAppPath    <function app directory> `
-        -BaseUri            <function app base URI> `
-        -Endpoint           <endpoint for OpenAPI document> `
-        -OutputPath         <output directory for generated OpenAPI document> `
-        -OutputFilename     <OpenAPI document name> `
-        -Delay              <delay in second between run function app and document generation> `
-        -UseWindows         <switch indicating whether to use Windows OS or not>
-    ```
-
-    For more details, run `Get-OpenApiDocument.ps1 -Help`
-
-    You can also remotely invoke this PowerShell script:
-
-    ```powershell
-    & $([Scriptblock]::Create($(Invoke-RestMethod https://aka.ms/azfunc-openapi/generate-openapi.ps1))) `
-        -FunctionAppPath    <function app directory> `
-        -BaseUri            <function app base URI> `
-        -Endpoint           <endpoint for OpenAPI document> `
-        -OutputPath         <output directory for generated OpenAPI document> `
-        -OutputFilename     <OpenAPI document name> `
-        -Delay              <delay in second between run function app and document generation> `
-        -UseWindows         <switch indicating whether to use Windows OS or not>
-    ```
-
-* Bash shell: [get-openapi-document.sh](./actions/get-openapi-document.sh)
-
-    ```bash
-    ./actions/get-openapi-document.sh \
-        -p|--functionapp-path   <function app directory> \
-        -u|--base-uri           <function app base URI> \
-        -e|--endpoint           <endpoint for OpenAPI document> \
-        -o|--output-path        <output directory for generated OpenAPI document> \
-        -f|--output-filename    <OpenAPI document name> \
-        -d|--delay              <delay in second between run function app and document generation>
-    ```
-
-    For more details, run `get-openapi-document.sh --help`
-
-    You can also remotely invoke this bash shell script:
-
-    ```bash
-    curl -fsSL https://aka.ms/azfunc-openapi/generate-openapi.sh \
-        | bash -s -- \
-            -p|--functionapp-path   <function app directory> \
-            -u|--base-uri           <function app base URI> \
-            -e|--endpoint           <endpoint for OpenAPI document> \
-            -o|--output-path        <output directory for generated OpenAPI document> \
-            -f|--output-filename    <OpenAPI document name> \
-            -d|--delay              <delay in second between run function app and document generation>
-    ```
+```bash
+# Update local.settings.json
+pwsh -c "Invoke-RestMethod https://aka.ms/azfunc-openapi/add-codespaces.ps1 | Invoke-Expression"
+```
 
 
 ## Sample Azure Function Apps with OpenAPI Document Enabled ##
@@ -95,9 +47,9 @@ Here are sample apps using the project references:
 * [Function App in-proc worker](samples/Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc)
 
 
-## Azure Functions V1 Support ##
+~~## Azure Functions V1 Support ##~~
 
-This library supports Azure Functions V3 and onwards. If you still want to get your v1 and v2 runtime app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).
+~~This library supports Azure Functions V3 and onwards. If you still want to get your v1 and v2 runtime app supported, find the [community contribution](https://github.com/aliencube/AzureFunctions.Extensions) or the [proxy feature](docs/azure-functions-v1-support.md).~~
 
 
 ## Known Issues ##

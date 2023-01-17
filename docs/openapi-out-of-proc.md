@@ -40,7 +40,6 @@ namespace MyFunctionApp
         {
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
                 /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
                 .ConfigureServices(services =>
                 {
@@ -99,7 +98,6 @@ namespace MyFunctionApp
         {
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
                 /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
                 .ConfigureServices(services =>
                 {
@@ -164,7 +162,6 @@ namespace MyFunctionApp
         {
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
-                .ConfigureOpenApi()
                 /* ⬇️⬇️⬇️ Add this ⬇️⬇️⬇️ */
                 .ConfigureServices(services =>
                 {

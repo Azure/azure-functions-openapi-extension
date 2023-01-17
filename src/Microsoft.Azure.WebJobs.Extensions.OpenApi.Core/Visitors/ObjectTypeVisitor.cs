@@ -24,6 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             typeof(Guid),
             typeof(DateTime),
+            typeof(TimeSpan),
             typeof(DateTimeOffset),
             typeof(Uri),
             typeof(Type),
