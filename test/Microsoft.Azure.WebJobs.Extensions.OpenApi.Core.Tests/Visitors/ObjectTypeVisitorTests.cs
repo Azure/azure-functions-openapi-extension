@@ -13,7 +13,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(FakeModel), "object", null, 2, 3, "fakeModel")]
+        [DataRow(typeof(FakeModel), "object", null, 3, 3, "fakeModel")]
         [DataRow(typeof(FakeRequiredModel), "object", null, 1, 0, "fakeRequiredModel")]
         [DataRow(typeof(FakeRecursiveModel), "object", null, 1, 2, "fakeRecursiveModel")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type objectType, string dataType, string dataFormat, int requiredCount, int rootSchemaCount, string referenceId)
@@ -123,6 +123,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().BeNull();
             acceptor.Schemas[name].Description.Should().Be(description);
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", 3)]
+        public void Given_NewtonsoftJsonPropertyAttribute_When_Visit_Invoked_Then_It_Should_Set_Required_And_Nullability(string name, int requiredCount)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(FakeModel));
+
+            this._visitor.Visit(acceptor, type, this._strategy);
+
+            acceptor.Schemas[name].Required.Count.Should().Be(requiredCount);
+            acceptor.Schemas[name].Required.Should().Contain("fakeProperty");
+            acceptor.Schemas[name].Required.Should().Contain("anotherJsonFakeProperty");
+            acceptor.Schemas[name].Required.Should().Contain("fakePropertyRequiredAllowNullPropertyValue");
+
+            acceptor.Schemas[name].Properties["anotherJsonFakeProperty"].Nullable.Should().BeFalse();
+            acceptor.Schemas[name].Properties["fakePropertyNoPropertyValue"].Nullable.Should().BeTrue();
+            acceptor.Schemas[name].Properties["fakePropertyRequiredAllowNullPropertyValue"].Nullable.Should().BeTrue();
+            acceptor.Schemas[name].Properties["fakePropertyRequiredDisallowAllowNullPropertyValue"].Nullable.Should().BeFalse();
         }
 
         [DataTestMethod]

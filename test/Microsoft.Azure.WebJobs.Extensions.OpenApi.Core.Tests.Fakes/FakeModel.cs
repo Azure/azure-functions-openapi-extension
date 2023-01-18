@@ -24,6 +24,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         [JsonProperty(Required = Required.Default)]
         public string FakePropertyNoPropertyValue { get; set; }
 
+        [JsonProperty(Required = Required.AllowNull)]
+        public string FakePropertyRequiredAllowNullPropertyValue { get; set; }
+
+        [JsonProperty(Required = Required.DisallowNull)]
+        public string FakePropertyRequiredDisallowAllowNullPropertyValue { get; set; }
+
         [JsonProperty]
         public string FakePropertyNoAnnotation { get; set; }
 
