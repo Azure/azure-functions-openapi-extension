@@ -3,7 +3,7 @@
   <Import Project="..\..\builds\worker.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -21,13 +21,29 @@
     <VersionSuffix></VersionSuffix> -->
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' And '$(TargetFramework)'=='netstandard2.0'">
     <DocumentationFile>bin\Debug\netstandard2.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' And '$(TargetFramework)'=='net6.0'">
+    <DocumentationFile>bin\Debug\net6.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' And '$(TargetFramework)'=='net7.0'">
+    <DocumentationFile>bin\Debug\net7.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release' And '$(TargetFramework)'=='netstandard2.0'">
     <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release' And '$(TargetFramework)'=='net6.0'">
+    <DocumentationFile>bin\Release\net6.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release' And '$(TargetFramework)'=='net7.0'">
+    <DocumentationFile>bin\Release\net7.0\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)'!='netstandard2.0' ">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->

@@ -2,7 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Http;
+
+#if NETSTANDARD2_0
+
 using Microsoft.AspNetCore.Http.Internal;
+
+#endif
+
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
