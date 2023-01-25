@@ -128,7 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow("hello", 3)]
-        public void Given_NewtonsoftJsonPropertyAttribute_When_Visit_Invoked_Then_It_Should_Set_Required_And_Nullability(string name, int requiredCount)
+        public void Given_ObjectModel_With_NewtonsoftJsonPropertyAttribute_When_Visit_Invoked_Then_It_Should_Set_Required_And_Nullability(string name, int requiredCount)
         {
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(FakeModel));
@@ -141,6 +141,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas[name].Required.Should().Contain("fakePropertyRequiredAllowNullPropertyValue");
 
             acceptor.Schemas[name].Properties["anotherJsonFakeProperty"].Nullable.Should().BeFalse();
+            acceptor.Schemas[name].Properties["fakePropertyNoPropertyValue"].Nullable.Should().BeTrue();
+            acceptor.Schemas[name].Properties["fakePropertyRequiredAllowNullPropertyValue"].Nullable.Should().BeTrue();
+            acceptor.Schemas[name].Properties["fakePropertyRequiredDisallowAllowNullPropertyValue"].Nullable.Should().BeFalse();
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", 3)]
+        public void Given_RecursiveModel_With_NewtonsoftJsonPropertyAttribute_When_Visit_Invoked_Then_It_Should_Set_Required_And_Nullability(string name, int requiredCount)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(FakeRecursiveModel));
+
+            this._visitor.Visit(acceptor, type, this._strategy);
+
+            acceptor.Schemas[name].Required.Count.Should().Be(requiredCount);
+            acceptor.Schemas[name].Required.Should().Contain("stringValue");
+            acceptor.Schemas[name].Required.Should().Contain("fakeAlwaysRequiredProperty");
+            acceptor.Schemas[name].Required.Should().Contain("fakePropertyRequiredAllowNullPropertyValue");
+
+            acceptor.Schemas[name].Properties["fakeAlwaysRequiredProperty"].Nullable.Should().BeFalse();
             acceptor.Schemas[name].Properties["fakePropertyNoPropertyValue"].Nullable.Should().BeTrue();
             acceptor.Schemas[name].Properties["fakePropertyRequiredAllowNullPropertyValue"].Nullable.Should().BeTrue();
             acceptor.Schemas[name].Properties["fakePropertyRequiredDisallowAllowNullPropertyValue"].Nullable.Should().BeFalse();
