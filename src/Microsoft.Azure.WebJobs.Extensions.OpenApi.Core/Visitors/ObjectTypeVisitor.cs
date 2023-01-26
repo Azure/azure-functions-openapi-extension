@@ -189,7 +189,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())
                                                    .Select(p => new KeyValuePair<string, JsonPropertyAttribute>(p.Key, p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false)))
-                                                   .Where(p => p.Value.Required == Required.Always || p.Value.Required == Required.DisallowNull);
+                                                   .Where(p => p.Value.Required == Required.Always || p.Value.Required == Required.AllowNull);
             foreach (var attribute in jsonPropertyAttributes)
             {
                 instance.Schemas[schemaName].Required.Add(attribute.Key);

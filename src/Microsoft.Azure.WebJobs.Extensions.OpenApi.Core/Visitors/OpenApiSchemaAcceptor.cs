@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
@@ -63,6 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         property.Value.GetCustomAttribute<OpenApiPropertyAttribute>(inherit: false),
                     };
                     attributes.AddRange(property.Value.GetCustomAttributes<ValidationAttribute>(inherit: false));
+                    attributes.AddRange(property.Value.GetCustomAttributes<JsonPropertyAttribute>(inherit: false));
 
                     foreach (var visitor in collection.Visitors)
                     {

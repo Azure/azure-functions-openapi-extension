@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
@@ -161,6 +162,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     var extension = new OpenApiString((attr as OpenApiSchemaVisibilityAttribute).Visibility.ToDisplayName());
 
                     schema.Extensions.Add("x-ms-visibility", extension);
+                }
+
+                attr = attributes.OfType<JsonPropertyAttribute>().SingleOrDefault();
+                if (!attr.IsNullOrDefault())
+                {
+                    schema.Nullable = this.GetNewtonsoftPropertNullable(attr as JsonPropertyAttribute);
                 }
 
                 schema.ApplyValidationAttributes(attributes.OfType<ValidationAttribute>());
@@ -375,7 +382,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             return attr.Description;
         }
 
-
         /// <summary>
         /// Gets the property deprecated.
         /// </summary>
@@ -384,6 +390,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         protected bool GetOpenApiPropertyDeprecated(OpenApiPropertyAttribute attr)
         {
             return attr.Deprecated;
+        }
+
+        /// <summary>
+        /// Gets whether Newtonsoft Serialization allows nullability based on the JsonPropertyAttribute
+        /// </summary>
+        /// <param name="attr"><see cref="JsonPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the property deprecated.</returns>
+        private bool GetNewtonsoftPropertNullable(JsonPropertyAttribute attr)
+        {
+            return attr.Required == Required.AllowNull || attr.Required == Required.Default;
         }
     }
 }
