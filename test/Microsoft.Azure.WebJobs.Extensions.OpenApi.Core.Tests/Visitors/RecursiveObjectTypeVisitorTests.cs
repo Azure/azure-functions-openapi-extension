@@ -72,7 +72,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(FakeRecursiveModel), "object", null, 1, 0, "fakeRecursiveModel")]
+        [DataRow(typeof(FakeRecursiveModel), "object", null, 3, 0, "fakeRecursiveModel")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type objectType, string dataType, string dataFormat, int requiredCount, int rootSchemaCount, string referenceId)
         {
             var name = "hello";
@@ -91,6 +91,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
             acceptor.Schemas[name].Reference.Type.Should().Be(ReferenceType.Schema);
             acceptor.Schemas[name].Reference.Id.Should().Be(referenceId);
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", 3)]
+        public void Given_NewtonsoftJsonPropertyAttribute_When_Visit_Invoked_Then_It_Should_Set_Required(string name, int requiredCount)
+        {
+            var acceptor = new OpenApiSchemaAcceptor();
+            var type = new KeyValuePair<string, Type>(name, typeof(FakeRecursiveModel));
+
+            this._visitor.Visit(acceptor, type, this._strategy);
+
+            acceptor.Schemas[name].Required.Count.Should().Be(requiredCount);
+            acceptor.Schemas[name].Required.Should().Contain("stringValue");
+            acceptor.Schemas[name].Required.Should().Contain("fakeAlwaysRequiredProperty");
+            acceptor.Schemas[name].Required.Should().Contain("fakePropertyRequiredAllowNullPropertyValue");
         }
 
         [DataTestMethod]
