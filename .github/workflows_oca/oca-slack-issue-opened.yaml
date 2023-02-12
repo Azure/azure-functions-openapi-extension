@@ -23,7 +23,7 @@ jobs:
       run: |
         $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.issue.user.login) }}"
 
-        echo "::set-output name=isOcaParticipant::$isOcaParticipant"
+        echo "isOcaParticipant=$isOcaParticipant" >> $GITHUB_OUTPUT
 
     - name: Add a label
       if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
