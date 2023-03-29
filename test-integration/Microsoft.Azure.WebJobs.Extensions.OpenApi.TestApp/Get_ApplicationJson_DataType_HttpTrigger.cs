@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_ApplicationJson_DataType_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_ApplicationJson_DataType_HttpTrigger.Get_ApplicationJson_DataType), tags: new[] { "dataType" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DataTypeObjectModel), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DataTypeObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_DataType(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-datatype")] HttpRequest req,
             ILogger log)

@@ -167,24 +167,27 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
                     continue;
                 }
 
-                var verb = this._helper.GetHttpVerb(trigger);
-
+                var verbs = this._helper.GetHttpVerbs(trigger);
                 var item = this._helper.GetOpenApiPath(path, paths);
-                var operations = item.Operations;
 
-                var operation = this._helper.GetOpenApiOperation(method, function, verb);
-                if (GenericExtensions.IsNullOrDefault(operation))
-                {
-                    continue;
+                foreach(var verb in verbs) {
+                    var operations = item.Operations;
+
+                    var operation = this._helper.GetOpenApiOperation(method, function, verb);
+                    if (GenericExtensions.IsNullOrDefault(operation))
+                    {
+                        continue;
+                    }
+
+                    operation.Security = this._helper.GetOpenApiSecurityRequirement(method, verb.ToString(), this._strategy);
+                    operation.Parameters = this._helper.GetOpenApiParameters(method, verb.ToString(), trigger, this._strategy, this._collection, version);
+                    operation.RequestBody = this._helper.GetOpenApiRequestBody(method, verb.ToString(), this._strategy, this._collection, version);
+                    operation.Responses = this._helper.GetOpenApiResponses(method, verb.ToString(), this._strategy, this._collection, version);
+
+                    operations[verb] = operation;
+                    item.Operations = operations;
                 }
 
-                operation.Security = this._helper.GetOpenApiSecurityRequirement(method, this._strategy);
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection, version);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection, version);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection, version);
-
-                operations[verb] = operation;
-                item.Operations = operations;
 
                 paths[path] = item;
             }

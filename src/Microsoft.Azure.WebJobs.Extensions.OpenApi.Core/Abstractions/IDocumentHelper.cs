@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns>Collection of <see cref="OpenApiSecurityRequirement"/> instance.</returns>
-        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null);
+        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, string verb, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the <see cref="OpenApiRequestBody"/> instance.
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
-        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
+        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, string verb, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
+        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, string verb, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
+        OpenApiResponses GetOpenApiResponses(MethodInfo element,string verb, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.

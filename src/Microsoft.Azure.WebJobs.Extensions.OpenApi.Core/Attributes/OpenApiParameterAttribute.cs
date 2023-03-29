@@ -16,10 +16,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Initializes a new instance of the <see cref="OpenApiParameterAttribute"/> class.
         /// </summary>
         /// <param name="name"></param>
-        public OpenApiParameterAttribute(string name)
+        public OpenApiParameterAttribute(string name, string verb)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
+            this.Verb = verb;
         }
+
+        public virtual string Verb {get;}
 
         /// <summary>
         /// Gets the parameter name.

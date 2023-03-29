@@ -17,10 +17,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         {
             var statusCode = HttpStatusCode.OK;
 
-            Action action = () => new OpenApiResponseWithBodyAttribute(statusCode, null, null);
+            Action action = () => new OpenApiResponseWithBodyAttribute(statusCode, null, null, "GET");
             action.Should().Throw<ArgumentNullException>();
 
-            action = () => new OpenApiResponseWithBodyAttribute(statusCode, "hello world", null);
+            action = () => new OpenApiResponseWithBodyAttribute(statusCode, "hello world", null, "GET");
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         [DataRow(HttpStatusCode.OK, "application/json", typeof(object))]
         public void Given_Parameters_When_Instantiated_Then_It_Should_Return_Value(HttpStatusCode statusCode, string contentType, Type bodyType)
         {
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType);
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, "GET");
 
             attribute.StatusCode.Should().Be(statusCode);
             attribute.ContentType.Should().BeEquivalentTo(contentType);
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, "GET")
             {
                 Summary = summary,
                 Description = description,

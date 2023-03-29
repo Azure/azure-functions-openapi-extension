@@ -17,11 +17,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// </summary>
         /// <param name="schemeName">OpenAPI security scheme name.</param>
         /// <param name="schemeType">OpenAPI security scheme type.</param>
-        public OpenApiSecurityAttribute(string schemeName, SecuritySchemeType schemeType)
+        public OpenApiSecurityAttribute(string schemeName, SecuritySchemeType schemeType, string verb)
         {
             this.SchemeName = schemeName ?? throw new ArgumentNullException(nameof(schemeName));
             this.SchemeType = schemeType;
+            this.Verb = verb;
         }
+
+        public virtual string Verb {get;}
 
         /// <summary>
         /// Gets the OpenAPI security scheme name.

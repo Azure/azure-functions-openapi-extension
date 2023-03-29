@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         [TestMethod]
         public void Given_Null_When_Instantiated_It_Should_Throw_Exception()
         {
-            Action action = () => new OpenApiParameterAttribute(null);
+            Action action = () => new OpenApiParameterAttribute(null, "GET");
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         [DataRow("Hello World")]
         public void Given_Parameter_When_Instantiated_It_Should_Return_Value(string name)
         {
-            var attribute = new OpenApiParameterAttribute(name);
+            var attribute = new OpenApiParameterAttribute(name, "GET");
 
             attribute.Name.Should().BeEquivalentTo(name);
             attribute.Summary.Should().BeNullOrWhiteSpace();
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
             string summary, string description, Type type, ParameterLocation @in,
             OpenApiParameterCollectionDelimiterType delimiter, bool explode, bool required, OpenApiVisibilityType visibility, bool deprecated)
         {
-            var attribute = new OpenApiParameterAttribute("Name")
+            var attribute = new OpenApiParameterAttribute("Name", "GET")
             {
                 Summary = summary,
                 Description = description,

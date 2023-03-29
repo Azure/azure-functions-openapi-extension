@@ -34,7 +34,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         public void Given_OpenApiRequestBodyAttribute_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type bodyType, string expected)
         {
             var contentType = "application/json";
-            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType)
+            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType, "GET")
             {
                 Required = true,
                 Description = "Dummy request model"
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         {
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType)
+            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType, "GET")
             {
                 Required = true,
                 Description = "Dummy request model",
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         {
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType)
+            var attribute = new OpenApiRequestBodyAttribute(contentType, bodyType, "GET")
             {
                 Example = example,
             };
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         {
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType);
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, "GET");
             var namingStrategy = new CamelCaseNamingStrategy();
 
             var result = OpenApiPayloadAttributeExtensions.ToOpenApiMediaType(attribute, namingStrategy);
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, "GET")
             {
                 Deprecated = deprecated,
             };
@@ -144,18 +144,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         }
 
         [DataTestMethod]
-        [DataRow(null, 0, OpenApiVersionType.V2)]
-        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V2)]
-        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V2)]
-        [DataRow(null, 0, OpenApiVersionType.V3)]
-        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V3)]
-        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V3)]
-        public void Given_OpenApiResponseWithBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count, OpenApiVersionType version)
+        [DataRow(null, 0, OpenApiVersionType.V2, "GET")]
+        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V2, "GET")]
+        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V2, "GET")]
+        [DataRow(null, 0, OpenApiVersionType.V3, "GET")]
+        [DataRow(typeof(FakeModel), 0, OpenApiVersionType.V3, "GET")]
+        [DataRow(typeof(FakeExample), 3, OpenApiVersionType.V3, "GET")]
+        public void Given_OpenApiResponseWithBodyAttribute_With_Example_When_ToOpenApiMediaType_Invoked_Then_It_Should_Return_Result(Type example, int count, OpenApiVersionType version, string verb)
         {
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, verb)
             {
                 Example = example,
             };

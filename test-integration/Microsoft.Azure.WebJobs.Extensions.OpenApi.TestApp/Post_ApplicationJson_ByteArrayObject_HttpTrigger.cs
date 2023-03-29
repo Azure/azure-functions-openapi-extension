@@ -15,8 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_ByteArrayObject_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_ByteArrayObject_HttpTrigger.Post_ApplicationJson_ByteArrayObject), tags: new[] { "bytearray" })]
-        [OpenApiRequestBody(contentType: "application/octet-stream", bodyType: typeof(byte[]), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ByteArrayObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "application/octet-stream", bodyType: typeof(byte[]), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ByteArrayObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_ByteArrayObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-bytearray")] HttpRequest req,
             ILogger log)

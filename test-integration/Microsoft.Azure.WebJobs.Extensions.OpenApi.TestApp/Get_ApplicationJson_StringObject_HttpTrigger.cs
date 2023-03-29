@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_ApplicationJson_StringObject_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_ApplicationJson_StringObject_HttpTrigger.Get_ApplicationJson_StringObject), tags: new[] { "string" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StringObjectModel), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StringObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_StringObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-string")] HttpRequest req,
             ILogger log)

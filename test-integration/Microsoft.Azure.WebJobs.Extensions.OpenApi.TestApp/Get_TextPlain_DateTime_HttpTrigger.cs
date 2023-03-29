@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_TextPlain_DateTime_HttpTrigger.Get_TextPlain_DateTime))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_DateTime_HttpTrigger.Get_TextPlain_DateTime), tags: new[] { "datetime" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(DateTime), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(DateTime), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_DateTime(
             [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-datetime")] HttpRequest req,
             ILogger log)
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_TextPlain_DateTime_HttpTrigger.Get_TextPlain_DateTimeOffset))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_DateTime_HttpTrigger.Get_TextPlain_DateTimeOffset), tags: new[] { "datetime" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(DateTimeOffset), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(DateTimeOffset), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_DateTimeOffset(
             [HttpTrigger(AuthorizationLevel.Anonymous, "Get", Route = "get-textplain-datetimeoffset")] HttpRequest req,
             ILogger log)

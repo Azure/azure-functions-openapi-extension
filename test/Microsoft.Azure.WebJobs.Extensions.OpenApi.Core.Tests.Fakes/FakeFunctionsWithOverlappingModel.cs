@@ -12,8 +12,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
             }
 
             [OpenApiOperation("test-function")]
-            [OpenApiRequestBody("application/json", typeof(FakeInternalModel))]
-            [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FakeInternalModel), Summary = "Logs Retrieved.", Description = "Returns the logs matching search parameters.")]
+            [OpenApiRequestBody("application/json", typeof(FakeInternalModel), "GET")]
+            [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FakeInternalModel), Summary = "Logs Retrieved.", Description = "Returns the logs matching search parameters.")]
             public void Run()
             {
             }
@@ -26,8 +26,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
             }
 
             [OpenApiOperation("test-function")]
-            [OpenApiRequestBody("application/json", typeof(FakeInternalModel))]
-            [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FakeInternalModel), Summary = "Logs Retrieved.", Description = "Returns the logs matching search parameters.")]
+            [OpenApiRequestBody("application/json", typeof(FakeInternalModel), "GET")]
+            [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FakeInternalModel), Summary = "Logs Retrieved.", Description = "Returns the logs matching search parameters.")]
             public void Run()
             {
             }

@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
             var statusCode = HttpStatusCode.OK;
             var contentType = "application/json";
             var bodyType = typeof(object);
-            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType)
+            var attribute = new OpenApiResponseWithBodyAttribute(statusCode, contentType, bodyType, "GET")
             {
                 Summary = summary,
                 Description = description,

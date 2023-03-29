@@ -99,13 +99,9 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <param name="helper"><see cref="IDocumentHelper"/> instance.</param>
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <returns><see cref="OperationType"/> value.</returns>
-        public static OperationType GetHttpVerb(this IDocumentHelper helper, HttpTriggerAttribute trigger)
+        public static List<OperationType> GetHttpVerbs(this IDocumentHelper helper, HttpTriggerAttribute trigger)
         {
-            var verb = Enum.TryParse<OperationType>(trigger.Methods.First(), true, out OperationType ot)
-                           ? ot
-                           : throw new InvalidOperationException();
-
-            return verb;
+            return trigger.Methods.Select(m =>  Enum.TryParse<OperationType>(m, true, out OperationType ot) ? ot : throw new InvalidOperationException()).ToList();
         }
 
         /// <summary>
@@ -126,7 +122,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
 
             var operation = new OpenApiOperation()
             {
-                OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
+                OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : $"{op.OperationId}_{verb}",
                 Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
                 Summary = op.Summary,
                 Description = op.Description,
@@ -153,10 +149,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, string verb, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
+                                    .Where(p => p.Verb == verb)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection, version))
                                     .ToList();
 

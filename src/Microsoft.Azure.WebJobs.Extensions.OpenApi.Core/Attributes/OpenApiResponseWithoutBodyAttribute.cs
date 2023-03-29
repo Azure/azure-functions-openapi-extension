@@ -13,10 +13,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Initializes a new instance of the <see cref="OpenApiResponseWithoutBodyAttribute"/> class.
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
-        public OpenApiResponseWithoutBodyAttribute(HttpStatusCode statusCode)
+        public OpenApiResponseWithoutBodyAttribute(HttpStatusCode statusCode, string verb)
         {
             this.StatusCode = statusCode;
+            this.Verb = verb;
         }
+
+        public virtual string Verb {get;}
 
         /// <summary>
         /// Gets the HTTP status code value.

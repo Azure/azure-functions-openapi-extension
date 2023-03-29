@@ -15,8 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_Int16Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_Int16Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(short), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(short), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_Int16Object(
            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-int16")] HttpRequest req,
            ILogger log)
@@ -28,8 +28,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_Int32Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_Int32Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(int), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(int), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_Int32Object(
         [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-int32")] HttpRequest req,
         ILogger log)
@@ -41,8 +41,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_Int64Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_Int64Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(long), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(long), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_Int64Object(
         [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-int64")] HttpRequest req,
         ILogger log)
@@ -54,8 +54,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_UInt16Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_UInt16Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ushort), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(ushort), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_UInt16Object(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-uint16")] HttpRequest req,
             ILogger log)
@@ -67,8 +67,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_UInt32Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_UInt32Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(uint), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(uint), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_UInt32Object(
           [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-uint32")] HttpRequest req,
           ILogger log)
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_UInt64Object))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_IntegerObject_HttpTrigger.Post_ApplicationJson_UInt64Object), tags: new[] { "integer" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(ulong), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(ulong), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IntegerObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_UInt64Object(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-uint64")] HttpRequest req,
             ILogger log)

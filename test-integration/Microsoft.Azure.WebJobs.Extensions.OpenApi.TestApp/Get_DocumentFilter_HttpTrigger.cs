@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_DocumentFilter_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_DocumentFilter_HttpTrigger.Get_DocumentFilter), tags: new[] { "documentFilter" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_DocumentFilter(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-documentfilter")] HttpRequest req,
             ILogger log)
