@@ -15,8 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_TextPlain_Uri_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_Uri_HttpTrigger.Get_TextPlain_Uri), tags: new[] { "uri" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(Uri), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Uri), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(Uri), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Uri), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Uri(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-uri")] HttpRequest req,
             ILogger log)

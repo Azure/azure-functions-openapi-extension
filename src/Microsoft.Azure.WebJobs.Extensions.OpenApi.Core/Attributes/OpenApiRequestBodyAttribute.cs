@@ -13,10 +13,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// </summary>
         /// <param name="contentType">Content type.</param>
         /// <param name="bodyType">Type of payload.</param>
-        public OpenApiRequestBodyAttribute(string contentType, Type bodyType)
+        public OpenApiRequestBodyAttribute(string contentType, Type bodyType, string verb)
             : base(contentType, bodyType)
         {
+            this.Verb = verb;
         }
+
+        public virtual string Verb {get;}
 
         /// <summary>
         /// Gets or sets the value indicating whether the request body is required or not.

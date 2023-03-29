@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         [TestMethod]
         public void Given_NullValue_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new OpenApiSecurityAttribute(null, SecuritySchemeType.ApiKey);
+            Action action = () => new OpenApiSecurityAttribute(null, SecuritySchemeType.ApiKey, "GET");
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         [DataRow("authKey", SecuritySchemeType.ApiKey)]
         public void Given_Value_Property_Should_Return_Value(string schemeName, SecuritySchemeType schemeType)
         {
-            var attribute = new OpenApiSecurityAttribute(schemeName, schemeType);
+            var attribute = new OpenApiSecurityAttribute(schemeName, schemeType, "GET");
 
             attribute.SchemeName.Should().Be(schemeName);
             attribute.SchemeType.Should().Be(schemeType);

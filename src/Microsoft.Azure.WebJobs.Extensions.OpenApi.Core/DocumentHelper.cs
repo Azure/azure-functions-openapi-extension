@@ -43,9 +43,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, NamingStrategy namingStrategy = null)
+        public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirement(MethodInfo element, string verb, NamingStrategy namingStrategy = null)
         {
-            var attributes = element.GetCustomAttributes<OpenApiSecurityAttribute>(inherit: false);
+            var attributes = element.GetCustomAttributes<OpenApiSecurityAttribute>(inherit: false)
+                .Where(oasa => oasa.Verb == verb);
+
             if (!attributes.Any())
             {
                 return new List<OpenApiSecurityRequirement>();
@@ -79,9 +81,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, string verb, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
-            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
+            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
+                .Where(p => p.Verb == verb);
             if (!attributes.Any())
             {
                 return null;
@@ -105,23 +108,25 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         /// <inheritdoc />
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, string verb, NamingStrategy namingStrategy = null)
         {
-            return this.GetOpenApiResponses(element, namingStrategy, null);
+            return this.GetOpenApiResponses(element, verb, namingStrategy, null);
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, string verb, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                            .Where(p => p.Deprecated == false)
-                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version) });
+                                           .Where(p => p.Verb == verb)
+                                           .Select(p => new { Verb = p.Verb, StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
-                                              .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+                                            .Where(p => p.Verb == verb)
+                                            .Select(p => new { Verb = p.Verb, StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
             var responses = responsesWithBody.Concat(responsesWithoutBody)
-                                             .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.Response)
+                                             .ToDictionary(p => $"{((int)p.StatusCode).ToString()}", p => p.Response)
                                              .ToOpenApiResponses();
 
             return responses;

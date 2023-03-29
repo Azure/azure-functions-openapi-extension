@@ -13,7 +13,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_True))]
         [OpenApiOperation(operationId: nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_True), tags: new[] { "deprecated" }, Deprecated = true)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Deprecated_True(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-textplain-deprecated-true")] HttpRequest req,
             ILogger log)
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_False))]
         [OpenApiOperation(operationId: nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_False), tags: new[] { "deprecated" }, Deprecated = false)]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Deprecated_False(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-textplain-deprecated-false")] HttpRequest req,
             ILogger log)
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_Null))]
         [OpenApiOperation(operationId: nameof(Get_Deprecated_HttpTrigger.Get_TextPlain_Deprecated_Null), tags: new[] { "deprecated" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_Deprecated_Null(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-textplain-deprecated-null")] HttpRequest req,
             ILogger log)

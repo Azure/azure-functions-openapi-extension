@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_TagFilter_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_TagFilter_HttpTrigger.Get_TagFilter), tags: new[] { "tagFilter" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_TagFilter(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-tagfilter")] HttpRequest req,
             ILogger log)

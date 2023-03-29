@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_TextPlain_String_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_TextPlain_String_HttpTrigger.Get_TextPlain_String), tags: new[] { "string" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Get_TextPlain_String(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-textplain-string")] HttpRequest req,
             ILogger log)

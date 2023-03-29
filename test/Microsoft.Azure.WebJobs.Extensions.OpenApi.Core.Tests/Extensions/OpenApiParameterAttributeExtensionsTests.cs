@@ -30,7 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(string),
                 Description = "hello world",
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_With_String_Type_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(string),
                 Description = "hello world",
@@ -66,7 +66,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_With_Int_Type_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(int),
                 Description = "hello world",
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_With_Long_Type_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(long),
                 Description = "hello world",
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         {
             var strategy = new CamelCaseNamingStrategy();
             var names = typeof(FakeStringEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(FakeStringEnum),
                 Description = "hello world",
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         {
             var strategy = new CamelCaseNamingStrategy();
             var names = typeof(FakeStringEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(List<FakeStringEnum>),
                 Description = "hello world",
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_With_Summary_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(long),
                 Summary = "lorem ipsum",
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(null)]
         public void Given_Value_With_Visibility_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result(OpenApiVisibilityType? visibility)
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(long),
                 Summary = "lorem ipsum",
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(null)]
         public void Given_Value_With_Deprecated_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result(bool? deprecated)
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(long),
                 Summary = "lorem ipsum",
@@ -229,7 +229,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Value_With_Examples_When_ToOpenApiParameter_Invoked_With_OpenApi_V3_Then_It_Should_Return_Result()
         {
-            var attribute = new OpenApiParameterAttribute("hello")
+            var attribute = new OpenApiParameterAttribute("hello", "GET")
             {
                 Type = typeof(string),
                 Summary = "lorem ipsum",

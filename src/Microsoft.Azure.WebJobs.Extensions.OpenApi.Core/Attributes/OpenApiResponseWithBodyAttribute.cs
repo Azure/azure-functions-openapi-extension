@@ -16,11 +16,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="contentType">Content type.</param>
         /// <param name="bodyType">Type of payload.</param>
-        public OpenApiResponseWithBodyAttribute(HttpStatusCode statusCode, string contentType, Type bodyType)
+        public OpenApiResponseWithBodyAttribute(HttpStatusCode statusCode, string contentType, Type bodyType, string verb)
             : base(contentType, bodyType)
         {
             this.StatusCode = statusCode;
+            this.Verb = verb;
         }
+
+        public virtual string Verb {get;}
 
         /// <summary>
         /// Gets the HTTP status code value.

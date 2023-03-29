@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_ApplicationJson_GenericAndRecursiveObject_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_ApplicationJson_GenericAndRecursiveObject_HttpTrigger.Get_ApplicationJson_GenericAndRecursiveObject), tags: new[] { "genericAndRecursive" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericAndRecursiveObjectModel), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericAndRecursiveObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_GenericAndRecursiveObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-genericandrecursive")] HttpRequest req,
             ILogger log)

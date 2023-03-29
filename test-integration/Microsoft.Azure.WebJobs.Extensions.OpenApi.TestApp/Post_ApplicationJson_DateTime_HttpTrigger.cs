@@ -16,8 +16,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_DateTime_HttpTrigger.Post_ApplicationJson_DateTime))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_DateTime_HttpTrigger.Post_ApplicationJson_DateTime), tags: new[] { "datetime" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(DateTime), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DateTimeObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(DateTime), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DateTimeObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_DateTime(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-datetime")] HttpRequest req,
             ILogger log)
@@ -29,8 +29,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_DateTime_HttpTrigger.Post_ApplicationJson_DateTimeOffset))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_DateTime_HttpTrigger.Post_ApplicationJson_DateTimeOffset), tags: new[] { "datetime" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(DateTimeOffset), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DateTimeObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(DateTimeOffset), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(DateTimeObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_DateTimeOffset(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-datetimeoffset")] HttpRequest req,
             ILogger log)

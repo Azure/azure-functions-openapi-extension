@@ -15,8 +15,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Post_ApplicationJson_SingleObject))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NumberObject_HttpTrigger.Post_ApplicationJson_SingleObject), tags: new[] { "number" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(float), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(float), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_SingleObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-single")] HttpRequest req,
             ILogger log)
@@ -28,8 +28,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_DoubleObject))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NumberObject_HttpTrigger.Post_ApplicationJson_DoubleObject), tags: new[] { "number" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(double), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(double), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_DoubleObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-double")] HttpRequest req,
             ILogger log)
@@ -41,8 +41,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
         [FunctionName(nameof(Post_ApplicationJson_DecimalObject))]
         [OpenApiOperation(operationId: nameof(Post_ApplicationJson_NumberObject_HttpTrigger.Post_ApplicationJson_DecimalObject), tags: new[] { "number" })]
-        [OpenApiRequestBody(contentType: "text/plain", bodyType: typeof(decimal), Required = true, Description = "The OK response")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
+        [OpenApiRequestBody(verb: "GET",contentType: "text/plain", bodyType: typeof(decimal), Required = true, Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET",statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(NumberObjectModel), Description = "The OK response")]
         public static async Task<IActionResult> Post_ApplicationJson_DecimalObject(
             [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "post-applicationjson-decimal")] HttpRequest req,
             ILogger log)

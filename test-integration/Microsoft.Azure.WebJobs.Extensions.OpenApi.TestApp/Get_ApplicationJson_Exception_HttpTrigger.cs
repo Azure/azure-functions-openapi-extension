@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
     {
         [FunctionName(nameof(Get_ApplicationJson_Exception_HttpTrigger))]
         [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Exception_HttpTrigger.Get_ApplicationJson_Exception), tags: new[] { "exception" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StackOverflowException), Description = "The OK response")]
+        [OpenApiResponseWithBody(verb: "GET", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StackOverflowException), Description = "The OK response")]
         public static async Task<IActionResult> Get_ApplicationJson_Exception(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-exception")] HttpRequest req,
             ILogger log)

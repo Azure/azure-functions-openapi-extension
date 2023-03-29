@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         public void Given_Parameters_When_Instantiated_Then_It_Should_Return_Value()
         {
             var statusCode = HttpStatusCode.OK;
-            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode);
+            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode, "GET");
 
             attribute.StatusCode.Should().Be(statusCode);
             attribute.Summary.Should().BeNullOrWhiteSpace();
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Attributes
         public void Given_Properties_When_Instantiated_Then_It_Should_Return_Value(string summary, string description, Type headerType)
         {
             var statusCode = HttpStatusCode.OK;
-            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode)
+            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode, "GET")
             {
                 Summary = summary,
                 Description = description,

@@ -1,5 +1,31 @@
 # Azure Functions OpenAPI Extension #
 
+Supports multiple HTTP methods on the same endpoint
+
+```
+    [OpenApiOperation(operationId: "containerOperations", tags: new[] { "container" }, Summary = "Operations on containers", Description = "Operations on containers", Visibility = OpenApiVisibilityType.Important)]
+    //GetOperations
+    [OpenApiRequestBody(verb: "Get", contentType: "application/json", bodyType: typeof(ContainerGet), Required = true, Description = "Container to get")]
+    [OpenApiResponseWithBody(verb: "Get", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ContainerGet), Description = "Gets container info")]
+    [OpenApiResponseWithoutBody(verb: "Get", statusCode: HttpStatusCode.BadRequest, Summary = "Invalid container supplied", Description = "Invalid container supplied")]
+    //DeleteOperations
+    [OpenApiRequestBody(verb: "Delete", contentType: "application/json", bodyType: typeof(ContainerDelete), Required = true, Description = "Container to delete")]
+    [OpenApiResponseWithBody(verb: "Delete", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ContainerInfo), Description = "Deletes container")]
+    [OpenApiResponseWithoutBody(verb: "Delete", statusCode: HttpStatusCode.BadRequest, Summary = "Invalid container supplied", Description = "Invalid container supplied")]
+    //PostOperations
+    [OpenApiRequestBody(verb: "Post", contentType: "application/json", bodyType: typeof(ContainerCreate), Required = true, Description = "Container to create")]
+    [OpenApiResponseWithBody(verb: "Post", statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ContainerInfo), Description = "Created container")]
+    [OpenApiResponseWithoutBody(verb: "Post", statusCode: HttpStatusCode.BadRequest, Summary = "Invalid container supplied", Description = "Invalid container supplied")]
+    [Function("Containers")]
+    public Async.Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "GET", "POST", "DELETE")] HttpRequestData req)
+        => _auth.CallIfUser(req, r => r.Method switch {
+            "GET" => Get(r),
+            "POST" => Post(r),
+            "DELETE" => Delete(r),
+            _ => throw new NotSupportedException(),
+        });
+```
+
 | Out-of-Proc Worker | In-Proc Worker |
 | :----------------: | :------------: |
 | [![](https://img.shields.io/nuget/dt/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.OpenApi/) | [![](https://img.shields.io/nuget/dt/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Microsoft.Azure.WebJobs.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.OpenApi/) |

@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         public void Given_Properties_When_ToOpenApiResponse_Invoked_Then_It_Should_Return_Value(string summary, string description, Type headerType)
         {
             var statusCode = HttpStatusCode.OK;
-            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode)
+            var attribute = new OpenApiResponseWithoutBodyAttribute(statusCode, "GET")
             {
                 Summary = summary,
                 Description = description,
