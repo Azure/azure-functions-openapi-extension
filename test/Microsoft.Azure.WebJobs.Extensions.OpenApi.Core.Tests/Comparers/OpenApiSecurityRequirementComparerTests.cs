@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 
 using System.Collections.Generic;
@@ -14,117 +15,59 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
     [TestClass]
     public class OpenApiSecurityRequirementComparerTests
     {
-        private OpenApiSecurityRequirementComparer comparer = new OpenApiSecurityRequirementComparer();
+        private OpenApiSecurityRequirementComparer _comparer;
 
-        [TestMethod]
-        public void Given_DifferentRequirementId_When_Call_Equals_Should_Be_False()
+        private OpenApiSecurityRequirement initializeRequirement(string referenceId)
         {
-            var requirement1 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "scope1", "scope2" }
-                }
-            };
-            var requirement2 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId2",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "string1", "string2" }
-                }
-            };
-            comparer.Equals(requirement1, requirement2).Should().Be(false);
+            var reference = new OpenApiReference { Id = referenceId };
+            var scheme = new OpenApiSecurityScheme { Reference = reference };
+            return new OpenApiSecurityRequirement { { scheme, null } };
         }
 
-        [TestMethod]
-        public void Given_EqualRequirementId_When_Call_Equals_Should_Be_True()
+        [TestInitialize]
+        public void Init()
         {
-            var requirement1 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "string1", "string2" }
-                }
-            };
-            var requirement2 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "string1", "string2" }
-                }
-            };
-
-            comparer.Equals(requirement1, requirement2).Should().Be(true);
+            this._comparer = new OpenApiSecurityRequirementComparer();
         }
 
-        [TestMethod]
-        public void Given_EqualRequirements_Should_Be_Return_SameHashCode()
+        [DataTestMethod]
+        [DataRow("securitySchemeId", "securitySchemeId", true)]
+        [DataRow("securitySchemeId", "securitySchemeId2",  false)]
+        public void Given_OpenApiSecurityRequirements_When_Equals_Invoked_Then_It_Should_Return_Result(string referenceId1, string referenceId2, bool expected)
         {
-            //Given
-            var requirement1 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "string1", "string2" }
-                }
-            };
-            var requirement2 = new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "securitySchemeId",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string> { "string1", "string2" }
-                }
-            };
-            //When
-            var hashCode1 = comparer.GetHashCode(requirement1);
-            var hashCode2 = comparer.GetHashCode(requirement2);
+            var requirement1 = initializeRequirement(referenceId1);
+            var requirement2 = initializeRequirement(referenceId2);
 
-            bool result = hashCode1.Equals(hashCode2);
+            bool result = _comparer.Equals(requirement1, requirement2);
 
-            //Then
-            result.Should().Be(true);
+            result.Should().Be(expected);
+        }
+
+
+        [DataTestMethod]
+        [DataRow("securitySchemeId", "securitySchemeId", true)]
+        [DataRow("securitySchemeId", "securitySchemeId2", false)]
+        public void Given_SameOpenApiSecurityRequirement_Should_Return_SameHashCode(string referenceId1, string referenceId2, bool expected)
+        {
+            var requirement1 = initializeRequirement(referenceId1);
+            var requirement2 = initializeRequirement(referenceId2);
+
+            var hashCode1 = _comparer.GetHashCode(requirement1);
+            var hashCode2 = _comparer.GetHashCode(requirement2);
+
+            var result = hashCode1.Equals(hashCode2);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, 0)]
+        public void Given_NullRequirement_When_GetHashCode_Invoked_Then_It_Should_Return_Zero(OpenApiSecurityRequirement requirement, int expected)
+        {
+
+            var hashCode = _comparer.GetHashCode(requirement);
+
+            hashCode.Should().Be(expected);
         }
     }
 }
