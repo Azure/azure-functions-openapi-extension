@@ -5,9 +5,7 @@
       "dockerfile": "./Dockerfile",
       "context": ".",
       "args": {
-        "VARIANT": "6.0-jammy"
-        // Use this only if you need Razor support, until OmniSharp supports .NET 6 properly
-        // "VARIANT": "6.0-focal"
+        "VARIANT": "7.0"
       }
     },
   
@@ -25,24 +23,25 @@
   
     "features": {
       // Uncomment the below to install Azure CLI
-      "ghcr.io/devcontainers/features/azure-cli:1": {
-        "version": "latest"
+      "ghcr.io/devcontainers/features/azure-cli:latest": {
+        "version": "latest",
+        "extensions": "account,alias,deploy-to-azure,functionapp,subscription,webapp"
       },
   
       // Uncomment the below to install GitHub CLI
-      "ghcr.io/devcontainers/features/github-cli:1": {
+      "ghcr.io/devcontainers/features/github-cli:latest": {
         "version": "latest"
       },
   
       // Uncomment the below to install node.js
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node:latest": {
         "version": "lts",
         "nodeGypDependencies": true,
         "nvmInstallPath": "/usr/local/share/nvm"
       },
   
       // Install common utilities
-      "ghcr.io/devcontainers/features/common-utils:1": {
+      "ghcr.io/devcontainers/features/common-utils:latest": {
         "installZsh": true,
         "installOhMyZsh": true,
         "upgradePackages": true,
@@ -93,6 +92,8 @@
   
           // Required extensions
           "GitHub.copilot",
+          "GitHub.copilot-labs",
+          "GitHub.copilot-chat",
           "ms-dotnettools.csharp",
           "ms-vscode.PowerShell",
           "ms-vscode.vscode-node-azure-pack",
@@ -118,7 +119,7 @@
           "explorer.sortOrder": "type",
           "explorer.fileNesting.enabled": true,
           "explorer.fileNesting.patterns": {
-            "*.bicep": "${capture}.json",
+            "*.bicep": "${capture}.json, ${capture}.parameters.json",
             "*.razor": "${capture}.razor.css",
             "*.js": "${capture}.js.map"
           }
