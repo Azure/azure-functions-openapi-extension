@@ -19,6 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
         [TestMethod]
         public void Given_DifferentRequirementId_When_Call_Equals_Should_Be_False()
         {
+            //Given
             var requirement1 = new OpenApiSecurityRequirement
             {
                 {
@@ -47,12 +48,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
                     new List<string> { "string1", "string2" }
                 }
             };
-            comparer.Equals(requirement1, requirement2).Should().Be(false);
+
+            //When
+            bool result = comparer.Equals(requirement1, requirement2);
+
+            //Then
+            result.Should().Be(false);
         }
 
         [TestMethod]
         public void Given_EqualRequirementId_When_Call_Equals_Should_Be_True()
         {
+            //Given
             var requirement1 = new OpenApiSecurityRequirement
             {
                 {
@@ -82,7 +89,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
                 }
             };
 
-            comparer.Equals(requirement1, requirement2).Should().Be(true);
+            //When
+            bool result = comparer.Equals(requirement1, requirement2);
+
+            //Then
+            result.Should().Be(true);
         }
 
         [TestMethod]
@@ -117,6 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
                     new List<string> { "string1", "string2" }
                 }
             };
+
             //When
             var hashCode1 = comparer.GetHashCode(requirement1);
             var hashCode2 = comparer.GetHashCode(requirement2);
@@ -125,6 +137,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
 
             //Then
             result.Should().Be(true);
+        }
+        [TestMethod]
+        public void Given_NullRequirements_Should_Be_Return_Zero()
+        {
+            //Given
+            OpenApiSecurityRequirement requirement = null;
+
+            //When
+            var hashCode = comparer.GetHashCode(requirement);
+
+            //Then
+            hashCode.Should().Be(0);
         }
     }
 }
