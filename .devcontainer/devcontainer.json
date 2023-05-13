@@ -115,6 +115,10 @@
           // Uncomment if you want to disable the minimap view
           "editor.minimap.enabled": false,
   
+          // Uncomment if you want to disable the welcome page of GitLens
+          "gitlens.showWelcomeOnInstall": false,
+          "gitlens.showWhatsNewAfterUpgrades": false,
+
           // Recommended settings for the explorer pane
           "explorer.sortOrder": "type",
           "explorer.fileNesting.enabled": true,
