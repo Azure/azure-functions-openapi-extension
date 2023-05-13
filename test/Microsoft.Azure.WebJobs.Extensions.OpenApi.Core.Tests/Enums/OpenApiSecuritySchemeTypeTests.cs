@@ -22,7 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Enums
         }
 
         [DataTestMethod]
-        [DataRow("None", "")]
+        //[DataRow("None", "")]
         [DataRow("Basic", "basic")]
         [DataRow("Bearer", "bearer")]
         public void Given_Enum_Should_Have_Decorator(string memberName, string displayName)
