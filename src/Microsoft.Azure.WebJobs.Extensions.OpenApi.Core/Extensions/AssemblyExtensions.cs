@@ -35,11 +35,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                              .Where(x => x.FullName.StartsWith("Microsoft.Azure.WebJobs.Extensions.OpenApi") == false &&
                                          x.FullName.StartsWith("Microsoft.Azure.Functions.Worker.Extensions.OpenApi") == false)
                              .ToList();
-            foreach (var referenceAssembly in assemblies)
+            foreach (var asmbly in assemblies)
             {
                 try
                 {
-                    types.AddRange(Assembly.Load(referenceAssembly).GetTypes());
+                    types.AddRange(Assembly.Load(asmbly).GetTypes());
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
@@ -62,14 +62,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             var assemblies = dlls.Select(p =>
                                   {
-                                      var referenceAssembly = default(Assembly);
+                                      var asmbly = default(Assembly);
                                       try
                                       {
-                                          referenceAssembly = Assembly.LoadFrom(p);
+                                          asmbly = Assembly.LoadFrom(p);
                                       }
                                       catch { }
 
-                                      return referenceAssembly;
+                                      return asmbly;
                                   })
                                  .Where(p => p != null);
 
