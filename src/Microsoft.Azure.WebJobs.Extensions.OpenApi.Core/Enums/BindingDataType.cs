@@ -21,7 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
         Binary = 2,
 
         /// <summary>
-        /// Identifies <c>Undefined</c>.
+        /// Identifies <c>Stream</c>.
         /// </summary>
         Stream = 3,
     }
