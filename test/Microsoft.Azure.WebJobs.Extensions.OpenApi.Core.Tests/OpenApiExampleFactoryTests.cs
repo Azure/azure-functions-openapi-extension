@@ -1,7 +1,10 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.OpenApi.Any;
+
 using FluentAssertions;
+
+using Microsoft.OpenApi.Any;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
