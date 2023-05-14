@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Return distinct elements based on property from the source collection.
+        /// Gets a collection of distinct elements based on the specified property
         /// </summary>
         /// <param name="source"><see cref="IEnumerable{TSource}"/> instance.</param>
         /// <param name="keySelector">Func{TSource, TKey}) instance.</param>
