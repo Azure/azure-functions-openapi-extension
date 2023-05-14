@@ -1,9 +1,7 @@
 using System;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.OpenApi.Any;
 using FluentAssertions;
-
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
@@ -14,7 +12,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataTestMethod]
         [DataRow((short)0, (short)0)]
         [DataRow((short)32767, (short)32767)]
-        [DataRow((short)(-32768), (short)(-32768))]
+        [DataRow((short)-32768, (short)-32768)]
         public void Given_Int16_When_Instantiated_It_Should_be_Int16(short input, short expectedValue)
         {
             // Arrange
@@ -31,10 +29,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataTestMethod]
         [DataRow(0, 0)]
         [DataRow(32767, 32767)]
-        [DataRow((-32768), (-32768))]
+        [DataRow(-32768, -32768)]
         public void Given_Int32_When_Instantiated_It_Should_be_Int32(int input, int expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiInteger(expectedValue);
 
             // Act
@@ -47,10 +45,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataTestMethod]
         [DataRow((long)0, (long)0)]
         [DataRow((long)32767, (long)32767)]
-        [DataRow((long)(-32768), (long)(-32768))]
+        [DataRow((long)-32768, (long)-32768)]
         public void Given_Int64_When_Instantiated_It_Should_be_Int64(long input, long expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiLong(expectedValue);
 
             // Act
@@ -66,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((ushort)1000, (ushort)1000)]
         public void Given_UInt16_When_Instantiated_It_Should_be_UInt16(ushort input, ushort expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiDouble(expectedValue);
 
             // Act
@@ -82,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((uint)10000000, (uint)10000000)]
         public void Given_UInt32_When_Instantiated_It_Should_be_UInt32(uint input, uint expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiDouble(expectedValue);
 
             // Act
@@ -98,7 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((ulong)1000000000, (ulong)1000000000)]
         public void Given_UInt64_When_Instantiated_It_Should_be_UInt64(ulong input, ulong expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiDouble(expectedValue);
 
             // Act
@@ -115,7 +113,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((float)10.00, (float)10.00)]
         public void Given_Single_When_Instantiated_It_Should_be_Single(float input, float expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiFloat(expectedValue);
 
             // Act
@@ -131,7 +129,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((double)1012.1200, (double)1012.1200)]
         public void Given_Double_When_Instantiated_It_Should_be_Double(double input, double expectedValue)
         {
-              // Arrange
+            // Arrange
             var expected = new OpenApiDouble(expectedValue);
 
             // Act
@@ -146,7 +144,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow((bool)false, (bool)false)]
         public void Given_Boolean_When_Instantiated_It_Should_be_Boolean(bool input, bool expectedValue)
         {
-             // Arrange
+            // Arrange
             var expected = new OpenApiBoolean(expectedValue);
 
             // Act
@@ -174,30 +172,30 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataTestMethod]
         [DataRow("2022-01-01T00:00:00.000Z")]
         [DataRow("2023-05-13T12:34:56.789Z")]
-        public void Given_DateTime_When_Instantiated_It_Should_be_DateTime(string input)
+        public void Given_DateTime_When_Instantiated_It_Should_be_DateTime(string inputString)
         {
             // Arrange
-            DateTime input_DataTime = DateTime.Parse(input);
-            var expectedValue = new OpenApiDateTime(input_DataTime);
+            var input = DateTime.Parse(inputString);
+            var expected = new OpenApiDateTime(input);
 
             // Act
-            var result = OpenApiExampleFactory.CreateInstance(input_DataTime, new JsonSerializerSettings());
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
             // Assert
-            result.Should().BeEquivalentTo(expectedValue);
+            result.Should().BeEquivalentTo(expected);
         }
 
         [DataTestMethod]
         [DataRow("2023-05-13T10:00:00+09:00")]
         [DataRow("2022-12-31T23:59:59-08:00")]
-        public void Given_DateTimeOffset_When_Instantiated_It_Should_be_OpenApiDateTimeOffset(string input)
+        public void Given_DateTimeOffset_When_Instantiated_It_Should_be_OpenApiDateTimeOffset(string inputString)
         {
             // Arrange
-            var inputDateTimeOffset = DateTimeOffset.Parse(input);
-            var expected = new OpenApiDateTime(inputDateTimeOffset);
+            var input = DateTimeOffset.Parse(inputString);
+            var expected = new OpenApiDateTime(input);
 
             // Act
-            var result = OpenApiExampleFactory.CreateInstance(inputDateTimeOffset, new JsonSerializerSettings());
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
             // Assert
             result.Should().BeEquivalentTo(expected);
@@ -207,15 +205,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("c9da6455-213d-42c9-9a79-3f9149a57833")]
         [DataRow("3f3e3c3b-9f0f-4b5e-bb32-7f5e5c7d7c5c")]
         [DataRow("7e9e2b6f-156d-4d6c-95db-3132a4bfb4e4")]
-        public void Given_ObjectGuid_When_Instantiated_It_Should_be_ObjectGuid(string input)
+        public void Given_ObjectGuid_When_Instantiated_It_Should_be_ObjectGuid(string inputString)
         {
-        // Arrange
-        var expected = new OpenApiString(input);
-        // Act
-        var result = OpenApiExampleFactory.CreateInstance(Guid.Parse(input), new JsonSerializerSettings());
+            // Arrange
+            var input = Guid.Parse(inputString);
+            var expected = new OpenApiString(inputString);
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        // Assert
-        result.Should().BeEquivalentTo(expected);
+            // Assert
+            result.Should().BeEquivalentTo(expected);
         }
 
         [DataTestMethod]
@@ -251,13 +250,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             result.Should().BeEquivalentTo(expected);
         }
 
-        [DataTestMethod]
-        [DataRow('t')]
-        public void Given_default_When_Instantiated_It_Should_throw_InvalidOperationException(char input)
+        [TestMethod]
+        public void Given_default_When_Instantiated_It_Should_throw_InvalidOperationException()
         {
-        // Act & Assert
-        Action action = () => OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
-        action.Should().Throw<InvalidOperationException>();
+            // Arrange
+            var input = new byte();
+
+            // Act
+            Action action = () => OpenApiExampleFactory.CreateInstance<byte>(input, new JsonSerializerSettings());
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }
