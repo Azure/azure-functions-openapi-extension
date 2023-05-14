@@ -21,12 +21,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataTestMethod]
         [DataRow(OpenApiFormat.Json, typeof(OpenApiJsonWriter))]
         [DataRow(OpenApiFormat.Yaml, typeof(OpenApiYamlWriter))]
-        public void Given_OpenApiFormat_When_CreateInstance_Then_Should_Return_Correct_OpenApiWriter(OpenApiFormat format, Type writerType)
+        public void Given_OpenApiFormat_When_CreateInstance_Then_Should_Return_Correct_OpenApiWriter(OpenApiFormat format, Type expected)
         {
             var result = OpenApiWriterFactory.CreateInstance(format, _writer);
 
             result.Should().NotBeNull();
-            result.Should().BeOfType(writerType);
+            result.Should().BeOfType(expected);
         }
     }
 }
