@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.ComponentModel;
 using System;
 
@@ -31,8 +32,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
         }
 
         [DataTestMethod]
-        [DataRow("securitySchemeId", "securitySchemeId", true)]
-        [DataRow("securitySchemeId", "securitySchemeId2",  false)]
+        [DataRow("equalReferenceId", "equalReferenceId", true)]
+        [DataRow("ReferenceId", "differentReferenceId",  false)]
         public void Given_OpenApiSecurityRequirements_When_Equals_Invoked_Then_It_Should_Return_Result(string referenceId1, string referenceId2, bool expected)
         {
             var requirement1 = initializeRequirement(referenceId1);
@@ -45,8 +46,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
 
 
         [DataTestMethod]
-        [DataRow("securitySchemeId", "securitySchemeId", true)]
-        [DataRow("securitySchemeId", "securitySchemeId2", false)]
+        [DataRow("equalReferenceId", "equalReferenceId", true)]
+        [DataRow("ReferenceId", "differentReferenceId",  false)]
         public void Given_SameOpenApiSecurityRequirement_Should_Return_SameHashCode(string referenceId1, string referenceId2, bool expected)
         {
             var requirement1 = initializeRequirement(referenceId1);
@@ -64,7 +65,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
         [DataRow(null, 0)]
         public void Given_NullRequirement_When_GetHashCode_Invoked_Then_It_Should_Return_Zero(OpenApiSecurityRequirement requirement, int expected)
         {
-
             var hashCode = _comparer.GetHashCode(requirement);
 
             hashCode.Should().Be(expected);
