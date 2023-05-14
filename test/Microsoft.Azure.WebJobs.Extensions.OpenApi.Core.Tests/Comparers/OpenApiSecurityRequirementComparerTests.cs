@@ -18,13 +18,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
     {
         private OpenApiSecurityRequirementComparer _comparer;
 
-        private OpenApiSecurityRequirement initializeRequirement(string referenceId)
-        {
-            var reference = new OpenApiReference { Id = referenceId };
-            var scheme = new OpenApiSecurityScheme { Reference = reference };
-            return new OpenApiSecurityRequirement { { scheme, null } };
-        }
-
         [TestInitialize]
         public void Init()
         {
@@ -36,8 +29,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
         [DataRow("ReferenceId", "differentReferenceId",  false)]
         public void Given_OpenApiSecurityRequirements_When_Equals_Invoked_Then_It_Should_Return_Result(string referenceId1, string referenceId2, bool expected)
         {
-            var requirement1 = initializeRequirement(referenceId1);
-            var requirement2 = initializeRequirement(referenceId2);
+            var requirement1 = InitializeRequirement(referenceId1);
+            var requirement2 = InitializeRequirement(referenceId2);
 
             bool result = _comparer.Equals(requirement1, requirement2);
 
@@ -50,8 +43,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
         [DataRow("ReferenceId", "differentReferenceId",  false)]
         public void Given_SameOpenApiSecurityRequirement_Should_Return_SameHashCode(string referenceId1, string referenceId2, bool expected)
         {
-            var requirement1 = initializeRequirement(referenceId1);
-            var requirement2 = initializeRequirement(referenceId2);
+            var requirement1 = InitializeRequirement(referenceId1);
+            var requirement2 = InitializeRequirement(referenceId2);
 
             var hashCode1 = _comparer.GetHashCode(requirement1);
             var hashCode2 = _comparer.GetHashCode(requirement2);
@@ -61,13 +54,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Comparers
             result.Should().Be(expected);
         }
 
-        [DataTestMethod]
-        [DataRow(null, 0)]
-        public void Given_NullRequirement_When_GetHashCode_Invoked_Then_It_Should_Return_Zero(OpenApiSecurityRequirement requirement, int expected)
+        [TestMethod]
+        public void Given_NullRequirement_When_GetHashCode_Invoked_Then_It_Should_Return_Zero()
         {
+            OpenApiSecurityRequirement requirement = null;
+
             var hashCode = _comparer.GetHashCode(requirement);
 
-            hashCode.Should().Be(expected);
+            hashCode.Should().Be(0);
+        }
+
+        private OpenApiSecurityRequirement InitializeRequirement(string referenceId)
+        {
+            var reference = new OpenApiReference { Id = referenceId };
+            var scheme = new OpenApiSecurityScheme { Reference = reference };
+            return new OpenApiSecurityRequirement { { scheme, null } };
         }
     }
 }
