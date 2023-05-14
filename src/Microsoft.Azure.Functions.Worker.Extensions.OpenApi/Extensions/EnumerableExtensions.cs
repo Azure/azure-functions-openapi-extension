@@ -12,12 +12,12 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Distinct by defined property
+        /// Return distinct elements based on property from the source collection.
         /// </summary>
-        /// <param name="source"><see cref="IEnumerable"/> instance.</param>
-        /// <param name="keySelector">Func<TSource, TKey>) instance.</param>
-        /// <typeparam name="TSource"><see cref="IEnumerable{TSource}"/> instance.</typeparam>
-        /// <typeparam name="TKey"><see cref="Func{TSource, TKey}"/> instance.</typeparam>
+        /// <param name="source"><see cref="IEnumerable{TSource}"/> instance.</param>
+        /// <param name="keySelector">Func{TSource, TKey}) instance.</param>
+        /// <typeparam name="TSource">Type of Source</typeparam>
+        /// <typeparam name="TKey">Type of Key</typeparam>
         /// <returns>Returns an <see cref="IEnumerable{TSource}"/> that contains the distinct elements based on the specified property.</returns>
         public static IEnumerable<TSource> DistinctByProperty<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
@@ -31,4 +31,4 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
             }
         }
     }
-}
+}   
