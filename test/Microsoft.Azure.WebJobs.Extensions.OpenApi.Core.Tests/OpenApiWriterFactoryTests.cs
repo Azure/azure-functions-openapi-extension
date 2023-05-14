@@ -3,6 +3,7 @@ using Microsoft.OpenApi;
 using Microsoft.OpenApi.Writers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 {
@@ -18,23 +19,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         }
 
         [DataTestMethod]
-        [DataRow(OpenApiFormat.Json)]
-        public void CreateInstance_Should_Return_OpenApiJsonWriter(OpenApiFormat format)
+        [DataRow(OpenApiFormat.Json, typeof(OpenApiJsonWriter))]
+        [DataRow(OpenApiFormat.Yaml, typeof(OpenApiYamlWriter))]
+        public void Given_OpenApiFormat_When_CreateInstance_Then_Should_Return_Correct_OpenApiWriter(OpenApiFormat format, Type writerType)
         {
             var result = OpenApiWriterFactory.CreateInstance(format, _writer);
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<OpenApiJsonWriter>();
-        }
-
-        [DataTestMethod]
-        [DataRow(OpenApiFormat.Yaml)]
-        public void CreateInstance_Should_Return_OpenApiYamlWriter(OpenApiFormat format)
-        {
-            var result = OpenApiWriterFactory.CreateInstance(format, _writer);
-
-            result.Should().NotBeNull();
-            result.Should().BeOfType<OpenApiYamlWriter>();
+            result.Should().BeOfType(writerType);
         }
     }
 }
