@@ -1,42 +1,38 @@
+using FluentAssertions;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Writers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using System;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 {
     [TestClass]
     public class OpenApiWriterFactoryTests
     {
-        [TestMethod]
-        public void CreateInstance_Should_Return_Json_Writer()
+        private StringWriter _writer;
+
+        [TestInitialize]
+        public void Init()
         {
-            // Arrange
-            OpenApiFormat format = OpenApiFormat.Json;
-            StringWriter writer = new StringWriter();
-
-            // Act
-            IOpenApiWriter result = OpenApiWriterFactory.CreateInstance(format, writer);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(OpenApiJsonWriter));
+            _writer = new StringWriter();
         }
 
-        [TestMethod]
-        public void CreateInstance_Should_Return_Yaml_Writer()
+        [DataTestMethod]
+        [DataRow(OpenApiFormat.Json)]
+        [DataRow(OpenApiFormat.Yaml)]
+        public void CreateInstance_Should_Return_Correct_OpenApiWriter(OpenApiFormat format)
         {
-            // Arrange
-            OpenApiFormat format = OpenApiFormat.Yaml;
-            StringWriter writer = new StringWriter();
+            var result = OpenApiWriterFactory.CreateInstance(format, _writer);
 
-            // Act
-            IOpenApiWriter result = OpenApiWriterFactory.CreateInstance(format, writer);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(OpenApiYamlWriter));
+            result.Should().NotBeNull();
+            if (format == OpenApiFormat.Json)
+            {
+                result.Should().BeOfType<OpenApiJsonWriter>();
+            }
+            else if (format == OpenApiFormat.Yaml)
+            {
+                result.Should().BeOfType<OpenApiYamlWriter>();
+            }
         }
     }
 }
