@@ -22,7 +22,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Enums
         }
 
         [DataTestMethod]
-        //[DataRow("None", "")]
         [DataRow("Basic", "basic")]
         [DataRow("Bearer", "bearer")]
         public void Given_Enum_Should_Have_Decorator(string memberName, string displayName)
@@ -32,6 +31,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Enums
 
             attribute.Should().NotBeNull();
             attribute.Name.Should().Be(displayName);
+        }
+
+        [DataTestMethod]
+        [DataRow("None", null)]
+        public void Given_Enum_Should_Have_No_Decorator(string memberName, string displayName)
+        {
+            var member = this.GetMemberInfo(memberName);
+            var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
+
+            attribute.Should().BeNull();
         }
 
         private MemberInfo GetMemberInfo(string name)
