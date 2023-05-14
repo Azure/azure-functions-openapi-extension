@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.OpenApi.Models;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core;
 using Microsoft.OpenApi.Any;
 
 using Newtonsoft.Json;
@@ -59,50 +55,50 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             Assert.AreEqual(expected.Value, ((OpenApiLong)result).Value);
         }
 
-        // [TestMethod]
-        // public void Given_UInt16_When_Instantiated_It_Should_be_UInt16()
-        // {
-        //      // Arrange
-        //     var input = (UInt16)65535;
-        //     var expected = new OpenApiInteger(65535);
+        [TestMethod]
+        public void Given_UInt16_When_Instantiated_It_Should_be_UInt16()
+        {
+             // Arrange
+            var input = (UInt16)65535;
+            var expected = new OpenApiDouble(65535);
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiInteger)result).Value);
-        // }
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiDouble)result).Value);
+        }
 
-        // [TestMethod]
-        // public void Given_UInt32_When_Instantiated_It_Should_be_UInt32()
-        // {
-        //      // Arrange
-        //     var input = (UInt32)4294967295;
-        //     var expected = new OpenApiLong(4294967295);
+        [TestMethod]
+        public void Given_UInt32_When_Instantiated_It_Should_be_UInt32()
+        {
+             // Arrange
+            var input = (UInt32)4294967295;
+            var expected = new OpenApiDouble(4294967295);
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiLong)result).Value);
-        // }
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiDouble)result).Value);
+        }
 
-        // [TestMethod]
-        // public void Given_UInt64_When_Instantiated_It_Should_be_UInt64()
-        // {
-        //      // Arrange
-        //     var input = (UInt64) 18446744073709551615;
-        //     var expected = new OpenApiDouble(18446744073709551615);
+        [TestMethod]
+        public void Given_UInt64_When_Instantiated_It_Should_be_UInt64()
+        {
+             // Arrange
+            var input = (UInt64) 18446744073709551615;
+            var expected = new OpenApiDouble(18446744073709551615);
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiDouble)result).Value);
-        // }
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiDouble)result).Value);
+        }
 
 
         [TestMethod]
@@ -163,91 +159,87 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             Assert.AreEqual(expected.GetType(), result.GetType());
             Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
         }
-        //[TestMethod]
-        // public void Given_DateTime_When_Instantiated_It_Should_be_DateTime()
-        // {
-        //      // Arrange
-        //     var input = (Int32)10000;
-        //     var expected = new OpenApiInteger(10000);
+        [TestMethod]
+        public void Given_DateTime_When_Instantiated_It_Should_be_DateTime()
+        {
+            // Arrange
+            var input = new DateTime(2022, 5, 13, 12, 0, 0, DateTimeKind.Utc);
+            var expected = new OpenApiDateTime(input);
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiInteger)result).Value);
-        // }
-        // [TestMethod]
-        // public void Given_ObjectDataTimeOffset_When_Instantiated_It_Should_be_ObjectDataTimeOffset()
-        // {
-        //      // Arrange
-        //     var input = (Int32)10000;
-        //     var expected = new OpenApiInteger(10000);
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiDateTime)result).Value);
+        }
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+        [TestMethod]
+        public void Given_ObjectDataTimeOffset_When_Instantiated_It_Should_be_ObjectDataTimeOffset()
+        {
+            // Arrange
+            var input = DateTimeOffset.Now;
+            var expected = new OpenApiDateTime(input);
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiInteger)result).Value);
-        // }
-        // [TestMethod]
-        // public void Given_ObjectGuid_When_Instantiated_It_Should_be_ObjectGuid()
-        // {
-        //     // Arrange
-        //     var input = "test";
-        //     var expected = new OpenApiString("test");
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiDateTime)result).Value);
+        }
+        [TestMethod]
+        public void Given_ObjectGuid_When_Instantiated_It_Should_be_ObjectGuid()
+        {
+            // Arrange
+            var input = Guid.NewGuid();
+            var expected = new OpenApiString(input.ToString());
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
-        // }
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        // [TestMethod]
-        // public void Given_ObjectByte_When_Instantiated_It_Should_be_ObjectByte()
-        // {
-        //     // Arrange
-        //     var input = "test";
-        //     var expected = new OpenApiString("test");
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
+        }
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+        [TestMethod]
+        public void Given_ObjectByte_When_Instantiated_It_Should_be_ObjectByte()
+        {
+            // Arrange
+            var input = new byte[] { 1, 2, 3 };
+            var expected = new OpenApiString(Convert.ToBase64String(input));
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
-        // }
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        // [TestMethod]
-        // public void Given_Object_When_Instantiated_It_Should_be_Object()
-        // {
-        //     // Arrange
-        //     var input = "test";
-        //     var expected = new OpenApiString("test");
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
+}
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+        [TestMethod]
+        public void Given_Object_When_Instantiated_It_Should_be_Object()
+        {
+            // Arrange
+            var input = new { name = "test", age = 20 };
+            var expected = new OpenApiString(JsonConvert.SerializeObject(input));
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
-        // }
-        // [TestMethod]
-        // public void Given_default_When_Instantiated_It_Should_throw_InvalidOperationException()
-        // {
-        //     // Arrange
-        //     var input = "test";
-        //     var expected = new OpenApiString("test");
+            // Act
+            var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
 
-        //     // Act
-        //     var result = OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings());
+            // Assert
+            Assert.AreEqual(expected.GetType(), result.GetType());
+            Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
+        }
+        [TestMethod]
+        public void Given_default_When_Instantiated_It_Should_throw_InvalidOperationException()
+        {
+            // Arrange
+            var input = new StringBuilder();
 
-        //     // Assert
-        //     Assert.AreEqual(expected.GetType(), result.GetType());
-        //     Assert.AreEqual(expected.Value, ((OpenApiString)result).Value);
-        // }
+            // Act & Assert
+            Assert.ThrowsException<InvalidOperationException>(() => OpenApiExampleFactory.CreateInstance(input, new JsonSerializerSettings()));
+        }
     }
 }
