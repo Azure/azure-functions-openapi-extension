@@ -47,7 +47,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             }
 
             // Adds enum values to the schema.
-            var enums = type.Value.ToOpenApiStringCollection();
+            var enums = type.Value.ToOpenApiStringCollection(namingStrategy);
 
             var schema = new OpenApiSchema()
             {
