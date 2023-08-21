@@ -26,6 +26,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         OpenApiVersionType OpenApiVersion { get; set; }
 
         /// <summary>
+        /// Gets or sets the OpenApI NamingStrategy.
+        /// </summary>
+        OpenApiNamingStrategy OpenApiNamingStrategy { get; set; } 
+
+        /// <summary>
         /// Gets or sets the value indicating whether to exclude the requesting host or not.
         /// </summary>
         bool ExcludeRequestingHost { get; set; }
