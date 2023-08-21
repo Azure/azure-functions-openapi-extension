@@ -42,9 +42,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public override OpenApiVersionType OpenApiVersion { get; set; } = GetOpenApiVersion();
 
         /// <inheritdoc />
-        public override OpenApiNamingStrategyType OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
-
-        /// <inheritdoc />
         public override bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
 
         /// <inheritdoc />
@@ -58,6 +55,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+
+        /// <inheritdoc />
+        public override OpenApiNamingStrategy OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -132,9 +132,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// Gets the OpenAPI NamingStrategy.
         /// </summary>
         /// <returns>Returns the OpenAPI NamingStrategy.</returns>
-        public static OpenApiNamingStrategyType GetOpenApiNamingStrategy()
+        public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
         {
-            var strategy = Enum.TryParse<OpenApiNamingStrategyType>(
+            var strategy = Enum.TryParse<OpenApiNamingStrategy>(
                                 Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey), ignoreCase: true, out var result)
                                 ? result
                                 : DefaultOpenApiNamingStrategy();
@@ -191,9 +191,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return "1.0.0";
         }
 
-        private static OpenApiNamingStrategyType DefaultOpenApiNamingStrategy()
+        private static OpenApiNamingStrategy DefaultOpenApiNamingStrategy()
         {
-            return OpenApiNamingStrategyType.CamelCase;
+            return OpenApiNamingStrategy.CamelCase;
         }
 
         private static string DefaultOpenApiDocTitle()

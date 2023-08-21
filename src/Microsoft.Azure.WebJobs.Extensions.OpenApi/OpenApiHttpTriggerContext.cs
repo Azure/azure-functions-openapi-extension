@@ -131,21 +131,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { 
             get
             { 
-                switch (this._configOptions.OpenApiNamingStrategy)
-                {
-                    case OpenApiNamingStrategyType.CamelCase:
-                        return new CamelCaseNamingStrategy();
-                    case OpenApiNamingStrategyType.PascalCase:
-                        return new DefaultNamingStrategy();
-                    case OpenApiNamingStrategyType.SnakeCase:
-                        return new SnakeCaseNamingStrategy();
-                    case OpenApiNamingStrategyType.KebabCase:
-                        return new KebabCaseNamingStrategy();
-                    default:
-                        return new CamelCaseNamingStrategy();
-                }
+                return OpenApiConfigurationResolver.Resolve(this._configOptions.OpenApiNamingStrategy);
             }
         }
+
 
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
