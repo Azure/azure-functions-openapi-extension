@@ -35,6 +35,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
 
         /// <inheritdoc />
+        public virtual bool UseFullName {get; set;}
+        /// <inheritdoc />
         public virtual IOpenApiHttpTriggerAuthorization Security { get; set; } = new OpenApiHttpTriggerAuthorization();
     }
 }

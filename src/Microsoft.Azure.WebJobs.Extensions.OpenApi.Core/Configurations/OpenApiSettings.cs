@@ -53,6 +53,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual bool ForceHttp { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating whether to use the FullName or not.
+        /// </summary>
+        public bool UseFullName { get; set; }
+        
+        /// <summary>
         /// Gets or sets the value indicating whether to hide the Swagger UI page or not.
         /// </summary>
         public virtual bool HideSwaggerUI { get; set; }

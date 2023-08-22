@@ -25,6 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
+        private const string FullnameKey = "OpenApi__UseFullNamespace";
 
         /// <inheritdoc />
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
@@ -48,6 +49,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override bool ForceHttps { get; set; } = IsHttpsForced();
+
+        /// <inheritdoc />
+        public override bool UseFullName {get; set;} = UseFullNamespace();
 
         /// <inheritdoc />
         public override List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
@@ -187,6 +191,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         {
             var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
 
+            return development;
+        }
+
+        public static bool UseFullNamespace(){
+            var development = bool.TryParse(Environment.GetEnvironmentVariable(FullnameKey), out var result) ? result : false;
+            
             return development;
         }
     }
