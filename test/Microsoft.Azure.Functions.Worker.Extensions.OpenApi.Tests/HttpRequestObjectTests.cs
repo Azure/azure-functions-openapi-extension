@@ -11,7 +11,7 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 {
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "lorem", "ipsum", "consectetur", "hello world")]
         public void Given_Parameter_When_Instantiated_Then_It_Should_Return_Result(string scheme, string hostname, int port, string key, string value, string authType, string payload)
         {
-            var context = new Mock<FunctionContext>();
+            var context = Substitute.For<FunctionContext>();
 
             var ports = new[] { 80, 443 };
             var baseHost = $"{hostname}{(ports.Contains(port) ? string.Empty : $":{port}")}";
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var bytes = Encoding.UTF8.GetBytes(payload);
             var body = new MemoryStream(bytes);
 
-            var req = (HttpRequestData)new FakeHttpRequestData(context.Object, uri, headers, identities, body);
+            var req = (HttpRequestData)new FakeHttpRequestData(context, uri, headers, identities, body);
 
             var result = new HttpRequestObject(req);
 
