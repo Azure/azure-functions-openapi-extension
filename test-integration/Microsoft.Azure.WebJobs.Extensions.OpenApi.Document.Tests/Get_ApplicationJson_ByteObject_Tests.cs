@@ -67,8 +67,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("byteObjectModel", "object", "byteValue", "string", "byte")]
-        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat)
+        [DataRow("byteObjectModel", "object", "byteValue", "string", "byte", false)]
+        [DataRow("byteObjectModel", "object", "nullableByteValue", "string", "byte", true)]
+        [DataRow("byteObjectModel", "object", "nullableByteValueNull", "string", "byte", true)]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat, bool nullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
 
@@ -77,6 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             value.Should().NotBeNull();
             value.Value<string>("type").Should().Be(propertyType);
             value.Value<string>("format").Should().Be(propertyFormat);
+            value.Value<bool>("nullable").Should().Be(nullable);
         }
     }
 }
