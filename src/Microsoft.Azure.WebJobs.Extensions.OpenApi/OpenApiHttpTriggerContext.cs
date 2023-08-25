@@ -128,7 +128,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual ISwaggerUI SwaggerUI { get; }
 
         /// <inheritdoc />
-        public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
+        public virtual NamingStrategy NamingStrategy { 
+            get 
+            {
+               if (!this._configOptions.OpenApiNamingStrategy.IsNullOrDefault()) {
+                        if(this._configOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.SnakeCase)) {
+                            return new SnakeCaseNamingStrategy();
+                        }
+                        else if(this._configOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.PascalCase)) {
+                            return new DefaultNamingStrategy();
+                        }
+                        else {
+                            return new KebabCaseNamingStrategy();
+                        }
+                    }
+                        return new CamelCaseNamingStrategy();
+                } 
+                }
 
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
