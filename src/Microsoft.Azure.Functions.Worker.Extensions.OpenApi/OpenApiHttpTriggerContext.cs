@@ -129,23 +129,23 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         public virtual ISwaggerUI SwaggerUI { get; }
 
         /// <inheritdoc />
-        public virtual NamingStrategy NamingStrategy 
-        { 
+        public virtual NamingStrategy NamingStrategy { 
             get
+            { 
+                switch (this._configOptions.OpenApiNamingStrategy)
                 {
-                    if (!this.OpenApiConfigurationOptions.OpenApiNamingStrategy.IsNullOrDefault()) {
-                        if(this.OpenApiConfigurationOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.SnakeCase)) {
-                            return new SnakeCaseNamingStrategy();
-                        }
-                        else if(this.OpenApiConfigurationOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.PascalCase)) {
-                            return new DefaultNamingStrategy();
-                        }
-                        else {
-                            return new KebabCaseNamingStrategy();
-                        }
-                    }
+                    case OpenApiNamingStrategyType.CamelCase:
+                        return new CamelCaseNamingStrategy();
+                    case OpenApiNamingStrategyType.PascalCase:
+                        return new DefaultNamingStrategy();
+                    case OpenApiNamingStrategyType.SnakeCase:
+                        return new SnakeCaseNamingStrategy();
+                    case OpenApiNamingStrategyType.KebabCase:
+                        return new KebabCaseNamingStrategy();
+                    default:
                         return new CamelCaseNamingStrategy();
                 }
+            }
         }
         
         /// <inheritdoc />

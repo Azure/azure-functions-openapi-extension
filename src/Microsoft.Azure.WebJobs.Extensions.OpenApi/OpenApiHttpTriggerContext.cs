@@ -129,22 +129,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         /// <inheritdoc />
         public virtual NamingStrategy NamingStrategy { 
-            get 
-            {
-               if (!this._configOptions.OpenApiNamingStrategy.IsNullOrDefault()) {
-                        if(this._configOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.SnakeCase)) {
-                            return new SnakeCaseNamingStrategy();
-                        }
-                        else if(this._configOptions.OpenApiNamingStrategy.Equals(OpenApiNamingStrategy.PascalCase)) {
-                            return new DefaultNamingStrategy();
-                        }
-                        else {
-                            return new KebabCaseNamingStrategy();
-                        }
-                    }
+            get
+            { 
+                switch (this._configOptions.OpenApiNamingStrategy)
+                {
+                    case OpenApiNamingStrategyType.CamelCase:
                         return new CamelCaseNamingStrategy();
-                } 
+                    case OpenApiNamingStrategyType.PascalCase:
+                        return new DefaultNamingStrategy();
+                    case OpenApiNamingStrategyType.SnakeCase:
+                        return new SnakeCaseNamingStrategy();
+                    case OpenApiNamingStrategyType.KebabCase:
+                        return new KebabCaseNamingStrategy();
+                    default:
+                        return new CamelCaseNamingStrategy();
                 }
+            }
+        }
 
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";

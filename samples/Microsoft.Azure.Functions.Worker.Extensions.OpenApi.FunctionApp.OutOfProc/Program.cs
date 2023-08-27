@@ -46,6 +46,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
                                     },
                                     Servers = DefaultOpenApiConfigurationOptions.GetHostNames(),
                                     OpenApiVersion = DefaultOpenApiConfigurationOptions.GetOpenApiVersion(),
+                                    OpenApiNamingStrategy = DefaultOpenApiConfigurationOptions.GetOpenApiNamingStrategy(),
                                     ExcludeRequestingHost = DefaultOpenApiConfigurationOptions.IsRequestingHostExcluded(),
                                     ForceHttps = DefaultOpenApiConfigurationOptions.IsHttpsForced(),
                                     ForceHttp = DefaultOpenApiConfigurationOptions.IsHttpForced(),

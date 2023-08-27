@@ -42,7 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public override OpenApiVersionType OpenApiVersion { get; set; } = GetOpenApiVersion();
 
         /// <inheritdoc />
-        public override OpenApiNamingStrategy OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
+        public override OpenApiNamingStrategyType OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <inheritdoc />
         public override bool ExcludeRequestingHost { get; set; } = IsRequestingHostExcluded();
@@ -132,9 +132,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// Gets the OpenAPI NamingStrategy.
         /// </summary>
         /// <returns>Returns the OpenAPI NamingStrategy.</returns>
-        public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
+        public static OpenApiNamingStrategyType GetOpenApiNamingStrategy()
         {
-            var strategy = Enum.TryParse<OpenApiNamingStrategy>(
+            var strategy = Enum.TryParse<OpenApiNamingStrategyType>(
                                 Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey), ignoreCase: true, out var result)
                                 ? result
                                 : DefaultOpenApiNamingStrategy();
@@ -191,9 +191,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return "1.0.0";
         }
 
-        private static OpenApiNamingStrategy DefaultOpenApiNamingStrategy()
+        private static OpenApiNamingStrategyType DefaultOpenApiNamingStrategy()
         {
-            return OpenApiNamingStrategy.CamelCase;
+            return OpenApiNamingStrategyType.CamelCase;
         }
 
         private static string DefaultOpenApiDocTitle()

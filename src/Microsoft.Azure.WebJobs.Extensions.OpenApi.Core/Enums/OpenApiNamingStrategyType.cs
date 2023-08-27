@@ -8,7 +8,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
         /// <summary>
     /// This specifies the NamingStrategy of OpenAPI Serialization.
     /// </summary>
-    public enum OpenApiNamingStrategy
+    public enum OpenApiNamingStrategyType
     {
                 /// <summary>
         /// Identifies "CamelCase" NamingStrategy
