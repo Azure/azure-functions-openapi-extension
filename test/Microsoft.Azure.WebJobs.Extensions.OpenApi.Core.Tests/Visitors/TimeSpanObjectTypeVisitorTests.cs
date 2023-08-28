@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +6,7 @@ using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
@@ -22,6 +23,7 @@ public class TimeSpanObjectTypeVisitorTests
     private VisitorCollection _visitorCollection;
     private IVisitor _visitor;
     private NamingStrategy _strategy;
+    private OpenApiConfigurationOptions _options;
 
     [TestInitialize]
     public void Init()
@@ -29,6 +31,7 @@ public class TimeSpanObjectTypeVisitorTests
         this._visitorCollection = new VisitorCollection();
         this._visitor = new TimeSpanObjectTypeVisitor(this._visitorCollection);
         this._strategy = new CamelCaseNamingStrategy();
+        this._options = new OpenApiConfigurationOptions();
     }
 
     [DataTestMethod]
@@ -66,7 +69,7 @@ public class TimeSpanObjectTypeVisitorTests
         var acceptor = new OpenApiSchemaAcceptor();
         var type = new KeyValuePair<string, Type>(name, typeof(TimeSpan));
 
-        this._visitor.Visit(acceptor, type, this._strategy);
+        this._visitor.Visit(acceptor, type, this._strategy, this._options);
 
         acceptor.Schemas.Should().ContainKey(name);
         acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -81,7 +84,7 @@ public class TimeSpanObjectTypeVisitorTests
         var type = new KeyValuePair<string, Type>(name, typeof(TimeSpan));
         var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-        this._visitor.Visit(acceptor, type, this._strategy, attribute);
+        this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
         acceptor.Schemas[name].Nullable.Should().Be(false);
         acceptor.Schemas[name].Default.Should().BeNull();
@@ -98,7 +101,7 @@ public class TimeSpanObjectTypeVisitorTests
         var type = new KeyValuePair<string, Type>(name, typeof(TimeSpan));
         var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Default = @default, Description = description };
 
-        this._visitor.Visit(acceptor, type, this._strategy, attribute);
+        this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
         acceptor.Schemas[name].Nullable.Should().Be(nullable);
         acceptor.Schemas[name].Default.Should().NotBeNull();
@@ -115,7 +118,7 @@ public class TimeSpanObjectTypeVisitorTests
         var type = new KeyValuePair<string, Type>(name, typeof(TimeSpan));
         var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
 
-        this._visitor.Visit(acceptor, type, this._strategy, attribute);
+        this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
         acceptor.Schemas[name].Nullable.Should().Be(nullable);
         acceptor.Schemas[name].Default.Should().BeNull();
@@ -132,7 +135,7 @@ public class TimeSpanObjectTypeVisitorTests
         var type = new KeyValuePair<string, Type>(name, typeof(TimeSpan));
         var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-        this._visitor.Visit(acceptor, type, this._strategy, attribute);
+        this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
         acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
         acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
@@ -153,7 +156,7 @@ public class TimeSpanObjectTypeVisitorTests
     [DataRow("string", "timespan")]
     public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Null(string dataType, string dataFormat)
     {
-        var result = this._visitor.PayloadVisit(typeof(TimeSpan), this._strategy);
+        var result = this._visitor.PayloadVisit(typeof(TimeSpan), this._strategy, this._options);
 
         result.Type.Should().Be(dataType);
         result.Format.Should().Be(dataFormat);

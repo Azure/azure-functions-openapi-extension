@@ -3,6 +3,7 @@ using System;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi.Models;
@@ -18,6 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiConfigurationOptions _options;
 
         [TestInitialize]
         public void Init()
@@ -25,6 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = new VisitorCollection();
             this._visitor = new FakeTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._options = new OpenApiConfigurationOptions();
         }
 
         [DataTestMethod]
@@ -90,7 +93,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(string), default(OpenApiSchema))]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Null(Type type, OpenApiSchema expected)
         {
-            var result = this._visitor.PayloadVisit(type, this._strategy);
+            var result = this._visitor.PayloadVisit(type, this._strategy, this._options);
 
             result.Should().Be(expected);
         }

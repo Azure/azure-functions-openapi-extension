@@ -18,12 +18,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new DocumentHelper(null, null);
+            Action action = () => new DocumentHelper(null, null, null);
             action.Should().Throw<ArgumentNullException>();
 
             var filter = new RouteConstraintFilter();
+            var options = new OpenApiConfigurationOptions();
 
-            action = () => new DocumentHelper(filter, null);
+            action = () => new DocumentHelper(filter, null,options);
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -33,7 +34,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var namingStrategy = new DefaultNamingStrategy();
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var documentHelper = new DocumentHelper(filter, acceptor);
+            var options = new OpenApiConfigurationOptions();
+            var documentHelper = new DocumentHelper(filter, acceptor, options);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
@@ -90,7 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var namingStrategy = new DefaultNamingStrategy();
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var documentHelper = new DocumentHelper(filter, acceptor);
+            var options = new OpenApiConfigurationOptions();
+            var documentHelper = new DocumentHelper(filter, acceptor, options);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctionsWithOverlappingModel.OverlappingClass1).GetMethods()

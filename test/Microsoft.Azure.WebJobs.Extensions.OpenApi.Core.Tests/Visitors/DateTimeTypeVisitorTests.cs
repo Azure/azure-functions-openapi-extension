@@ -6,8 +6,10 @@ using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,6 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiConfigurationOptions _options;
 
         [TestInitialize]
         public void Init()
@@ -29,6 +32,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = new VisitorCollection();
             this._visitor = new DateTimeTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._options = new OpenApiConfigurationOptions();
+
         }
 
         [DataTestMethod]
@@ -78,7 +83,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -96,7 +101,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
             var attribute = new DataTypeAttribute(dataType);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be("string");
@@ -111,7 +116,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(false);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -128,7 +133,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Default = @default, Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().NotBeNull();
@@ -145,7 +150,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
             var attribute = new OpenApiPropertyAttribute() { Nullable = nullable, Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -162,7 +167,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(DateTime));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options, attribute);
 
             acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
             acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
@@ -183,7 +188,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow("string", "date-time")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Null(string dataType, string dataFormat)
         {
-            var result = this._visitor.PayloadVisit(typeof(DateTime), this._strategy);
+            var result = this._visitor.PayloadVisit(typeof(DateTime), this._strategy, this._options);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
