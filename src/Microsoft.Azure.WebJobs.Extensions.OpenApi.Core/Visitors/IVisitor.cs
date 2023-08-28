@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="attributes">List of attribute instances.</param>
-        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes);
+        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes);
 
         /// <summary>
         /// Checks whether the type is navigatable to its sub-type or not.
@@ -61,6 +61,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy);
+        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options);
     }
 }

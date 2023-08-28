@@ -32,7 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options = default, params Attribute[] attributes)
         {
             var name = this.Visit(acceptor, name: type.Key, title: null, dataType: "array", dataFormat: null, attributes: attributes);
 
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
-                { underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy), underlyingType }
+                { underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy, options), underlyingType }
             };
             var schemas = new Dictionary<string, OpenApiSchema>();
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     Types = types, RootSchemas = instance.RootSchemas, Schemas = schemas,
                 };
                 this.visitedTypes.Add(underlyingType, subAcceptor);
-                subAcceptor.Accept(this.VisitorCollection, namingStrategy);
+                subAcceptor.Accept(this.VisitorCollection, namingStrategy,options);
 
             }
             else
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy)
+                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy, options)
                 };
 
                 items.Reference = reference;
@@ -144,13 +144,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options = default)
         {
             var schema = this.PayloadVisit(dataType: "array", dataFormat: null);
 
             // Gets the schema for the underlying type.
             var underlyingType = type.GetUnderlyingType();
-            var items = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
+            var items = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy, options);
 
             // Adds the reference to the schema for the underlying type.
             if (underlyingType.IsReferentialType())
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 var reference = new OpenApiReference()
                 {
                     Type = ReferenceType.Schema,
-                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy)
+                    Id = underlyingType.GetOpenApiReferenceId(underlyingType.IsOpenApiDictionary(), underlyingType.IsOpenApiArray(), namingStrategy, options)
                 };
 
                 items.Reference = reference;

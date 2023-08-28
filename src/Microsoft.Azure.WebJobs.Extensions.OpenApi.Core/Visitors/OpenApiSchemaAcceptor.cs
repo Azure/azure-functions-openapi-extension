@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public Dictionary<string, PropertyInfo> Properties { get; set; } = new Dictionary<string, PropertyInfo>();
 
         /// <inheritdoc />
-        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy)
+        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
         {
             // Checks the properties only.
             if (this.Properties.Any())
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         }
 
                         var type = new KeyValuePair<string, Type>(property.Key, property.Value.PropertyType);
-                        visitor.Visit(this, type, namingStrategy, attributes.ToArray());
+                        visitor.Visit(this, type, namingStrategy, options, attributes.ToArray());
                     }
                 }
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         continue;
                     }
 
-                    visitor.Visit(this, type, namingStrategy);
+                    visitor.Visit(this, type, namingStrategy, options);
                 }
             }
         }

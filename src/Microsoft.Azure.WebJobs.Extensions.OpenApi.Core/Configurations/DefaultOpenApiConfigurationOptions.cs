@@ -51,7 +51,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public override bool ForceHttps { get; set; } = IsHttpsForced();
 
         /// <inheritdoc />
-        public override bool UseFullName {get; set;} = UseFullNamespace();
+        public override bool UseFullName {get; set; } = UseFullNamespace();
 
         /// <inheritdoc />
         public override List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
