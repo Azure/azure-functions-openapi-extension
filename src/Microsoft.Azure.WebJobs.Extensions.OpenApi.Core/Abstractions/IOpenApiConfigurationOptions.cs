@@ -50,6 +50,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         IOpenApiHttpTriggerAuthorization Security { get; set; }
 
+        /// <summary>
+        /// Gets or sets the OpenApI NamingStrategy.
+        /// </summary>
         NamingStrategyType OpenApiNamingStrategy { get; set; }
     }
 }

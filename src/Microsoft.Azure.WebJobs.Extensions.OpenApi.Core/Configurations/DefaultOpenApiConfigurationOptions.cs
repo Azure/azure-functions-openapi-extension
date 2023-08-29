@@ -55,6 +55,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+
+        /// <inheritdoc />
         public override NamingStrategyType OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <summary>
@@ -165,6 +167,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return forceHttps;
         }
 
+        /// <summary>
+        /// Gets the OpenAPI NamingStrategy.
+        /// </summary>
+        /// <returns>Returns the OpenAPI NamingStrategy.</returns>
         public static NamingStrategyType GetOpenApiNamingStrategy()
         {
             var strategy = Enum.TryParse<NamingStrategyType>(

@@ -22,6 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public virtual OpenApiVersionType OpenApiVersion { get; set; }
 
+        /// <inheritdoc />
         public virtual NamingStrategyType OpenApiNamingStrategy { get; set; }
 
         /// <inheritdoc />
