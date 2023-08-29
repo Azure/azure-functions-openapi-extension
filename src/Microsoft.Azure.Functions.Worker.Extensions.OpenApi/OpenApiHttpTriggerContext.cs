@@ -129,7 +129,27 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         public virtual ISwaggerUI SwaggerUI { get; }
 
         /// <inheritdoc />
-        public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
+        // public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
+
+        public virtual NamingStrategy NamingStrategy
+        {
+            get
+            {
+                switch (this._configOptions.NamingStrategy)
+                {
+                    case NamingStrategyType.CamelCase:
+                        return new CamelCaseNamingStrategy();
+                    case NamingStrategyType.PascalCase:
+                        return  new DefaultNamingStrategy();
+                    case NamingStrategyType.SnakeCase:
+                        return new SnakeCaseNamingStrategy();
+                    case NamingStrategyType.KebabCase:
+                        return new KebabCaseNamingStrategy();
+                    default:
+                        return new CamelCaseNamingStrategy();
+                }
+            }
+        }
 
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
