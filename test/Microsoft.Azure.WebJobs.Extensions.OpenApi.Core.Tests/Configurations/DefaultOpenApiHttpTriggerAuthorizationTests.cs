@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 {
@@ -16,10 +16,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public async Task Given_Type_When_Instantiated_Then_Properties_Should_Return_Null()
         {
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
             var auth = new DefaultOpenApiHttpTriggerAuthorization();
 
-            var result = await auth.AuthorizeAsync(req.Object).ConfigureAwait(false);
+            var result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
 
             result.Should().BeNull();
         }

@@ -5,10 +5,11 @@ using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 {
@@ -18,24 +19,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [TestMethod]
         public void Given_Null_Parameter_When_AuthorizeAsync_Invoked_Then_It_Should_Throw_Exception()
         {
-            var context = new Mock<IOpenApiHttpTriggerContext>();
+            var context = Substitute.For<IOpenApiHttpTriggerContext>();
 
             Func<Task> func = async () => await OpenApiHttpTriggerContextExtensions.AuthorizeAsync(null, null).ConfigureAwait(false);
             func.Should().ThrowAsync<ArgumentNullException>();
 
-            func = async () => await OpenApiHttpTriggerContextExtensions.AuthorizeAsync(Task.FromResult(context.Object), null).ConfigureAwait(false);
+            func = async () => await OpenApiHttpTriggerContextExtensions.AuthorizeAsync(Task.FromResult(context), null).ConfigureAwait(false);
             func.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
         public async Task Given_Parameter_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var context = new Mock<IOpenApiHttpTriggerContext>();
-            context.Setup(p => p.AuthorizeAsync(It.IsAny<IHttpRequestDataObject>())).ReturnsAsync(default(OpenApiAuthorizationResult));
+            var context = Substitute.For<IOpenApiHttpTriggerContext>();
+            context.AuthorizeAsync(Arg.Any<IHttpRequestDataObject>()).Returns(Task.FromResult(default(OpenApiAuthorizationResult)));
 
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
 
-            var result = await OpenApiHttpTriggerContextExtensions.AuthorizeAsync(Task.FromResult(context.Object), req.Object).ConfigureAwait(false);
+            var result = await OpenApiHttpTriggerContextExtensions.AuthorizeAsync(Task.FromResult(context), req).ConfigureAwait(false);
 
             result.Should().BeNull();
         }
