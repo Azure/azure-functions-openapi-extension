@@ -25,7 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
-        private const string namingStrategyKey = "OpenApi__NamingStrategy";
+        private const string OpenApiNamingStrategyKey = "OpenApi__NamingStrategy";
 
         /// <inheritdoc />
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
-        public override NamingStrategyType NamingStrategy { get; set; }
+        public override NamingStrategyType OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -165,12 +165,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return forceHttps;
         }
 
-        public static NamingStrategyType GetNamingStrategy()
+        public static NamingStrategyType GetOpenApiNamingStrategy()
         {
             var strategy = Enum.TryParse<NamingStrategyType>(
-                Environment.GetEnvironmentVariable(NamingStrategyKey), ignoreCase: true, out var result)
-                ? result
-                : DefaultNamingStrategy();
+                                Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey), ignoreCase: true, out var result)
+                                ? result
+                                : DefaultOpenApiNamingStrategy();
 
             return strategy;
         }
@@ -202,7 +202,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return development;
         }
 
-        private static NamingStrategyType DefaultNamingStrategy()
+        private static NamingStrategyType DefaultOpenApiNamingStrategy()
         {
             return NamingStrategyType.CamelCase;
         }

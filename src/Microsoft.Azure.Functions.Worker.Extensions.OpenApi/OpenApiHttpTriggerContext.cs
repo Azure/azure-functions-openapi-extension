@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         {
             get
             {
-                switch (this._configOptions.NamingStrategy)
+                switch (this._configOptions.OpenApiNamingStrategy)
                 {
                     case NamingStrategyType.CamelCase:
                         return new CamelCaseNamingStrategy();
