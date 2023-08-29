@@ -25,6 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
+        private const string namingStrategyKey = "OpenApi__NamingStrategy";
 
         /// <inheritdoc />
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
@@ -54,6 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+        public override NamingStrategyType NamingStrategy { get; set; }
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -163,6 +165,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return forceHttps;
         }
 
+        public static NamingStrategyType GetNamingStrategy()
+        {
+            var strategy = Enum.TryParse<NamingStrategyType>(
+                Environment.GetEnvironmentVariable(NamingStrategyKey), ignoreCase: true, out var result)
+                ? result
+                : DefaultNamingStrategy();
+
+            return strategy;
+        }
+
         private static OpenApiVersionType DefaultOpenApiVersion()
         {
             return OpenApiVersionType.V2;
@@ -188,6 +200,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
 
             return development;
+        }
+
+        private static NamingStrategyType DefaultNamingStrategy()
+        {
+            return NamingStrategyType.CamelCase;
         }
     }
 }

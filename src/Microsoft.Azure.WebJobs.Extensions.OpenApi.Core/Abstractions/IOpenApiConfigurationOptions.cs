@@ -49,5 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the <see cref="IOpenApiHttpTriggerAuthorization"/> instance for Swagger endpoints.
         /// </summary>
         IOpenApiHttpTriggerAuthorization Security { get; set; }
+
+        NamingStrategyType namingStrategy { get; set; }
     }
 }
