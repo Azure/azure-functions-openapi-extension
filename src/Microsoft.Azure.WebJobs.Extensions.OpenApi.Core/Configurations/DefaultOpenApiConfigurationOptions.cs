@@ -193,7 +193,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
             return development;
         }
-
+        /// <summary>
+        /// check whether to use FullName or not
+        /// </summary>
+        /// <returns>Retrune <c>true</c>if user use Fullname; otherwise retur<c>false</c> </returns>
         public static bool UseFullNamespace(){
             var development = bool.TryParse(Environment.GetEnvironmentVariable(FullnameKey), out var result) ? result : false;
             
