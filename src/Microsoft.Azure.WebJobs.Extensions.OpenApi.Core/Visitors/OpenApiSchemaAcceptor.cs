@@ -51,7 +51,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public Dictionary<string, PropertyInfo> Properties { get; set; } = new Dictionary<string, PropertyInfo>();
 
         /// <inheritdoc />
-        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy, bool useFullName)
         {
             // Checks the properties only.
             if (this.Properties.Any())
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         }
 
                         var type = new KeyValuePair<string, Type>(property.Key, property.Value.PropertyType);
-                        visitor.Visit(this, type, namingStrategy, options, attributes.ToArray());
+                        visitor.Visit(this, type, namingStrategy, useFullName, attributes.ToArray());
                     }
                 }
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                         continue;
                     }
 
-                    visitor.Visit(this, type, namingStrategy, options);
+                    visitor.Visit(this, type, namingStrategy, useFullName);
                 }
             }
         }

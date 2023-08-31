@@ -393,8 +393,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the OpenAPI reference ID.</returns>
-        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null,IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null, bool useFullName = default)
         {
             if (namingStrategy.IsNullOrDefault())
             {
@@ -403,37 +404,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary)
             {
-                var name = GetTypeName(type,options).EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : GetTypeName(type,options).Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = GetTypeName(type, useFullName).EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : GetTypeName(type, useFullName).Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
             if (isList)
             {
-                var name = GetTypeName(type,options).EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : GetTypeName(type,options).Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = GetTypeName(type, useFullName).EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : GetTypeName(type, useFullName).Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(GetTypeName(type,options).Split('`').First(), false) + "_" +
-                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+                return namingStrategy.GetPropertyName(GetTypeName(type, useFullName).Split('`').First(), false) + "_" +
+                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.GetTypeName(useFullName), false)));
             }
 
-            return namingStrategy.GetPropertyName(GetTypeName(type,options), hasSpecifiedName: false);
+            return namingStrategy.GetPropertyName(GetTypeName(type, useFullName), hasSpecifiedName: false);
         }
 
         /// <summary>
         /// Gets the OpenAPI root reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the OpenAPI root reference ID.</returns>
-        public static string GetOpenApiRootReferenceId(this Type type, IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiRootReferenceId(this Type type, bool useFullName = default)
         {
             if (!type.IsGenericType)
             {
-                return GetTypeName(type,options);
+                return GetTypeName(type, useFullName);
             }
 
-            return type.GetOpenApiGenericRootName(options);
+            return type.GetOpenApiGenericRootName(useFullName);
         }
 
         /// <summary>
@@ -482,8 +484,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the OpenAPI description from the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the OpenAPI description from the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiDescription(this Type type,IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiDescription(this Type type,bool useFullName = default)
         {
             if (type.IsOpenApiDictionary())
             {
@@ -497,25 +500,26 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsGenericType)
             {   
-                return $"{type.GetOpenApiGenericRootName(options)} containing {type.GetOpenApiSubTypeNames(options)}";
+                return $"{type.GetOpenApiGenericRootName(useFullName)} containing {type.GetOpenApiSubTypeNames(useFullName)}";
             }
 
-            return GetTypeName(type,options);
+            return GetTypeName(type,useFullName);
         }
 
         /// <summary>
         /// Gets the root name of the given generic type.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the root name of the given generic type.</returns>
-        public static string GetOpenApiGenericRootName(this Type type,IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiGenericRootName(this Type type,bool useFullName = default)
         {
             if (!type.IsGenericType)
             {
-                return GetTypeName(type,options);
+                return GetTypeName(type,useFullName);
             }
 
-            var name = GetTypeName(type,options).Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries).First();
+            var name = GetTypeName(type,useFullName).Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries).First();
 
             return name;
         }
@@ -525,15 +529,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// </summary>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the type name applied by <see cref="NamingStrategy"/>.</returns>
-        public static string GetOpenApiTypeName(this Type type, NamingStrategy namingStrategy = null,IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiTypeName(this Type type, NamingStrategy namingStrategy = null, bool useFullName = default)
         {
             if (namingStrategy.IsNullOrDefault())
             {
                 namingStrategy = new DefaultNamingStrategy();
             }
 
-            var typeName = type.IsGenericType ? type.GetOpenApiGenericRootName(options) : GetTypeName(type,options);
+            var typeName = type.IsGenericType ? type.GetOpenApiGenericRootName(useFullName) : GetTypeName(type,useFullName);
             var name = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
 
             return name;
@@ -605,8 +610,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Gets the list of names of the sub type of the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns the list of names of the sub type of the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiSubTypeNames(this Type type,IOpenApiConfigurationOptions options = default)
+        public static string GetOpenApiSubTypeNames(this Type type,bool useFullName = default)
         {
             if (!type.IsGenericType)
             {
@@ -616,15 +622,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             var types = type.GetGenericArguments().ToList();
             if (types.Count == 1)
             {
-                return types[0].GetOpenApiGenericRootName(options);
+                return types[0].GetOpenApiGenericRootName(useFullName);
             }
 
             var names = (string)null;
             for (var i = 0; i < types.Count - 1; i++)
             {
-                names += $"{types[i].GetOpenApiGenericRootName(options)}, ";
+                names += $"{types[i].GetOpenApiGenericRootName(useFullName)}, ";
             }
-            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName(options)}";
+            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName(useFullName)}";
 
             return names;
         }
@@ -727,16 +733,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// Checks whether t
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="options"></param>
+        /// <param name="useFullName"></param>
         /// <returns></returns>
-        public static string GetTypeName(this Type type ,IOpenApiConfigurationOptions options = default){
+        public static string GetTypeName(this Type type ,bool useFullName = default){
 
-            if (options.IsNullOrDefault())
-            {
-                options = new OpenApiConfigurationOptions();
-            }
-
-            var name = options.UseFullName ? type.FullName : type.Name;
+            var name = useFullName ? type.FullName : type.Name;
             
             return name;
         }
@@ -763,10 +764,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             "KeyValuePair`2",
         };
 
-        private static bool IsDictionaryType(this Type type)
+        private static bool IsDictionaryType(this Type type, bool useFullName = default)
         {
+            
             var isDictionaryType = type.IsGenericType &&
-                                   dictionaries.Any(p => type.Name.Equals(p, StringComparison.InvariantCultureIgnoreCase) == true);
+                                   dictionaries.Any(p => GetTypeName(type, useFullName).Equals(p, StringComparison.InvariantCultureIgnoreCase) == true);
 
             return isDictionaryType;
         }

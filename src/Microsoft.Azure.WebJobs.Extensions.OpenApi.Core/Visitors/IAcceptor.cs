@@ -14,7 +14,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        /// <param name="options"></param>
-        void Accept(VisitorCollection collection, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options);
+        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
+        void Accept(VisitorCollection collection, NamingStrategy namingStrategy, bool useFullName);
     }
 }

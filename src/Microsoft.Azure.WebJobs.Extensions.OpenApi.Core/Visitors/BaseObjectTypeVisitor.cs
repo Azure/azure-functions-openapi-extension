@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
@@ -29,13 +30,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes)
         {
             var title = type.Value.IsGenericType
-                ? namingStrategy.GetPropertyName(type.Value.Name.Split('`').First(), hasSpecifiedName: false) + "_" +
+                ? namingStrategy.GetPropertyName(type.Value.GetTypeName(useFullName).Split('`').First(), hasSpecifiedName: false) + "_" +
                   string.Join("_",
-                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)))
-                : namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
+                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.GetTypeName(useFullName), false)))
+                : namingStrategy.GetPropertyName(type.Value.GetTypeName(useFullName), hasSpecifiedName: false);
             this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
         }
 
@@ -48,7 +49,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
         {
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }

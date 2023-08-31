@@ -78,9 +78,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes)
         {
-            var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
+            var title = namingStrategy.GetPropertyName(type.Value.GetTypeName(useFullName), hasSpecifiedName: false);
             var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
 
             if (name.IsNullOrWhiteSpace())
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                  .Where(p => p.PropertyType != type.Value)
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            this.ProcessProperties(instance, name, properties, namingStrategy, options);
+            this.ProcessProperties(instance, name, properties, namingStrategy, useFullName);
 
             // Processes recursive properties
             var recursiveProperties = type.Value
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                                                                         Reference = new OpenApiReference()
                                                                         {
                                                                             Type = ReferenceType.Schema,
-                                                                            Id = p.Value.PropertyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, options)
+                                                                            Id = p.Value.PropertyType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, useFullName)
                                                                         }
                                                                     });
             foreach (var recursiveSchema in recursiveSchemas)
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
-                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, options)
+                Id = type.Value.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy, useFullName)
             };
 
             instance.Schemas[name].Reference = reference;
@@ -174,12 +174,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
         {
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
-        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy, bool useFullName)
         {
             var schemas = new Dictionary<string, OpenApiSchema>();
 
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy, options);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy, useFullName);
 
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())

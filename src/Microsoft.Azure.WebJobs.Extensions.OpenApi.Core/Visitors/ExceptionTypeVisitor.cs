@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes)
         {
             var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
             this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
         {
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }

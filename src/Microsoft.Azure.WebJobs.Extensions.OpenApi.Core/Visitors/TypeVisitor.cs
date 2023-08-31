@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public virtual void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes)
+        public virtual void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes)
         {
             return;
         }
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public virtual OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public virtual OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
         {
             return default;
         }

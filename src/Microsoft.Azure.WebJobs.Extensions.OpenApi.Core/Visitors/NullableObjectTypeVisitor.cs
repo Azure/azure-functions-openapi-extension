@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes)
         {
             var instance = acceptor as OpenApiSchemaAcceptor;
             if (instance.IsNullOrDefault())
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            subAcceptor.Accept(this.VisitorCollection, namingStrategy,options);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy,useFullName);
 
             // Adds the schema for the underlying type.
             var name = subAcceptor.Schemas.First().Key;
@@ -114,10 +114,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, IOpenApiConfigurationOptions options)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
         {
             var underlyingType = type.GetUnderlyingType();
-            var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy,options);
+            var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy,useFullName);
 
             schema.Nullable = true;
 
