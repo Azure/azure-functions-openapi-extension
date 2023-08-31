@@ -60,7 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(object));
 
-            this._visitor.Visit(acceptor, type, this._strategy, this._options);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options.UseFullName);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);

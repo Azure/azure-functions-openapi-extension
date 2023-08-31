@@ -93,7 +93,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(string), default(OpenApiSchema))]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Null(Type type, OpenApiSchema expected)
         {
-            var result = this._visitor.PayloadVisit(type, this._strategy, this._options);
+            var result = this._visitor.PayloadVisit(type, this._strategy, this._options.UseFullName);
 
             result.Should().Be(expected);
         }

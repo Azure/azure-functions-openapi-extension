@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 
 using FluentAssertions;
-
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
@@ -18,13 +18,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new DocumentHelper(null, null, null);
+            Action action = () => new DocumentHelper(null, null,null);
             action.Should().Throw<ArgumentNullException>();
 
             var filter = new RouteConstraintFilter();
-            var options = new OpenApiConfigurationOptions();
+            var option = new OpenApiConfigurationOptions();
 
-            action = () => new DocumentHelper(filter, null,options);
+            action = () => new DocumentHelper(filter, null,option);
             action.Should().Throw<ArgumentNullException>();
         }
 
