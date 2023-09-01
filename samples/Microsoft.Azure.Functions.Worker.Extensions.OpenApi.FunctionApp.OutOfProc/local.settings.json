@@ -8,6 +8,5 @@
     "OpenApi__DocVersion": "1.0.0",
     "OpenApi__DocTitle": "Swagger Petstore",
     "OpenApi__DocDescription": "This is a sample server Petstore API designed by [http://swagger.io](http://swagger.io).",
-    "OpenApi__UseFullNamespace":  "true"
   }
 }
