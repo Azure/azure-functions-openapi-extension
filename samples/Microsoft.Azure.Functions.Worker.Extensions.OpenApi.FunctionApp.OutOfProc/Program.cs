@@ -49,7 +49,6 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfP
                                     ExcludeRequestingHost = DefaultOpenApiConfigurationOptions.IsRequestingHostExcluded(),
                                     ForceHttps = DefaultOpenApiConfigurationOptions.IsHttpsForced(),
                                     ForceHttp = DefaultOpenApiConfigurationOptions.IsHttpForced(),
-                                    UseFullName = DefaultOpenApiConfigurationOptions.UseFullNamespace(),
                                     Security = new OpenApiHttpTriggerAuthorization(async req =>
                                     {
                                         var result = default(OpenApiAuthorizationResult);
