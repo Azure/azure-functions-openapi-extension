@@ -22,19 +22,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
     {
         private readonly RouteConstraintFilter _filter;
         private readonly IOpenApiSchemaAcceptor _acceptor;
-        private readonly IOpenApiConfigurationOptions _options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
-        /// <param name="options"></param>
-        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor, IOpenApiConfigurationOptions options)
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
         {
             this._filter = filter.ThrowIfNullOrDefault();
             this._acceptor = acceptor.ThrowIfNullOrDefault();
-            this._options = options;
         }
 
         /// <inheritdoc />
@@ -82,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -91,7 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version, this._options.UseFullName));
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, useFullName, collection, version));
 
             if (contents.Any())
             {
@@ -108,17 +105,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         /// <inheritdoc />
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null, bool useFullname = default)
         {
-            return this.GetOpenApiResponses(element, namingStrategy, null);
+            return this.GetOpenApiResponses(element, namingStrategy,useFullname, null);
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, bool useFullname, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                            .Where(p => p.Deprecated == false)
-                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version, useFullName: this._options.UseFullName) });
+                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, useFullName: useFullname, version: version) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
                                               .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
@@ -131,7 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -151,7 +148,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             var acceptorTypes = new Dictionary<string, Type>();
             foreach (var type in types)
             {
-                var openApiReferenceId = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), namingStrategy,this._options.UseFullName);
+                var openApiReferenceId = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), namingStrategy, useFullName);
                 if (!acceptorTypes.ContainsKey(openApiReferenceId))
                 {
                     acceptorTypes.Add(openApiReferenceId, type);
@@ -162,7 +159,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             this._acceptor.RootSchemas = rootSchemas;
             this._acceptor.Schemas = schemas;
 
-            this._acceptor.Accept(collection, namingStrategy,this._options.UseFullName);
+            this._acceptor.Accept(collection, namingStrategy, useFullName);
 
             var union = schemas.Concat(rootSchemas.Where(p => !schemas.Keys.Contains(p.Key)))
                                .Distinct()

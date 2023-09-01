@@ -148,7 +148,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
@@ -173,14 +173,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             var contents = attributes.Where(p => p.Deprecated == false)
                                      .Where(p => p.ContentType == "application/x-www-form-urlencoded" || p.ContentType == "multipart/form-data")
-                                     .Select(p => p.ToOpenApiMediaType(namingStrategy, collection, version));
+                                     .Select(p => p.ToOpenApiMediaType(namingStrategy, useFullName, collection, version));
             if (!contents.Any())
             {
                 return parameters;
             }
 
             var @ref = contents.First().Schema.Reference;
-            var schemas = helper.GetOpenApiSchemas(new[] { element }.ToList(), namingStrategy, collection);
+            var schemas = helper.GetOpenApiSchemas(new[] { element }.ToList(), namingStrategy, useFullName, collection);
             var schema = schemas.SingleOrDefault(p => p.Key == @ref.Id);
             if (schema.IsNullOrDefault())
             {

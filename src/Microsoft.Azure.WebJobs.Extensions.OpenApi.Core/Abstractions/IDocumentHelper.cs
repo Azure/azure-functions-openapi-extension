@@ -36,38 +36,42 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="useFullName"></param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
-        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
+        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="useFullName"></param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
+        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null, bool useFullName = default);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="useFullName"></param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version">OpenAPI spec version.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
+        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
         /// </summary>
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="useFullName"></param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to add types to schema.</param>
         /// /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.

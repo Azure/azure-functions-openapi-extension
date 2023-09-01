@@ -26,7 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="version">OpenAPI spec version.</param>
         /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2 , bool useFullName = default) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, bool useFullName = default, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2 ) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 

@@ -44,6 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="uiOptions"><see cref="IOpenApiCustomUIOptions"/> instance.</param>
         public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiCustomUIOptions uiOptions = null)
         {
+
             this._configOptions = configOptions;
             this._uiOptions = uiOptions;
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();
@@ -53,7 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
-            var helper = new DocumentHelper(filter, acceptor, this._configOptions);
+            var helper = new DocumentHelper(filter, acceptor);
 
             this.Document = new Document(helper);
             this.SwaggerUI = new SwaggerUI();

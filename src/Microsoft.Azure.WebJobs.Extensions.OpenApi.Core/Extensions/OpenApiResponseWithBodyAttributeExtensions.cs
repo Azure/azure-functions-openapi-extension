@@ -26,14 +26,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="version">OpenAPI spec version.</param>
         /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
-        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2,bool useFullName = default)
+        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, bool useFullName = default, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
         {
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
                                   ? $"Payload of {attribute.BodyType.GetOpenApiDescription(useFullName)}"
                                   : attribute.Description;
-            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection, version);
+            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, useFullName, collection, version);
             var content = new Dictionary<string, OpenApiMediaType>()
                               {
                                   { attribute.ContentType, mediaType }
