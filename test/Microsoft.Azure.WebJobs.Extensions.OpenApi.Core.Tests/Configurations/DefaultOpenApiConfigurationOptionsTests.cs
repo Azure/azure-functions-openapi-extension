@@ -26,6 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+            Environment.SetEnvironmentVariable("OpenApi__UseFullNamespace", null);
         }
 
         [TestMethod]
@@ -278,6 +279,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", forceHttps);
 
             var result = DefaultOpenApiConfigurationOptions.IsHttpsForced();
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow("true",true)]
+        [DataRow("false",false)]
+        [DataRow ("",false)]
+        [DataRow (null, false)]
+        public void Given_EnvironmentVariable_When_UseFullNamespace_Invoked_Then_It_Should_Return_Result(string useFullName, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__UseFullNamespace",useFullName);
+
+            var result = DefaultOpenApiConfigurationOptions.UseFullNamespace();
 
             result.Should().Be(expected);
         }

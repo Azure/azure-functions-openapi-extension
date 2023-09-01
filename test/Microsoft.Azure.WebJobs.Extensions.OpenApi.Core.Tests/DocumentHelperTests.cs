@@ -18,13 +18,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [TestMethod]
         public void Given_Null_Constructor_Should_Throw_Exception()
         {
-            Action action = () => new DocumentHelper(null, null,null);
+            Action action = () => new DocumentHelper(null, null);
             action.Should().Throw<ArgumentNullException>();
 
             var filter = new RouteConstraintFilter();
-            var option = new OpenApiConfigurationOptions();
 
-            action = () => new DocumentHelper(filter, null,option);
+            action = () => new DocumentHelper(filter, null);
             action.Should().Throw<ArgumentNullException>();
         }
 
@@ -35,12 +34,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
             var options = new OpenApiConfigurationOptions();
-            var documentHelper = new DocumentHelper(filter, acceptor, options);
+            var documentHelper = new DocumentHelper(filter, acceptor);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
 
-            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection);
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, options.UseFullName,visitorCollection);
 
             schemas.Should().NotBeNull();
             schemas.Count.Should().Be(6);
@@ -93,13 +92,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
             var options = new OpenApiConfigurationOptions();
-            var documentHelper = new DocumentHelper(filter, acceptor, options);
+            var documentHelper = new DocumentHelper(filter, acceptor);
             var visitorCollection = VisitorCollection.CreateInstance();
 
             var methods = typeof(FakeFunctionsWithOverlappingModel.OverlappingClass1).GetMethods()
                 .Concat(typeof(FakeFunctionsWithOverlappingModel.OverlappingClass2).GetMethods()).ToList();
 
-            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection);
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, options.UseFullName, visitorCollection);
 
             schemas.Should().NotBeNull();
             schemas.Count.Should().Be(1);
