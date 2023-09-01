@@ -143,18 +143,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-nullableboolean", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableuint16", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableuint32", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableuint64", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableint16", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableint32", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullableint64", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullablesingle", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullabledouble", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullabledecimal", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullabledatetime", "post", "200", "application/json", "nullableObjectModel")]
-        [DataRow("/post-applicationjson-nullabledatetimeoffset", "post", "200", "application/json", "nullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableboolean", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableuint16", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableuint32", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableuint64", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableint16", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableint32", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullableint64", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullablesingle", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullabledouble", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullabledecimal", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullabledatetime", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
+        [DataRow("/post-applicationjson-nullabledatetimeoffset", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("nullableObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("nullableObjectModel", "booleanValue", "boolean", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "booleanValue", "boolean", true)]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty_Boolean(string @ref, string propertyName, string propertyType, bool nullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -190,17 +190,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("nullableObjectModel", "uInt16Value", "integer", "int32", true)]
-        [DataRow("nullableObjectModel", "uInt32Value", "integer", "int32", true)]
-        [DataRow("nullableObjectModel", "uInt64Value", "integer", "int64", true)]
-        [DataRow("nullableObjectModel", "int16Value", "integer", "int32",  true)]
-        [DataRow("nullableObjectModel", "int32Value", "integer", "int32",  true)]
-        [DataRow("nullableObjectModel", "int64Value", "integer", "int64",  true)]
-        [DataRow("nullableObjectModel", "singleValue", "number", "float",  true)]
-        [DataRow("nullableObjectModel", "doubleValue", "number", "double", true)]
-        [DataRow("nullableObjectModel", "decimalValue", "number", "double", true)]
-        [DataRow("nullableObjectModel", "dateTimeValue", "string", "date-time", true)]
-        [DataRow("nullableObjectModel", "dateTimeOffsetValue", "string", "date-time", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "uInt16Value", "integer", "int32", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "uInt32Value", "integer", "int32", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "uInt64Value", "integer", "int64", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "int16Value", "integer", "int32",  true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "int32Value", "integer", "int32",  true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "int64Value", "integer", "int64",  true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "singleValue", "number", "float",  true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "doubleValue", "number", "double", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "decimalValue", "number", "double", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "dateTimeValue", "string", "date-time", true)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NullableObjectModel", "dateTimeOffsetValue", "string", "date-time", true)]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat, bool nullable)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-array", "get", "200", "application/json", "arrayObjectModel")]
+        [DataRow("/get-applicationjson-array", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,15 +67,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object", "objectValue", "array")]
-        [DataRow("arrayObjectModel", "object", "booleanValue", "array")]
-        [DataRow("arrayObjectModel", "object", "stringValue", "array")]
-        [DataRow("arrayObjectModel", "object", "int32Value", "array")]
-        [DataRow("arrayObjectModel", "object", "int64Value", "array")]
-        [DataRow("arrayObjectModel", "object", "floatValue", "array")]
-        [DataRow("arrayObjectModel", "object", "decimalValue", "array")]
-        [DataRow("arrayObjectModel", "object", "stringObjectValue", "array")]
-        [DataRow("arrayObjectModel", "object", "objectArrayValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "objectValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "booleanValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "stringValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "int32Value", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "int64Value", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "floatValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "decimalValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "stringObjectValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "objectArrayValue", "array")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -87,13 +87,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object", "objectValue", "array", "object")]
-        [DataRow("arrayObjectModel", "object", "booleanValue", "array", "boolean")]
-        [DataRow("arrayObjectModel", "object", "stringValue", "array", "string")]
-        [DataRow("arrayObjectModel", "object", "int32Value", "array", "integer")]
-        [DataRow("arrayObjectModel", "object", "int64Value", "array", "integer")]
-        [DataRow("arrayObjectModel", "object", "floatValue", "array", "number")]
-        [DataRow("arrayObjectModel", "object", "decimalValue", "array", "number")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "objectValue", "array", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "booleanValue", "array", "boolean")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "stringValue", "array", "string")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "int32Value", "array", "integer")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "int64Value", "array", "integer")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "floatValue", "array", "number")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "decimalValue", "array", "number")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItems(string @ref, string refType, string propertyName, string propertyType, string itemType)
         {
             var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName]["items"];
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("arrayObjectModel", "object", "stringObjectValue", "array", "stringObjectModel")]
-        [DataRow("arrayObjectModel", "object", "objectArrayValue", "array", "list_object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "stringObjectValue", "array", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.StringObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "objectArrayValue", "array", "list_object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItemReference(string @ref, string refType, string propertyName, string propertyType, string itemRef)
         {
             var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName]["items"];
