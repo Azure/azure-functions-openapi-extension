@@ -25,6 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
+        private const string OpenApiNamingStrategyKey = "OpenApi__NamingStrategy";
 
         /// <inheritdoc />
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
@@ -54,6 +55,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+
+        /// <inheritdoc />
+        public override OpenApiNamingStrategy OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -163,6 +167,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return forceHttps;
         }
 
+        public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
+        {
+            var result = Enum.TryParse<OpenApiNamingStrategy>(
+                                Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey));
+            return result ? result : DefaultOpenApiNamingStrategy();
+        }
         private static OpenApiVersionType DefaultOpenApiVersion()
         {
             return OpenApiVersionType.V2;
