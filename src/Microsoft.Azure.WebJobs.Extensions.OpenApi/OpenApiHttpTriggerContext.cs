@@ -131,19 +131,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { 
             get
             { 
-                switch (this._configOptions.NamingStrategy)
-                {
-                    case NamingStrategyType.CamelCase:
-                        return new CamelCaseNamingStrategy();
-                    case NamingStrategyType.PascalCase:
-                        return new DefaultNamingStrategy();
-                    case NamingStrategyType.SnakeCase:
-                        return new SnakeCaseNamingStrategy();
-                    case NamingStrategyType.KebabCase:
-                        return new KebabCaseNamingStrategy();
-                    default:
-                        return new CamelCaseNamingStrategy();
-                }
+                return OpenApiConfigurationResolver.Resolve(this._configOptions.NamingStrategy);
             }
         }
 
