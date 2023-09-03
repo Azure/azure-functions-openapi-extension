@@ -204,6 +204,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             namingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
         }
 
+        [TestMethod]
+        public async Task Given_UnvaildType_When_Initiated_Then_It_Should_Return_NamingStrategy()
+        {
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", "hello");
+
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext();
+
+            var namingStrategy = OpenApiConfigurationResolver.Resolve((await context.SetApplicationAssemblyAsync(location, false))
+                                            .OpenApiConfigurationOptions.OpenApiNamingStrategy);
+            
+            namingStrategy.Should().NotBeNull();
+            namingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
+        }
+
         [DataTestMethod]
         [DataRow("CamelCase", "CamelCaseNamingStrategy")]
         [DataRow("PascalCase", "DefaultNamingStrategy")]
