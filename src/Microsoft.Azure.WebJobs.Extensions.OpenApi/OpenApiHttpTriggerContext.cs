@@ -134,8 +134,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 return OpenApiConfigurationResolver.Resolve(this._configOptions.OpenApiNamingStrategy);
             }
         }
-
-
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
 
