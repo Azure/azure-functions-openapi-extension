@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance from the given strategyType.
         /// </summary>
         /// <param name="strategyType">The naming strategy type.</param>
-        /// <returns>Returns the NamingStrategy instance resolved.(Override)</returns>
+        /// <returns>Returns the NamingStrategy instance resolved.(Overload)</returns>
         public static NamingStrategy Resolve(NamingStrategyType strategyType)
         {
             switch (strategyType)
