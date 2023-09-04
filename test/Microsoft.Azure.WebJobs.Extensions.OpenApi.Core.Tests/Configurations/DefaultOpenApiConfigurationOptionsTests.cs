@@ -26,6 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", "CamelCase");
         }
 
         [TestMethod]
@@ -264,6 +265,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", forceHttp);
 
             var result = DefaultOpenApiConfigurationOptions.IsHttpForced();
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, NamingStrategyType.CamelCase)]
+        [DataRow("PascalCase", NamingStrategyType.PascalCase)]
+        [DataRow("SnakeCase", NamingStrategyType.SnakeCase)]
+        [DataRow("KebabCase", NamingStrategyType.KebabCase)]
+        public void Given_EnvironmentVariable_When_GetOpenApiNamingStrategy_Invoked_Then_It_Should_Return_Result(string type, NamingStrategyType expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", type);
+
+            var result = DefaultOpenApiConfigurationOptions.GetOpenApiNamingStrategy();
 
             result.Should().Be(expected);
         }
