@@ -145,6 +145,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="useFullName">flag to use FullName</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
