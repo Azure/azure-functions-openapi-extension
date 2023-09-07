@@ -108,7 +108,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataTestMethod]
         [DataRow("arrayObjectModel", "object", "stringObjectValue", "array", "stringObjectModel")]
         [DataRow("arrayObjectModel", "object", "objectArrayValue", "array", "list_object")]
-        [DataRow("arrayObjectModel", "object", "nestedCollectionValue", "array", "collection_int32")]
+        [DataRow("arrayObjectModel", "object", "nestedCollectionValue", "array", "collection_userDefine")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItemReference(string @ref, string refType, string propertyName, string propertyType, string itemRef)
         {
             var items = this._doc["components"]["schemas"][@ref]["properties"][propertyName]["items"];

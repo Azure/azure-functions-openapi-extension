@@ -16,6 +16,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 
         public List<object[]> ObjectArrayValue { get; set; }
 
-        public Collection<Collection<int>> NestedCollectionValue { get; set; } 
+        public Collection_Udf NestedCollectionValue { get; set; } 
     }
+
+    public class UserDefine { }
+
+    public class Collection_Udf : Collection<Collection<UserDefine>> { }
 }
