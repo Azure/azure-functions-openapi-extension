@@ -24,7 +24,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
-
     }
-
 }
