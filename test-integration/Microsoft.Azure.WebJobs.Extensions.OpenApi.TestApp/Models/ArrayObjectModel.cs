@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
 {
@@ -14,5 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models
         public ISet<StringObjectModel> StringObjectValue { get; set; }
 
         public List<object[]> ObjectArrayValue { get; set; }
+
+        public Collection<Collection<int>> NestedCollectionValue { get; set; } 
     }
 }

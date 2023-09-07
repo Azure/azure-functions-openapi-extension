@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
@@ -119,6 +119,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(List<int>), typeof(int))]
         [DataRow(typeof(List<bool>), typeof(bool))]
         [DataRow(typeof(List<FakeModel>), typeof(FakeModel))]
+        [DataRow(typeof(Collection<Collection<FakeModel>>), typeof(Collection<FakeModel>))]
         public void Given_ListType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
         {
             var result = TypeExtensions.GetUnderlyingType(type);
