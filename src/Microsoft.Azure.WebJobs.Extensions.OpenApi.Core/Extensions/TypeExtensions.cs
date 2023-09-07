@@ -557,7 +557,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsArrayType())
             {
-                return type.GetGenericArguments()[0];
+                return type.GetGenericArguments() != null && type.GetGenericArguments().Length > 0 ? type.GetGenericArguments()[0] : type.BaseType.GetGenericArguments()[0] ;
             }
 
             return null;
