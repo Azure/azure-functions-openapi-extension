@@ -167,12 +167,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return forceHttps;
         }
 
+        /// <summary>
+        /// Gets the OpenAPI NamingStrategy.
+        /// </summary>
+        /// <returns>Returns the OpenAPI NamingStrategy.</returns>
         public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
         {
             var result = Enum.TryParse<OpenApiNamingStrategy>(
                                 Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey));
             return result ? result : DefaultOpenApiNamingStrategy();
         }
+        
         private static OpenApiVersionType DefaultOpenApiVersion()
         {
             return OpenApiVersionType.V2;
@@ -198,6 +203,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             var development = Environment.GetEnvironmentVariable(FunctionsRuntimeEnvironmentKey) == "Development";
 
             return development;
+        }
+
+        private static OpenApiNamingStrategy DefaultOpenApiNamingStrategy()
+        {
+            return OpenApiNamingStrategy.CamelCase;
         }
     }
 }
