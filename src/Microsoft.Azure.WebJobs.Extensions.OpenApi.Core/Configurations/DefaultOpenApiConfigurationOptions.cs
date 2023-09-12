@@ -212,5 +212,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
             return development;
         }
+
+        private static OpenApiNamingStrategy DefaultOpenApiNamingStrategy()
+        {
+            return OpenApiNamingStrategy.CamelCase;
+        }
     }
 }
