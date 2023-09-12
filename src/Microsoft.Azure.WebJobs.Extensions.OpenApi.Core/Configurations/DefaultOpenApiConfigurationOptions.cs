@@ -173,14 +173,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns the OpenAPI NamingStrategy.</returns>
         public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
         {
-            var strategy = Enum.TryParse<OpenApiNamingStrategy>(
-                                Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey), ignoreCase: true, out var result)
-                                ? result
-                                : DefaultOpenApiNamingStrategy();
-
-            return strategy;
+            var result = Enum.TryParse<OpenApiNamingStrategy>(
+                                Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey));
+            return result ? result : DefaultOpenApiNamingStrategy();
         }
-
+        
         private static OpenApiVersionType DefaultOpenApiVersion()
         {
             return OpenApiVersionType.V2;

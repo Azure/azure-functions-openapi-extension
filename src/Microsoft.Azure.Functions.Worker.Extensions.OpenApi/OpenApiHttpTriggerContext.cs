@@ -129,21 +129,18 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
         public virtual ISwaggerUI SwaggerUI { get; }
 
         /// <inheritdoc />
-        // public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
-
-        public virtual NamingStrategy NamingStrategy
-        {
-            get
-            {
-                switch (this._configOptions.OpenApiNamingStrategy)
+        public virtual NamingStrategy NamingStrategy { 
+        get
+            { 
+                switch (this._configOptions.NamingStrategy)
                 {
-                    case OpenApiNamingStrategy.CamelCase:
+                    case NamingStrategyType.CamelCase:
                         return new CamelCaseNamingStrategy();
-                    case OpenApiNamingStrategy.PascalCase:
-                        return  new DefaultNamingStrategy();
-                    case OpenApiNamingStrategy.SnakeCase:
+                    case NamingStrategyType.PascalCase:
+                        return new DefaultNamingStrategy();
+                    case NamingStrategyType.SnakeCase:
                         return new SnakeCaseNamingStrategy();
-                    case OpenApiNamingStrategy.KebabCase:
+                    case NamingStrategyType.KebabCase:
                         return new KebabCaseNamingStrategy();
                     default:
                         return new CamelCaseNamingStrategy();

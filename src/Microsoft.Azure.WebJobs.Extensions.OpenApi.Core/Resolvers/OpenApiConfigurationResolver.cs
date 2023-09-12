@@ -36,5 +36,27 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
 
             return options as IOpenApiConfigurationOptions;
         }
+    
+        /// <summary>
+        /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance from the given strategyType.
+        /// </summary>
+        /// <param name="strategyType">The naming strategy type.</param>
+        /// <returns>Returns the NamingStrategy instance resolved.(Overload)</returns>
+        public static NamingStrategy Resolve(NamingStrategyType strategyType)
+        {
+            switch (strategyType)
+            {
+                case NamingStrategyType.CamelCase:
+                    return new CamelCaseNamingStrategy();
+                case NamingStrategyType.PascalCase:
+                    return new DefaultNamingStrategy();
+                case NamingStrategyType.SnakeCase:
+                    return new SnakeCaseNamingStrategy();
+                case NamingStrategyType.KebabCase:
+                    return new KebabCaseNamingStrategy();
+                default:
+                    return new CamelCaseNamingStrategy();
+            }
+        }
     }
 }

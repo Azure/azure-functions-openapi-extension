@@ -1,33 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums
 {
     /// <summary>
-    /// This specifies the NamingStrategy of OpenAPI Serialization.
+    /// This specifies the naming strategy for OpenAPI.
     /// </summary>
     public enum OpenApiNamingStrategy
     {
         /// <summary>
-        /// Identifies "CamelCase" NamingStrategy
+        /// Identifies the default naming strategy.
         /// </summary>
-        CamelCase,
+        CamelCase = 0,
 
         /// <summary>
-        /// Identifies "PascalCase" NamingStrategy.
+        /// Identifies the PascalCase naming strategy.
         /// </summary>
-        PascalCase,
+        PascalCase = 1,
 
         /// <summary>
-        /// Identifies "SnakeCase" NamingStrategy.
+        /// Identifies the snake_case naming strategy.
         /// </summary>
-        SnakeCase,
+        SnakeCase = 2,
 
         /// <summary>
-        /// Identifies "KebabCase" NamingStrategy.
+        /// Identifies the kebab-case naming strategy.
         /// </summary>
-        KebabCase
+        KebabCase = 3
     }
 }
