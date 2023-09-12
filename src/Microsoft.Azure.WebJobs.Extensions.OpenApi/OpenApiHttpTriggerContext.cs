@@ -131,10 +131,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         public virtual NamingStrategy NamingStrategy { 
             get
             { 
-                return OpenApiConfigurationResolver.Resolve(this._configOptions.NamingStrategy);
+                return OpenApiConfigurationResolver.Resolve(this._configOptions.OpenApiNamingStrategy);
             }
         }
-
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
 

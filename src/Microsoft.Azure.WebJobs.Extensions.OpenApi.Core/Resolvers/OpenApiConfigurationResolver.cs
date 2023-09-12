@@ -5,8 +5,10 @@ using System.Reflection;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
 {
@@ -41,18 +43,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers
         /// Gets the <see cref="IOpenApiConfigurationOptions"/> instance from the given strategyType.
         /// </summary>
         /// <param name="strategyType">The naming strategy type.</param>
-        /// <returns>Returns the NamingStrategy instance resolved.(Overload)</returns>
-        public static NamingStrategy Resolve(NamingStrategyType strategyType)
+        /// <returns>Returns the NamingStrategy instance resolved.(Override)</returns>
+        public static NamingStrategy Resolve(OpenApiNamingStrategy strategyType)
         {
             switch (strategyType)
             {
-                case NamingStrategyType.CamelCase:
+                case OpenApiNamingStrategy.CamelCase:
                     return new CamelCaseNamingStrategy();
-                case NamingStrategyType.PascalCase:
+                case OpenApiNamingStrategy.PascalCase:
                     return new DefaultNamingStrategy();
-                case NamingStrategyType.SnakeCase:
+                case OpenApiNamingStrategy.SnakeCase:
                     return new SnakeCaseNamingStrategy();
-                case NamingStrategyType.KebabCase:
+                case OpenApiNamingStrategy.KebabCase:
                     return new KebabCaseNamingStrategy();
                 default:
                     return new CamelCaseNamingStrategy();

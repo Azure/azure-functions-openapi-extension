@@ -130,24 +130,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
 
         /// <inheritdoc />
         public virtual NamingStrategy NamingStrategy { 
-        get
+            get
             { 
-                switch (this._configOptions.NamingStrategy)
-                {
-                    case NamingStrategyType.CamelCase:
-                        return new CamelCaseNamingStrategy();
-                    case NamingStrategyType.PascalCase:
-                        return new DefaultNamingStrategy();
-                    case NamingStrategyType.SnakeCase:
-                        return new SnakeCaseNamingStrategy();
-                    case NamingStrategyType.KebabCase:
-                        return new KebabCaseNamingStrategy();
-                    default:
-                        return new CamelCaseNamingStrategy();
-                }
+                return OpenApiConfigurationResolver.Resolve(this._configOptions.OpenApiNamingStrategy);
             }
         }
-
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";
 
