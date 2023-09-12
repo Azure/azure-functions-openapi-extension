@@ -40,7 +40,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <inheritdoc />
         public virtual IOpenApiHttpTriggerAuthorization Security { get; set; } = new OpenApiHttpTriggerAuthorization();
 
-        /// <inheritdoc />
-        public virtual OpenApiNamingStrategy OpenApiNamingStrategy { get; set; }
     }
 }

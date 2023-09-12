@@ -117,22 +117,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Resolvers
             result.Should().BeOfType<CamelCaseNamingStrategy>();
         }
 
-
-        [TestMethod]
-        public void Given_Null_When_Resolve_Invoked_Then_It_Should_Return_CamelCaseNamingStrategy()
-        {
-            var result = OpenApiConfigurationResolver.Resolve(null);
-
-            result.Should().BeOfType<CamelCaseNamingStrategy>();
-        }
-
-        [TestMethod]
-        public void Given_Null_When_Resolve_Invoked_Then_It_Should_Return_DefaultOpenApiConfigurationOptions()
-        {
-            var result = OpenApiConfigurationResolver.Resolve(null);
-
-            result.Should().BeOfType<DefaultOpenApiConfigurationOptions>();
-        }
-
     }
 }
