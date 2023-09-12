@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         public virtual OpenApiVersionType OpenApiVersion { get; set; }
 
         /// <inheritdoc />
-        public virtual NamingStrategyType OpenApiNamingStrategy { get; set; }
+        public virtual OpenApiNamingStrategy OpenApiNamingStrategy { get; set; }
 
         /// <inheritdoc />
         public virtual bool ExcludeRequestingHost { get; set; }

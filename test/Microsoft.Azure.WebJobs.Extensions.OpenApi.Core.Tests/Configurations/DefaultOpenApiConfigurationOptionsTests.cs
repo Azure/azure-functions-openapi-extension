@@ -270,17 +270,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         }
 
         [DataTestMethod]
-        [DataRow(null, NamingStrategyType.CamelCase)]
-        [DataRow("PascalCase", NamingStrategyType.PascalCase)]
-        [DataRow("SnakeCase", NamingStrategyType.SnakeCase)]
-        [DataRow("KebabCase", NamingStrategyType.KebabCase)]
-        public void Given_EnvironmentVariable_When_GetOpenApiNamingStrategy_Invoked_Then_It_Should_Return_Result(string type, NamingStrategyType expected)
+        [DataRow(null, OpenApiNamingStrategy.CamelCase)]
+        [DataRow("PascalCase", OpenApiNamingStrategy.PascalCase)]
+        [DataRow("SnakeCase", OpenApiNamingStrategy.SnakeCase)]
+        [DataRow("KebabCase", OpenApiNamingStrategy.KebabCase)]
+        public void Given_EnvironmentVariable_When_GetOpenApiNamingStrategy_Invoked_Then_It_Should_Return_Result(string type, OpenApiNamingStrategy expected)
         {
-            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", type);
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", type); 
 
             var result = DefaultOpenApiConfigurationOptions.GetOpenApiNamingStrategy();
 
-            result.Should().Be(expected);
+            result.Should().Be(expected); 
         }
 
         [DataTestMethod]

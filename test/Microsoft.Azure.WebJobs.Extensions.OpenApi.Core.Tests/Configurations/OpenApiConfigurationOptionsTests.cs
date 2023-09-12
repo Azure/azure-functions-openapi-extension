@@ -33,7 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.Security.Should().NotBeNull();
             options.Security.Should().BeOfType<OpenApiHttpTriggerAuthorization>();
 
-            options.OpenApiNamingStrategy.Should().Be(NamingStrategyType.CamelCase);
+            options.OpenApiNamingStrategy.Should().Be(OpenApiNamingStrategy.CamelCase);
         }
     }
 }

@@ -137,13 +137,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             {
                 switch (this._configOptions.OpenApiNamingStrategy)
                 {
-                    case NamingStrategyType.CamelCase:
+                    case OpenApiNamingStrategy.CamelCase:
                         return new CamelCaseNamingStrategy();
-                    case NamingStrategyType.PascalCase:
+                    case OpenApiNamingStrategy.PascalCase:
                         return  new DefaultNamingStrategy();
-                    case NamingStrategyType.SnakeCase:
+                    case OpenApiNamingStrategy.SnakeCase:
                         return new SnakeCaseNamingStrategy();
-                    case NamingStrategyType.KebabCase:
+                    case OpenApiNamingStrategy.KebabCase:
                         return new KebabCaseNamingStrategy();
                     default:
                         return new CamelCaseNamingStrategy();
