@@ -84,7 +84,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
         /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
-        public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
+        public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName = false)
         {
             var schema = default(OpenApiSchema);
             foreach (var visitor in this.Visitors)

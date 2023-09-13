@@ -88,7 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName = default, params Attribute[] attributes)
+        public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName = false, params Attribute[] attributes)
         {
             var title = type.Value.IsGenericType
                 ? namingStrategy.GetPropertyName(type.Value.GetTypeName(useFullName).Split('`').First(), hasSpecifiedName: false) + "_" +
@@ -168,12 +168,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         }
 
         /// <inheritdoc />
-        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName)
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName = false)
         {
             return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
 
-        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy, bool useFullName)
+        private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy, bool useFullName = false)
         {
             var schemas = new Dictionary<string, OpenApiSchema>();
 

@@ -50,7 +50,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         public Dictionary<string, PropertyInfo> Properties { get; set; } = new Dictionary<string, PropertyInfo>();
 
         /// <inheritdoc />
-        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy, bool useFullName)
+        public void Accept(VisitorCollection collection, NamingStrategy namingStrategy, bool useFullName = false)
         {
             // Checks the properties only.
             if (this.Properties.Any())

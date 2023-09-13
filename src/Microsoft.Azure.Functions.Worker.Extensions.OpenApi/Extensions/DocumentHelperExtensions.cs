@@ -150,11 +150,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
-        /// <param name="useFullName"></param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
+        /// <param name="useFullName"> instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version)
+        public static List<OpenApiParameter> GetOpenApiParameters(this IDocumentHelper helper, MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version, bool useFullName = false)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Where(p => p.Deprecated == false)
@@ -179,14 +179,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions
 
             var contents = attributes.Where(p => p.Deprecated == false)
                                      .Where(p => p.ContentType == "application/x-www-form-urlencoded" || p.ContentType == "multipart/form-data")
-                                     .Select(p => p.ToOpenApiMediaType(namingStrategy, useFullName, collection, version));
+                                     .Select(p => p.ToOpenApiMediaType(namingStrategy, collection, version, useFullName));
             if (!contents.Any())
             {
                 return parameters;
             }
 
             var @ref = contents.First().Schema.Reference;
-            var schemas = helper.GetOpenApiSchemas(new[] { element }.ToList(), namingStrategy, useFullName, collection);
+            var schemas = helper.GetOpenApiSchemas(new[] { element }.ToList(), namingStrategy, collection, useFullName);
             var schema = schemas.SingleOrDefault(p => p.Key == @ref.Id);
             if (schema.IsNullOrDefault())
             {

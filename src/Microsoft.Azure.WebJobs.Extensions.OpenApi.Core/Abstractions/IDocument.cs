@@ -60,9 +60,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <summary>
         /// Add the useFullName options
         /// </summary>
-        /// <param name="useFullName"></param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns>instance</returns>
-        IDocument AddFullNameOption(bool useFullName);
+        IDocument AddFullNameOption(bool useFullName = false);
 
         /// <summary>
         /// Builds OpenAPI document.

@@ -39,7 +39,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 
             var methods = typeof(FakeFunctions).GetMethods().ToList();
 
-            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, options.UseFullName,visitorCollection);
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection, options.UseFullName);
 
             schemas.Should().NotBeNull();
             schemas.Count.Should().Be(6);
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var methods = typeof(FakeFunctionsWithOverlappingModel.OverlappingClass1).GetMethods()
                 .Concat(typeof(FakeFunctionsWithOverlappingModel.OverlappingClass2).GetMethods()).ToList();
 
-            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, options.UseFullName, visitorCollection);
+            var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection, options.UseFullName);
 
             schemas.Should().NotBeNull();
             schemas.Count.Should().Be(1);

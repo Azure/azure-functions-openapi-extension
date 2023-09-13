@@ -79,7 +79,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2, bool useFullName = false)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, useFullName, collection, version));
+                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version, useFullName));
 
             if (contents.Any())
             {
@@ -105,17 +105,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
 
         /// <inheritdoc />
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null, bool useFullname = default)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null, bool useFullname = false)
         {
-            return this.GetOpenApiResponses(element, namingStrategy,useFullname, null);
+            return this.GetOpenApiResponses(element, namingStrategy, null, useFullname:useFullname);
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, bool useFullname, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection, OpenApiVersionType version = OpenApiVersionType.V2, bool useFullname = false)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                            .Where(p => p.Deprecated == false)
-                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, useFullName: useFullname, version: version) });
+                                           .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy, version: version, useFullName: useFullname) });
 
             var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
                                               .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, bool useFullName, VisitorCollection collection)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection, bool useFullName = false)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);

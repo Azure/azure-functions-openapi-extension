@@ -23,9 +23,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
-        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, bool useFullName = default, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2 ) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2, bool useFullName = false) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
