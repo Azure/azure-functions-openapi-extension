@@ -82,7 +82,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// </summary>
         /// <param name="type">Type of the payload.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        /// <param name="useFullName">Value indicating whether to use Fullname or not</param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
         public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName = false)
         {
