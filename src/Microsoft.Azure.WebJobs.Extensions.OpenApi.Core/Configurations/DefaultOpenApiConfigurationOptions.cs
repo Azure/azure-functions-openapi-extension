@@ -21,6 +21,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string OpenApiDocDescriptionKey = "OpenApi__DocDescription";
         private const string OpenApiHostNamesKey = "OpenApi__HostNames";
         private const string OpenApiVersionKey = "OpenApi__Version";
+        private const string OpenApiNamingStrategyKey = "OpenApi__NamingStrategy";
         private const string FunctionsRuntimeEnvironmentKey = "AZURE_FUNCTIONS_ENVIRONMENT";
         private const string ExcludeRequestingHostKey = "OpenApi__ExcludeRequestingHost";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
@@ -58,6 +59,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override IOpenApiHttpTriggerAuthorization Security { get; set; } = new DefaultOpenApiHttpTriggerAuthorization();
+
+        /// <inheritdoc />
+        public override OpenApiNamingStrategy OpenApiNamingStrategy { get; set; } = GetOpenApiNamingStrategy();
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -129,6 +133,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         }
 
         /// <summary>
+        /// Gets the OpenAPI NamingStrategy.
+        /// </summary>
+        /// <returns>Returns the OpenAPI NamingStrategy.</returns>
+        public static OpenApiNamingStrategy GetOpenApiNamingStrategy()
+        {
+            var strategy = Enum.TryParse<OpenApiNamingStrategy>(
+                                Environment.GetEnvironmentVariable(OpenApiNamingStrategyKey), ignoreCase: true, out var result)
+                                ? result
+                                : DefaultOpenApiNamingStrategy();
+            
+            return strategy;
+        }
+
+        /// <summary>
         /// Checks whether to exclude the requesting host as the server URL or not.
         /// </summary>
         /// <returns>Returns <c>True</c>, if the requesting host is excluded; otherwise returns <c>False</c></returns>
@@ -175,6 +193,11 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private static string DefaultOpenApiDocVersion()
         {
             return "1.0.0";
+        }
+
+        private static OpenApiNamingStrategy DefaultOpenApiNamingStrategy()
+        {
+            return OpenApiNamingStrategy.CamelCase;
         }
 
         private static string DefaultOpenApiDocTitle()

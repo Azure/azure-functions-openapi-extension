@@ -10,6 +10,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,6 +31,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", null);
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", null);
             Environment.SetEnvironmentVariable("OpenApi__ApiKey", null);
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy",null);
+
         }
 
         [DataTestMethod]
@@ -165,19 +168,53 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             swaggerUI.Should().NotBeNull();
         }
 
-        [TestMethod]
-        public async Task Given_Type_When_Initiated_Then_It_Should_Return_NamingStrategy()
+         [TestMethod]
+        public async Task Given_NoType_When_Initiated_Then_It_Should_Return_NamingStrategy()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             var context = new OpenApiHttpTriggerContext();
 
-            var namingStrategy = (await context.SetApplicationAssemblyAsync(location, false))
-                                         .NamingStrategy;
+            var namingStrategy = OpenApiConfigurationResolver.Resolve((await context.SetApplicationAssemblyAsync(location, false))
+                                         .OpenApiConfigurationOptions.OpenApiNamingStrategy);
 
             namingStrategy.Should().NotBeNull();
             namingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
         }
 
+        [TestMethod]
+        public async Task Given_InValidType_When_Initiated_Then_It_Should_Return_NamingStrategy()
+        {
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", "hello");
+
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext();
+
+            var namingStrategy = OpenApiConfigurationResolver.Resolve((await context.SetApplicationAssemblyAsync(location, false))
+                                            .OpenApiConfigurationOptions.OpenApiNamingStrategy);
+            
+            namingStrategy.Should().NotBeNull();
+            namingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
+        }
+
+        [DataTestMethod]
+        [DataRow("CamelCase", "CamelCaseNamingStrategy")]
+        [DataRow("PascalCase", "DefaultNamingStrategy")]
+        [DataRow("SnakeCase", "SnakeCaseNamingStrategy")]
+        [DataRow("KebabCase", "KebabCaseNamingStrategy")]
+        public async Task Given_Type_When_Initiated_Then_It_Should_Return_NamingStrategy(string strategy, string expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", strategy);
+
+            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            var context = new OpenApiHttpTriggerContext();
+
+            var namingStrategy = OpenApiConfigurationResolver.Resolve((await context.SetApplicationAssemblyAsync(location, false))
+                                         .OpenApiConfigurationOptions.OpenApiNamingStrategy);
+            
+            namingStrategy.Should().NotBeNull();
+            namingStrategy.GetType().Name.Should().Be(expected);            
+
+        }
         [DataTestMethod]
         [DataRow("Development", true)]
         [DataRow("Production", false)]
