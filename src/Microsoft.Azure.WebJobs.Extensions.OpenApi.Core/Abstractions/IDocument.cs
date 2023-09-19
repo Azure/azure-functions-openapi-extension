@@ -58,6 +58,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         IDocument AddVisitors(VisitorCollection collection);
 
         /// <summary>
+        /// Add the useFullName options
+        /// </summary>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
+        /// <returns>instance</returns>
+        IDocument AddFullNameOption(bool useFullName = false);
+
+        /// <summary>
         /// Builds OpenAPI document.
         /// </summary>
         /// <param name="assemblyPath">Assembly file path.</param>

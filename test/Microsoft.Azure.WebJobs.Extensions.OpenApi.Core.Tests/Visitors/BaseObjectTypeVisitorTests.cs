@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +19,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiConfigurationOptions _options;
 
         [TestInitialize]
         public void Init()
@@ -25,6 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = new VisitorCollection();
             this._visitor = new BaseObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._options = new OpenApiConfigurationOptions();
         }
 
         [DataTestMethod]
@@ -57,7 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, typeof(object));
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options.UseFullName);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);

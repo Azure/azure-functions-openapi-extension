@@ -103,12 +103,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
 
             [DataTestMethod]
-            [DataRow("/post-applicationjson-int16", "post", "200", "application/json", "integerObjectModel")]
-            [DataRow("/post-applicationjson-int32", "post", "200", "application/json", "integerObjectModel")]
-            [DataRow("/post-applicationjson-int64", "post", "200", "application/json", "integerObjectModel")]
-            [DataRow("/post-applicationjson-uint16", "post", "200", "application/json", "integerObjectModel")]
-            [DataRow("/post-applicationjson-uint32", "post", "200", "application/json", "integerObjectModel")]
-            [DataRow("/post-applicationjson-uint64", "post", "200", "application/json", "integerObjectModel")]
+            [DataRow("/post-applicationjson-int16", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+            [DataRow("/post-applicationjson-int32", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+            [DataRow("/post-applicationjson-int64", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+            [DataRow("/post-applicationjson-uint16", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+            [DataRow("/post-applicationjson-uint32", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+            [DataRow("/post-applicationjson-uint64", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
             public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
             {
                 var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
 
             [DataTestMethod]
-            [DataRow("integerObjectModel", "object")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "object")]
             public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
             {
                 var schemas = this._doc["components"]["schemas"];
@@ -131,12 +131,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             }
 
             [DataTestMethod]
-            [DataRow("integerObjectModel", "int16Value", "integer", "int32")]
-            [DataRow("integerObjectModel", "int32Value", "integer", "int32")]
-            [DataRow("integerObjectModel", "int64Value", "integer", "int64")]
-            [DataRow("integerObjectModel", "uInt16Value", "integer", "int32")]
-            [DataRow("integerObjectModel", "uInt32Value", "integer", "int32")]
-            [DataRow("integerObjectModel", "uInt64Value", "integer", "int64")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "int16Value", "integer", "int32")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "int32Value", "integer", "int32")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "int64Value", "integer", "int64")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "uInt16Value", "integer", "int32")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "uInt32Value", "integer", "int32")]
+            [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel", "uInt64Value", "integer", "int64")]
             public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
             {
                 var properties = this._doc["components"]["schemas"][@ref]["properties"];

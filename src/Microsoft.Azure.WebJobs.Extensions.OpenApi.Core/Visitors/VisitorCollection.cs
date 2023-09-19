@@ -82,8 +82,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// </summary>
         /// <param name="type">Type of the payload.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
-        public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName = false)
         {
             var schema = default(OpenApiSchema);
             foreach (var visitor in this.Visitors)
@@ -93,7 +94,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     continue;
                 }
 
-                schema = visitor.PayloadVisit(type, namingStrategy);
+                schema = visitor.PayloadVisit(type, namingStrategy,useFullName);
                 break;
             }
 

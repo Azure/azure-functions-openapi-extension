@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json", "jsonPropertyObjectModel")]
+        [DataRow("/get-applicationjson-jsonproperty", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JsonPropertyObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jsonPropertyObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JsonPropertyObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,9 +67,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jsonPropertyObjectModel", "object", "Member1", "string", null)]
-        [DataRow("jsonPropertyObjectModel", "object", "MEMBER2", "integer", "int32")]
-        [DataRow("jsonPropertyObjectModel", "object", "mEmbER3", "string", "date-time")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JsonPropertyObjectModel", "object", "Member1", "string", null)]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JsonPropertyObjectModel", "object", "MEMBER2", "integer", "int32")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JsonPropertyObjectModel", "object", "mEmbER3", "string", "date-time")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string refType, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

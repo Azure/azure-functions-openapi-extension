@@ -75,7 +75,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-guid", "post", "200", "application/json", "guidObjectModel")]
+        [DataRow("/post-applicationjson-guid", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GuidObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("guidObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GuidObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("guidObjectModel", "guidValue", "string", "uuid")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GuidObjectModel", "guidValue", "string", "uuid")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

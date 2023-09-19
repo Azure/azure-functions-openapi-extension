@@ -85,9 +85,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/post-applicationjson-single", "post", "200", "application/json", "numberObjectModel")]
-        [DataRow("/post-applicationjson-double", "post", "200", "application/json", "numberObjectModel")]
-        [DataRow("/post-applicationjson-decimal", "post", "200", "application/json", "numberObjectModel")]
+        [DataRow("/post-applicationjson-single", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel")]
+        [DataRow("/post-applicationjson-double", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel")]
+        [DataRow("/post-applicationjson-decimal", "post", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("numberObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -110,9 +110,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("numberObjectModel", "singleValue", "number", "float")]
-        [DataRow("numberObjectModel", "doubleValue", "number", "double")]
-        [DataRow("numberObjectModel", "decimalValue", "number", "double")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel", "singleValue", "number", "float")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel", "doubleValue", "number", "double")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.NumberObjectModel", "decimalValue", "number", "double")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string propertyFormat)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
