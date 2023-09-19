@@ -26,7 +26,7 @@ jobs:
         echo "Requester: ${{ github.event.pull_request.user.login }}"
         $isOcaParticipant = "${{ contains(secrets.OCA_PARTICIPANTS, github.event.pull_request.user.login) }}"
 
-        echo "::set-output name=isOcaParticipant::$isOcaParticipant"
+        echo "isOcaParticipant=$isOcaParticipant" >> $GITHUB_OUTPUT
 
     - name: Send a message to Slack
       if: ${{ steps.checkpoint.outputs.isOcaParticipant == 'true' }}
