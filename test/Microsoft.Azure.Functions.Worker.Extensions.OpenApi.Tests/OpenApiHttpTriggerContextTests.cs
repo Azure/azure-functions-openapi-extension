@@ -205,7 +205,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         }
 
         [TestMethod]
-        public async Task Given_UnvaildType_When_Initiated_Then_It_Should_Return_NamingStrategy()
+        public async Task Given_InValidType_When_Initiated_Then_It_Should_Return_NamingStrategy()
         {
             Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", "hello");
 
