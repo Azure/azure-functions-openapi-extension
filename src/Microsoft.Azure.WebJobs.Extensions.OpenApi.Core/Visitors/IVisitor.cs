@@ -25,8 +25,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <param name="attributes">List of attribute instances.</param>
-        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes);
+        void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, bool useFullName, params Attribute[] attributes);
 
         /// <summary>
         /// Checks whether the type is navigatable to its sub-type or not.
@@ -61,6 +62,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
-        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy);
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
+        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy, bool useFullName);
     }
 }

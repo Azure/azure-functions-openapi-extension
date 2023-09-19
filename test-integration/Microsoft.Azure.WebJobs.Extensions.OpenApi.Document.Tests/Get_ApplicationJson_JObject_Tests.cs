@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-jobject", "get", "200", "application/json", "jObjectModel")]
+        [DataRow("/get-applicationjson-jobject", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jObjectModel", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JObjectModel", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -67,9 +67,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("jObjectModel", "jObjectValue", "object")]
-        [DataRow("jObjectModel", "jTokenValue", "object")]
-        [DataRow("jObjectModel", "jArrayValue", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JObjectModel", "jObjectValue", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JObjectModel", "jTokenValue", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.JObjectModel", "jArrayValue", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

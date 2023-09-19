@@ -45,7 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "baseObjectModel")]
+        [DataRow("/get-applicationjson-baseobject", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Not_Return_ReferenceSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -56,8 +56,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectValue")]
-        [DataRow("baseSubObjectModel", "baseSubObjectValue")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectValue")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseSubObjectModel", "baseSubObjectValue")]
         public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_TypeOf_Object(string @ref, string propName)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -68,8 +68,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "nonObjectValue")]
-        [DataRow("baseObjectModel", "subObjectValue")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "nonObjectValue")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "subObjectValue")]
         public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Not_Return_Expected_TypeOf_Object(string @ref, string propName)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectList", "array")]
-        [DataRow("baseObjectModel", "baseObjectDictionary", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectList", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectDictionary", "object")]
         public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_Type(string @ref, string propName, string listType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectList", "items", "object")]
-        [DataRow("baseObjectModel", "baseObjectDictionary", "additionalProperties", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectList", "items", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectDictionary", "additionalProperties", "object")]
         public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Expected_SubType(string @ref, string propName, string attrName, string subType)
         {
             var schemas = this._doc["components"]["schemas"];
@@ -105,8 +105,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("baseObjectModel", "baseObjectList", "items")]
-        [DataRow("baseObjectModel", "baseObjectDictionary", "additionalProperties")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectList", "items")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BaseObjectModel", "baseObjectDictionary", "additionalProperties")]
         public void Given_OpenApiDocument_And_BaseObject_Then_It_Should_Return_Null_Title(string @ref, string propName, string attr)
         {
             var schemas = this._doc["components"]["schemas"];

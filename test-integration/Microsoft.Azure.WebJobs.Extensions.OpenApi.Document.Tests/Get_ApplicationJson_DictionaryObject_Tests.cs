@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-dictionaryobject", "get", "200", "application/json", "dictionaryObjectModel")]
+        [DataRow("/get-applicationjson-dictionaryobject", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,10 +55,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel", "object", "objectValue", "object", "object")]
-        [DataRow("dictionaryObjectModel", "object", "booleanValue", "object", "boolean")]
-        [DataRow("dictionaryObjectModel", "object", "stringValue", "object", "string")]
-        [DataRow("dictionaryObjectModel", "object", "int32Value", "object", "integer")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "object", "objectValue", "object", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "object", "booleanValue", "object", "boolean")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "object", "stringValue", "object", "string")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "object", "int32Value", "object", "integer")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType, string propertyName, string propertyType, string itemType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -71,14 +71,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("dictionaryObjectModel", "objectObjectValue", "object", "objectObjectModel")]
-        [DataRow("dictionaryObjectModel", "booleanObjectValue", "object", "booleanObjectModel")]
-        [DataRow("dictionaryObjectModel", "stringObjectValue", "object", "stringObjectModel")]
-        [DataRow("dictionaryObjectModel", "integerObjectValue", "object", "integerObjectModel")]
-        [DataRow("dictionaryObjectModel", "objectArrayValue", "object", "list_object")]
-        [DataRow("dictionaryObjectModel", "booleanArrayValue", "object", "list_boolean")]
-        [DataRow("dictionaryObjectModel", "stringArrayValue", "object", "list_string")]
-        [DataRow("dictionaryObjectModel", "int32ArrayValue", "object", "list_int32")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "objectObjectValue", "object", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ObjectObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "booleanObjectValue", "object", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.BooleanObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "stringObjectValue", "object", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.StringObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "integerObjectValue", "object", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.IntegerObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "objectArrayValue", "object", "list_object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "booleanArrayValue", "object", "list_boolean")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "stringArrayValue", "object", "list_string")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.DictionaryObjectModel", "int32ArrayValue", "object", "list_int32")]
 
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string @ref, string propertyName, string propertyType, string itemRef)
         {

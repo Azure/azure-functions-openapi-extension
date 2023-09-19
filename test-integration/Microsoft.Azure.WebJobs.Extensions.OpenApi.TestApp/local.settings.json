@@ -5,6 +5,7 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "OpenApi__ForceHttps": "true",
     "OpenApi__Version": "v3",
-    "OpenApi__HostNames": "https://contoso.com/api,https://fabrikam.com/api"
+    "OpenApi__HostNames": "https://contoso.com/api,https://fabrikam.com/api",
+    "OpenApi__UseFullNamespace":  "true"
   }
 }

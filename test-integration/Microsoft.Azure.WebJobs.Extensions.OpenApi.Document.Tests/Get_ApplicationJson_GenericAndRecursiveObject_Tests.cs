@@ -44,7 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("/get-applicationjson-genericandrecursive", "get", "200", "application/json", "genericAndRecursiveObjectModel")]
+        [DataRow("/get-applicationjson-genericandrecursive", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchema(string path, string operationType, string responseCode, string contentType, string reference)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("genericAndRecursiveObjectModel", "object", "listValue", "array")]
-        [DataRow("genericAndRecursiveObjectModel", "object", "dictionaryValue", "object")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel", "object", "listValue", "array")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel", "object", "dictionaryValue", "object")]
         public void Given_OpenApiDocument_Then_It_Should_Return_PropertyType(string @ref, string refType, string propertyName, string propertyType)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
-        [DataRow("genericAndRecursiveObjectModel", "object", "listValue", "items", "genericAndRecursiveObjectModel")]
-        [DataRow("genericAndRecursiveObjectModel", "object", "dictionaryValue", "additionalProperties", "genericAndRecursiveObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel", "object", "listValue", "items", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel")]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel", "object", "dictionaryValue", "additionalProperties", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.GenericAndRecursiveObjectModel")]
         public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchema(string @ref, string refType, string propertyName, string propertyType, string itemReference)
         {
             var properties = this._doc["components"]["schemas"][@ref]["properties"];

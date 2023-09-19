@@ -24,15 +24,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <param name="version">OpenAPI spec version.</param>
+        /// <param name="useFullName">instance to get or set the value indicating whether to use the FullName or not.</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
-        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2)
+        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null, OpenApiVersionType version = OpenApiVersionType.V2, bool useFullName = false)
         {
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
-                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
+                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription(useFullName)}"
                                   : attribute.Description;
-            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection, version);
+            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection, version, useFullName);
             var content = new Dictionary<string, OpenApiMediaType>()
                               {
                                   { attribute.ContentType, mediaType }

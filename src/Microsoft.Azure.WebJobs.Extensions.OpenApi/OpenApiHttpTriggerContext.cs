@@ -44,6 +44,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
         /// <param name="uiOptions"><see cref="IOpenApiCustomUIOptions"/> instance.</param>
         public OpenApiHttpTriggerContext(IOpenApiConfigurationOptions configOptions = null, IOpenApiCustomUIOptions uiOptions = null)
         {
+
             this._configOptions = configOptions;
             this._uiOptions = uiOptions;
             this.PackageAssembly = this.GetAssembly<ISwaggerUI>();

@@ -6,6 +6,7 @@ using FluentAssertions;
 
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes;
@@ -24,6 +25,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
+        private OpenApiConfigurationOptions _options;
 
         [TestInitialize]
         public void Init()
@@ -31,6 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             this._visitorCollection = VisitorCollection.CreateInstance();
             this._visitor = new DictionaryObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
+            this._options = new OpenApiConfigurationOptions();
         }
 
         [DataTestMethod]
@@ -101,7 +104,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var type = new KeyValuePair<string, Type>(name, dictionaryType);
 
-            this._visitor.Visit(acceptor, type, this._strategy);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options.UseFullName);
 
             acceptor.Schemas.Should().ContainKey(name);
             acceptor.Schemas[name].Type.Should().Be(dataType);
@@ -127,7 +130,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Dictionary<string, string>));
             var attribute = new OpenApiPropertyAttribute() { Description = description };
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options.UseFullName, attribute);
 
             acceptor.Schemas[name].Nullable.Should().Be(false);
             acceptor.Schemas[name].Default.Should().BeNull();
@@ -144,7 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var type = new KeyValuePair<string, Type>(name, typeof(Dictionary<string, string>));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
-            this._visitor.Visit(acceptor, type, this._strategy, attribute);
+            this._visitor.Visit(acceptor, type, this._strategy, this._options.UseFullName, attribute);
 
             acceptor.Schemas[name].Extensions.Should().ContainKey("x-ms-visibility");
             acceptor.Schemas[name].Extensions["x-ms-visibility"].Should().BeOfType<OpenApiString>();
@@ -174,7 +177,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", true, "fakeModel")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, bool reference, string referenceId)
         {
-            var result = this._visitor.PayloadVisit(dictionaryType, this._strategy);
+            var result = this._visitor.PayloadVisit(dictionaryType, this._strategy, this._options.UseFullName);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
@@ -203,7 +206,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             var acceptor = new OpenApiSchemaAcceptor();
             var key = type.GetOpenApiReferenceId(type.IsOpenApiDictionary(), type.IsOpenApiArray(), this._strategy);
 
-            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy);
+            this._visitor.Visit(acceptor, new KeyValuePair<string, Type>(key, type), this._strategy, this._options.UseFullName);
 
             acceptor.RootSchemas.Count.Should().Be(schemaTypes.Length);
 
