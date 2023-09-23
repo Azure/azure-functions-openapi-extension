@@ -91,7 +91,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", false, "string", 0)]
         [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", false, "string", 0)]
         [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
-        [DataRow(typeof(Dictionary<string, string[]>), "object", null, "array", true, "list_string", 1)] //
+        [DataRow(typeof(Dictionary<string, string[]>), "object", null, "array", true, "stringList", 1)] //
         [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
