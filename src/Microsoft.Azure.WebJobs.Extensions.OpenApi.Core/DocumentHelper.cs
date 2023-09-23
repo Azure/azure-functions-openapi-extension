@@ -87,8 +87,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 return null;
             }
 
-            var contents = attributes.Where(p => p.Deprecated == false)
-                                     .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection, version));
+            var contents = new Dictionary<string, OpenApiMediaType>();
+            foreach (var attribute in attributes.Where(p => p.Deprecated == false))
+            {
+                var mediaType = attribute.ToOpenApiMediaType(namingStrategy, collection, version);
+                foreach (var contentType in attribute.ContentTypes)
+                {
+                    contents.Add(contentType, mediaType);
+                }
+            }
 
             if (contents.Any())
             {

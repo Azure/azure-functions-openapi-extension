@@ -172,7 +172,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             var contents = attributes.Where(p => p.Deprecated == false)
-                                     .Where(p => p.ContentType == "application/x-www-form-urlencoded" || p.ContentType == "multipart/form-data")
+                                     .Where(p => p.ContentTypes.Contains("application/x-www-form-urlencoded") || p.ContentTypes.Contains("multipart/form-data"))
                                      .Select(p => p.ToOpenApiMediaType(namingStrategy, collection, version));
             if (!contents.Any())
             {
