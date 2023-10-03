@@ -15,7 +15,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Fakes;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 using Newtonsoft.Json.Serialization;
 
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         public async Task Given_Authorization_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
 
             var res = new OpenApiAuthorizationResult()
             {
@@ -243,16 +243,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
                 Payload = FakeOpenApiHttpTriggerAuthorization.Payload,
             };
 
-            var auth = new Mock<IOpenApiHttpTriggerAuthorization>();
-            auth.Setup(p => p.AuthorizeAsync(It.IsAny<IHttpRequestDataObject>())).ReturnsAsync(res);
+            var auth = Substitute.For<IOpenApiHttpTriggerAuthorization>();
+            auth.AuthorizeAsync(Arg.Any<IHttpRequestDataObject>()).Returns(res);
 
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Security).Returns(auth.Object);
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.Security.Returns(auth);
 
-            var context = new OpenApiHttpTriggerContext(options.Object);
+            var context = new OpenApiHttpTriggerContext(options);
 
             var result = await context.SetApplicationAssemblyAsync(location, false)
-                                      .AuthorizeAsync(req.Object);
+                                      .AuthorizeAsync(req);
 
             result.StatusCode.Should().Be(FakeOpenApiHttpTriggerAuthorization.StatusCode);
             result.ContentType.Should().Be(FakeOpenApiHttpTriggerAuthorization.ContentType);
