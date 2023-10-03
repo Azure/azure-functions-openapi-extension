@@ -26,6 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ExcludeRequestingHost", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", "CamelCase");
             Environment.SetEnvironmentVariable("OpenApi__UseFullNamespace", null);
         }
 
