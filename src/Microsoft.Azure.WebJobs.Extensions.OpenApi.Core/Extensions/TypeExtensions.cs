@@ -461,7 +461,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsOpenApiArray())
             {
-                underlyingType = type.GetElementType() ?? (type.GetGenericArguments() != null && type.GetGenericArguments().Length > 0 ? type.GetGenericArguments()[0] : type.BaseType.GetGenericArguments()[0]) ;
+                underlyingType = type.GetElementType() ?? (type.GetGenericArguments() != null && type.GetGenericArguments().Length > 0 ? type.GetGenericArguments()[0] : (type.BaseType.GetGenericArguments() != null && type.BaseType.GetGenericArguments().Length > 0 ? type.BaseType.GetGenericArguments()[0] :type.GetInterfaces()[0].GetGenericArguments()[0])) ;
             }
 
             if (type.IsOpenApiDictionary())
@@ -557,7 +557,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (type.IsArrayType())
             {
-                return type.GetGenericArguments() != null && type.GetGenericArguments().Length > 0 ? type.GetGenericArguments()[0] : type.BaseType.GetGenericArguments()[0] ;
+                return type.GetGenericArguments() != null && type.GetGenericArguments().Length > 0 ? type.GetGenericArguments()[0] : (type.BaseType.GetGenericArguments() != null && type.BaseType.GetGenericArguments().Length > 0 ? type.BaseType.GetGenericArguments()[0] : type.GetInterfaces()[0].GetGenericArguments()[0]);
             }
 
             return null;
