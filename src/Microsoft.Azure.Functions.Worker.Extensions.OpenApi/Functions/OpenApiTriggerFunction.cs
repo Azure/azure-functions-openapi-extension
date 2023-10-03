@@ -62,6 +62,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions
                                    .AddMetadata(this._context.OpenApiConfigurationOptions.Info)
                                    .AddServer(request, this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
                                    .AddNamingStrategy(this._context.NamingStrategy)
+                                   .AddFullNameOption(this._context.OpenApiConfigurationOptions.UseFullName)
                                    .AddVisitors(this._context.GetVisitorCollection())
                                    .Build(this._context.ApplicationAssembly, this._context.OpenApiConfigurationOptions.OpenApiVersion)
                                    .ApplyDocumentFilters(this._context.GetDocumentFilterCollection())
