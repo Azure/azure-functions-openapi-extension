@@ -13,7 +13,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
 {
@@ -35,15 +35,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("https", "localhost:47071", null, "https://localhost:47071")]
         public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_BaseUrl(string scheme, string host, string routePrefix, string expected)
         {
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-
-            var hostString = new HostString(host);
-            req.SetupGet(p => p.Host).Returns(hostString);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
             var ui = new SwaggerUI();
 
-            ui.AddServer(req.Object, routePrefix, null);
+            ui.AddServer(req, routePrefix, null);
 
             var fi = ui.GetType().GetField("_baseUrl", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -101,20 +99,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("https", "localhost:47071", null, false, false, "https://localhost:47071")]
         public void Given_Options_When_AddServer_Invoked_Then_It_Should_Return_BaseUrl(string scheme, string host, string routePrefix, bool forceHttps, bool forceHttp, string expected)
         {
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
-            var hostString = new HostString(host);
-            req.SetupGet(p => p.Host).Returns(hostString);
-
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.ForceHttps).Returns(forceHttps);
-            options.SetupGet(p => p.ForceHttp).Returns(forceHttp);
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>());
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.ForceHttps.Returns(forceHttps);
+            options.ForceHttp.Returns(forceHttp);
+            options.Servers.Returns(new List<OpenApiServer>());
 
             var ui = new SwaggerUI();
 
-            ui.AddServer(req.Object, routePrefix, options.Object);
+            ui.AddServer(req, routePrefix, options);
 
             var fi = ui.GetType().GetField("_baseUrl", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -136,16 +132,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("https", "localhost", null, true, "")]
         public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_SwaggerUIApiPrefix(string scheme, string host, string routePrefix, bool optionsSet, string expected)
         {
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-
-            var hostString = new HostString(host);
-            req.SetupGet(p => p.Host).Returns(hostString);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
             var ui = new SwaggerUI();
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>());
-            ui.AddServer(req.Object, routePrefix, optionsSet ? options.Object: null);
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.Servers.Returns(new List<OpenApiServer>());
+
+            ui.AddServer(req, routePrefix, optionsSet ? options : null);
 
             var fi = ui.GetType().GetField("_swaggerUiApiPrefix", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -207,8 +202,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("queryKey", OpenApiAuthLevelType.User, null, "queryKey")]
         [DataRow("queryKey", OpenApiAuthLevelType.User, "", "queryKey")]
         [DataRow("", OpenApiAuthLevelType.User, "configKey", "configKey")]
-        [DataRow("", OpenApiAuthLevelType.User, null, "",true)]
-        [DataRow("", OpenApiAuthLevelType.User, "", "",true)]
+        [DataRow("", OpenApiAuthLevelType.User, null, "", true)]
+        [DataRow("", OpenApiAuthLevelType.User, "", "", true)]
         [DataRow(null, OpenApiAuthLevelType.Function, null, null, true)]
         [DataRow(null, OpenApiAuthLevelType.Function, null, "", true)]
         [DataRow(null, OpenApiAuthLevelType.Function, "configKey", "configKey")]
@@ -216,8 +211,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("queryKey", OpenApiAuthLevelType.Function, null, "queryKey")]
         [DataRow("queryKey", OpenApiAuthLevelType.Function, "", "queryKey")]
         [DataRow("", OpenApiAuthLevelType.Function, "configKey", "configKey")]
-        [DataRow("", OpenApiAuthLevelType.Function, null, "",true)]
-        [DataRow("", OpenApiAuthLevelType.Function, "", "",true)]
+        [DataRow("", OpenApiAuthLevelType.Function, null, "", true)]
+        [DataRow("", OpenApiAuthLevelType.Function, "", "", true)]
         [DataRow(null, OpenApiAuthLevelType.System, null, null, true)]
         [DataRow(null, OpenApiAuthLevelType.System, null, "", true)]
         [DataRow(null, OpenApiAuthLevelType.System, "configKey", "configKey")]
@@ -225,8 +220,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("queryKey", OpenApiAuthLevelType.System, null, "queryKey")]
         [DataRow("queryKey", OpenApiAuthLevelType.System, "", "queryKey")]
         [DataRow("", OpenApiAuthLevelType.System, "configKey", "configKey")]
-        [DataRow("", OpenApiAuthLevelType.System, null, "",true)]
-        [DataRow("", OpenApiAuthLevelType.System, "", "",true)]
+        [DataRow("", OpenApiAuthLevelType.System, null, "", true)]
+        [DataRow("", OpenApiAuthLevelType.System, "", "", true)]
         [DataRow(null, OpenApiAuthLevelType.Admin, null, null, true)]
         [DataRow(null, OpenApiAuthLevelType.Admin, null, "", true)]
         [DataRow(null, OpenApiAuthLevelType.Admin, "configKey", "configKey")]
@@ -234,8 +229,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
         [DataRow("queryKey", OpenApiAuthLevelType.Admin, null, "queryKey")]
         [DataRow("queryKey", OpenApiAuthLevelType.Admin, "", "queryKey")]
         [DataRow("", OpenApiAuthLevelType.Admin, "configKey", "configKey")]
-        [DataRow("", OpenApiAuthLevelType.Admin, null, "",true)]
-        [DataRow("", OpenApiAuthLevelType.Admin, "", "",true)]
+        [DataRow("", OpenApiAuthLevelType.Admin, null, "", true)]
+        [DataRow("", OpenApiAuthLevelType.Admin, "", "", true)]
         public async Task Given_AuthKey_Options_When_RenderAsync_Invoked_Then_It_Should_Be_Used_As_Request_Key(
             string queryKey, OpenApiAuthLevelType configuredAuthLevel, string configKey, string expectedRequestKey,
             bool throwsException = false)
@@ -252,9 +247,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             {
                 queryDict["code"] = queryKey;
             }
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Query).Returns(new QueryCollection(queryDict));
-            uiType.GetField("_req", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ui, req.Object);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Query.Returns(new QueryCollection(queryDict));
+            uiType.GetField("_req", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ui, req);
 
             //Set BaseUrl
             uiType.GetField("_baseUrl", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ui, baseUrl);
