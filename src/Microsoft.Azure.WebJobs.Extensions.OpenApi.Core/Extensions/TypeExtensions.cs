@@ -369,20 +369,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether the given enum type has <see cref="JsonConverterAttribute"/> or not.
+        /// Checks whether the given enum type has <see cref="Newtonsoft.Json.JsonConverterAttribute"/> or <see cref="System.Text.Json.Serialization.JsonConverterAttribute"/> or not.
         /// </summary>
-        /// <typeparam name="T">Type of <see cref="JsonConverter"/>.</typeparam>
+        /// <typeparam name="T">Type of <see cref="Newtonsoft.Json.JsonConverter"/>.</typeparam>
+        /// <typeparam name="U">Type of <see cref="System.Text.Json.Serialization.JsonConverter"/>.</typeparam>
         /// <param name="type">Enum type.</param>
-        /// <returns>Returns <c>True</c>, if the given enum type has <see cref="JsonConverterAttribute"/>; otherwise, returns <c>False</c>.</returns>
-        public static bool HasJsonConverterAttribute<T>(this Type type) where T : JsonConverter
+        /// <returns>Returns <c>True</c>, if the given enum type has <see cref="Newtonsoft.Json.JsonConverterAttribute"/>; or <see cref="System.Text.Json.Serialization.JsonConverterAttribute"/> otherwise, returns <c>False</c>.</returns>
+        public static bool HasJsonConverterAttribute<T, U>(this Type type) where T : Newtonsoft.Json.JsonConverter where U : System.Text.Json.Serialization.JsonConverter
         {
-            var attribute = type.GetCustomAttribute<JsonConverterAttribute>(inherit: false);
-            if (attribute.IsNullOrDefault())
+            var newtonsoftAttribute = type.GetCustomAttribute<JsonConverterAttribute>(inherit: false);
+            var systemAttribute = type.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>(inherit: false);
+            if (newtonsoftAttribute is null && systemAttribute is null)
             {
                 return false;
             }
 
-            return typeof(T).IsAssignableFrom(attribute.ConverterType);
+            return (newtonsoftAttribute != null && typeof(T).IsAssignableFrom(newtonsoftAttribute.ConverterType))
+                   || (systemAttribute != null && typeof(U).IsAssignableFrom(systemAttribute.ConverterType));
         }
 
         /// <summary>
