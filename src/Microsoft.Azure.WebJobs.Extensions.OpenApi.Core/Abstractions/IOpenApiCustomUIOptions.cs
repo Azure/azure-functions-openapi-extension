@@ -28,5 +28,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <returns>The JavaScript string for custom UI.</returns>
         Task<string> GetJavaScriptAsync();
+
+        /// <summary>
+        /// Gets the custom request interceptor to be used by Swagger UI.
+        /// </summary>
+        /// <returns>The JavaScript string containing a function that operates on a request.</returns>
+        Task<string> GetRequestInterceptorAsync();
+
+        /// <summary>
+        /// Gets the custom response interceptor to be used by Swagger UI.
+        /// </summary>
+        /// <returns>The JavaScript string containing a function that operates on a response.</returns>
+        Task<string> GetResponseInterceptorAsync();
     }
 }
