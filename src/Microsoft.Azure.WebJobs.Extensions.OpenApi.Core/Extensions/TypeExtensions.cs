@@ -325,6 +325,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Checks whether the given type is an array type that should be referenced or not, from the OpenAPI perspective.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
+        public static bool IsReferencedOpenApiArray(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return type.IsInheritedArrayType();
+        }
+
+        /// <summary>
         /// Checks whether the given type is array or not, from the OpenAPI perspective.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
@@ -460,9 +475,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 underlyingType = nullableUnderlyingType;
             }
 
-            if (type.IsOpenApiArray())
+            if (type.IsOpenApiArray() || type.IsReferencedOpenApiArray())
             {
-                underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+                underlyingType = type.GetElementType() ?? type.GetArrayTypeGenericArgument();
             }
 
             if (type.IsOpenApiDictionary())
@@ -559,9 +574,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return type.GetElementType();
             }
 
-            if (type.IsArrayType())
+            if (type.IsArrayType() || type.IsInheritedArrayType())
             {
-                return type.GetGenericArguments()[0];
+                return type.GetArrayTypeGenericArgument();
             }
 
             return null;
@@ -594,9 +609,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
-            if (type.IsArrayType())
+            if (type.IsArrayType() || type.IsInheritedArrayType())
             {
-                var name = type.GetGenericArguments()[0].Name;
+                var name = type.GetArrayTypeGenericArgument().Name;
 
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
@@ -740,10 +755,38 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             return name;
         }
 
+        private static Type GetArrayTypeGenericArgument(this Type type)
+        {
+            if (type.Name.Equals("IEnumerable`1", StringComparison.InvariantCultureIgnoreCase) == true)
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            return type.GetInterfaces()
+                .Where(p => p.IsInterface)
+                .Where(p => p.Name.Equals("IEnumerable`1", StringComparison.InvariantCultureIgnoreCase) == true)
+                .FirstOrDefault()?
+                .GetGenericArguments()[0];
+        }
 
         private static bool IsArrayType(this Type type)
         {
             var isArrayType = type.Name.Equals("String", StringComparison.InvariantCultureIgnoreCase) == false &&
+                              type.Namespace?.StartsWith("System") == true &&
+                              type.GetInterfaces()
+                                  .Where(p => p.IsInterface)
+                                  .Where(p => p.Name.Equals("IEnumerable", StringComparison.InvariantCultureIgnoreCase) == true)
+                                  .Any() &&
+                              type.IsJObjectType() == false &&
+                              type.IsDictionaryType() == false;
+
+            return isArrayType;
+        }
+
+        private static bool IsInheritedArrayType(this Type type)
+        {
+            var isArrayType = type.Name.Equals("String", StringComparison.InvariantCultureIgnoreCase) == false &&
+                              type.Namespace?.StartsWith("System") != true &&
                               type.GetInterfaces()
                                   .Where(p => p.IsInterface)
                                   .Where(p => p.Name.Equals("IEnumerable", StringComparison.InvariantCultureIgnoreCase) == true)

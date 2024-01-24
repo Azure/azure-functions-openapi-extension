@@ -54,6 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(HashSet<string>), true)]
         [DataRow(typeof(ISet<string>), true)]
+        [DataRow(typeof(FakeList), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -71,6 +72,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(HashSet<string>), true)]
         [DataRow(typeof(ISet<string>), true)]
+        [DataRow(typeof(FakeList), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -88,6 +90,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(HashSet<string>), true)]
         [DataRow(typeof(ISet<string>), true)]
+        [DataRow(typeof(FakeList), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -113,6 +116,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(HashSet<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         [DataRow(typeof(ISet<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(FakeList), "array", null, "object", true, "fakeModel", 1)]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
@@ -154,6 +158,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), 1)]
         [DataRow(typeof(HashSet<FakeModel>), 1)]
         [DataRow(typeof(ISet<FakeModel>), 1)]
+        [DataRow(typeof(FakeList), 1)]
         public void Given_MinLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
         {
             var name = "hello";
@@ -185,6 +190,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(IReadOnlyCollection<FakeModel>), 10)]
         [DataRow(typeof(HashSet<FakeModel>), 10)]
         [DataRow(typeof(ISet<FakeModel>), 10)]
+        [DataRow(typeof(FakeList), 10)]
         public void Given_MaxLengthAttribute_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, int length)
         {
             var name = "hello";
@@ -263,6 +269,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(FakeList), "fakeList")]
+        public void Given_ReferencedType_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type listType, string referenceId)
+        {
+            var result = this._visitor.PayloadVisit(listType, this._strategy, this._options.UseFullName);
+
+            result.Type.Should().BeNull();
+            result.Format.Should().BeNull();
+
+            result.Items.Should().BeNull();
+
+            result.Reference.Type.Should().Be(ReferenceType.Schema);
+            result.Reference.Id.Should().Be(referenceId);
+        }
+
+        [DataTestMethod]
         [DataRow(typeof(List<string>), "array", null, "string", false, null)]
         [DataRow(typeof(IList<string>), "array", null, "string", false, null)]
         [DataRow(typeof(ICollection<string>), "array", null, "string", false, null)]
@@ -298,6 +319,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             {
                 result.Items.Reference.Should().BeNull();
             }
+        }
+
+        [DataTestMethod]
+        [DataRow(typeof(FakeList), "fakeList")]
+        public void Given_ReferencedType_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string referenceId)
+        {
+            var result = this._visitor.PayloadVisit(listType, this._strategy, this._options.UseFullName);
+
+            result.Type.Should().BeNull();
+            result.Format.Should().BeNull();
+
+            result.Items.Should().BeNull();
+
+            result.Reference.Type.Should().Be(ReferenceType.Schema);
+            result.Reference.Id.Should().Be(referenceId);
         }
 
         [DataTestMethod]

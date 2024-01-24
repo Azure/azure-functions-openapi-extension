@@ -33,6 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(HashSet<string>), true)]
         [DataRow(typeof(ISet<string>), true)]
+        [DataRow(typeof(FakeList), false)]
         [DataRow(typeof(Dictionary<string, string>), false)]
         [DataRow(typeof(IDictionary<string, string>), false)]
         [DataRow(typeof(IReadOnlyDictionary<string, string>), false)]
@@ -59,6 +60,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(IReadOnlyCollection<string>), false)]
         [DataRow(typeof(HashSet<string>), false)]
         [DataRow(typeof(ISet<string>), false)]
+        [DataRow(typeof(FakeList), false)]
         [DataRow(typeof(Dictionary<string, string>), true)]
         [DataRow(typeof(IDictionary<string, string>), true)]
         [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
@@ -119,6 +121,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow(typeof(List<int>), typeof(int))]
         [DataRow(typeof(List<bool>), typeof(bool))]
         [DataRow(typeof(List<FakeModel>), typeof(FakeModel))]
+        [DataRow(typeof(FakeList), typeof(FakeModel))]
         public void Given_ListType_When_GetUnderlyingType_Invoked_Then_It_Should_Return_Result(Type type, Type expected)
         {
             var result = TypeExtensions.GetUnderlyingType(type);

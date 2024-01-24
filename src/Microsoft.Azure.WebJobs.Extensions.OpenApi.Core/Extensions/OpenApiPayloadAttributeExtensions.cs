@@ -55,7 +55,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             }
 
             // For array and dictionary object, the reference has already been added by the visitor.
-            if (type.IsReferentialType() && !type.IsOpenApiNullable() && !type.IsOpenApiArray() && !type.IsOpenApiDictionary())
+            if (type.IsReferentialType() && !type.IsOpenApiNullable() && !type.IsOpenApiArray() && !type.IsReferencedOpenApiArray() && !type.IsOpenApiDictionary())
             {
                 var reference = new OpenApiReference()
                 {

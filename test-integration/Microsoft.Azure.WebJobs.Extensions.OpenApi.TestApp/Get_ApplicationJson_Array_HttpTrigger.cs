@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
 {
     public static class Get_ApplicationJson_Array_HttpTrigger
     {
-        
+
         [FunctionName(nameof(Get_ApplicationJson_Array_HttpTrigger.Get_ApplicationJson_StringArray))]
         [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Array_HttpTrigger.Get_ApplicationJson_StringArray), tags: new[] { "array" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(string[]), Description = "The OK response")]
@@ -22,7 +24,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-string-array")] HttpRequest req,
             ILogger log)
         {
-            var result  = new OkResult();
+            var result = new OkResult();
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
@@ -34,7 +36,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-int-array")] HttpRequest req,
             ILogger log)
         {
-            var result  = new OkResult();
+            var result = new OkResult();
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
@@ -46,7 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-bool-array")] HttpRequest req,
             ILogger log)
         {
-            var result  = new OkResult();
+            var result = new OkResult();
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
@@ -58,7 +60,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-int-list")] HttpRequest req,
             ILogger log)
         {
-            var result  = new OkResult();
+            var result = new OkResult();
+
+            return await Task.FromResult(result).ConfigureAwait(false);
+        }
+
+        [FunctionName(nameof(Get_ApplicationJson_Array_HttpTrigger.Get_ApplicationJson_NamedList))]
+        [OpenApiOperation(operationId: nameof(Get_ApplicationJson_Array_HttpTrigger.Get_ApplicationJson_NamedList), tags: new[] { "array" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ListStringObjectModel), Description = "The OK response")]
+        public static async Task<IActionResult> Get_ApplicationJson_NamedList(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "get-applicationjson-named-list")] HttpRequest req,
+            ILogger log)
+        {
+            var result = new OkResult();
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }

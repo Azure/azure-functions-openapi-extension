@@ -32,6 +32,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-applicationjson-int-array")]
         [DataRow("/get-applicationjson-bool-array")]
         [DataRow("/get-applicationjson-int-list")]
+        [DataRow("/get-applicationjson-named-list")]
         public void Given_OpenApiDocument_Then_It_Should_Return_Path(string path)
         {
             var paths = this._doc["paths"];
@@ -44,6 +45,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-applicationjson-int-array", "get")]
         [DataRow("/get-applicationjson-bool-array", "get")]
         [DataRow("/get-applicationjson-int-list", "get")]
+        [DataRow("/get-applicationjson-named-list", "get")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationType(string path, string operationType)
         {
             var pathItem = this._doc["paths"][path];
@@ -56,6 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-applicationjson-int-array", "get", "200")]
         [DataRow("/get-applicationjson-bool-array", "get", "200")]
         [DataRow("/get-applicationjson-int-list", "get", "200")]
+        [DataRow("/get-applicationjson-named-list", "get", "200")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponse(string path, string operationType, string responseCode)
         {
             var responses = this._doc["paths"][path][operationType]["responses"];
@@ -68,6 +71,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         [DataRow("/get-applicationjson-int-array", "get", "200", "application/json")]
         [DataRow("/get-applicationjson-bool-array", "get", "200", "application/json")]
         [DataRow("/get-applicationjson-int-list", "get", "200", "application/json")]
+        [DataRow("/get-applicationjson-named-list", "get", "200", "application/json")]
         public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentType(string path, string operationType, string responseCode, string contentType)
         {
             var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
@@ -87,6 +91,29 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var schema = content[contentType]["schema"];
 
             schema.Value<string>("type").Should().Be(dataType);
+        }
+
+        [DataTestMethod]
+        [DataRow("/get-applicationjson-named-list", "get", "200", "application/json", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ListStringObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_OperationResponseContentTypeSchemaWithReference(string path, string operationType, string responseCode, string contentType, string reference)
+        {
+            var content = this._doc["paths"][path][operationType]["responses"][responseCode]["content"];
+
+            var @ref = content[contentType]["schema"]["$ref"];
+
+            @ref.Value<string>().Should().Be($"#/components/schemas/{reference}");
+        }
+
+        [DataTestMethod]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ListStringObjectModel", "array")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaProperty(string reference, string referenceType)
+        {
+            var properties = this._doc["components"]["schemas"][reference];
+
+            var type = properties["type"];
+
+            type.Should().NotBeNull();
+            type.Value<string>().Should().Be(referenceType);
         }
 
         [DataTestMethod]
@@ -112,6 +139,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
             var items = content[contentType]["schema"]["items"];
 
             items.Value<string>("type").Should().Be(itemType);
+        }
+
+        [DataTestMethod]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ListStringObjectModel", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.StringObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyItems(string reference, string itemRef)
+        {
+            var items = this._doc["components"]["schemas"][reference]["items"];
+            items.Value<string>("$ref").Should().Be($"#/components/schemas/{itemRef}");
         }
     }
 }
