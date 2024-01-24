@@ -87,6 +87,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Document.Tests
         }
 
         [DataTestMethod]
+        [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "listStringObjectValue", "microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ListStringObjectModel")]
+        public void Given_OpenApiDocument_Then_It_Should_Return_ComponentSchemaPropertyWithReference(string @ref, string refType, string propertyName, string reference)
+        {
+            var properties = this._doc["components"]["schemas"][@ref]["properties"];
+
+            var value = properties[propertyName];
+
+            value.Should().NotBeNull();
+            value.Value<string>("$ref").Should().Be($"#/components/schemas/{reference}");
+        }
+
+        [DataTestMethod]
         [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "objectValue", "array", "object")]
         [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "booleanValue", "array", "boolean")]
         [DataRow("microsoft.Azure.WebJobs.Extensions.OpenApi.TestApp.Models.ArrayObjectModel", "object", "stringValue", "array", "string")]

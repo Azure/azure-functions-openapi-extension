@@ -53,7 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 Schema = schema
             };
 
-            if (type.IsOpenApiArray())
+            if (type.IsOpenApiArray() || type.IsReferencedOpenApiArray())
             {
                 if (attribute.In == ParameterLocation.Path)
                 {
