@@ -72,6 +72,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     schema.Default = this.GetOpenApiPropertyDefault(attr as OpenApiPropertyAttribute);
                     schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                     schema.Deprecated = this.GetOpenApiPropertyDeprecated(attr as OpenApiPropertyAttribute);
+                    schema.Example = this.GetOpenApiPropertyExample(attr as OpenApiPropertyAttribute);
                 }
 
                 attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
