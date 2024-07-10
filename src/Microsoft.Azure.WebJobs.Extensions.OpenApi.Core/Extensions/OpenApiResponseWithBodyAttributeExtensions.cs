@@ -33,10 +33,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                                   ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
                                   : attribute.Description;
             var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection, version);
-            var content = new Dictionary<string, OpenApiMediaType>()
-                              {
-                                  { attribute.ContentType, mediaType }
-                              };
+
+            var content = new Dictionary<string, OpenApiMediaType>();
+            foreach (var contentType in attribute.ContentTypes)
+            {
+                content.Add(contentType, mediaType);
+            }
+
             var response = new OpenApiResponse()
             {
                 Description = description,
