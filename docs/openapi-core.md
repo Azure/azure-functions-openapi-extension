@@ -258,6 +258,18 @@ Suppose you want to customise the look and feels of the Swagger UI page. In this
 
             // DO SOMETHING AFTER CALLING THE BASE METHOD
         }
+
+        // Declare if you want to add a request interceptor function to the SwaggerUI instance.
+        public override Task<string> GetRequestInterceptorAsync()
+        {
+            return Task.FromResult("function(request) {/* DO SOMETHING WITH THE REQUEST */; return request;}");
+        }
+
+        // Declare if you want to add a response interceptor function to the SwaggerUI instance.
+        public override Task<string> GetResponseInterceptorAsync()
+        {
+            return Task.FromResult("function(response) {/* DO SOMETHING WITH THE RESPONSE */; return response;}");
+        }
     }
     ```
 

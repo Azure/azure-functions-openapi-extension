@@ -99,6 +99,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             return await this.GetJavaScript.Invoke().ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public virtual Task<string> GetRequestInterceptorAsync()
+        {
+            return Task.FromResult(string.Empty);
+        }
+
+        /// <inheritdoc/>
+        public virtual Task<string> GetResponseInterceptorAsync()
+        {
+            return Task.FromResult(string.Empty);
+        }
+
         private async Task<string> ReadFromStreamAsync(string path)
         {
             using (var stream = this.Assembly.GetManifestResourceStream($"{this.Assembly.GetName().Name}.{path}"))
