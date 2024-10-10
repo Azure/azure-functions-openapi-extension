@@ -112,8 +112,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         /// <returns>Returns the OpenAPI version.</returns>
         public static OpenApiVersionType GetOpenApiVersion()
         {
-            var version = Enum.TryParse<OpenApiVersionType>(
-                              Environment.GetEnvironmentVariable(OpenApiVersionKey), ignoreCase: true, out var result)
+            var version = Enum.TryParse<OpenApiVersionType>(Environment.GetEnvironmentVariable(OpenApiVersionKey),
+                              ignoreCase: true, out var result)
+                          && Enum.IsDefined(typeof(OpenApiVersionType), result)
                             ? result
                             : DefaultOpenApiVersion();
 
