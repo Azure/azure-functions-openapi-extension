@@ -402,19 +402,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary)
             {
-                var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.EndsWith("[]")
+                    ? "Dictionary_" + type.GetOpenApiTypeName(namingStrategy)
+                    : type.GetOpenApiTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
             if (isList)
             {
-                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.EndsWith("[]")
+                    ? "List_" + type.GetOpenApiTypeName(namingStrategy)
+                    : type.GetOpenApiTypeName(namingStrategy);
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + "_" +
-                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+                return type.GetOpenApiTypeName(namingStrategy);
             }
 
             return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
@@ -532,8 +535,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
                 namingStrategy = new DefaultNamingStrategy();
             }
 
-            var typeName = type.IsGenericType ? type.GetOpenApiGenericRootName() : type.Name;
-            var name = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
+            var name = string.Join("_", GetTypeNames(type, namingStrategy));
 
             return name;
         }
@@ -756,6 +758,33 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
             underlyingType = Nullable.GetUnderlyingType(type);
 
             return !underlyingType.IsNullOrDefault();
+        }
+
+        private static IEnumerable<string> GetTypeNames(Type type, NamingStrategy namingStrategy)
+        {
+            if (type.IsGenericType)
+            {
+                yield return namingStrategy.GetPropertyName(GetOpenApiGenericRootName(type), false);
+
+                foreach (var argType in type.GetGenericArguments())
+                {
+                    foreach (var name in GetTypeNames(argType, namingStrategy))
+                    {
+                        yield return namingStrategy.GetPropertyName(name, false);
+                    }
+                }
+            }
+            else
+            {
+                if (type.Name.EndsWith("[]"))
+                {
+                    yield return namingStrategy.GetPropertyName(type.Name.Substring(0, type.Name.Length - 2), false);
+                }
+                else
+                {
+                    yield return namingStrategy.GetPropertyName(type.Name, false);
+                }
+            }
         }
     }
 }

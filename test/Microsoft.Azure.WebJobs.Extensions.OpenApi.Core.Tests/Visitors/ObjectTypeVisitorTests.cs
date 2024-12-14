@@ -88,6 +88,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataRow(typeof(FakeModel), "object", null, 3, 3, "fakeModel")]
         [DataRow(typeof(FakeRequiredModel), "object", null, 1, 0, "fakeRequiredModel")]
         [DataRow(typeof(FakeRecursiveModel), "object", null, 3, 2, "fakeRecursiveModel")]
+        [DataRow(typeof(FakeGenericModel<List<FakeModel>>), "object", null, 0, 4, "fakeGenericModel_list_fakeModel")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type objectType, string dataType, string dataFormat, int requiredCount, int rootSchemaCount, string referenceId)
         {
             var name = "hello";
