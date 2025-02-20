@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> This project is in maintenance mode and will receive no further feature updates. See [Notice: This OpenAPI extension project is in maintenance mode](https://github.com/Azure/azure-functions-openapi-extension/issues/683) for more information.
+
+
 # Azure Functions OpenAPI Extension #
 
 | Out-of-Proc Worker | In-Proc Worker |
