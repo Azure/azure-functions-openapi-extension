@@ -1,0 +1,22 @@
+name: Bug Report
+description: Create a report to help us improve
+labels: ["potential-bug", "feature: api-description"]
+body:
+- id: hint
+  type: markdown
+  attributes:
+    value: This project is in maintenance mode and will receive no further feature updates. See https://github.com/Azure/azure-functions-openapi-extension/issues/683 for more information. **Please use this template only for reporting bugs.** Issues opened for new feature requests will be closed.
+- id: description
+  type: textarea
+  attributes:
+    label: Description
+    placeholder: Please provide a succinct description of the issue.
+  validations:
+    required: true
+- id: repro
+  type: textarea
+  attributes:
+    label: Steps to reproduce
+    placeholder: Please provide the steps required to reproduce the problem.
+  validations:
+    required: true
