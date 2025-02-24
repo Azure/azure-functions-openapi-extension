@@ -8,8 +8,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 
-using Newtonsoft.Json.Serialization;
-
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
@@ -59,11 +57,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets the <see cref="ISwaggerUI"/> instance.
         /// </summary>
         ISwaggerUI SwaggerUI { get; }
-
-        /// <summary>
-        /// Gets the <see cref="NamingStrategy"/> instance.
-        /// </summary>
-        NamingStrategy NamingStrategy { get; }
 
         /// <summary>
         /// Gets the value indicating whether it's in the development environment or not.

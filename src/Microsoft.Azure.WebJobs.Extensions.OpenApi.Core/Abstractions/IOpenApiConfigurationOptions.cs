@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
 {
     /// <summary>
@@ -44,5 +46,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         /// Gets or sets the list of <see cref="IDocumentFilter"/> instances.
         /// </summary>
         List<IDocumentFilter> DocumentFilters { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="NamingStrategy"/> used to express the JSON schema for .NET Types.
+        /// </summary>
+        NamingStrategy NamingStrategy { get; set; }
     }
 }
