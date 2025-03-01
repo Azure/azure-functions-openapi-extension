@@ -115,11 +115,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
 
             // Processes properties.
             var properties = type.Value
-                                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
-                                 .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+                                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
 
-            this.ProcessProperties(instance, name, properties, namingStrategy);
+            if (type.Value.BaseType != null)
+            {
+                var baseProperties = type.Value.BaseType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                properties = properties.Concat(baseProperties.Where(bp => !properties.Any(p => p.Name == bp.Name)));
+            }
+
+            var propDictionary = properties.ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
+
+            this.ProcessProperties(instance, name, propDictionary, namingStrategy);
 
             // Adds the reference.
             var reference = new OpenApiReference()
