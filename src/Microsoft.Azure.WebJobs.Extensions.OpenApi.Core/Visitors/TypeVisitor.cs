@@ -154,6 +154,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
                     schema.Nullable = this.GetOpenApiPropertyNullable(attr as OpenApiPropertyAttribute);
                     schema.Description = this.GetOpenApiPropertyDescription(attr as OpenApiPropertyAttribute);
                     schema.Deprecated = this.GetOpenApiPropertyDeprecated(attr as OpenApiPropertyAttribute);
+                    schema.Example = this.GetOpenApiPropertyExample(attr as OpenApiPropertyAttribute);
                 }
 
                 attr = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
@@ -390,6 +391,97 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         protected bool GetOpenApiPropertyDeprecated(OpenApiPropertyAttribute attr)
         {
             return attr.Deprecated;
+        }
+
+        /// <summary>
+        /// Gets the property example.
+        /// </summary>
+        /// <param name="attr"><see cref="OpenApiPropertyAttribute"/> instance.</param>
+        /// <returns>Returns the property example.</returns>
+        protected IOpenApiAny GetOpenApiPropertyExample(OpenApiPropertyAttribute attr)
+        {
+            var @example = attr.Example;
+            if (@example.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            if (@example is bool)
+            {
+                return new OpenApiBoolean((bool)@example);
+            }
+
+            if (@example is DateTime)
+            {
+                return new OpenApiDateTime((DateTime)@example);
+            }
+
+            if (@example is TimeSpan)
+            {
+                return new OpenApiString(@example.ToString());
+            }
+
+            if (@example is DateTimeOffset)
+            {
+                return new OpenApiDateTime((DateTimeOffset)@example);
+            }
+
+            if (@example is float)
+            {
+                return new OpenApiFloat((float)@example);
+            }
+
+            if (@example is double)
+            {
+                return new OpenApiDouble((double)@example);
+            }
+
+            if (@example is decimal)
+            {
+                return new OpenApiDouble(Convert.ToDouble(@example));
+            }
+
+            if (@example is byte[])
+            {
+                return new OpenApiByte((byte[])@example);
+            }
+
+            if (@example is short)
+            {
+                return new OpenApiInteger((short)@example);
+            }
+
+            if (@example is int)
+            {
+                return new OpenApiInteger((int)@example);
+            }
+
+            if (@example is long)
+            {
+                return new OpenApiLong((long)@example);
+            }
+
+            if (@example is ushort)
+            {
+                return new OpenApiInteger(Convert.ToInt16(@example));
+            }
+
+            if (@example is uint)
+            {
+                return new OpenApiInteger(Convert.ToInt32(@example));
+            }
+
+            if (@example is ulong)
+            {
+                return new OpenApiLong(Convert.ToInt64(@example));
+            }
+
+            if (@example is Guid)
+            {
+                return new OpenApiString(Convert.ToString(@example));
+            }
+
+            return new OpenApiString((string)@example);
         }
 
         /// <summary>
