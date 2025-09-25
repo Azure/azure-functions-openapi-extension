@@ -11,7 +11,7 @@
 
 ## Acknowledgement ##
 
-* [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v3.44.0](https://github.com/swagger-api/swagger-ui/releases/tag/v3.44.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
+* [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v5.29.0](https://github.com/swagger-api/swagger-ui/releases/tag/v5.29.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
 * This extension supports the OpenAPI spec version of [v2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) and [v3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md).
 
 
