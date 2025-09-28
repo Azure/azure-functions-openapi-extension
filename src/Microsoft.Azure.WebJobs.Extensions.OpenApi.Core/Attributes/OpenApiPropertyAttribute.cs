@@ -28,5 +28,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes
         /// Gets or sets the deprecated flag.
         /// </summary>
         public virtual bool Deprecated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the example value of the property.
+        /// </summary>
+        public virtual object Example { get; set; }
     }
 }
