@@ -49,19 +49,19 @@ steps:
 #     script: |
 #       Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Include CodeSignSummary-*.md -Recurse | Remove-Item -Force
 
-# - task: PublishBuildArtifacts@1
-#   displayName: 'Publish Artifacts'
-#   inputs:
-#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-#     artifactName: drop/${{ parameters.version }}
-#     publishLocation: Container
-
-- task: AzureFileCopy@4
+- task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   inputs:
-    SourcePath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    azureSubscription: 'Azure SDK Engineering System'
-    Destination: AzureBlob
-    storage: azuresdkpartnerdrops
-    ContainerName: drops
-    BlobPrefix: 'azure-functions-openapi-extension/dotnet/$(Version)'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: Container
+
+# - task: AzureFileCopy@4
+#   displayName: 'Publish Artifacts'
+#   inputs:
+#     SourcePath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+#     azureSubscription: 'Azure SDK Engineering System'
+#     Destination: AzureBlob
+#     storage: azuresdkpartnerdrops
+#     ContainerName: drops
+#     BlobPrefix: 'azure-functions-openapi-extension/dotnet/$(Version)'
