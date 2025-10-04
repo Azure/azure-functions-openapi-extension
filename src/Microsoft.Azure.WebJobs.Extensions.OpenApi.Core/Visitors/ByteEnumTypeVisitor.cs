@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -27,10 +28,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-    
+
             var isVisitable = this.IsVisitable(type, TypeCode.Byte) &&
                               type.IsUnflaggedEnumType() &&
-                              !type.HasJsonConverterAttribute<StringEnumConverter>() &&
+                              !type.HasJsonConverterAttribute<StringEnumConverter, JsonStringEnumConverter>() &&
                               Enum.GetUnderlyingType(type) == typeof(byte)
                               ;
 
