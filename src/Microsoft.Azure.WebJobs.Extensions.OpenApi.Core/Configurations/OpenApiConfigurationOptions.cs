@@ -5,6 +5,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
@@ -33,5 +35,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public virtual List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
+
+        /// <inheritdoc />
+        public virtual NamingStrategy NamingStrategy { get; set; }
     }
 }

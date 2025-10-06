@@ -17,7 +17,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors;
 using Microsoft.OpenApi;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 {
@@ -129,9 +128,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
 
         /// <inheritdoc />
         public virtual ISwaggerUI SwaggerUI { get; }
-
-        /// <inheritdoc />
-        public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
         public virtual bool IsDevelopment { get; } = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development";

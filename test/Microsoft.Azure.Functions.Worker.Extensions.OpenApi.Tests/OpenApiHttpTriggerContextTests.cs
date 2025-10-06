@@ -17,8 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using NSubstitute;
 
-using Newtonsoft.Json.Serialization;
-
 namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 {
     [TestClass]
@@ -187,19 +185,6 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
                                          .SwaggerUI;
 
             swaggerUI.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public async Task Given_Type_When_Initiated_Then_It_Should_Return_NamingStrategy()
-        {
-            var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var context = new OpenApiHttpTriggerContext();
-
-            var namingStrategy = (await context.SetApplicationAssemblyAsync(location, false))
-                                         .NamingStrategy;
-
-            namingStrategy.Should().NotBeNull();
-            namingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
         }
 
         [DataTestMethod]
