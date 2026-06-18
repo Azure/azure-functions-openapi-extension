@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\builds\worker.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Target the LTS framework but allow the tool to run on whatever shared runtime the consuming
+         app uses (it is launched via `dotnet exec` against the app's runtimeconfig). -->
+    <RollForward>LatestMajor</RollForward>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <IsPackable>true</IsPackable>
+    <PackageId>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator</PackageId>
+    <Title>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator</Title>
+    <Summary>Build-time OpenAPI (swagger.json) generation for isolated-worker Azure Function Apps.</Summary>
+    <Description>Build-time generator that emits an OpenAPI (swagger.json) document for isolated-worker Azure Function Apps by reflecting over the built app assembly using the same pipeline as the runtime OpenAPI endpoint - no Functions host, settings or network required. Add the package reference and the document is produced in the build output automatically.</Description>
+    <PackageTags>Azure-Functions, OpenAPI, Swagger, Swagger-UI, Build, CI</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Build-only/dev dependency: ship the tool in tools/ and the MSBuild logic in build/, never a
+         runtime lib/ reference, and don't leak our package dependencies onto consumers. -->
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <!-- Targets-only packages otherwise trip NU5128 (no lib + has dependency group). -->
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- For the stub IHttpRequestDataObject (HostString / IHeaderDictionary / IQueryCollection).
+         At consumer-build exec time these resolve from the consumer app's dependency closure. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The OpenAPI builder pipeline, referenced in-repo so the tool is version-locked to this build.
+         Every isolated-worker consumer references this package too, so when the tool runs in the
+         consumer's dependency context the versions align. -->
+    <ProjectReference Include="..\Microsoft.Azure.Functions.Worker.Extensions.OpenApi\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Package payload">
+    <!-- The bare tool assembly. Its dependencies are supplied by the consumer at exec time via the
+         consumer's depsfile, so we ship only this dll. -->
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="tools/$(TargetFramework)/" Visible="false" />
+    <None Include="README.md" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="build/**" Pack="true" PackagePath="build/" Visible="false" />
+    <None Include="buildTransitive/**" Pack="true" PackagePath="buildTransitive/" Visible="false" />
+  </ItemGroup>
+
+</Project>

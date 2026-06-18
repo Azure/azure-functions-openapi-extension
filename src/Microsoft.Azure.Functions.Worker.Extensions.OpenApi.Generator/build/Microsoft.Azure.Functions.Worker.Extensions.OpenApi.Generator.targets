@@ -1,0 +1,34 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Opt-out switch. Defaults on so a bare package reference is enough. -->
+    <GenerateOpenApiOnBuild Condition="'$(GenerateOpenApiOnBuild)' == ''">true</GenerateOpenApiOnBuild>
+    <!-- Where the document is written. Defaults next to the built assembly. -->
+    <OpenApiOutputPath Condition="'$(OpenApiOutputPath)' == ''">$(TargetDir)swagger.json</OpenApiOutputPath>
+    <!-- Route prefix used for the host-agnostic relative server (matches host.json default). -->
+    <OpenApiRoutePrefix Condition="'$(OpenApiRoutePrefix)' == ''">api</OpenApiRoutePrefix>
+    <_OpenApiGeneratorTool>$(MSBuildThisFileDirectory)../tools/net8.0/Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator.dll</_OpenApiGeneratorTool>
+  </PropertyGroup>
+
+  <!--
+    Generates the OpenAPI document after Build by running the bundled tool inside THIS app's own
+    dependency context (its .deps.json / .runtimeconfig.json), so the app assembly and the OpenAPI
+    extension resolve correctly. Offline: no host, settings or network.
+
+    - Inputs/Outputs make it incremental (only re-runs when the assembly changes).
+    - The AzureFunctionsVersion guard makes it a no-op for non-Function-App projects, so the package
+      can be applied blanket via Directory.Build.props without touching libraries or test projects.
+  -->
+  <Target Name="GenerateOpenApiDocument"
+          AfterTargets="Build"
+          Condition="'$(GenerateOpenApiOnBuild)' == 'true' and '$(AzureFunctionsVersion)' != ''"
+          Inputs="$(TargetPath)"
+          Outputs="$(OpenApiOutputPath)">
+
+    <Message Importance="high" Text="Generating OpenAPI document -> $(OpenApiOutputPath)" />
+
+    <Exec Command="dotnet exec --depsfile &quot;$(TargetDir)$(AssemblyName).deps.json&quot; --runtimeconfig &quot;$(TargetDir)$(AssemblyName).runtimeconfig.json&quot; &quot;$(_OpenApiGeneratorTool)&quot; --assembly &quot;$(TargetPath)&quot; --output &quot;$(OpenApiOutputPath)&quot; --route-prefix &quot;$(OpenApiRoutePrefix)&quot;"
+          WorkingDirectory="$(TargetDir)" />
+  </Target>
+
+</Project>

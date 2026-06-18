@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Only the LTS+ targeting pack is needed to build; roll forward to the installed runtime. -->
+    <RollForward>Major</RollForward>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <IsPackable>false</IsPackable>
+
+    <AssemblyName>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The tool under test. -->
+    <ProjectReference Include="..\..\src\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator.csproj" />
+    <!-- A real, attribute-decorated isolated-worker app to generate against. Built and copied to the
+         test output so its assembly can be reflected over via Assembly.LoadFrom. -->
+    <ProjectReference Include="..\..\samples\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc\Microsoft.Azure.Functions.Worker.Extensions.OpenApi.FunctionApp.OutOfProc.csproj" />
+  </ItemGroup>
+
+</Project>

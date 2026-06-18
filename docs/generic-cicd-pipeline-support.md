@@ -2,6 +2,8 @@
 
 You can run either PowerShell script or bash shell script to generate the OpenAPI document within your own CI/CD pipeline including Azure DevOps or GitHub Actions.
 
+> For isolated-worker apps, you can also generate the document at build time without running the host. See [Build-time OpenAPI Document Generation](./build-time-openapi-document-generation.md).
+
 
 ## PowerShell ##
 

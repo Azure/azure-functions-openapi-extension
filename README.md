@@ -26,6 +26,7 @@
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
 * [**Generic CI/CD Pipeline Support**](./docs/generic-cicd-pipeline-support.md): This document shows how to generate the OpenAPI document within a CI/CD pipeline, using either PowerShell or bash shell script.
+* [**Build-time OpenAPI Document Generation**](./docs/build-time-openapi-document-generation.md): This document shows how to emit the OpenAPI document at build time for isolated-worker apps - without running the Functions host - using the `Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Generator` package.
 
 
 ## GitHub Actions Support ##
