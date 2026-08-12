@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json.Serialization;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
         {
             var isVisitable = (this.IsVisitable(type, TypeCode.Int16) || this.IsVisitable(type, TypeCode.Int32) || this.IsVisitable(type, TypeCode.Int64) || this.IsVisitable(type, TypeCode.Byte)) &&
                               type.IsUnflaggedEnumType() &&
-                              type.HasJsonConverterAttribute<StringEnumConverter>()
+                              type.HasJsonConverterAttribute<StringEnumConverter, JsonStringEnumConverter>();
                               ;
 
             return isVisitable;
