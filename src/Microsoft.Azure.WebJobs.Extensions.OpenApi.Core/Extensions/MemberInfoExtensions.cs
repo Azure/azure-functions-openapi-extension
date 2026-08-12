@@ -24,9 +24,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
         {
             element.ThrowIfNullOrDefault();
 
-            var exists = element.GetCustomAttribute<T>(inherit) != null;
-
-            return exists;
+            try
+            {
+                var exists = element.GetCustomAttribute<T>(inherit) != null;
+                return exists;
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
