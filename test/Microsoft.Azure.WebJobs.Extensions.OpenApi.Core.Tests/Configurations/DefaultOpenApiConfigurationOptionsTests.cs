@@ -9,6 +9,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 {
     [TestClass]
@@ -25,6 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", "Development");
             Environment.SetEnvironmentVariable("OpenApi__ForceHttp", null);
             Environment.SetEnvironmentVariable("OpenApi__ForceHttps", null);
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", null);
         }
 
         [TestMethod]
@@ -45,6 +48,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             options.IncludeRequestingHostName.Should().BeTrue();
             options.ForceHttp.Should().BeFalse();
             options.ForceHttps.Should().BeFalse();
+            options.NamingStrategy.Should().BeOfType<CamelCaseNamingStrategy>();
         }
 
         [DataTestMethod]
@@ -269,12 +273,34 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
             result.Should().Be(expected);
         }
 
+        [TestMethod]
         public void Given_Type_When_Instantiated_Then_It_Should_Return_EmptyListOfDocumentFilters()
         {
             var options = new DefaultOpenApiConfigurationOptions();
 
             options.DocumentFilters.Should().NotBeNull();
             options.DocumentFilters.Should().BeEmpty();
+        }
+
+        [DataTestMethod]
+        [DataRow(null, typeof(CamelCaseNamingStrategy))]
+        [DataRow("", typeof(CamelCaseNamingStrategy))]
+        [DataRow("CamelCase", typeof(CamelCaseNamingStrategy))]
+        [DataRow("camelCase", typeof(CamelCaseNamingStrategy))]
+        [DataRow("SnakeCase", typeof(SnakeCaseNamingStrategy))]
+        [DataRow("snake_case", typeof(SnakeCaseNamingStrategy))]
+        [DataRow("KebabCase", typeof(KebabCaseNamingStrategy))]
+        [DataRow("kebab-case", typeof(KebabCaseNamingStrategy))]
+        [DataRow("PascalCase", typeof(DefaultNamingStrategy))]
+        [DataRow("Pascal Case", typeof(DefaultNamingStrategy))]
+        public void Given_EnvironmentVariable_When_GetNamingStrategy_Invoked_Then_It_Should_Return_Result(string namingStrategy, Type expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__NamingStrategy", namingStrategy);
+            var options = new DefaultOpenApiConfigurationOptions();
+
+            var result = options.NamingStrategy;
+
+            result.Should().BeOfType(expected);
         }
     }
 }

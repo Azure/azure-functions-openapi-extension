@@ -8,6 +8,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 {
     /// <summary>
@@ -24,6 +26,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
         private const string FunctionsRuntimeEnvironmentKey = "AZURE_FUNCTIONS_ENVIRONMENT";
         private const string ForceHttpKey = "OpenApi__ForceHttp";
         private const string ForceHttpsKey = "OpenApi__ForceHttps";
+        private const string NamingStrategyKey = "OpenApi__NamingStrategy";
 
         /// <inheritdoc />
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
@@ -50,6 +53,9 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
 
         /// <inheritdoc />
         public override List<IDocumentFilter> DocumentFilters { get; set; } = new List<IDocumentFilter>();
+
+        /// <inheritdoc />
+        public override NamingStrategy NamingStrategy { get; set; } = GetNamingStrategy();
 
         /// <summary>
         /// Gets the OpenAPI document version.
@@ -151,6 +157,40 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations
             var development = bool.TryParse(Environment.GetEnvironmentVariable(ForceHttpsKey), out var result) ? result : false;
 
             return development;
+        }
+
+        /// <summary>
+        /// Gets the chosen naming strategy.
+        /// </summary>
+        /// <returns>A NewtonSoft serialisation naming strategy</returns>
+        public static NamingStrategy GetNamingStrategy()
+        {
+            var strategyName = Environment.GetEnvironmentVariable(NamingStrategyKey) ?? string.Empty;
+            var normalisedName = strategyName.ToLowerInvariant().Replace("-", "").Replace("_", "").Replace(" ", "");
+
+            NamingStrategy strategy;
+            switch (normalisedName)
+            {
+                case "camelcase":
+                    strategy = new CamelCaseNamingStrategy();
+                    break;
+                case "snakecase":
+                    strategy = new SnakeCaseNamingStrategy();
+                    break;
+                case "kebabcase":
+                    strategy = new KebabCaseNamingStrategy();
+                    break;
+                case "pascalcase":
+                    strategy = new DefaultNamingStrategy();
+                    break;
+
+                default:
+                    // for backwards compatibility, default to camelCase if option not present / well-defined
+                    strategy = new CamelCaseNamingStrategy();
+                    break;
+            }
+
+            return strategy;
         }
 
         private static OpenApiVersionType DefaultOpenApiVersion()
