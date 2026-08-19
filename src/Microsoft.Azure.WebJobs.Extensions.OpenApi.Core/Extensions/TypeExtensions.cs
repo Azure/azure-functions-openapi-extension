@@ -402,19 +402,19 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions
 
             if (isDictionary)
             {
-                var name = type.Name.EndsWith("[]") ? "Dictionary_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.EndsWith("[]") ? type.GetOpenApiSubTypeName(namingStrategy) + "Dictionary" : type.GetOpenApiSubTypeName(namingStrategy) + type.Name.Split('`').First();
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
             if (isList)
             {
-                var name = type.Name.EndsWith("[]") ? "List_" + type.GetOpenApiSubTypeName(namingStrategy) : type.Name.Split('`').First() + "_" + type.GetOpenApiSubTypeName(namingStrategy);
+                var name = type.Name.EndsWith("[]") ? type.GetOpenApiSubTypeName(namingStrategy) + "List" : type.GetOpenApiSubTypeName(namingStrategy) + type.Name.Split('`').First();
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsGenericType)
             {
-                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + "_" +
-                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + 
+                       string.Concat( type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
             }
 
             return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);

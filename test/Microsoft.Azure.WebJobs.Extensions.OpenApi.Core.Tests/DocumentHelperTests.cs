@@ -41,7 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             var schemas = documentHelper.GetOpenApiSchemas(methods, namingStrategy, visitorCollection);
 
             schemas.Should().NotBeNull();
-            schemas.Count.Should().Be(6);
+            schemas.Count.Should().Be(7);
 
             schemas.Should().ContainKey("FakeClassModel");
 
@@ -65,23 +65,35 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests
             schemas["FakeStringModel"].Properties.Count.Should().Be(2);
             schemas["FakeStringModel"].Type.Should().Be("object");
 
-            schemas.Should().ContainKey("FakeGenericModel_FakeClassModel");
+            schemas.Should().ContainKey("FakeGenericModelFakeClassModel");
 
-            schemas["FakeGenericModel_FakeClassModel"].Properties.Count.Should().Be(2);
-            schemas["FakeGenericModel_FakeClassModel"].Type.Should().Be("object");
-            schemas["FakeGenericModel_FakeClassModel"].Properties.Should().ContainKey("Name");
-            schemas["FakeGenericModel_FakeClassModel"].Properties.Should().ContainKey("Value");
-            schemas["FakeGenericModel_FakeClassModel"].Properties["Value"].Properties.Should().ContainKey("Number");
-            schemas["FakeGenericModel_FakeClassModel"].Properties["Value"].Properties.Should().ContainKey("Text");
+            schemas["FakeGenericModelFakeClassModel"].Properties.Count.Should().Be(2);
+            schemas["FakeGenericModelFakeClassModel"].Type.Should().Be("object");
+            schemas["FakeGenericModelFakeClassModel"].Properties.Should().ContainKey("Name");
+            schemas["FakeGenericModelFakeClassModel"].Properties.Should().ContainKey("Value");
+            schemas["FakeGenericModelFakeClassModel"].Properties["Value"].Properties.Should().ContainKey("Number");
+            schemas["FakeGenericModelFakeClassModel"].Properties["Value"].Properties.Should().ContainKey("Text");
 
-            schemas.Should().ContainKey("FakeGenericModel_FakeOtherClassModel");
+            schemas.Should().ContainKey("FakeGenericModelFakeOtherClassModel");
 
-            schemas["FakeGenericModel_FakeOtherClassModel"].Properties.Count.Should().Be(2);
-            schemas["FakeGenericModel_FakeOtherClassModel"].Type.Should().Be("object");
-            schemas["FakeGenericModel_FakeOtherClassModel"].Properties.Should().ContainKey("Name");
-            schemas["FakeGenericModel_FakeOtherClassModel"].Properties.Should().ContainKey("Value");
-            schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("FirstName");
-            schemas["FakeGenericModel_FakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("LastName");
+            schemas["FakeGenericModelFakeOtherClassModel"].Properties.Count.Should().Be(2);
+            schemas["FakeGenericModelFakeOtherClassModel"].Type.Should().Be("object");
+            schemas["FakeGenericModelFakeOtherClassModel"].Properties.Should().ContainKey("Name");
+            schemas["FakeGenericModelFakeOtherClassModel"].Properties.Should().ContainKey("Value");
+            schemas["FakeGenericModelFakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("FirstName");
+            schemas["FakeGenericModelFakeOtherClassModel"].Properties["Value"].Properties.Should().ContainKey("LastName");
+
+            schemas.Should().ContainKey("FakeOtherGenericModelFakeClassModelFakeOtherClassModel");
+
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties.Count.Should().Be(3);
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Type.Should().Be("object");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties.Should().ContainKey("Name");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties.Should().ContainKey("FirstValue");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties.Should().ContainKey("SecondValue");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties["FirstValue"].Properties.Should().ContainKey("Number");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties["FirstValue"].Properties.Should().ContainKey("Text");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties["SecondValue"].Properties.Should().ContainKey("FirstName");
+            schemas["FakeOtherGenericModelFakeClassModelFakeOtherClassModel"].Properties["SecondValue"].Properties.Should().ContainKey("LastName");
         }
 
         [TestMethod]

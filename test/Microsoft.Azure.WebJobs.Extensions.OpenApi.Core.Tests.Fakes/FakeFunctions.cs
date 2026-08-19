@@ -35,5 +35,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Fakes
         public static void GenericMethodTwo()
         {
         }
+
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(FakeOtherGenericModel<FakeClassModel, FakeOtherClassModel>), Required = true, Description = "Fake list model")]
+        public static void GenericMethodThree()
+        {
+        }
     }
 }
