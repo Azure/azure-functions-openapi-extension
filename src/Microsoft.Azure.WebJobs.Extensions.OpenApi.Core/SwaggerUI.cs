@@ -25,6 +25,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private const string SwaggerUIStandalonePresetJsPlaceholder = "[[SWAGGER_UI_STANDALONE_PRESET_JS]]";
         private const string SwaggerUIApiPrefix = "[[SWAGGER_UI_API_PREFIX]]";
         private const string SwaggerUrlPlaceholder = "[[SWAGGER_URL]]";
+        private const string SwaggerUIRequestInterceptor = "[[SWAGGER_UI_REQUEST_INTERCEPTOR]]";
+        private const string SwaggerUIResponseInterceptor = "[[SWAGGER_UI_RESPONSE_INTERCEPTOR]]";
 
         private readonly string indexHtml = $"{typeof(SwaggerUI).Namespace}.dist.index.html";
         private readonly string oauth2RedirectHtml = $"{typeof(SwaggerUI).Namespace}.dist.oauth2-redirect.html";
@@ -41,6 +43,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
         private string _swaggerUiCustomJs;
         private string _swaggerUiStandalonePresetJs;
         private string _swaggerUiApiPrefix;
+        private string _swaggerUiRequestInterceptor;
+        private string _swaggerUiResponseInterceptor;
         private string _indexHtml;
         private string _oauth2RedirectHtml;
 
@@ -95,6 +99,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
             {
                 this._swaggerUiCustomCss = await options.GetStylesheetAsync();
                 this._swaggerUiCustomJs = await options.GetJavaScriptAsync();
+                this._swaggerUiRequestInterceptor = await options.GetRequestInterceptorAsync();
+                this._swaggerUiResponseInterceptor = await options.GetResponseInterceptorAsync();
             }
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
@@ -179,13 +185,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core
                 swaggerUrl += "?" + string.Join("&", queries.SelectMany(p => p.Value.Select(q => $"{p.Key}={q}")));
             }
 
+            var swaggerUiRequestInterceptor = this._swaggerUiRequestInterceptor.IsNullOrWhiteSpace()
+                                                  ? string.Empty
+                                                  : $"requestInterceptor: {this._swaggerUiRequestInterceptor},";
+
+            var swaggerUiResponseInterceptor = this._swaggerUiResponseInterceptor.IsNullOrWhiteSpace()
+                                                   ? string.Empty
+                                                   : $"responseInterceptor: {this._swaggerUiResponseInterceptor},";
+
             var html = this._indexHtml.Replace(SwaggerUITitlePlaceholder, swaggerUiTitle)
                                       .Replace(SwaggerUICssPlaceholder, this._swaggerUiCss)
                                       .Replace(SwaggerUICustomCssPlaceholder, this._swaggerUiCustomCss)
                                       .Replace(SwaggerUIBundleJsPlaceholder, this._swaggerUiBundleJs)
                                       .Replace(SwaggerUICustomJsPlaceholder, this._swaggerUiCustomJs)
                                       .Replace(SwaggerUIStandalonePresetJsPlaceholder, this._swaggerUiStandalonePresetJs)
-                                      .Replace(SwaggerUrlPlaceholder, swaggerUrl);
+                                      .Replace(SwaggerUrlPlaceholder, swaggerUrl)
+                                      .Replace(SwaggerUIRequestInterceptor, swaggerUiRequestInterceptor)
+                                      .Replace(SwaggerUIResponseInterceptor, swaggerUiResponseInterceptor);
 
             return html;
         }
