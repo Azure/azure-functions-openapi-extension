@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, OpenApiVersionType.V2)]
-        [DataRow("", OpenApiVersionType.V2)]
+        //[DataRow("", OpenApiVersionType.V2)] // This used to be V2 in .NET versions < 9, special case test added 'Given_Version_When_Instantiated_Then_It_Should_Return_Result'
         [DataRow("v2", OpenApiVersionType.V2)]
         [DataRow("v3", OpenApiVersionType.V3)]
         public void Given_Version_When_Instantiated_Then_It_Should_Return_Result(string version, OpenApiVersionType expected)
@@ -47,9 +47,22 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             settings.Version.Should().Be(expected);
         }
 
+        [TestMethod]
+        [DataRow("", OpenApiVersionType.V2)]
+        public void Given_Version_When_Instantiated_Then_It_Should_Return_Throw_Exception(string version, OpenApiVersionType expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__Version", version);
+
+            var config = ConfigurationResolver.Resolve();
+            var action = () => config.Get<OpenApiSettings>("OpenApi");
+
+            action.Should().Throw<Exception>();
+        }
+
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("1.0.0", "1.0.0")]
         public void Given_DocVersion_When_Instantiated_Then_It_Should_Return_Result(string version, string expected)
         {
@@ -63,7 +76,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("hello", "hello")]
         public void Given_DocTitle_When_Instantiated_Then_It_Should_Return_Result(string title, string expected)
         {
@@ -77,7 +91,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("world", "world")]
         public void Given_DocDescription_When_Instantiated_Then_It_Should_Return_Result(string description, string expected)
         {
@@ -91,7 +106,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("https://contoso", "https://contoso")]
         [DataRow("https://contoso, https://fabrikam", "https://contoso, https://fabrikam")]
         public void Given_HostNames_When_Instantiated_Then_It_Should_Return_Result(string hostnames, string expected)
@@ -106,7 +122,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, false)]
-        [DataRow("", false)]
+        //[DataRow("", false)] // This used to be false in .NET versions < 9, special case test added 'Given_ForceHttps_When_Instantiated_Then_It_Should_Return_Throw_Exception'
         [DataRow("true", true)]
         [DataRow("false", false)]
         public void Given_ForceHttps_When_Instantiated_Then_It_Should_Return_Result(string https, bool expected)
@@ -119,9 +135,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             settings.ForceHttps.Should().Be(expected);
         }
 
+        [TestMethod]
+        [DataRow("", false)]
+        public void Given_ForceHttps_When_Instantiated_Then_It_Should_Return_Throw_Exception(string https, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttps", https);
+
+            var config = ConfigurationResolver.Resolve();
+            var action = () => config.Get<OpenApiSettings>("OpenApi");
+
+            action.Should().Throw<InvalidOperationException>();
+        }
+
         [DataTestMethod]
         [DataRow(null, false)]
-        [DataRow("", false)]
+        //[DataRow("", false)] // This used to be false in .NET versions < 9, special case test added 'Given_ForceHttp_When_Instantiated_Then_It_Should_Throw_Exception'
         [DataRow("true", true)]
         [DataRow("false", false)]
         public void Given_ForceHttp_When_Instantiated_Then_It_Should_Return_Result(string http, bool expected)
@@ -134,9 +162,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             settings.ForceHttp.Should().Be(expected);
         }
 
+        [TestMethod]
+        [DataRow("", false)]
+        public void Given_ForceHttp_When_Instantiated_Then_It_Should_Throw_Exception(string http, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__ForceHttp", http);
+
+            var config = ConfigurationResolver.Resolve();
+            var action = () => config.Get<OpenApiSettings>("OpenApi");
+
+            action.Should().Throw<InvalidOperationException>();
+        }
+
         [DataTestMethod]
         [DataRow(null, false)]
-        [DataRow("", false)]
+        //[DataRow("", false)] // This used to be false in .NET versions < 9, special case test added 'Given_HideSwaggerUI_When_Instantiated_Then_It_Should_Return_Throw_Exception'
         [DataRow("true", true)]
         [DataRow("false", false)]
         public void Given_HideSwaggerUI_When_Instantiated_Then_It_Should_Return_Result(string hide, bool expected)
@@ -149,9 +189,21 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             settings.HideSwaggerUI.Should().Be(expected);
         }
 
+        [TestMethod]
+        [DataRow("", false)]
+        public void Given_HideSwaggerUI_When_Instantiated_Then_It_Should_Return_Throw_Exception(string hide, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__HideSwaggerUI", hide);
+
+            var config = ConfigurationResolver.Resolve();
+            var action = () => config.Get<OpenApiSettings>("OpenApi");
+
+            action.Should().Throw<InvalidOperationException>();
+        }
+
         [DataTestMethod]
         [DataRow(null, false)]
-        [DataRow("", false)]
+        //[DataRow("", false)] // This used to be false in .NET versions < 9, special case test added 'Given_HideDocument_When_Instantiated_Then_It_Should_Return_Throw_Exception'
         [DataRow("true", true)]
         [DataRow("false", false)]
         public void Given_HideDocument_When_Instantiated_Then_It_Should_Return_Result(string hide, bool expected)
@@ -164,9 +216,22 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
             settings.HideDocument.Should().Be(expected);
         }
 
+        [TestMethod]
+        [DataRow("", false)]
+        public void Given_HideDocument_When_Instantiated_Then_It_Should_Return_Throw_Exception(string hide, bool expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__HideDocument", hide);
+
+            var config = ConfigurationResolver.Resolve();
+            var action = () => config.Get<OpenApiSettings>("OpenApi");
+
+            action.Should().Throw<InvalidOperationException>();
+        }
+
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("lorem", "lorem")]
         public void Given_ApiKey_When_Instantiated_Then_It_Should_Return_Result(string apiKey, string expected)
         {
@@ -226,7 +291,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests.Configuratio
 
         [DataTestMethod]
         [DataRow(null, null)]
-        [DataRow("", null)]
+        //[DataRow("", null)] // This used to be null in .NET versions < 9
+        [DataRow("", "")]
         [DataRow("lorem", "lorem")]
         public void Given_BackendProxyUrl_When_Instantiated_Then_It_Should_Return_Result(string url, string expected)
         {

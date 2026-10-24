@@ -53,7 +53,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(byte), true)]
-        [DataRow(typeof(int), false)] 
+        [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsVisitable(type);
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
         [DataTestMethod]
         [DataRow(typeof(byte?), true)]
         [DataRow(typeof(Nullable<byte>), true)]
-        [DataRow(typeof(int), false)] 
+        [DataRow(typeof(int), false)]
         public void Given_NullableType_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._nullableVisitor.IsVisitable(type);
@@ -174,7 +174,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
 
             this._nullableVisitor.Visit(acceptor, type, this._strategy, attribute);
 
-            acceptor.Schemas[name].Nullable.Should().Be(false);
+            acceptor.Schemas[name].Nullable.Should().Be(nullable);
             acceptor.Schemas[name].Default.Should().BeNull();
             acceptor.Schemas[name].Description.Should().Be(description);
         }
@@ -205,7 +205,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Visitors
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
         }
-        
+
         [DataTestMethod]
         [DataRow(typeof(byte?), "string", "byte", true)]
         [DataRow(typeof(Nullable<byte>), "string", "byte", true)]

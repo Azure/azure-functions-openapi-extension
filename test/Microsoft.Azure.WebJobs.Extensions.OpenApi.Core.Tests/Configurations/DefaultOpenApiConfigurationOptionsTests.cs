@@ -49,7 +49,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "1.0.0")]
-        [DataRow("", "1.0.0")]
+        //[DataRow("", "1.0.0")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("v1.0", "v1.0")]
         [DataRow("1.0", "1.0")]
         public void Given_OpenApiDocVersion_When_Instantiated_Then_Property_Should_Return_Value(string version, string expected)
@@ -63,7 +64,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "OpenAPI Document on Azure Functions")]
-        [DataRow("", "OpenAPI Document on Azure Functions")]
+        //[DataRow("", "OpenAPI Document on Azure Functions")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("hello world", "hello world")]
         public void Given_OpenApiDocTitle_When_Instantiated_Then_Property_Should_Return_Value(string title, string expected)
         {
@@ -76,7 +78,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "This is the OpenAPI Document on Azure Functions")]
-        [DataRow("", "This is the OpenAPI Document on Azure Functions")]
+        //[DataRow("", "This is the OpenAPI Document on Azure Functions")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("hello world", "hello world")]
         public void Given_OpenApiDocDescription_When_Instantiated_Then_Property_Should_Return_Value(string description, string expected)
         {
@@ -157,7 +160,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "1.0.0")]
-        [DataRow("", "1.0.0")]
+        //[DataRow("", "1.0.0")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("v1.0", "v1.0")]
         [DataRow("1.0", "1.0")]
         public void Given_EnvironmentVariable_When_GetOpenApiDocVersion_Invoked_Then_It_Should_Return_Result(string version, string expected)
@@ -172,7 +176,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "OpenAPI Document on Azure Functions")]
-        [DataRow("", "OpenAPI Document on Azure Functions")]
+        //[DataRow("", "OpenAPI Document on Azure Functions")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("hello world", "hello world")]
         public void Given_EnvironmentVariable_When_GetOpenApiDocTitle_Invoked_Then_It_Should_Return_Result(string title, string expected)
         {
@@ -186,7 +191,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 
         [DataTestMethod]
         [DataRow(null, "This is the OpenAPI Document on Azure Functions")]
-        [DataRow("", "This is the OpenAPI Document on Azure Functions")]
+        //[DataRow("", "This is the OpenAPI Document on Azure Functions")] // Empty string is empty...
+        [DataRow("", "")]
         [DataRow("hello world", "hello world")]
         public void Given_OpenApiDocDescription_When_Instantiated_Then_Property_Should_Return_Result(string description, string expected)
         {

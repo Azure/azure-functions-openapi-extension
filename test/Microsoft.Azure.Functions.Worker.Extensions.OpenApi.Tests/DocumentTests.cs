@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_That_When_InitialiseDocument_Invoked_Then_It_Should_Return_Result()
         {
-            
+
             var helper =  Substitute.For<IDocumentHelper>();
             var doc = new Document(helper);
 
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("hello world")]
         public void Given_Info_When_AddMetadata_Invoked_Then_It_Should_Return_Result(string title)
         {
-            
+
             var helper = Substitute.For<IDocumentHelper>();
             var doc = new Document(helper);
 
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api")]
         public void Given_EmptyOptions_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix)
         {
-            
+
             var helper = Substitute.For<IDocumentHelper>();
             var doc = new Document(helper);
 
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             var options = Substitute.For<IOpenApiConfigurationOptions>();
             options.Servers.Returns(new List<OpenApiServer>());
-            
+
 
             var result = doc.InitialiseDocument()
                             .AddServer(req, routePrefix, options);
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api", "helloworld")]
         public void Given_ExtraServers_And_Include_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix, string server)
         {
-            
+
             var helper = Substitute.For<IDocumentHelper>();
             var doc = new Document(helper);
 
@@ -156,13 +156,13 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var req = Substitute.For<IHttpRequestDataObject>();
             req.Scheme.Returns(scheme);
             req.Host.Returns(new HostString(baseHost));
-            
+
 
             var servers = new List<OpenApiServer>() { new OpenApiServer() { Url = server } };
             var options = Substitute.For<IOpenApiConfigurationOptions>();
             options.Servers.Returns(servers);
             options.IncludeRequestingHostName.Returns(true);
-            
+
 
             var result = doc.InitialiseDocument()
                             .AddServer(req, routePrefix, options);
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api", "helloworld")]
         public void Given_ExtraServers_And_Exclude_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix, string server)
         {
-            
+
             var helper = Substitute.For<IDocumentHelper>();
             var doc = new Document(helper);
 
@@ -195,8 +195,8 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var baseHost = $"{host}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var url = $"{scheme}://{baseHost}/{routePrefix}".TrimEnd('/');
             var req = Substitute.For<IHttpRequestDataObject>();
-            
-            
+
+
             req.Scheme.Returns(scheme);
             req.Host.Returns(new HostString(baseHost));
 
@@ -232,7 +232,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             var req = Substitute.For<IHttpRequestDataObject>();
             req.Scheme.Returns(scheme);
-            
+
 
             var hostString = new HostString(host);
             req.Host.Returns(hostString);
@@ -308,7 +308,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             options.ForceHttps.Returns(forceHttps);
             options.ForceHttp.Returns(forceHttp);
             options.Servers.Returns(new List<OpenApiServer>());
-            
+
 
             var result = doc.InitialiseDocument()
                             .AddServer(req, routePrefix, options);
@@ -438,10 +438,10 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
 
             var url = $"{scheme}://{host}";
             var req = Substitute.For<IHttpRequestDataObject>();
-            
+
             req.Scheme.Returns(scheme);
-            
-            req.Host.Returns(new HostString(host)); 
+
+            req.Host.Returns(new HostString(host));
             var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
@@ -472,7 +472,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var options = Substitute.For<IOpenApiConfigurationOptions>();
             options.IncludeRequestingHostName.Returns(includeRequestingHostName);
             options.Servers.Returns(new List<OpenApiServer>(){new OpenApiServer() {Url = $"{scheme}://contoso.com/{routePrefix}"}});
-            
+
 
             var doc = new Document(helper);
 
@@ -527,7 +527,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var req = Substitute.For<IHttpRequestDataObject>();
             req.Scheme.Returns(scheme);
             req.Host.Returns(new HostString(host));
-            
+
 
             var doc = new Document(helper);
 
@@ -560,7 +560,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var req = Substitute.For<IHttpRequestDataObject>();
             req.Scheme.Returns(scheme);
             req.Host.Returns(new HostString(host));
-            
+
 
             var doc = new Document(helper);
 
@@ -583,12 +583,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         {
             var helper = Substitute.For<IDocumentHelper>();
 
-            var url = $"{scheme}://{host}/{routePrefix}";
-            var uri = new Uri(url);
+            var url = $"{scheme}://{host}{(!string.IsNullOrWhiteSpace(routePrefix) ? $"/{routePrefix}" : string.Empty)}";
             var req = Substitute.For<IHttpRequestDataObject>();
             req.Scheme.Returns(scheme);
             req.Host.Returns(new HostString(host));
-            
+
 
 
             var doc = new Document(helper);
@@ -602,7 +601,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             ((string)json?.host).Should().BeEquivalentTo(null);
             ((string)json?.basePath).Should().BeEquivalentTo(null);
             ((string)json?.schemes).Should().BeEquivalentTo(null);
-            ((string)json?.servers[0].url).Should().BeEquivalentTo(uri.AbsoluteUri);
+            ((string)json?.servers[0].url).Should().BeEquivalentTo(url);
         }
     }
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
 
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.OpenApi.FunctionApp.InProc</AssemblyName>
@@ -16,7 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.3" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.3.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.6.0" />
   </ItemGroup>
 
   <!-- Comment this block if you want to use NuGet package from https://nuget.org -->
@@ -42,7 +43,7 @@
    <!--<ItemGroup>
     <EmbeddedResource Include="dist\my-custom.css" />
     <EmbeddedResource Include="dist\my-custom.js" />
-  </ItemGroup>--> 
+  </ItemGroup>-->
   <!-- Uncomment this block if you want to use custom UI -->
 
 </Project>
