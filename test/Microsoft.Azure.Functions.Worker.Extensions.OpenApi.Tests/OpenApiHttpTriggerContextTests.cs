@@ -15,7 +15,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.OpenApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 using Newtonsoft.Json.Serialization;
 
@@ -221,11 +221,11 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
         public async Task Given_Authorization_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result()
         {
             var location = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
             var context = new OpenApiHttpTriggerContext();
 
             var result = await context.SetApplicationAssemblyAsync(location, false)
-                                      .AuthorizeAsync(req.Object);
+                                      .AuthorizeAsync(req);
 
             result.StatusCode.Should().Be(FakeOpenApiHttpTriggerAuthorization.StatusCode);
             result.ContentType.Should().Be(FakeOpenApiHttpTriggerAuthorization.ContentType);

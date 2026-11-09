@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
 {
@@ -28,10 +28,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow(false, 4)]
         public async Task Given_HideSwaggerUI_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideSwaggerUI, int expected)
         {
-            var settings = new Mock<OpenApiSettings>();
-            settings.SetupGet(p => p.HideSwaggerUI).Returns(hideSwaggerUI);
+            var settings = Substitute.For<OpenApiSettings>();
+            settings.HideSwaggerUI.Returns(hideSwaggerUI);
 
-            var provider = new OpenApiTriggerFunctionProvider(settings.Object);
+            var provider = new OpenApiTriggerFunctionProvider(settings);
 
             var result = await provider.GetFunctionMetadataAsync().ConfigureAwait(false);
 
@@ -43,10 +43,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow(false, 4)]
         public async Task Given_HideDocument_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(bool hideDocument, int expected)
         {
-            var settings = new Mock<OpenApiSettings>();
-            settings.SetupGet(p => p.HideDocument).Returns(hideDocument);
+            var settings = Substitute.For<OpenApiSettings>();
+            settings.HideDocument.Returns(hideDocument);
 
-            var provider = new OpenApiTriggerFunctionProvider(settings.Object);
+            var provider = new OpenApiTriggerFunctionProvider(settings);
 
             var result = await provider.GetFunctionMetadataAsync().ConfigureAwait(false);
 
@@ -60,16 +60,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Function)]
         public async Task Given_AuthLevel_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(AuthorizationLevel authLevelDoc, AuthorizationLevel authLevelUI)
         {
-            var authLevelSettings = new Mock<OpenApiAuthLevelSettings>();
-            authLevelSettings.SetupGet(p => p.Document).Returns(authLevelDoc);
-            authLevelSettings.SetupGet(p => p.UI).Returns(authLevelUI);
+            var authLevelSettings = Substitute.For<OpenApiAuthLevelSettings>();
+            authLevelSettings.Document.Returns(authLevelDoc);
+            authLevelSettings.UI.Returns(authLevelUI);
 
-            var settings = new Mock<OpenApiSettings>();
-            settings.SetupGet(p => p.HideSwaggerUI).Returns(false);
-            settings.SetupGet(p => p.HideDocument).Returns(false);
-            settings.SetupGet(p => p.AuthLevel).Returns(authLevelSettings.Object);
+            var settings = Substitute.For<OpenApiSettings>();
+            settings.HideSwaggerUI.Returns(false);
+            settings.HideDocument.Returns(false);
+            settings.AuthLevel.Returns(authLevelSettings);
 
-            var provider = new OpenApiTriggerFunctionProvider(settings.Object);
+            var provider = new OpenApiTriggerFunctionProvider(settings);
 
             var result = await provider.GetFunctionMetadataAsync().ConfigureAwait(false);
 

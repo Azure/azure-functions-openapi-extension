@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
 {
@@ -26,10 +26,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow("https", "https")]
         public void Given_NullOptions_When_GetScheme_Invoked_Then_It_Should_Return_Result(string scheme, string expected)
         {
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
 
-            var result = HttpRequestDataObjectExtensions.GetScheme(req.Object, null);
+            var result = HttpRequestDataObjectExtensions.GetScheme(req, null);
 
             result.Should().Be(expected);
         }
@@ -45,14 +45,14 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Extensions
         [DataRow("https", false, false, "https")]
         public void Given_Options_When_GetScheme_Invoked_Then_It_Should_Return_Result(string scheme, bool forceHttps, bool forceHttp, string expected)
         {
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
 
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.ForceHttps).Returns(forceHttps);
-            options.SetupGet(p => p.ForceHttp).Returns(forceHttp);
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.ForceHttps.Returns(forceHttps);
+            options.ForceHttp.Returns(forceHttp);
 
-            var result = HttpRequestDataObjectExtensions.GetScheme(req.Object, options.Object);
+            var result = HttpRequestDataObjectExtensions.GetScheme(req, options);
 
             result.Should().Be(expected);
         }

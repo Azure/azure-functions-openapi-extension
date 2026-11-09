@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Filters
 {
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Filters
         [DataRow(2)]
         public void Given_Filters_When_Instantated_Then_It_Should_Return_Result(int count)
         {
-            var filters = Enumerable.Range(0, count).Select(i => new Mock<IDocumentFilter>().Object).ToList();
+            var filters = Enumerable.Range(0, count).Select(i => Substitute.For<IDocumentFilter>()).ToList();
             var collection = new DocumentFilterCollection(filters);
 
             collection.DocumentFilters.Should().NotBeNull();

@@ -7,7 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
 {
@@ -17,10 +17,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [TestMethod]
         public async Task Given_NoDeligate_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Null()
         {
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
             var auth = new OpenApiHttpTriggerAuthorization();
 
-            var result = await auth.AuthorizeAsync(req.Object).ConfigureAwait(false);
+            var result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
 
             result.Should().BeNull();
         }
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataRow(HttpStatusCode.Unauthorized, "text/plain", "Unauthorized")]
         public async Task Given_Deligate_Through_Constructor_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result(HttpStatusCode statusCode, string contentType, string payload)
         {
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
             var auth = new OpenApiHttpTriggerAuthorization(req =>
             {
                 var result = new OpenApiAuthorizationResult()
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
                 return Task.FromResult(result);
             });
 
-            var result = await auth.AuthorizeAsync(req.Object).ConfigureAwait(false);
+            var result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(statusCode);
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
         [DataRow(HttpStatusCode.Unauthorized, "text/plain", "Unauthorized")]
         public async Task Given_Deligate_Through_Property_When_AuthorizeAsync_Invoked_Then_It_Should_Return_Result(HttpStatusCode statusCode, string contentType, string payload)
         {
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
             var auth = new OpenApiHttpTriggerAuthorization
             {
                 Authorization = req =>
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Tests.Configurations
                 }
             };
 
-            var result = await auth.AuthorizeAsync(req.Object).ConfigureAwait(false);
+            var result = await auth.AuthorizeAsync(req).ConfigureAwait(false);
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(statusCode);

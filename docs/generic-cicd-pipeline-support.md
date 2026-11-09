@@ -18,7 +18,7 @@ Run the PowerShell script remotely:
     -UseWindows         <switch indicating whether to use Windows OS or not>
 ```
 
-Alternatively, you can manually download the PowerShell script and include it to your codebase: [Get-OpenApiDocument.ps1](./actions/Get-OpenApiDocument.ps1)
+Alternatively, you can manually download the PowerShell script and include it to your codebase: [Get-OpenApiDocument.ps1](../actions/Get-OpenApiDocument.ps1)
 
 ```powershell
 ./actions/Get-OpenApiDocument.ps1 `
@@ -49,7 +49,7 @@ curl -fsSL https://aka.ms/azfunc-openapi/generate-openapi.sh \
         -d|--delay              <delay in second between run function app and document generation>
 ```
 
-Alternatively, you can manually download the PowerShell script and include it to your codebase: [get-openapi-document.sh](./actions/get-openapi-document.sh)
+Alternatively, you can manually download the PowerShell script and include it to your codebase: [get-openapi-document.sh](../actions/get-openapi-document.sh)
 
 ```bash
 ./actions/get-openapi-document.sh \

@@ -14,7 +14,7 @@ using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+using NSubstitute;
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -35,8 +35,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_That_When_InitialiseDocument_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var result = doc.InitialiseDocument();
 
@@ -48,8 +48,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("hello world")]
         public void Given_Info_When_AddMetadata_Invoked_Then_It_Should_Return_Result(string title)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var info = new OpenApiInfo() { Title = title };
 
@@ -75,18 +75,18 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api")]
         public void Given_NoOptions_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var ports = new[] { 80, 443 };
             var baseHost = $"{host}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var url = $"{scheme}://{baseHost}/{routePrefix}".TrimEnd('/');
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(baseHost));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(baseHost));
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix);
+                            .AddServer(req, routePrefix);
 
             result.OpenApiDocument.Servers.Should().HaveCount(1);
             result.OpenApiDocument.Servers.First().Url.Should().Be(url);
@@ -107,21 +107,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api")]
         public void Given_EmptyOptions_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var ports = new[] { 80, 443 };
             var baseHost = $"{host}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var url = $"{scheme}://{baseHost}/{routePrefix}".TrimEnd('/');
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(baseHost));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(baseHost));
 
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>());
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.Servers.Returns(new List<OpenApiServer>());
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix, options.Object);
+                            .AddServer(req, routePrefix, options);
 
             result.OpenApiDocument.Servers.Should().HaveCount(1);
             result.OpenApiDocument.Servers.First().Url.Should().Be(url);
@@ -142,23 +142,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api", "helloworld")]
         public void Given_ExtraServers_And_Include_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix, string server)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var ports = new[] { 80, 443 };
             var baseHost = $"{host}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var url = $"{scheme}://{baseHost}/{routePrefix}".TrimEnd('/');
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(baseHost));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(baseHost));
 
             var servers = new List<OpenApiServer>() { new OpenApiServer() { Url = server } };
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Servers).Returns(servers);
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(true);
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.Servers.Returns(servers);
+            options.IncludeRequestingHostName.Returns(true);
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix, options.Object);
+                            .AddServer(req, routePrefix, options);
 
             result.OpenApiDocument.Servers.Should().HaveCount(2);
             result.OpenApiDocument.Servers.First().Url.Should().Be(url);
@@ -180,23 +180,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost", 47071, "api", "helloworld")]
         public void Given_ExtraServers_And_Exclude_When_AddServer_Invoked_Then_It_Should_Return_Result(string scheme, string host, int port, string routePrefix, string server)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var ports = new[] { 80, 443 };
             var baseHost = $"{host}{(ports.Contains(port) ? string.Empty : $":{port}")}";
             var url = $"{scheme}://{baseHost}/{routePrefix}".TrimEnd('/');
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(baseHost));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(baseHost));
 
             var servers = new List<OpenApiServer>() { new OpenApiServer() { Url = server } };
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.Servers).Returns(servers);
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(false);
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.Servers.Returns(servers);
+            options.IncludeRequestingHostName.Returns(false);
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix, options.Object);
+                            .AddServer(req, routePrefix, options);
 
             result.OpenApiDocument.Servers.Should().HaveCount(1);
             result.OpenApiDocument.Servers.First().Url.Should().Be(server);
@@ -217,17 +217,17 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost:47071", null, "https://localhost:47071")]
         public void Given_NullOptions_When_AddServer_Invoked_Then_It_Should_Return_BaseUrl(string scheme, string host, string routePrefix, string expected)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
 
             var hostString = new HostString(host);
-            req.SetupGet(p => p.Host).Returns(hostString);
+            req.Host.Returns(hostString);
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix, null);
+                            .AddServer(req, routePrefix, null);
 
             result.OpenApiDocument.Servers.Should().HaveCount(1);
             result.OpenApiDocument.Servers.First().Url.Should().Be(expected);
@@ -284,22 +284,22 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow("https", "localhost:47071", null, false, false, "https://localhost:47071")]
         public void Given_Options_When_AddServer_Invoked_Then_It_Should_Return_BaseUrl(string scheme, string host, string routePrefix, bool forceHttps, bool forceHttp, string expected)
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
 
             var hostString = new HostString(host);
-            req.SetupGet(p => p.Host).Returns(hostString);
+            req.Host.Returns(hostString);
 
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.ForceHttps).Returns(forceHttps);
-            options.SetupGet(p => p.ForceHttp).Returns(forceHttp);
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>());
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.ForceHttps.Returns(forceHttps);
+            options.ForceHttp.Returns(forceHttp);
+            options.Servers.Returns(new List<OpenApiServer>());
 
             var result = doc.InitialiseDocument()
-                            .AddServer(req.Object, routePrefix, options.Object);
+                            .AddServer(req, routePrefix, options);
 
             result.OpenApiDocument.Servers.Should().HaveCount(1);
             result.OpenApiDocument.Servers.First().Url.Should().Be(expected);
@@ -308,8 +308,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_Null_When_AddNamingStrategy_Invoked_Then_It_Should_Throw_Exception()
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             Action action = () => doc.AddNamingStrategy(null);
 
@@ -321,8 +321,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         {
             var field = typeof(Document).GetField("_strategy", BindingFlags.Instance | BindingFlags.NonPublic);
             var strategy = new DefaultNamingStrategy();
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var result = doc.AddNamingStrategy(strategy);
 
@@ -333,8 +333,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_Null_When_AddVisitors_Invoked_Then_It_Should_Throw_Exception()
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             Action action = () => doc.AddVisitors(null);
 
@@ -346,8 +346,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         {
             var field = typeof(Document).GetField("_collection", BindingFlags.Instance | BindingFlags.NonPublic);
             var collection = new VisitorCollection();
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var result = doc.AddVisitors(collection);
 
@@ -358,8 +358,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_Null_When_ApplyDocumentFilters_Invoked_Then_It_Should_Throw_Exception()
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             Action action = () => doc.ApplyDocumentFilters(null);
 
@@ -369,24 +369,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public void Given_That_When_ApplyDocumentFilters_Invoked_Then_It_Should_Invoke_Each_Filter()
         {
-            var documentFilter = new Mock<IDocumentFilter>();
-            var collection = new DocumentFilterCollection(new List<IDocumentFilter> { documentFilter.Object });
+            var documentFilter = Substitute.For<IDocumentFilter>();
+            var collection = new DocumentFilterCollection(new List<IDocumentFilter> { documentFilter });
             var openApiDocument = new OpenApiDocument();
             var doc = new Document(openApiDocument);
 
-            var req = new Mock<IHttpRequestDataObject>();
+            var req = Substitute.For<IHttpRequestDataObject>();
 
-            doc.AddServer(req.Object, "");
+            doc.AddServer(req, "");
             doc.ApplyDocumentFilters(collection);
 
-            documentFilter.Verify(x => x.Apply(req.Object, openApiDocument), Times.Once());
+            documentFilter.Received(1).Apply(req, openApiDocument);
         }
 
         [TestMethod]
         public async Task Given_VersionAndFormat_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
-            var doc = new Document(helper.Object);
+            var helper = Substitute.For<IDocumentHelper>();
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
@@ -399,12 +399,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public async Task Given_Metadata_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
+            var helper = Substitute.For<IDocumentHelper>();
 
             var title = "hello world";
             var info = new OpenApiInfo() { Title = title };
 
-            var doc = new Document(helper.Object);
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
                                   .AddMetadata(info)
@@ -418,21 +418,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public async Task Given_ServerDetails_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
+            var helper = Substitute.For<IDocumentHelper>();
 
             var scheme = "https";
             var host = "localhost";
             var routePrefix = "api";
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(host));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
-            var doc = new Document(helper.Object);
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
-                                  .AddServer(req.Object, routePrefix)
+                                  .AddServer(req, routePrefix)
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);
@@ -447,23 +447,23 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [DataRow(false, "fabrikam.com", "contoso.com")]
         public async Task Given_ServerDetails_With_ConfigurationOptions_When_RenderAsync_Invoked_Then_It_Should_Return_Result(bool includeRequestingHostName, string host, string expected)
         {
-            var helper = new Mock<IDocumentHelper>();
+            var helper = Substitute.For<IDocumentHelper>();
 
             var scheme = "https";
             var routePrefix = "api";
 
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(host));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
-            var options = new Mock<IOpenApiConfigurationOptions>();
-            options.SetupGet(p => p.IncludeRequestingHostName).Returns(includeRequestingHostName);
-            options.SetupGet(p => p.Servers).Returns(new List<OpenApiServer>() { new OpenApiServer() { Url = $"{scheme}://contoso.com/{routePrefix}" } });
+            var options = Substitute.For<IOpenApiConfigurationOptions>();
+            options.IncludeRequestingHostName.Returns(includeRequestingHostName);
+            options.Servers.Returns(new List<OpenApiServer>() { new OpenApiServer() { Url = $"{scheme}://contoso.com/{routePrefix}" } });
 
-            var doc = new Document(helper.Object);
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
-                                  .AddServer(req.Object, routePrefix, options.Object)
+                                  .AddServer(req, routePrefix, options)
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);
@@ -476,21 +476,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public async Task Given_ServerDetails_WithNullRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
+            var helper = Substitute.For<IDocumentHelper>();
 
             var scheme = "https";
             var host = "localhost";
             string routePrefix = null;
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(host));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
-            var doc = new Document(helper.Object);
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
-                                  .AddServer(req.Object, routePrefix)
+                                  .AddServer(req, routePrefix)
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);
@@ -503,21 +503,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         [TestMethod]
         public async Task Given_ServerDetails_WithEmptyRoutePrefix_When_RenderAsync_Invoked_Then_It_Should_Return_Result()
         {
-            var helper = new Mock<IDocumentHelper>();
+            var helper = Substitute.For<IDocumentHelper>();
 
             var scheme = "https";
             var host = "localhost";
             var routePrefix = string.Empty;
 
             var url = $"{scheme}://{host}";
-            var req = new Mock<IHttpRequestDataObject>();
-            req.SetupGet(p => p.Scheme).Returns(scheme);
-            req.SetupGet(p => p.Host).Returns(new HostString(host));
+            var req = Substitute.For<IHttpRequestDataObject>();
+            req.Scheme.Returns(scheme);
+            req.Host.Returns(new HostString(host));
 
-            var doc = new Document(helper.Object);
+            var doc = new Document(helper);
 
             var result = await doc.InitialiseDocument()
-                                  .AddServer(req.Object, routePrefix)
+                                  .AddServer(req, routePrefix)
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
 
             dynamic json = JObject.Parse(result);

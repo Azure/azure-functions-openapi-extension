@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> This project is in maintenance mode and will receive no further feature updates. See [Notice: This OpenAPI extension project is in maintenance mode](https://github.com/Azure/azure-functions-openapi-extension/issues/683) for more information.
+
+
 # Azure Functions OpenAPI Extension #
 
 | Out-of-Proc Worker | In-Proc Worker |
@@ -7,7 +11,7 @@
 
 ## Acknowledgement ##
 
-* [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v3.44.0](https://github.com/swagger-api/swagger-ui/releases/tag/v3.44.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
+* [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [v5.29.0](https://github.com/swagger-api/swagger-ui/releases/tag/v5.29.0) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
 * This extension supports the OpenAPI spec version of [v2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) and [v3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md).
 
 
@@ -21,7 +25,7 @@
 * ~~[**Azure Functions v1 Support**](docs/azure-functions-v1-support.md): This document shows how to support Azure Functions v1 runtime with this OpenAPI extension.~~
 * [**Integrating OpenAPI-enabled Azure Functions to Azure API Management**](docs/integrate-with-apim.md): This document shows how to integrate the Azure Functions application with [Azure API Management](https://docs.microsoft.com/azure/api-management/api-management-key-concepts?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension.
 <!-- * [**Integrating OpenAPI-enabled Azure Functions to Power Platform**](docs/integrate-with-powerplatform.md): This document shows how to integrate the Azure Functions application with [Power Platform](https://powerplatform.microsoft.com/?WT.mc_id=dotnet_0000_juyoo), via this OpenAPI extension. -->
-* [**Generic CI/CD Pipeline Support](./docs/generic-cicd-pipeline-support.md): This document shows how to generate the OpenAPI document within a CI/CD pipeline, using either PowerShell or bash shell script.
+* [**Generic CI/CD Pipeline Support**](./docs/generic-cicd-pipeline-support.md): This document shows how to generate the OpenAPI document within a CI/CD pipeline, using either PowerShell or bash shell script.
 
 
 ## GitHub Actions Support ##
