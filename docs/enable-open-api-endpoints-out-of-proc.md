@@ -99,11 +99,11 @@ namespace MyOpenApiFunctionApp
         {
             var host = new HostBuilder()
             // Remove this line below
-                .ConfigureFunctionsWorkerDefaults()
+                .ConfigureFunctionsWebApplication()
             // Remove this line above
 
             // Add these lines below
-                .ConfigureFunctionsWorkerDefaults(worker => worker.UseNewtonsoftJson())
+                .ConfigureFunctionsWebApplication(worker => worker.UseNewtonsoftJson())
             // Add these lines above
                 .Build();
 
